@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="LocationMapper" default="LocationMapper" basedir="./app">
+	<target name = "LocationMapper">
+	<exec executable="xcodebuild" os="Mac OS X">
+	</exec>
+	</target>
+</project>
