@@ -7,18 +7,30 @@
 //
 
 #import "FrameCell.h"
+#import "Constants.h"
 
 @implementation FrameCell
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    [self adjustColors];
+}
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
     if (self)
     {
+        [self adjustColors];
         // change to our custom selected background view
     }
     return self;
+}
+
+- (void)adjustColors
+{
+    self.backgroundColor = TABBAR_COLOR;
+    self.viewTextBackground.backgroundColor = TABBAR_COLOR_TRANSPARENT;
 }
 
 @end

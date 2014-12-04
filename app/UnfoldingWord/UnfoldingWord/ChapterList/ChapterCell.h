@@ -13,4 +13,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *chapter_detailLabel;
 @property (weak, nonatomic) IBOutlet UILabel *chapter_titleLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *chapter_thumb;
+
+- (CGFloat)calculatedHeight;
+
 @end

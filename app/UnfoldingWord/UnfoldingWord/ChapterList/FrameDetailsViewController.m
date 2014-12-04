@@ -11,8 +11,8 @@
 #import "FrameModel.h"
 #import "UIImageView+AFNetworking.h"
 
-@interface FrameDetailsViewController ()
-
+@interface FrameDetailsViewController () <UIGestureRecognizerDelegate>
+@property (nonatomic, assign) UIInterfaceOrientation lastOrientation;
 @end
 
 @implementation FrameDetailsViewController
@@ -21,26 +21,29 @@ static NSString * const reuseIdentifier = @"FrameCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    self.edgesForExtendedLayout = UIRectEdgeNone;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(orientationChanged:)    name:UIDeviceOrientationDidChangeNotification  object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(orientationChanged:)    name:UIDeviceOrientationDidChangeNotification  object:nil];
 
     
     // Uncomment the following line to preserve selection between presentations
-     self.clearsSelectionOnViewWillAppear = NO;
+//     self.clearsSelectionOnViewWillAppear = NO;
 //    [self.collectionView setContentInset:UIEdgeInsetsMake(self.navigationController.navigationBar.frame.size.height+self.navigationController.navigationBar.frame.origin.y, 0, 0, 0)];
-    self.automaticallyAdjustsScrollViewInsets = YES;
+//    self.automaticallyAdjustsScrollViewInsets = YES;
 //
 //    // Register cell classe
 
     
     // Do any additional setup after loading the view.
 }
+
+
+
 - (void)orientationChanged:(NSNotification *)notification
 {
 //    [self.collectionView setContentInset:UIEdgeInsetsMake(self.navigationController.navigationBar.frame.size.height+self.navigationController.navigationBar.frame.origin.y, 0, 0, 0)];
 
-    [self.collectionView reloadData];
+//    [self.collectionView reloadData];
 }
 
 
@@ -68,7 +71,6 @@ static NSString * const reuseIdentifier = @"FrameCellID";
     return 1;
 }
 
-
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     return [self.frameList count];
@@ -76,7 +78,7 @@ static NSString * const reuseIdentifier = @"FrameCellID";
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake(self.view.frame.size.width, self.view.frame.size.height-64);
+    return self.collectionView.frame.size;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -90,6 +92,42 @@ static NSString * const reuseIdentifier = @"FrameCellID";
     cell.frame_contentLabel.text = frame.frame_text;
 
     return cell;
+}
+
+#pragma mark - Rotation
+
+-(void) willRotateToInterfaceOrientation: (UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (self.lastOrientation != 0) {
+        if ( UIDeviceOrientationIsLandscape(self.lastOrientation) && UIDeviceOrientationIsLandscape(toInterfaceOrientation)) {
+            return;
+        }
+        if ( UIDeviceOrientationIsPortrait(self.lastOrientation) && UIDeviceOrientationIsPortrait(toInterfaceOrientation)) {
+            return;
+        }
+    }
+    
+    CGRect windowFrame = [[UIScreen mainScreen] bounds];
+    CGFloat height = 0;
+    if (self.view.bounds.size.width > self.view.bounds.size.height) {
+        height = fmin(windowFrame.size.height, windowFrame.size.width);
+    }
+    else {
+        height = fmax(windowFrame.size.height, windowFrame.size.width);
+    }
+    
+    CGPoint currentOffset = self.collectionView.contentOffset;
+    CGFloat offsetIndex = (int)currentOffset.x / (self.view.bounds.size.width);
+    CGFloat newOffsetX = offsetIndex * (height);
+    CGPoint newOffset = CGPointMake(newOffsetX, 0);
+    [UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [self.collectionView setContentOffset:newOffset];
+    } completion:^(BOOL finished) {
+        [self.collectionView setContentOffset:newOffset];
+    }];
+    [self.collectionView reloadData];
+    
+    self.lastOrientation = toInterfaceOrientation;
 }
 
 #pragma mark <UICollectionViewDelegate>
@@ -122,5 +160,34 @@ static NSString * const reuseIdentifier = @"FrameCellID";
 	
 }
 */
+
+#pragma mark - Methods to prevent the back gesture
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    // Disable iOS 7 back gesture
+    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+        self.navigationController.interactivePopGestureRecognizer.delegate = self;
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    // Enable iOS 7 back gesture
+    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+        self.navigationController.interactivePopGestureRecognizer.delegate = nil;
+    }
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    return NO;
+}
 
 @end

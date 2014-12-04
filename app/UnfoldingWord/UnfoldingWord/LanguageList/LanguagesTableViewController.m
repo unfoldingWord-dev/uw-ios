@@ -31,18 +31,22 @@
 @implementation LanguagesTableViewController
 
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
-    self.navigationItem.title = LANGUAGE_TITLE ;
     
-    // Uncomment the following line to preserve selection between presentations.
-//     self.clearsSelectionOnViewWillAppear = YES;
+    self.navigationController.navigationItem.title = LANGUAGE_TITLE ;
+    self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil];
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.barTintColor =TABBAR_COLOR;
+    self.navigationController.navigationBar.translucent = YES;
     
-        [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(orientationChanged:)    name:UIDeviceOrientationDidChangeNotification  object:nil];
+
+ 
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(orientationChanged:)    name:UIDeviceOrientationDidChangeNotification  object:nil];
     
     self.selectedIndex = -1 ;
     self.selectedIndexArray = [NSMutableArray array];
@@ -108,9 +112,7 @@
         });
         
         [self configureFooterCell:sizingCell];
-        CGFloat abcd = [self calculateHeightForConfiguredSizingCell:sizingCell];
-        NSLog(@" = == =%ld =  %f ",(long)indexPath.row,abcd);
-        return abcd;
+        return [self calculateHeightForConfiguredSizingCell:sizingCell];
     }
     else
     {
@@ -154,7 +156,7 @@
     LanguageModel *language = (LanguageModel *)[self.languageArray objectAtIndex:indexPath.row];
     cell.languageLabel.text = [NSString stringWithFormat:@" %@ [ %@ ]",language.language_string,language.language];
     cell.detailTextView.preferredMaxLayoutWidth = self.view.frame.size.width - 100;
-    cell.detailTextView.text = [self getFormatedString:language];
+    cell.detailTextView.attributedText =(NSAttributedString*) [self getFormatedString:language];
   
 }
 
@@ -170,30 +172,6 @@
     return view;
 }
 
-//- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-//{
-//    
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-//    UIViewController *footerViewController = [storyboard instantiateViewControllerWithIdentifier:@"FooterViewID"];
-//    
-//    footerViewController.view.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.tableView.frame), CGRectGetHeight(footerViewController.view.bounds));
-//    
-//    [footerViewController.view setNeedsLayout];
-//    [footerViewController.view layoutIfNeeded];
-//    
-//    CGSize size = [footerViewController.view systemLayoutSizeFittingSize:UILayoutFittingExpandedSize];
-//    
-//    
-//    
-////    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 44)];
-////    /* Create custom view to display section header... */
-////    UIButton *refreshButton = [[UIButton alloc] initWithFrame:CGRectMake((tableView.frame.size.width/2.0)-22,0, 44, 44)];
-////    [refreshButton setImage:[UIImage imageNamed:@"RefreshButton"] forState:UIControlStateNormal];
-////    [refreshButton addTarget:self action:@selector(onRefreshTouched:) forControlEvents:UIControlEventTouchUpInside];
-////    [view addSubview:refreshButton];
-////    [view setBackgroundColor:BG_GREEN_COLOR]; //your background color...
-//    return footerViewController.view;
-//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -212,15 +190,27 @@
     [cell.infoButton addTarget:self action:@selector(onInfoTouched:) forControlEvents:UIControlEventTouchUpInside];
     
     
+    
+    NSMutableAttributedString *text =  [[NSMutableAttributedString alloc]
+     initWithAttributedString: cell.detailTextView.attributedText];
+    
+    
     if(self.selectedIndex ==indexPath.row)
     {
         [cell.languageLabel setTextColor:SELECTION_BLUE_COLOR];
-        [cell.detailTextView setTextColor:SELECTION_BLUE_COLOR];
+        [text addAttribute:NSForegroundColorAttributeName
+                     value:SELECTION_BLUE_COLOR
+                     range:NSMakeRange(0, [text length])];
+        [cell.detailTextView setAttributedText: text];
+        
     }
     else
     {
         [cell.languageLabel setTextColor:NORMAL_TEXT_COLOR];
-        [cell.detailTextView setTextColor:NORMAL_TEXT_COLOR];
+        [text addAttribute:NSForegroundColorAttributeName
+                     value:NORMAL_TEXT_COLOR
+                     range:NSMakeRange(0, [text length])];
+        [cell.detailTextView setAttributedText: text];
     }
     return cell;
 }
@@ -250,12 +240,32 @@
 }
 
 
--(NSString *)getFormatedString:(LanguageModel *)lModel
+
+-(NSMutableAttributedString *)getFormatedString:(LanguageModel *)lModel
 {
     
-    NSString *text = [NSString stringWithFormat:@"Checking Entity: \n\t %@ \nChecking Level: \n\t %@ \nVersion:\n\t %@\nPublish Date:\n\t %@",lModel.checking_entity,lModel.checking_level,lModel.version,lModel.publish_date];
+    NSString *text = [NSString stringWithFormat:@"Checking Entity: \n\t %@ \n\nChecking Level: \n\t %@ \n\nVersion:\n\t %@\n\nPublish Date:\n\t %@",lModel.checking_entity,lModel.checking_level,lModel.version,lModel.publish_date];
     
-    return text;
+    NSMutableAttributedString *detail = [[NSMutableAttributedString alloc] initWithString:text];
+    [detail addAttribute:NSFontAttributeName
+                   value:[UIFont fontWithName:@"HelveticaNeue-Light" size:12]
+                   range:[text rangeOfString:text]];
+    [detail addAttribute:NSFontAttributeName
+                  value:[UIFont fontWithName:@"HelveticaNeue-Light" size:14]
+                  range:[text rangeOfString:lModel.checking_entity]];
+    [detail addAttribute:NSFontAttributeName
+                   value:[UIFont fontWithName:@"HelveticaNeue-Light" size:14]
+                   range:[text rangeOfString:lModel.checking_level]];
+    [detail addAttribute:NSFontAttributeName
+                   value:[UIFont fontWithName:@"HelveticaNeue-Light" size:14]
+                   range:[text rangeOfString:lModel.version]];
+    [detail addAttribute:NSFontAttributeName
+                   value:[UIFont fontWithName:@"HelveticaNeue-Light" size:14]
+                   range:[text rangeOfString:lModel.publish_date]];
+
+    
+
+    return detail;
 }
 
 
@@ -317,6 +327,7 @@
         LanguageModel *language = (LanguageModel *)[self.languageArray objectAtIndex:selectedIndex.row];
         ChapterListTableViewController *chapterList = (ChapterListTableViewController*)[segue destinationViewController];
         chapterList.bModel  = [DataHandler getChaptersList:language.language] ;
+        chapterList.title = language.language_string;
         self.navigationItem.title = chapterList.bModel.languages_title;
        
 

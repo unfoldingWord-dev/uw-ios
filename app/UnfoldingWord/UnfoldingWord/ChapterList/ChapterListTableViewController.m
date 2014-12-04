@@ -61,33 +61,26 @@ static NSString *CellIdentifier = @"ChapterCellID";
     // Return the number of rows in the section.
     return [self.chapterArray count];
 }
-////////
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
         static ChapterCell *sizingCell = nil;
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
             sizingCell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            sizingCell.hidden = YES;
+            [self.view addSubview:sizingCell];
         });
-        
-        [self configureImageCell:sizingCell atIndexPath:indexPath];
-        return [self calculateHeightForConfiguredSizingCell:sizingCell];
-
-}
-
-
-
-- (CGFloat)calculateHeightForConfiguredSizingCell:(UITableViewCell *)sizingCell
-{
-    sizingCell.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.tableView.frame), CGRectGetHeight(sizingCell.bounds));
     
-    [sizingCell setNeedsLayout];
-    [sizingCell layoutIfNeeded];
+    CGRect correctSize = sizingCell.frame;
+    correctSize.size.width = self.tableView.frame.size.width;
+    sizingCell.frame = correctSize;
     
-    CGSize size = [sizingCell.contentView systemLayoutSizeFittingSize:UILayoutFittingExpandedSize];
-    return size.height + 1.0f; // Add 1.0f for the cell separator height
+    ChapterFrameModel *chapter = [self.chapterArray objectAtIndex:indexPath.row];
+
+    sizingCell.chapter_titleLabel.text = chapter.chapter_title;
+    sizingCell.chapter_detailLabel.text = chapter.chapter_reference;
+    return [sizingCell calculatedHeight];
 }
 
 - (void)configureImageCell:(ChapterCell *)cell atIndexPath:(NSIndexPath *)indexPath
@@ -100,9 +93,6 @@ static NSString *CellIdentifier = @"ChapterCellID";
     FrameModel *frameModel = [chapter.frames firstObject];
     NSString *thumImageUrlString = frameModel.frame_image;
     [cell.chapter_thumb setImageWithURL:[NSURL URLWithString:thumImageUrlString] placeholderImage:[UIImage imageNamed:[thumImageUrlString lastPathComponent]]];
-    cell.chapter_titleLabel.preferredMaxLayoutWidth = self.view.frame.size.width - 200;
-    cell.chapter_detailLabel.preferredMaxLayoutWidth = self.view.frame.size.width - 200;
-    
 }
 
 ////////
@@ -166,6 +156,7 @@ static NSString *CellIdentifier = @"ChapterCellID";
         NSIndexPath *selectedIndex = [self.tableView indexPathForSelectedRow];
         ChapterFrameModel *chapter = (ChapterFrameModel *)[self.chapterArray objectAtIndex:selectedIndex.row];
         FrameDetailsViewController *frameDetails = (FrameDetailsViewController*)[segue destinationViewController];
+        frameDetails.navigationItem.title = chapter.chapter_title;
         frameDetails.frameList = [NSArray arrayWithArray:(NSArray*)chapter.frames];
     }
     
