@@ -14,6 +14,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *chapter_titleLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *chapter_thumb;
 
+/// Call only from a static cells used to tell the UITableview's height.
 - (CGFloat)calculatedHeight;
+
+/// The estimated height to use to improve scrolling speed.
++ (CGFloat)estimatedHeight;
 
 @end

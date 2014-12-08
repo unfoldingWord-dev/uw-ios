@@ -1,0 +1,14 @@
+//
+//  Copyright (c) 2013 Acts Media. All rights reserved.
+//
+
+#import "<$managedObjectClassName$>.h"
+
+@interface <$managedObjectClassName$> ()
+
+@end
+
+
+@implementation <$managedObjectClassName$>
+
+@end

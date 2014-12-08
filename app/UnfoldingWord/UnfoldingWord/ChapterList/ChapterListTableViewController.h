@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BiblicalModel.h"
+@class UFWBible;
 
 @interface ChapterListTableViewController : UITableViewController
 
-@property (nonatomic,strong) BiblicalModel *bModel;
+@property (nonatomic,strong) UFWBible *bible;
 
 
 @end

@@ -8,11 +8,13 @@
 
 #import "FrameDetailsViewController.h"
 #import "FrameCell.h"
-#import "FrameModel.h"
 #import "UIImageView+AFNetworking.h"
+#import "DWImageGetter.h"
+#import "CoreDataClasses.h"
 
 @interface FrameDetailsViewController () <UIGestureRecognizerDelegate>
 @property (nonatomic, assign) UIInterfaceOrientation lastOrientation;
+@property (nonatomic, strong) NSArray *frames;
 @end
 
 @implementation FrameDetailsViewController
@@ -22,46 +24,41 @@ static NSString * const reuseIdentifier = @"FrameCellID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.edgesForExtendedLayout = UIRectEdgeNone;
-    
-//    [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(orientationChanged:)    name:UIDeviceOrientationDidChangeNotification  object:nil];
-
-    
-    // Uncomment the following line to preserve selection between presentations
-//     self.clearsSelectionOnViewWillAppear = NO;
-//    [self.collectionView setContentInset:UIEdgeInsetsMake(self.navigationController.navigationBar.frame.size.height+self.navigationController.navigationBar.frame.origin.y, 0, 0, 0)];
-//    self.automaticallyAdjustsScrollViewInsets = YES;
-//
-//    // Register cell classe
-
-    
-    // Do any additional setup after loading the view.
 }
 
-
-
-- (void)orientationChanged:(NSNotification *)notification
+- (void)setChapter:(UFWChapter *)chapter
 {
-//    [self.collectionView setContentInset:UIEdgeInsetsMake(self.navigationController.navigationBar.frame.size.height+self.navigationController.navigationBar.frame.origin.y, 0, 0, 0)];
-
-//    [self.collectionView reloadData];
+    _chapter = chapter;
+    self.frames = [_chapter sortedFrames];
+    self.navigationItem.title = _chapter.title;
 }
 
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self jumpToCurrentFrameAnimated:YES];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)jumpToCurrentFrameAnimated:(BOOL)animated
+{
+    if ( ! [self.chapter.bible.currentChapter isEqual:self.chapter] || ! self.chapter.bible.currentFrame ) {
+        return;
+    }
+    
+    UFWFrame *currentFrame = self.chapter.bible.currentFrame;
+    if (currentFrame != nil) {
+        for (int i = 0; i < [self.frames count]; i++) {
+            UFWFrame *aFrame = self.frames[i];
+            if ([aFrame isEqual:currentFrame]) {
+                NSIndexPath *ip = [NSIndexPath indexPathForItem:i inSection:0];
+                if (ip) {
+                    [self.collectionView scrollToItemAtIndexPath:ip atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:animated];
+                }
+                break;
+            }
+        }
+    }
 }
-*/
-
 
 
 #pragma mark <UICollectionViewDataSource>
@@ -73,7 +70,15 @@ static NSString * const reuseIdentifier = @"FrameCellID";
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [self.frameList count];
+    UFWChapter *lastChapter = [[self.chapter.bible sortedChapters] lastObject];
+    
+    //If last chapter, there is no next chapter cell; otherwise add one.
+    if ([self.chapter isEqual:lastChapter]) {
+        return self.frames.count;
+    }
+    else {
+        return self.frames.count + 1;
+    }
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -83,15 +88,34 @@ static NSString * const reuseIdentifier = @"FrameCellID";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    FrameCell *cell =[collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     
-    FrameModel *frame = [self.frameList objectAtIndex:indexPath.row];
-    
-    [cell.frame_Image setImageWithURL:[NSURL URLWithString:frame.frame_image] placeholderImage:[UIImage imageNamed:[frame.frame_image lastPathComponent]]];
-    
-    cell.frame_contentLabel.text = frame.frame_text;
-
-    return cell;
+    if([self.frames count] == indexPath.row)
+    {
+        UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"FrameLastCellID" forIndexPath:indexPath];
+        UIButton *nextChapterButton = (UIButton*)[cell viewWithTag:111];
+        [nextChapterButton setTitle:self.chapter.bible.next_chapter_string forState:UIControlStateNormal];
+        [nextChapterButton addTarget:self action:@selector(onNextChapterTouched:) forControlEvents:UIControlEventTouchUpInside];
+        return cell;
+    }
+    else
+    {
+        FrameCell *cell =[collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+        UFWFrame *frame = self.frames[indexPath.row];
+        cell.frame_contentLabel.text = frame.text;
+        cell.frame_Image.image = nil; // Don't want it to flash from a reused cell
+        
+        __weak typeof(self) weakself = self;
+        [[DWImageGetter sharedInstance] retrieveImageWithURLString:frame.imageUrl completionBlock:^(NSString *originalUrl, UIImage *image) {
+            // Must double check that the image hasn't been recycled for a different chapter
+            NSIndexPath *currentIP = [weakself.collectionView indexPathForCell:cell];
+            UFWFrame *currentFrame = [self.frames objectAtIndex:currentIP.row];
+            if ([currentFrame.imageUrl isEqualToString:originalUrl]) {
+                cell.frame_Image.image = image;
+            }
+        }];
+        return cell;
+    }
+   
 }
 
 #pragma mark - Rotation
@@ -107,6 +131,7 @@ static NSString * const reuseIdentifier = @"FrameCellID";
         }
     }
     
+    
     CGRect windowFrame = [[UIScreen mainScreen] bounds];
     CGFloat height = 0;
     if (self.view.bounds.size.width > self.view.bounds.size.height) {
@@ -120,10 +145,16 @@ static NSString * const reuseIdentifier = @"FrameCellID";
     CGFloat offsetIndex = (int)currentOffset.x / (self.view.bounds.size.width);
     CGFloat newOffsetX = offsetIndex * (height);
     CGPoint newOffset = CGPointMake(newOffsetX, 0);
+    
+    self.collectionView.layer.opacity = 0.0;
+    
     [UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
-        [self.collectionView setContentOffset:newOffset];
+        
     } completion:^(BOOL finished) {
         [self.collectionView setContentOffset:newOffset];
+        [UIView animateWithDuration:0.35 animations:^{
+            self.collectionView.layer.opacity = 1.0;
+        }];
     }];
     [self.collectionView reloadData];
     
@@ -131,6 +162,30 @@ static NSString * const reuseIdentifier = @"FrameCellID";
 }
 
 #pragma mark <UICollectionViewDelegate>
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [self resetChapterFrame];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if ( ! decelerate) {
+        [self resetChapterFrame];
+    }
+}
+
+- (void)resetChapterFrame
+{
+    CGPoint currentOffset = self.collectionView.contentOffset;
+    NSInteger index = (int)currentOffset.x / (self.view.bounds.size.width);
+    
+    if (index < self.frames.count) {
+        UFWFrame *frame = self.frames[index];
+        self.chapter.bible.currentFrame = frame;
+    }
+}
+
 
 /*
 // Uncomment this method to specify if the specified item should be highlighted during tracking
@@ -188,6 +243,51 @@ static NSString * const reuseIdentifier = @"FrameCellID";
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
     return NO;
+}
+
+
+#pragma mark - NextChapter Methods
+
+-(void)onNextChapterTouched:(id)sender
+{
+    NSArray *chapters = [self.chapter.bible sortedChapters];
+    
+    UFWChapter *nextChapter = nil;
+    for (int i = 0; i < chapters.count ; i++) {
+        UFWChapter *chapter = chapters[i];
+        if ([chapter isEqual:self.chapter] && (i+1) < chapters.count) {
+            nextChapter = chapters[i+1];
+            break;
+        }
+    }
+    
+    if ( ! nextChapter) {
+        NSAssert3(nextChapter, @"%s: Could not find next chapter in array %@ with chapter %@", __PRETTY_FUNCTION__, chapters, self.chapter);
+        return;
+    }
+    
+    self.chapter = nextChapter;
+    self.chapter.bible.currentChapter = nextChapter;
+    self.chapter.bible.currentFrame = nil;
+    
+    NSIndexPath *newIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    
+    [self.collectionView scrollToItemAtIndexPath:newIndexPath atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
+    
+    CGRect cFrame = self.collectionView.frame;
+    [self.collectionView setFrame:CGRectMake(cFrame.size.width,cFrame.origin.y,cFrame.size.width, cFrame.size.height)];
+    
+    [UIView animateWithDuration:0.5f
+                          delay:0.0f
+                        options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction
+                     animations:^{
+                         [self.collectionView setFrame:cFrame];
+                     }
+                     completion:^(BOOL finished){
+                         [self.collectionView reloadData];
+                         // do whatever post processing you want (such as resetting what is "current" and what is "next")
+                     }];
+
 }
 
 @end

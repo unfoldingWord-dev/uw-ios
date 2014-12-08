@@ -1,23 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="14A389" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="BiblicalDataModel" representedClassName="BiblicalDataModel" syncable="YES">
-        <attribute name="chapters" optional="YES" attributeType="Binary" syncable="YES"/>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14B25" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Bible" representedClassName="UFWBible" syncable="YES">
         <attribute name="chapters_string" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="language_code" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="languages_title" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="next_chapter" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="current_chapter_number" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="current_frame_number" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="languages_string" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="next_chapter_string" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="chapters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Chapter" inverseName="bible" inverseEntity="Chapter" syncable="YES"/>
+        <relationship name="language" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Language" inverseName="bible" inverseEntity="Language" syncable="YES"/>
     </entity>
-    <entity name="LanguageListModel" representedClassName="LanguageListModel" syncable="YES">
+    <entity name="Chapter" representedClassName="UFWChapter" syncable="YES">
+        <attribute name="number" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="reference" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="bible" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Bible" inverseName="chapters" inverseEntity="Bible" syncable="YES"/>
+        <relationship name="frames" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Frame" inverseName="chapter" inverseEntity="Frame" syncable="YES"/>
+    </entity>
+    <entity name="Frame" representedClassName="UFWFrame" syncable="YES">
+        <attribute name="imageUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uid" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="chapter" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Chapter" inverseName="frames" inverseEntity="Chapter" syncable="YES"/>
+    </entity>
+    <entity name="Language" representedClassName="UFWLanguage" syncable="YES">
         <attribute name="checking_entity" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="checking_level" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="date_modified" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="direction" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="language" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="language_string" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="publish_date" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="version" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="bible" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Bible" inverseName="language" inverseEntity="Bible" syncable="YES"/>
     </entity>
     <elements>
-        <element name="BiblicalDataModel" positionX="-54" positionY="45" width="128" height="120"/>
-        <element name="LanguageListModel" positionX="-63" positionY="-18" width="128" height="150"/>
+        <element name="Bible" positionX="-279" positionY="-385" width="128" height="148"/>
+        <element name="Chapter" positionX="-252" positionY="-172" width="128" height="118"/>
+        <element name="Frame" positionX="-198" positionY="-40" width="128" height="103"/>
+        <element name="Language" positionX="-459" positionY="-468" width="128" height="178"/>
     </elements>
 </model>

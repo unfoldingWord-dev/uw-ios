@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+@class UFWChapter;
 
 @interface FrameDetailsViewController : UICollectionViewController
 
+@property (nonatomic, strong) UFWChapter *chapter;
 
-@property(nonatomic,retain)NSArray *frameList;
 @end

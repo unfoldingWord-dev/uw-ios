@@ -1,3 +1,6 @@
 *.DS_Store
 
 */xcuserdata/*
+app/UnfoldingWord/Pods/Pods.xcodeproj/xcuserdata
+app/UnfoldingWord/UnfoldingWord.xcworkspace
+app/UnfoldingWord/UnfoldingWord.xcodeproj/project.xcworkspace

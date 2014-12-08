@@ -169,7 +169,7 @@ static NSString *kSeedNameInBundle = @"UnfoldingWord.sqlite";
 //    [ACTObjectDownloadDateTracker resetTrackingDates];
     
     // Alert the user what happened.
-    NSString *message = NSLocalizedString(@"This app's internal data structure has changed. Your information is now redownloading in the new format.", nil);
+//    NSString *message = NSLocalizedString(@"This app's internal data structure has changed. Your information is now redownloading in the new format.", nil);
 //    [[[UIAlertView alloc] initWithTitle:@"App Change!" message:message delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil] show];
     
 //    [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationDatabaseDeleted object:nil];

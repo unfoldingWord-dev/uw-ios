@@ -10,6 +10,6 @@
 
 @interface CommunicationHandler : NSObject
 
-+(void)callLanguageAPI;
-+(void)callChapterAPI:(NSString*)getUrl With:(void (^)(NSDictionary *responseData, NSError *error))completionHandler;
++ (void)update;
+
 @end

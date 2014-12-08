@@ -12,14 +12,9 @@ static CGFloat const kDefaultHeight = 89;
 
 @implementation ChapterCell
 
-- (void)awakeFromNib {
-    // Initialization code
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
++ (CGFloat)estimatedHeight
+{
+    return kDefaultHeight;
 }
 
 - (void)layoutSubviews
@@ -46,6 +41,7 @@ static CGFloat const kDefaultHeight = 89;
     CGRect maxRect = self.frame;
     maxRect.size.height = 100000;
     self.frame = maxRect;
+    [self layoutIfNeeded];
     
     [self adjustMultiLineLabel:self.chapter_titleLabel];
     [self adjustMultiLineLabel:self.chapter_detailLabel];
@@ -54,13 +50,7 @@ static CGFloat const kDefaultHeight = 89;
     CGFloat bufferArea = 16;
     CGFloat totalHeight = chapterHeight + detailHeight + bufferArea;
     
-    NSLog(@"height = %.0f; %@", totalHeight, [self description]);
     return fmax(totalHeight, kDefaultHeight);
-}
-
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"\ntitle: %@\ndetail:%@\n\nDetail size %@", self.chapter_titleLabel.text, self.chapter_detailLabel.text, NSStringFromCGSize(self.chapter_detailLabel.frame.size)];
 }
 
 @end

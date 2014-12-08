@@ -8,15 +8,14 @@
 
 #import "ChapterListTableViewController.h"
 #import "ChapterCell.h"
-#import "ChapterFrameModel.h"
-#import "DataHandler.h"
 #import "UIImageView+AFNetworking.h"
-#import "FrameModel.h"
 #import "FrameDetailsViewController.h"
-
+#import "DWImageGetter.h"
+#import "CoreDataClasses.h"
+#import "Constants.h"
 @interface ChapterListTableViewController ()
 
-@property (nonatomic,strong) NSMutableArray *chapterArray;
+@property (nonatomic,strong) NSArray *chapters;
 
 @end
 
@@ -26,40 +25,24 @@ static NSString *CellIdentifier = @"ChapterCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
-    [self getChapters];
+    self.tableView.estimatedRowHeight = [ChapterCell estimatedHeight];
+    self.chapters = [self.bible sortedChapters];
 }
 
--(void)getChapters
+- (void)viewWillAppear:(BOOL)animated
 {
-    NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"chapter_number" ascending:YES]];
-    NSArray *sortedArray = [self.bModel.chapters sortedArrayUsingDescriptors:sortDescriptors];
-    
-    self.chapterArray = [[NSMutableArray alloc] initWithArray:sortedArray];
+    [super viewWillAppear:animated];
     [self.tableView reloadData];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
-    return [self.chapterArray count];
+    return [self.chapters count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -76,73 +59,47 @@ static NSString *CellIdentifier = @"ChapterCellID";
     correctSize.size.width = self.tableView.frame.size.width;
     sizingCell.frame = correctSize;
     
-    ChapterFrameModel *chapter = [self.chapterArray objectAtIndex:indexPath.row];
+    UFWChapter *chapter = self.chapters[indexPath.row];
 
-    sizingCell.chapter_titleLabel.text = chapter.chapter_title;
-    sizingCell.chapter_detailLabel.text = chapter.chapter_reference;
+    sizingCell.chapter_titleLabel.text = chapter.title;
+    sizingCell.chapter_detailLabel.text = chapter.reference;
     return [sizingCell calculatedHeight];
 }
 
 - (void)configureImageCell:(ChapterCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    ChapterFrameModel *chapter = [self.chapterArray objectAtIndex:indexPath.row];
+    UFWChapter *chapter = self.chapters[indexPath.row];
     
-    cell.chapter_titleLabel.text = chapter.chapter_title;
-    cell.chapter_detailLabel.text = chapter.chapter_reference;
+    cell.chapter_titleLabel.text = chapter.title;
+    cell.chapter_detailLabel.text = chapter.reference;
     
-    FrameModel *frameModel = [chapter.frames firstObject];
-    NSString *thumImageUrlString = frameModel.frame_image;
-    [cell.chapter_thumb setImageWithURL:[NSURL URLWithString:thumImageUrlString] placeholderImage:[UIImage imageNamed:[thumImageUrlString lastPathComponent]]];
+    UIColor *textColor = ([chapter.bible.currentChapter isEqual:chapter]) ? SELECTION_BLUE_COLOR : [UIColor blackColor];
+    cell.chapter_titleLabel.textColor = textColor;
+    cell.chapter_detailLabel.textColor = textColor;
+    
+    UFWFrame *firstFrame = [[chapter sortedFrames] firstObject] ;
+    cell.chapter_thumb.image = nil; // Don't want it to flash from a reused cell
+    
+    __weak typeof(self) weakself = self;
+    [[DWImageGetter sharedInstance] retrieveImageWithURLString:firstFrame.imageUrl completionBlock:^(NSString *originalUrl, UIImage *image) {
+        // Must double check that the image hasn't been recycled for a different chapter
+        NSIndexPath *currentIP = [weakself.tableView indexPathForCell:cell];
+        UFWChapter *currentChapter = [weakself.chapters objectAtIndex:currentIP.row];
+        UFWFrame *currentFrame = [[currentChapter sortedFrames] firstObject];
+        if ([currentFrame.imageUrl isEqualToString:originalUrl]) {
+            cell.chapter_thumb.image = image;
+        }
+    }];
 }
-
-////////
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ChapterCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     [self configureImageCell:cell atIndexPath:indexPath];
-    
-    // Configure the cell...
-    
+        
     return cell;
 }
-
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 
 #pragma mark - Navigation
@@ -150,17 +107,14 @@ static NSString *CellIdentifier = @"ChapterCellID";
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    
     if([[segue identifier] isEqualToString:@"showFrameDetailsID"])//to check whether the performing segue
     {
         NSIndexPath *selectedIndex = [self.tableView indexPathForSelectedRow];
-        ChapterFrameModel *chapter = (ChapterFrameModel *)[self.chapterArray objectAtIndex:selectedIndex.row];
+        UFWChapter *chapter = self.chapters[selectedIndex.row];
+        chapter.bible.currentChapter = chapter;
         FrameDetailsViewController *frameDetails = (FrameDetailsViewController*)[segue destinationViewController];
-        frameDetails.navigationItem.title = chapter.chapter_title;
-        frameDetails.frameList = [NSArray arrayWithArray:(NSArray*)chapter.frames];
+        frameDetails.chapter = chapter;
     }
-    
-    
 }
 
 
