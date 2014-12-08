@@ -27,6 +27,7 @@
         <attribute name="checking_level" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="date_modified" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="direction" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isSelected" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="language" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="language_string" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="publish_date" optional="YES" attributeType="String" syncable="YES"/>
@@ -37,6 +38,6 @@
         <element name="Bible" positionX="-279" positionY="-385" width="128" height="148"/>
         <element name="Chapter" positionX="-252" positionY="-172" width="128" height="118"/>
         <element name="Frame" positionX="-198" positionY="-40" width="128" height="103"/>
-        <element name="Language" positionX="-459" positionY="-468" width="128" height="178"/>
+        <element name="Language" positionX="-459" positionY="-468" width="128" height="195"/>
     </elements>
 </model>

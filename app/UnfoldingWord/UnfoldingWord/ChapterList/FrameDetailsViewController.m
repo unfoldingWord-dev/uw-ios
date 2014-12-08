@@ -131,7 +131,6 @@ static NSString * const reuseIdentifier = @"FrameCellID";
         }
     }
     
-    
     CGRect windowFrame = [[UIScreen mainScreen] bounds];
     CGFloat height = 0;
     if (self.view.bounds.size.width > self.view.bounds.size.height) {
@@ -152,9 +151,9 @@ static NSString * const reuseIdentifier = @"FrameCellID";
         
     } completion:^(BOOL finished) {
         [self.collectionView setContentOffset:newOffset];
-        [UIView animateWithDuration:0.35 animations:^{
+        [UIView animateWithDuration:.35 delay:.15 options:UIViewAnimationOptionCurveEaseIn animations:^{
             self.collectionView.layer.opacity = 1.0;
-        }];
+        } completion:^(BOOL finished) {}];
     }];
     [self.collectionView reloadData];
     

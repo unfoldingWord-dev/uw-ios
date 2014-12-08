@@ -6,16 +6,17 @@
 
 @interface UFWLanguage : _UFWLanguage {}
 
-+ (NSString *)languageNameForDictionary:(NSDictionary *)dictionary;
-
 - (BOOL)doesNeedUpdateWithDictionary:(NSDictionary *)dictionary;
+- (void)setAsSelectedLanguage;
+
++ (NSString *)languageNameForDictionary:(NSDictionary *)dictionary;
 
 + (void)createOrUpdateLanguageWithDictionary:(NSDictionary *)dictionary;
 
 + (void)updateLanguage:(UFWLanguage *)language withDictionary:(NSDictionary *)dictionary;
 
-+(UFWLanguage *)languageForName:(NSString *)language;
++ (UFWLanguage *)languageForName:(NSString *)language;
 
-+(NSArray *)allLanguages;
++ (NSArray *)allLanguages;
 
 @end

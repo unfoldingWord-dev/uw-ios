@@ -115,5 +115,17 @@ static NSString *const k_KEY_STATUS_FOLDER = @"status";
     return fetchResults;
 }
 
+- (void)setAsSelectedLanguage
+{
+    for (UFWLanguage *language in [UFWLanguage allLanguages]) {
+        if ([language isEqual:self]) {
+            language.isSelected = @(YES);
+        }
+        else {
+            language.isSelected = @(NO);
+        }
+    }
+}
+
 
 @end

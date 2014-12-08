@@ -132,7 +132,6 @@ static NSString *kSeedNameInBundle = @"UnfoldingWord.sqlite";
             [fileManager copyItemAtURL:seedDatabaseURL toURL:storeURL error:&error];
             NSAssert2( ! error, @"Could not copy seed file at url %@ with error", seedDatabaseURL, error);
         }
-        
         NSError *error = nil;
         NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption: @YES,
                                   NSInferMappingModelAutomaticallyOption: @YES,

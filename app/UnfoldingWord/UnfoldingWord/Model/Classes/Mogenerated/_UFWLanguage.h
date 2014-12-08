@@ -12,6 +12,7 @@ extern const struct UFWLanguageAttributes {
 	__unsafe_unretained NSString *checking_level;
 	__unsafe_unretained NSString *date_modified;
 	__unsafe_unretained NSString *direction;
+	__unsafe_unretained NSString *isSelected;
 	__unsafe_unretained NSString *language;
 	__unsafe_unretained NSString *language_string;
 	__unsafe_unretained NSString *publish_date;
@@ -52,6 +53,14 @@ extern const struct UFWLanguageFetchedProperties {
 
 //- (BOOL)validateDirection:(id*)value_ error:(NSError**)error_;
 
+@property (nonatomic, strong) NSNumber* isSelected;
+
+@property BOOL isSelectedValue;
+- (BOOL)isSelectedValue;
+- (void)setIsSelectedValue:(BOOL)value_;
+
+//- (BOOL)validateIsSelected:(id*)value_ error:(NSError**)error_;
+
 @property (nonatomic, strong) NSString* language;
 
 //- (BOOL)validateLanguage:(id*)value_ error:(NSError**)error_;
@@ -91,6 +100,12 @@ extern const struct UFWLanguageFetchedProperties {
 
 - (NSString*)primitiveDirection;
 - (void)setPrimitiveDirection:(NSString*)value;
+
+- (NSNumber*)primitiveIsSelected;
+- (void)setPrimitiveIsSelected:(NSNumber*)value;
+
+- (BOOL)primitiveIsSelectedValue;
+- (void)setPrimitiveIsSelectedValue:(BOOL)value_;
 
 - (NSString*)primitiveLanguage;
 - (void)setPrimitiveLanguage:(NSString*)value;

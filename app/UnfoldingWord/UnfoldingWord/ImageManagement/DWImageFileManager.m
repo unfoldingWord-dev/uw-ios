@@ -210,7 +210,7 @@ static NSInteger const kMaxCurrentDownloads = 3;
                 if ( retrievedImage) {
 
                     dispatch_sync(_fileManagerQueue, ^{
-                        [self writeData:UIImagePNGRepresentation(retrievedImage) withString:urlString];
+                        [self writeData:data withString:urlString];
                     });
                 }
             };

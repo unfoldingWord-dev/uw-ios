@@ -12,6 +12,7 @@ const struct UFWLanguageAttributes UFWLanguageAttributes = {
 	.checking_level = @"checking_level",
 	.date_modified = @"date_modified",
 	.direction = @"direction",
+	.isSelected = @"isSelected",
 	.language = @"language",
 	.language_string = @"language_string",
 	.publish_date = @"publish_date",
@@ -51,6 +52,11 @@ const struct UFWLanguageFetchedProperties UFWLanguageFetchedProperties = {
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 
+	if ([key isEqualToString:@"isSelectedValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"isSelected"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+	}
+
 	return keyPaths;
 }
 
@@ -61,6 +67,26 @@ const struct UFWLanguageFetchedProperties UFWLanguageFetchedProperties = {
 @dynamic date_modified;
 
 @dynamic direction;
+
+@dynamic isSelected;
+
+- (BOOL)isSelectedValue {
+	NSNumber *result = [self isSelected];
+	return [result boolValue];
+}
+
+- (void)setIsSelectedValue:(BOOL)value_ {
+	[self setIsSelected:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveIsSelectedValue {
+	NSNumber *result = [self primitiveIsSelected];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveIsSelectedValue:(BOOL)value_ {
+	[self setPrimitiveIsSelected:[NSNumber numberWithBool:value_]];
+}
 
 @dynamic language;
 
