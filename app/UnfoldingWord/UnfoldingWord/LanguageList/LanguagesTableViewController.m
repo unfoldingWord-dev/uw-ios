@@ -25,9 +25,6 @@
 @end
 
 @implementation LanguagesTableViewController
-{
-    BOOL _viewDidAppearOnce;
-}
 
 - (void)viewDidLoad
 {
@@ -35,7 +32,7 @@
     
     [self registerForNotifications];
     
-    self.navigationItem.title = @"unfoldingWord";
+    self.navigationItem.title = @"Unfolding Word";
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil];
@@ -49,12 +46,6 @@
     self.languages = [UFWLanguage allLanguages];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    _viewDidAppearOnce = YES;
-}
-
 - (void)registerForNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadDoneNotification:) name:kNotificationDownloadEnded object:nil];
@@ -64,7 +55,6 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 
 #pragma mark - Table view data source
 
@@ -232,12 +222,12 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UFWLanguage *language = self.languages[indexPath.row];
-    [language setAsSelectedLanguage];
-    [self.tableView reloadData];
+    if (indexPath.row < self.languages.count) {
+        UFWLanguage *language = self.languages[indexPath.row];
+        [language setAsSelectedLanguage];
+        [self.tableView reloadData];
+    }
 }
-
-
 
 -(void)onInfoTouched:(id)sender
 {
