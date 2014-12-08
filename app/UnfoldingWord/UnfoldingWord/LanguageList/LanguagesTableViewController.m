@@ -32,7 +32,7 @@
     
     [self registerForNotifications];
     
-    self.navigationItem.title = @"Unfolding Word";
+    self.navigationItem.title = @"unfoldingWord";
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil];
