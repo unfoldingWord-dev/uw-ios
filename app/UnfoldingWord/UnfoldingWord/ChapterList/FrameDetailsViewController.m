@@ -102,7 +102,7 @@ static NSString * const reuseIdentifier = @"FrameCellID";
         FrameCell *cell =[collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
         UFWFrame *frame = self.frames[indexPath.row];
         cell.frame_contentLabel.text = frame.text;
-        cell.frame_Image.image = nil; // Don't want it to flash from a reused cell
+        [cell setFrameImage:nil];
         
         __weak typeof(self) weakself = self;
         [[DWImageGetter sharedInstance] retrieveImageWithURLString:frame.imageUrl completionBlock:^(NSString *originalUrl, UIImage *image) {
@@ -110,7 +110,7 @@ static NSString * const reuseIdentifier = @"FrameCellID";
             NSIndexPath *currentIP = [weakself.collectionView indexPathForCell:cell];
             UFWFrame *currentFrame = [self.frames objectAtIndex:currentIP.row];
             if ([currentFrame.imageUrl isEqualToString:originalUrl]) {
-                cell.frame_Image.image = image;
+                [cell setFrameImage:image];
             }
         }];
         return cell;

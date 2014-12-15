@@ -13,8 +13,10 @@
 #import "CoreDataClasses.h"
 #import "UFWNotifications.h"
 #import "CommunicationHandler.h"
+#import "UFWLanguageFooterCell.h"
 
 @interface LanguagesTableViewController () {}
+
 
 @property (nonatomic,strong) NSMutableArray *selectedIndexArray;
 @property (nonatomic,strong) NSArray *languages;
@@ -54,6 +56,13 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (NSString *)versionString
+{
+    NSString *appVersionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    NSString *versionString = [NSString stringWithFormat:@"version %@", appVersionString];
+    return versionString;
 }
 
 #pragma mark - Table view data source
@@ -182,7 +191,8 @@
      if(indexPath.row == [self.languages count])
      {
          static NSString *CellIdentifier = @"LanguageCellFooter";
-         UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+         UFWLanguageFooterCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+         cell.labelAppVersion.text = [self versionString];
          return cell;
      }
 

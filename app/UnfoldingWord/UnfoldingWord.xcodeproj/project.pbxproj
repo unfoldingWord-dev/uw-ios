@@ -620,6 +620,7 @@
 		5A222B101A36521100A84DAE /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-50-15jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5A2228BA1A36521100A84DAE /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-50-15jpg */; };
 		5A222B111A36521100A84DAE /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-50-16jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5A2228BB1A36521100A84DAE /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-50-16jpg */; };
 		5A222B121A36521100A84DAE /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-50-17jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5A2228BC1A36521100A84DAE /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-50-17jpg */; };
+		5A222B151A366AD300A84DAE /* UFWLanguageFooterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A222B141A366AD300A84DAE /* UFWLanguageFooterCell.m */; };
 		5A323B121A33794E00099C94 /* _UFWBible.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A323B031A33794E00099C94 /* _UFWBible.m */; };
 		5A323B131A33794E00099C94 /* _UFWChapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A323B051A33794E00099C94 /* _UFWChapter.m */; };
 		5A323B141A33794E00099C94 /* _UFWFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A323B071A33794E00099C94 /* _UFWFrame.m */; };
@@ -1285,6 +1286,8 @@
 		5A2228BA1A36521100A84DAE /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-50-15jpg */ = {isa = PBXFileReference; lastKnownFileType = file; path = "httpsapiunfoldingwordorgobsjpg1en360pxobs-en-50-15jpg"; sourceTree = "<group>"; };
 		5A2228BB1A36521100A84DAE /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-50-16jpg */ = {isa = PBXFileReference; lastKnownFileType = file; path = "httpsapiunfoldingwordorgobsjpg1en360pxobs-en-50-16jpg"; sourceTree = "<group>"; };
 		5A2228BC1A36521100A84DAE /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-50-17jpg */ = {isa = PBXFileReference; lastKnownFileType = file; path = "httpsapiunfoldingwordorgobsjpg1en360pxobs-en-50-17jpg"; sourceTree = "<group>"; };
+		5A222B131A366AD300A84DAE /* UFWLanguageFooterCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFWLanguageFooterCell.h; sourceTree = "<group>"; };
+		5A222B141A366AD300A84DAE /* UFWLanguageFooterCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UFWLanguageFooterCell.m; sourceTree = "<group>"; };
 		5A323B021A33794E00099C94 /* _UFWBible.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _UFWBible.h; sourceTree = "<group>"; };
 		5A323B031A33794E00099C94 /* _UFWBible.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _UFWBible.m; sourceTree = "<group>"; };
 		5A323B041A33794E00099C94 /* _UFWChapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _UFWChapter.h; sourceTree = "<group>"; };
@@ -2204,6 +2207,8 @@
 				639258981A24B9AD00B5B8D2 /* LanguagesTableViewController.m */,
 				6392589A1A24B9D600B5B8D2 /* LanguageCell.h */,
 				6392589B1A24B9D600B5B8D2 /* LanguageCell.m */,
+				5A222B131A366AD300A84DAE /* UFWLanguageFooterCell.h */,
+				5A222B141A366AD300A84DAE /* UFWLanguageFooterCell.m */,
 			);
 			path = LanguageList;
 			sourceTree = "<group>";
@@ -3023,6 +3028,7 @@
 				63277CE61A2C486700687D43 /* ChapterListTableViewController.m in Sources */,
 				63DC371C1A2DBFF700463889 /* FrameCell.m in Sources */,
 				63CB6FCC1A25F8BA00AA9AE1 /* Utils.m in Sources */,
+				5A222B151A366AD300A84DAE /* UFWLanguageFooterCell.m in Sources */,
 				6392588B1A24A43900B5B8D2 /* UnfoldingWord.xcdatamodeld in Sources */,
 				639258991A24B9AD00B5B8D2 /* LanguagesTableViewController.m in Sources */,
 				5A323B161A33794E00099C94 /* UFWBible.m in Sources */,

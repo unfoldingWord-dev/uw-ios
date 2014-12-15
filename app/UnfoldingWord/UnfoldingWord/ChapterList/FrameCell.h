@@ -10,7 +10,9 @@
 
 @interface FrameCell : UICollectionViewCell
 
-@property (weak, nonatomic) IBOutlet UIImageView *frame_Image;
 @property (weak, nonatomic) IBOutlet UILabel *frame_contentLabel;
 @property (nonatomic, weak) IBOutlet UIView *viewTextBackground;
+
+- (void)setFrameImage:(UIImage *)image;
+
 @end
