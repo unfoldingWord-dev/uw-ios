@@ -42,12 +42,12 @@
         self.frame_Image.image = nil;
         return;
     }
-    
-    CGFloat ratio = image.size.width / image.size.height;
-    NSLayoutConstraint *ratioConstraint = [NSLayoutConstraint constraintWithItem:self.frame_Image attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.frame_Image attribute:NSLayoutAttributeHeight multiplier:ratio constant:1.0];
-    [self.contentView addConstraint:ratioConstraint];
-    [self.contentView removeConstraint:self.constraintImageRatio];
-    self.constraintImageRatio = ratioConstraint;
+    if (self.constraintImageRatio == nil) {
+        CGFloat ratio = image.size.width / image.size.height;
+        NSLayoutConstraint *ratioConstraint = [NSLayoutConstraint constraintWithItem:self.frame_Image attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.frame_Image attribute:NSLayoutAttributeHeight multiplier:ratio constant:0];
+        [self.contentView addConstraint:ratioConstraint];
+        self.constraintImageRatio = ratioConstraint;
+    }
     self.frame_Image.image = image;
 }
 

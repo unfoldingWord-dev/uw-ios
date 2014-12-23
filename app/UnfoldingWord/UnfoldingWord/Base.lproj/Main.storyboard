@@ -378,12 +378,19 @@
                                 </view>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="Sug-U8-MIr" secondAttribute="bottom" id="FD7-Ev-HHy"/>
+                                    <constraint firstItem="Sug-U8-MIr" firstAttribute="top" secondItem="6L5-e7-OFe" secondAttribute="bottom" constant="249" id="dtc-3k-Lql"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="6L5-e7-OFe" secondAttribute="bottom" id="fnX-ss-poK"/>
                                     <constraint firstItem="6L5-e7-OFe" firstAttribute="leading" secondItem="KkZ-Nl-l9F" secondAttribute="leading" id="jG7-q0-uba"/>
                                     <constraint firstItem="6L5-e7-OFe" firstAttribute="top" secondItem="KkZ-Nl-l9F" secondAttribute="top" id="msH-hD-Ude"/>
                                     <constraint firstAttribute="trailing" secondItem="6L5-e7-OFe" secondAttribute="trailing" id="n2Y-GR-A1L"/>
                                     <constraint firstAttribute="trailing" secondItem="Sug-U8-MIr" secondAttribute="trailing" id="ukz-X2-9zL"/>
                                     <constraint firstItem="Sug-U8-MIr" firstAttribute="leading" secondItem="KkZ-Nl-l9F" secondAttribute="leading" id="yZD-Tz-mqF"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="dtc-3k-Lql"/>
+                                    </mask>
+                                </variation>
                                 <connections>
                                     <outlet property="frame_Image" destination="6L5-e7-OFe" id="Ahc-bf-YwZ"/>
                                     <outlet property="frame_contentLabel" destination="G3V-qQ-0kB" id="Exh-D8-5Ue"/>
