@@ -2294,7 +2294,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0610;
-				ORGANIZATIONNAME = "Vishnu R";
+				ORGANIZATIONNAME = "Acts Media Inc.";
 				TargetAttributes = {
 					5A323AFA1A3375CD00099C94 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -3137,6 +3137,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B82203F8DA13E007365FB87A /* Pods.debug.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Distant Shores Media (9M97QM3GPP)";
 				INFOPLIST_FILE = UnfoldingWord/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
@@ -3273,6 +3275,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B82203F8DA13E007365FB87A /* Pods.debug.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = UnfoldingWord/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
@@ -3286,6 +3290,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 62096E14398B44C00AAAE760 /* Pods.release.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Distant Shores Media (9M97QM3GPP)";
 				INFOPLIST_FILE = UnfoldingWord/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
