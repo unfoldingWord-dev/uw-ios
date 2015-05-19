@@ -20,9 +20,6 @@ const struct <$managedObjectClassName$>FetchedProperties <$managedObjectClassNam
 	.<$FetchedProperty.name$> = @"<$FetchedProperty.name$>",<$endforeach do$>
 };
 
-@implementation <$managedObjectClassName$>ID
-@end
-
 @implementation _<$managedObjectClassName$>
 
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
@@ -37,10 +34,6 @@ const struct <$managedObjectClassName$>FetchedProperties <$managedObjectClassNam
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_ {
 	NSParameterAssert(moc_);
 	return [NSEntityDescription entityForName:@"<$name$>" inManagedObjectContext:moc_];
-}
-
-- (<$managedObjectClassName$>ID*)objectID {
-	return (<$managedObjectClassName$>ID*)[super objectID];
 }
 
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {

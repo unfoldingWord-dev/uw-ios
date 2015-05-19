@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VXW-ec-y5Q">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+    </dependencies>
+    <scenes>
+        <!--UFWTextChapterVC-->
+        <scene sceneID="bXQ-nO-yiv">
+            <objects>
+                <viewController storyboardIdentifier="UFWTextChapterVC" title="UFWTextChapterVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VXW-ec-y5Q" customClass="UFWTextChapterVC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="o4a-Ve-CpC"/>
+                        <viewControllerLayoutGuide type="bottom" id="qsf-bz-aZ6"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="mmW-UC-1gy">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="fyv-gM-tl2">
+                                <rect key="frame" x="-10" y="0.0" width="620" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="GhN-pp-C2v">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                                <connections>
+                                    <outlet property="dataSource" destination="VXW-ec-y5Q" id="b1G-To-75V"/>
+                                    <outlet property="delegate" destination="VXW-ec-y5Q" id="aNP-UJ-DWD"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="qsf-bz-aZ6" firstAttribute="top" secondItem="fyv-gM-tl2" secondAttribute="bottom" id="OYV-7L-TLM"/>
+                            <constraint firstAttribute="trailing" secondItem="fyv-gM-tl2" secondAttribute="trailing" constant="-10" id="SJg-IG-ee9"/>
+                            <constraint firstItem="fyv-gM-tl2" firstAttribute="top" secondItem="mmW-UC-1gy" secondAttribute="top" id="aDf-s1-uoO"/>
+                            <constraint firstItem="fyv-gM-tl2" firstAttribute="leading" secondItem="mmW-UC-1gy" secondAttribute="leading" constant="-10" id="u4w-vX-7bb"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="fyv-gM-tl2" id="eoS-0S-Qcv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cYS-1z-uIc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="348" y="507"/>
+        </scene>
+    </scenes>
+</document>

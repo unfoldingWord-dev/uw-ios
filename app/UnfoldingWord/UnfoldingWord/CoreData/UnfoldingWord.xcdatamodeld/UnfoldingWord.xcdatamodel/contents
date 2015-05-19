@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7549" systemVersion="14D136" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="OpenAppWordsList" representedClassName="OpenAppWordsList" syncable="YES">
+        <attribute name="cancel" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="chapters" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="languages" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nextChapter" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ok" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="removeLocally" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="removeThisLanguage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="saveLocally" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="saveThisLanguage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="selectALanguage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="container" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="OpenContainer" inverseName="appWordsList" inverseEntity="OpenContainer" syncable="YES"/>
+    </entity>
+    <entity name="OpenChapter" representedClassName="OpenChapter" syncable="YES">
+        <attribute name="number" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="reference" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="container" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="OpenContainer" inverseName="chapters" inverseEntity="OpenContainer" syncable="YES"/>
+        <relationship name="frames" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="OpenFrame" inverseName="chapter" inverseEntity="OpenFrame" syncable="YES"/>
+    </entity>
+    <entity name="OpenContainer" representedClassName="OpenContainer" syncable="YES">
+        <attribute name="direction" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="filename" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="language" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="modified" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="signature" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="appWordsList" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="OpenAppWordsList" inverseName="container" inverseEntity="OpenAppWordsList" syncable="YES"/>
+        <relationship name="chapters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="OpenChapter" inverseName="container" inverseEntity="OpenChapter" syncable="YES"/>
+        <relationship name="toc" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UWTOC" inverseName="openContainer" inverseEntity="UWTOC" syncable="YES"/>
+    </entity>
+    <entity name="OpenFrame" representedClassName="OpenFrame" syncable="YES">
+        <attribute name="imageUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uid" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="chapter" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="OpenChapter" inverseName="frames" inverseEntity="OpenChapter" syncable="YES"/>
+    </entity>
+    <entity name="USFMInfo" representedClassName="USFMInfo" syncable="YES">
+        <attribute name="filename" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="numberOfChapters" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="signature" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="toc" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UWTOC" inverseName="usfmInfo" inverseEntity="UWTOC" syncable="YES"/>
+    </entity>
+    <entity name="UWLanguage" representedClassName="UWLanguage" syncable="YES">
+        <attribute name="lc" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mod" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sortOrder" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="topContainer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UWTopContainer" inverseName="languages" inverseEntity="UWTopContainer" syncable="YES"/>
+        <relationship name="versions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UWVersion" inverseName="language" inverseEntity="UWVersion" syncable="YES"/>
+    </entity>
+    <entity name="UWStatus" representedClassName="UWStatus" syncable="YES">
+        <attribute name="checking_entity" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="checking_level" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="comments" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contributors" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="publish_date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="source_text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="source_text_version" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="version" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="uwversion" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UWVersion" inverseName="status" inverseEntity="UWVersion" syncable="YES"/>
+    </entity>
+    <entity name="UWTOC" representedClassName="UWTOC" syncable="YES">
+        <attribute name="isContentChanged" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isContentValid" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isDownloaded" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isDownloadFailed" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isUSFM" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="mod" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sortOrder" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="src" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="src_sig" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uwDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="openContainer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="OpenContainer" inverseName="toc" inverseEntity="OpenContainer" syncable="YES"/>
+        <relationship name="usfmInfo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="USFMInfo" inverseName="toc" inverseEntity="USFMInfo" syncable="YES"/>
+        <relationship name="version" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UWVersion" inverseName="toc" inverseEntity="UWVersion" syncable="YES"/>
+    </entity>
+    <entity name="UWTopContainer" representedClassName="UWTopContainer" syncable="YES">
+        <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sortOrder" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="languages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UWLanguage" inverseName="topContainer" inverseEntity="UWLanguage" syncable="YES"/>
+    </entity>
+    <entity name="UWVersion" representedClassName="UWVersion" syncable="YES">
+        <attribute name="mod" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sortOrder" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="language" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UWLanguage" inverseName="versions" inverseEntity="UWLanguage" syncable="YES"/>
+        <relationship name="status" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UWStatus" inverseName="uwversion" inverseEntity="UWStatus" syncable="YES"/>
+        <relationship name="toc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UWTOC" inverseName="version" inverseEntity="UWTOC" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="OpenAppWordsList" positionX="142" positionY="-765" width="128" height="225"/>
+        <element name="OpenChapter" positionX="133" positionY="-288" width="128" height="120"/>
+        <element name="OpenContainer" positionX="124" positionY="-486" width="128" height="163"/>
+        <element name="OpenFrame" positionX="142" positionY="-132" width="128" height="105"/>
+        <element name="USFMInfo" positionX="-164" positionY="-195" width="128" height="103"/>
+        <element name="UWLanguage" positionX="-632" positionY="-474" width="128" height="118"/>
+        <element name="UWStatus" positionX="-380" positionY="-702" width="128" height="180"/>
+        <element name="UWTOC" positionX="-117" positionY="-495" width="128" height="268"/>
+        <element name="UWTopContainer" positionX="-623" positionY="-630" width="128" height="103"/>
+        <element name="UWVersion" positionX="-378" positionY="-477" width="128" height="148"/>
+    </elements>
+</model>

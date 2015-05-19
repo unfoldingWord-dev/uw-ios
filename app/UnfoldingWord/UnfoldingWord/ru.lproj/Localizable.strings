@@ -1,0 +1,12 @@
+"topLevelTitle" = "unfoldingWord";
+"cancel" = "Отмена";
+"Chapter" = "Chapter";
+"chapters" = "Главы";
+"languages" = "Языки";
+"nextChapter" = "Следующая глава";
+"ok" = "OK";
+"removeLocalDetail" = "Удалить этот язык из памяти прибора. Вам понадобится соединение с интернетом для дальнейшего просмотра.";
+"removeLocally" = "Удалить локально";
+"saveLocalDetail"= "Сохранить этот язык локально для использования без интернета.";
+"saveLocally" = "Сохранить локально";
+"selectLanguage" = "Выбрать язык";

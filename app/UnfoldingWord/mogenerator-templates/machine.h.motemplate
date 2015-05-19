@@ -24,14 +24,11 @@ extern const struct <$managedObjectClassName$>FetchedProperties {<$foreach Fetch
 <$endforeach do$>
 <$foreach Attribute noninheritedAttributes do$><$if Attribute.hasTransformableAttributeType$>@class <$Attribute.objectAttributeClassName$>;<$endif$>
 <$endforeach do$>
-@interface <$managedObjectClassName$>ID : NSManagedObjectID {}
-@end
 
 @interface _<$managedObjectClassName$> : <$customSuperentity$> {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-- (<$managedObjectClassName$>ID*)objectID;
 
 <$foreach Attribute noninheritedAttributes do$>
 <$if Attribute.hasDefinedAttributeType$>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="TextOnlyCell" reuseIdentifier="USFMChapterCell" id="gTV-IL-0wX" customClass="USFMChapterCell">
+            <rect key="frame" x="0.0" y="0.0" width="513" height="252"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="513" height="252"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sau-Pb-V8k">
+                        <rect key="frame" x="10" y="0.0" width="493" height="252"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7bK-S2-1Mz">
+                                <rect key="frame" x="10" y="6" width="473" height="246"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="Bible Attributed Text">
+                                        <attributes>
+                                            <font key="NSFont" size="14" name="HelveticaNeue"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="7bK-S2-1Mz" firstAttribute="leading" secondItem="Sau-Pb-V8k" secondAttribute="leading" constant="10" id="3b7-f7-B7T"/>
+                            <constraint firstAttribute="trailing" secondItem="7bK-S2-1Mz" secondAttribute="trailing" constant="10" id="PSl-rJ-3gZ"/>
+                            <constraint firstAttribute="bottom" secondItem="7bK-S2-1Mz" secondAttribute="bottom" id="SOQ-Wk-2Yk"/>
+                            <constraint firstItem="7bK-S2-1Mz" firstAttribute="top" secondItem="Sau-Pb-V8k" secondAttribute="top" constant="6" id="ZRW-uT-po7"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <color key="backgroundColor" red="1" green="0.090197819210000002" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="Sau-Pb-V8k" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="NJU-lu-Bw9"/>
+                <constraint firstItem="Sau-Pb-V8k" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="Vk2-wC-aZz"/>
+                <constraint firstAttribute="bottom" secondItem="Sau-Pb-V8k" secondAttribute="bottom" id="oqN-mf-zw5"/>
+                <constraint firstAttribute="trailing" secondItem="Sau-Pb-V8k" secondAttribute="trailing" constant="10" id="so4-tl-9iD"/>
+            </constraints>
+            <size key="customSize" width="513" height="252"/>
+            <connections>
+                <outlet property="textView" destination="7bK-S2-1Mz" id="gv2-VC-OEL"/>
+            </connections>
+            <point key="canvasLocation" x="499.5" y="94"/>
+        </collectionViewCell>
+    </objects>
+</document>

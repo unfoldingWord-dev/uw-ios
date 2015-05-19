@@ -11,8 +11,16 @@
 #import "UIImageView+AFNetworking.h"
 #import "DWImageGetter.h"
 #import "CoreDataClasses.h"
+#import "UFWLanguagesController.h"
+#import "FPPopoverController.h"
+#import "UFWLanguageListPickerVC.h"
+#import "ACTLabelButton.h"
 
-@interface FrameDetailsViewController () <UIGestureRecognizerDelegate>
+@interface FrameDetailsViewController () <UIGestureRecognizerDelegate, ACTLabelButtonDelegate>
+@property (nonatomic, strong) FPPopoverController *customPopoverController;
+@property (nonatomic, strong) UFWLanguagesController *languagesController;
+@property (nonatomic, strong) ACTLabelButton *buttonNavItem;
+
 @property (nonatomic, assign) UIInterfaceOrientation lastOrientation;
 @property (nonatomic, strong) NSArray *frames;
 @end
@@ -23,7 +31,9 @@ static NSString * const reuseIdentifier = @"FrameCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self createNavButton];
     self.edgesForExtendedLayout = UIRectEdgeNone;
+    [self addTapGestureRecognizer];
 }
 
 - (void)setChapter:(UFWChapter *)chapter
@@ -36,7 +46,82 @@ static NSString * const reuseIdentifier = @"FrameCellID";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.languagesController = [UFWLanguagesController new];
+    [self resetRightNavButton];
     [self jumpToCurrentFrameAnimated:YES];
+}
+
+- (void)createNavButton
+{
+    ACTLabelButton *navButton = [[ACTLabelButton alloc] init];
+    navButton.font = [UIFont boldSystemFontOfSize:17];
+    navButton.colorNormal = [UIColor whiteColor];
+    navButton.colorHover = [UIColor lightGrayColor];
+    navButton.direction = ArrowDirectionDown;
+    navButton.delegate = self;
+    navButton.userInteractionEnabled = YES;
+    self.buttonNavItem = navButton;
+}
+
+- (void)resetRightNavButton
+{
+    NSString *slug = self.languagesController.currentLanguageSlug;
+    NSString *languageName = [self.languagesController languageNameForLanguageSlug:slug];
+    
+    self.navigationItem.rightBarButtonItem = nil;
+    self.buttonNavItem.text = languageName;
+    CGRect frame = CGRectZero;
+    frame.size = [self.buttonNavItem intrinsicContentSize];
+    self.buttonNavItem.frame = frame;
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.buttonNavItem];
+    self.navigationItem.rightBarButtonItem = barButtonItem;
+}
+
+- (void)labelButtonPressed:(ACTLabelButton *)labelButton
+{
+    [self showLanguageListFromView:labelButton];
+}
+
+- (void)showLanguageListFromView:(UIView *)view
+{
+    NSArray *languageSlugs = [self.languagesController arrayLanguageSlugsForProject:self.chapter.bible.language.projectLanguage.project];
+    NSString *projectInfo = [self.chapter.bible.language.projectLanguage.project projectNameForLanguageSlug:self.languagesController.currentLanguageSlug];
+    projectInfo = [NSString stringWithFormat:@"for %@", projectInfo];
+    UFWLanguageListPickerVC *languagePicker = [UFWLanguageListPickerVC pickLanguageVCForArrayOfLangSlugs:languageSlugs projectInfo:projectInfo completion:^(NSString *slugPicked) {
+        if ( ! [self.languagesController.currentLanguageSlug isEqualToString:slugPicked]) {
+            UFWBible *changedBible = [self.languagesController bibleMatchingBible:self.chapter.bible withNewLanguageSlug:slugPicked];
+            
+            if (changedBible != nil) {
+                NSString *chapterNumber = self.chapter.number;
+                UFWChapter *chapter = [changedBible chapterForNumberString:chapterNumber];
+                if (chapter != nil) {
+                        self.chapter = chapter;
+                        self.frames = [chapter sortedFrames];
+                        [self.languagesController setCurrentLanguageSlug:slugPicked];
+                        [self resetRightNavButton];
+                        [self.collectionView reloadData];
+                }
+             }
+        }
+        [self.customPopoverController dismissPopoverAnimated:YES];
+    }];
+    
+    CGFloat requiredInset = 50;
+    CGSize maxSize = [languagePicker completeContentSize];
+    maxSize.height = fmin(maxSize.height, (self.view.frame.size.height - requiredInset));
+    maxSize.width = fmin(maxSize.width, (self.view.frame.size.width - requiredInset));
+    
+    self.customPopoverController = [[FPPopoverController alloc] initWithViewController:languagePicker delegate:nil maxSize:maxSize];
+    self.customPopoverController.border = NO;
+    [self.customPopoverController setShadowsHidden:YES];
+    if ([view isKindOfClass:[UIView class]]) {
+        self.customPopoverController.arrowDirection = FPPopoverArrowDirectionAny;
+        [self.customPopoverController presentPopoverFromView:view];
+    }
+    else {
+        self.customPopoverController.arrowDirection = FPPopoverNoArrow;
+        [self.customPopoverController presentPopoverFromView:self.view];
+    }
 }
 
 - (void)jumpToCurrentFrameAnimated:(BOOL)animated
@@ -60,8 +145,33 @@ static NSString * const reuseIdentifier = @"FrameCellID";
     }
 }
 
+#pragma mark - Tap Gesture Hide Nav Bar
 
-#pragma mark <UICollectionViewDataSource>
+- (void)addTapGestureRecognizer
+{
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapRecognized:)];
+    tapRecognizer.numberOfTapsRequired = 2;
+    [self.view addGestureRecognizer:tapRecognizer];
+}
+
+- (void)tapRecognized:(UITapGestureRecognizer *)tapRecognizer
+{
+//    // If we're in portrait mode, then ignore.
+//    if (self.view.bounds.size.width < self.view.bounds.size.height && ! self.navigationController.navigationBarHidden) {
+//        return;
+//    }
+
+    [self showOrHideNavigationBarAnimated:YES];
+    [self.collectionViewLayout invalidateLayout];
+}
+
+- (void)showOrHideNavigationBarAnimated:(BOOL)animated
+{
+    BOOL hide = (self.navigationController.navigationBarHidden) ? NO : YES;
+    [self.navigationController setNavigationBarHidden:hide animated:animated];
+}
+
+#pragma mark - <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
@@ -93,7 +203,7 @@ static NSString * const reuseIdentifier = @"FrameCellID";
     {
         UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"FrameLastCellID" forIndexPath:indexPath];
         UIButton *nextChapterButton = (UIButton*)[cell viewWithTag:111];
-        [nextChapterButton setTitle:self.chapter.bible.next_chapter_string forState:UIControlStateNormal];
+        [nextChapterButton setTitle:NSLocalizedString(@"nextChapter", nil) forState:UIControlStateNormal];
         [nextChapterButton addTarget:self action:@selector(onNextChapterTouched:) forControlEvents:UIControlEventTouchUpInside];
         return cell;
     }
@@ -102,26 +212,44 @@ static NSString * const reuseIdentifier = @"FrameCellID";
         FrameCell *cell =[collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
         UFWFrame *frame = self.frames[indexPath.row];
         cell.frame_contentLabel.text = frame.text;
-        [cell setFrameImage:nil];
+        if ([frame.chapter.bible.language.projectLanguage direction] == DirectionLeftToRight) {
+            cell.frame_contentLabel.textAlignment = NSTextAlignmentLeft;
+        }
+        else {
+            cell.frame_contentLabel.textAlignment = NSTextAlignmentRight;
+        }
         
-        __weak typeof(self) weakself = self;
-        [[DWImageGetter sharedInstance] retrieveImageWithURLString:frame.imageUrl completionBlock:^(NSString *originalUrl, UIImage *image) {
-            // Must double check that the image hasn't been recycled for a different chapter
-            NSIndexPath *currentIP = [weakself.collectionView indexPathForCell:cell];
-            UFWFrame *currentFrame = [self.frames objectAtIndex:currentIP.row];
-            if ([currentFrame.imageUrl isEqualToString:originalUrl]) {
-                [cell setFrameImage:image];
-            }
-        }];
+        if (frame.imageUrl.length ==0) {
+            UIImage *image = [UIImage imageNamed:@"placeholderFrameImage"];
+            [cell setFrameImage:image];
+        }
+        else {
+            [cell setFrameImage:nil];
+            
+            __weak typeof(self) weakself = self;
+            [[DWImageGetter sharedInstance] retrieveImageWithURLString:frame.imageUrl completionBlock:^(NSString *originalUrl, UIImage *image) {
+                // Must double check that the image hasn't been recycled for a different chapter
+                NSIndexPath *currentIP = [weakself.collectionView indexPathForCell:cell];
+                UFWFrame *currentFrame = [self.frames objectAtIndex:currentIP.row];
+                if ([currentFrame.imageUrl isEqualToString:originalUrl]) {
+                    [cell setFrameImage:image];
+                }
+            }];
+        }
         return cell;
     }
-   
+    
 }
 
 #pragma mark - Rotation
 
 -(void) willRotateToInterfaceOrientation: (UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+//    // Always show the navigation bar in portrait mode.
+//    if (UIDeviceOrientationIsPortrait(toInterfaceOrientation) && self.navigationController.navigationBarHidden) {
+//        [self showOrHideNavigationBarAnimated:YES];
+//    }
+    
     if (self.lastOrientation != 0) {
         if ( UIDeviceOrientationIsLandscape(self.lastOrientation) && UIDeviceOrientationIsLandscape(toInterfaceOrientation)) {
             return;

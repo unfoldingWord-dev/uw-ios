@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>chapter_JSON</key>
+	<integer>1</integer>
+	<key>frame_JSON</key>
+	<integer>1</integer>
+	<key>toc_JSON</key>
+	<string>x-coredata://2558D6B0-AB11-4653-80F1-3234041C86DB/UWTOC/p78</string>
+	<key>toc_USFM</key>
+	<string>x-coredata://2558D6B0-AB11-4653-80F1-3234041C86DB/UWTOC/p27</string>
+</dict>
+</plist>
