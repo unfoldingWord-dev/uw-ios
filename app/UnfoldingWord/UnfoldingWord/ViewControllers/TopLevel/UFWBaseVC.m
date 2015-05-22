@@ -40,7 +40,7 @@
     titleImageView.image = [UIImage imageNamed:@"unfoldingWordLogoWithWords.png"];
     titleImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.navigationItem.titleView = titleImageView;
-    self.navigationItem.title = NSLocalizedString(@"", nil);
+    self.navigationItem.title = @"";
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 

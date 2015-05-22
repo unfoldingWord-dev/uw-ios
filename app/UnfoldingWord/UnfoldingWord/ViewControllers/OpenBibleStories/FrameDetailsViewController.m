@@ -144,7 +144,7 @@ static NSString *const kMatchChapter = @"chapter";
 {
     UFWStatusInfoViewController *statusVC = [[UFWStatusInfoViewController alloc] init];
     statusVC.status = self.chapter.container.toc.version.status;
-    CGFloat width = fmin((self.view.frame.size.width - 40), 480);
+    CGFloat width = fmin((self.view.frame.size.width - 40), 530);
     CGSize size = [UFWInfoView sizeForStatus:statusVC.status forWidth:width withDeleteButton:NO];
     self.customPopoverController = [[FPPopoverController alloc] initWithViewController:statusVC delegate:nil maxSize:size];
     self.customPopoverController.border = NO;
@@ -519,9 +519,9 @@ static NSString *const kMatchChapter = @"chapter";
     [UFWSelectionTracker setChapterJSON:chapterNumber];
     [UFWSelectionTracker setFrameJSON:0];
     
-    NSIndexPath *newIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    NSIndexPath *nextIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     
-    [self.collectionView scrollToItemAtIndexPath:newIndexPath atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
+    [self.collectionView scrollToItemAtIndexPath:nextIndexPath atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
     
     CGRect cFrame = self.collectionView.frame;
     [self.collectionView setFrame:CGRectMake(cFrame.size.width,cFrame.origin.y,cFrame.size.width, cFrame.size.height)];

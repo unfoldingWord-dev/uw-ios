@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		5A16D5331B0CE874005D00A5 /* langnames.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A16D5321B0CE874005D00A5 /* langnames.plist */; };
 		5A323B1D1A3381FB00099C94 /* NSDictionary+DWSNull.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A323B1C1A3381FB00099C94 /* NSDictionary+DWSNull.m */; };
 		5A3E553C1A9D4CB700D1D920 /* DWImageFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3E55371A9D4CB700D1D920 /* DWImageFileManager.m */; };
 		5A3E553D1A9D4CB700D1D920 /* DWImageGetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3E55391A9D4CB700D1D920 /* DWImageGetter.m */; };
@@ -860,7 +861,6 @@
 		5AAC5C601A97B46C001AFA3D /* FPTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AAC5C5D1A97B46C001AFA3D /* FPTouchView.m */; };
 		5AAC5C631A97C5DB001AFA3D /* NSLayoutConstraint+DWSExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AAC5C611A97C5DB001AFA3D /* NSLayoutConstraint+DWSExtensions.m */; };
 		5AAC5C661A97C5F5001AFA3D /* UIViewController+DWSExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AAC5C651A97C5F5001AFA3D /* UIViewController+DWSExtensions.m */; };
-		5AEDC6281AFC018C00C722B9 /* languageInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5AEDC6271AFC018C00C722B9 /* languageInfo.plist */; };
 		5AEDC62F1AFC1E0B00C722B9 /* UFWLanguageInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AEDC62D1AFC1E0B00C722B9 /* UFWLanguageInfo.m */; };
 		5AEDC6321AFC20CA00C722B9 /* LanguageInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AEDC6311AFC20CA00C722B9 /* LanguageInfoController.m */; };
 		5AEDC6F11B068B0200551D27 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AEDC6F01B068B0200551D27 /* SystemConfiguration.framework */; };
@@ -868,7 +868,6 @@
 		5AEDC74D1B068D8500551D27 /* libssl_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AEDC7481B068D8500551D27 /* libssl_iOS.a */; };
 		5AEECBFD1A994C7400BC7E40 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5AEECBFF1A994C7400BC7E40 /* Localizable.strings */; };
 		5AEECC021A994C7500BC7E40 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5AEECC041A994C7500BC7E40 /* InfoPlist.strings */; };
-		5AEECC071A994C7600BC7E40 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5AEECC091A994C7600BC7E40 /* InfoPlist.strings */; };
 		5AFC90421AFACAE20012D177 /* UIView+ACTQuickLook.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFC90411AFACAE20012D177 /* UIView+ACTQuickLook.m */; };
 		5AFDC3391AF1366C002F58A0 /* NSManagedObject+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFDC3381AF1366C002F58A0 /* NSManagedObject+Convenience.m */; };
 		6392585F1A24506500B5B8D2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6392585E1A24506500B5B8D2 /* main.m */; };
@@ -889,6 +888,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5A16D5321B0CE874005D00A5 /* langnames.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = langnames.plist; sourceTree = "<group>"; };
 		5A323B1B1A3381FB00099C94 /* NSDictionary+DWSNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+DWSNull.h"; sourceTree = "<group>"; };
 		5A323B1C1A3381FB00099C94 /* NSDictionary+DWSNull.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+DWSNull.m"; sourceTree = "<group>"; };
 		5A3E55361A9D4CB700D1D920 /* DWImageFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWImageFileManager.h; sourceTree = "<group>"; };
@@ -1807,7 +1807,6 @@
 		5AAC5C621A97C5DB001AFA3D /* NSLayoutConstraint+DWSExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+DWSExtensions.h"; sourceTree = "<group>"; };
 		5AAC5C641A97C5F5001AFA3D /* UIViewController+DWSExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+DWSExtensions.h"; sourceTree = "<group>"; };
 		5AAC5C651A97C5F5001AFA3D /* UIViewController+DWSExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+DWSExtensions.m"; sourceTree = "<group>"; };
-		5AEDC6271AFC018C00C722B9 /* languageInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = languageInfo.plist; sourceTree = "<group>"; };
 		5AEDC62C1AFC1E0B00C722B9 /* UFWLanguageInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFWLanguageInfo.h; sourceTree = "<group>"; };
 		5AEDC62D1AFC1E0B00C722B9 /* UFWLanguageInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UFWLanguageInfo.m; sourceTree = "<group>"; };
 		5AEDC6301AFC20CA00C722B9 /* LanguageInfoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageInfoController.h; sourceTree = "<group>"; };
@@ -1897,20 +1896,15 @@
 		5AEECBFA1A994C6700BC7E40 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		5AEECBFE1A994C7400BC7E40 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5AEECC031A994C7500BC7E40 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		5AEECC081A994C7600BC7E40 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5AEECC0A1A994CB100BC7E40 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5AEECC0B1A994CB100BC7E40 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		5AEECC0C1A994CB200BC7E40 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5AEECC0D1A994CC000BC7E40 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5AEECC0E1A994CC000BC7E40 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		5AEECC0F1A994CC100BC7E40 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5AEECC101A994CCD00BC7E40 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5AEECC111A994CCD00BC7E40 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		5AEECC121A994CCD00BC7E40 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5AEECC141A994CDC00BC7E40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		5AEECC151A994CDC00BC7E40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5AEECC161A994CDD00BC7E40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		5AEECC171A994CDD00BC7E40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5AFC90401AFACAE20012D177 /* UIView+ACTQuickLook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ACTQuickLook.h"; sourceTree = "<group>"; };
 		5AFC90411AFACAE20012D177 /* UIView+ACTQuickLook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ACTQuickLook.m"; sourceTree = "<group>"; };
 		5AFDC3371AF1366C002F58A0 /* NSManagedObject+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Convenience.h"; sourceTree = "<group>"; };
@@ -3195,7 +3189,7 @@
 			children = (
 				5AEDC62C1AFC1E0B00C722B9 /* UFWLanguageInfo.h */,
 				5AEDC62D1AFC1E0B00C722B9 /* UFWLanguageInfo.m */,
-				5AEDC6271AFC018C00C722B9 /* languageInfo.plist */,
+				5A16D5321B0CE874005D00A5 /* langnames.plist */,
 				5AEDC6301AFC20CA00C722B9 /* LanguageInfoController.h */,
 				5AEDC6311AFC20CA00C722B9 /* LanguageInfoController.m */,
 			);
@@ -3325,6 +3319,8 @@
 		6392585B1A24506500B5B8D2 /* UnfoldingWord */ = {
 			isa = PBXGroup;
 			children = (
+				639258601A24506500B5B8D2 /* AppDelegate.h */,
+				639258611A24506500B5B8D2 /* AppDelegate.m */,
 				5A7ECE1D1AFD2270002C94AD /* Constants.h */,
 				5AEDC6F91B068D8500551D27 /* openssl */,
 				5AA7F2A51A34EEED00F49D40 /* Notifications */,
@@ -3336,8 +3332,6 @@
 				5A59963E1B0A997D0060668F /* DataSeeding */,
 				5A9ABAF11B0A35F600753AAB /* Images */,
 				5AAC5C551A97B46C001AFA3D /* Vendor */,
-				639258601A24506500B5B8D2 /* AppDelegate.h */,
-				639258611A24506500B5B8D2 /* AppDelegate.m */,
 				6392586C1A24506500B5B8D2 /* Images.xcassets */,
 				6392586E1A24506500B5B8D2 /* LaunchScreen.xib */,
 				6392585C1A24506500B5B8D2 /* Supporting Files */,
@@ -3348,7 +3342,6 @@
 		6392585C1A24506500B5B8D2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				5AEECC091A994C7600BC7E40 /* InfoPlist.strings */,
 				5AEECBFF1A994C7400BC7E40 /* Localizable.strings */,
 				6392585D1A24506500B5B8D2 /* Info.plist */,
 				6392585E1A24506500B5B8D2 /* main.m */,
@@ -3830,7 +3823,6 @@
 				5A9ABD951B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-02-08jpg in Resources */,
 				5A9ABE8E1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-21-10jpg in Resources */,
 				5A5996CF1B0A997E0060668F /* 1pe-avd-ar-A04410DC-7958-465D-A6DB-AEC9800AA814.usfm in Resources */,
-				5AEDC6281AFC018C00C722B9 /* languageInfo.plist in Resources */,
 				5A5996F61B0A997E0060668F /* eph-avd-ar-41434845-D36B-4E6F-9272-1B9C1DA6A7C4.usfm in Resources */,
 				5A9ABD731B0A35FA00753AAB /* icon-60@2x.png in Resources */,
 				5A9ABDFA1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-11-03jpg in Resources */,
@@ -3930,7 +3922,6 @@
 				5A9ABE071B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-12-08jpg in Resources */,
 				5A5997181B0A997E0060668F /* jud-udb-en-6F80CB3D-A9A7-4946-B2DA-B7E24906AB41.usfm in Resources */,
 				5A9ABDF61B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-10-11jpg in Resources */,
-				5AEECC071A994C7600BC7E40 /* InfoPlist.strings in Resources */,
 				5A9ABEF21B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-32-04jpg in Resources */,
 				5A9ABE721B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-19-13jpg in Resources */,
 				5A9ABD831B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-01-06jpg in Resources */,
@@ -4025,6 +4016,7 @@
 				5A9ABE351B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-15-10jpg in Resources */,
 				5A9ABE2C1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-15-01jpg in Resources */,
 				5A9ABF1A1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-35-09jpg in Resources */,
+				5A16D5331B0CE874005D00A5 /* langnames.plist in Resources */,
 				5A9ABDFD1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-11-06jpg in Resources */,
 				5A9ABF141B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-35-03jpg in Resources */,
 				5A9ABEC41B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-27-05jpg in Resources */,
@@ -4393,18 +4385,6 @@
 				5AEECC0E1A994CC000BC7E40 /* ru */,
 				5AEECC111A994CCD00BC7E40 /* fr */,
 				5AEECC161A994CDD00BC7E40 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		5AEECC091A994C7600BC7E40 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				5AEECC081A994C7600BC7E40 /* es */,
-				5AEECC0C1A994CB200BC7E40 /* pt */,
-				5AEECC0F1A994CC100BC7E40 /* ru */,
-				5AEECC121A994CCD00BC7E40 /* fr */,
-				5AEECC171A994CDD00BC7E40 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";

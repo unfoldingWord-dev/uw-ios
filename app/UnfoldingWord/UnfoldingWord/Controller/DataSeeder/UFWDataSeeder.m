@@ -9,6 +9,7 @@
 
 #import "UFWDataSeeder.h"
 #import "NSString+Trim.h"
+#import "DWSCoreDataStack.h"
 
 static NSString *const kDefaultDidCopy = @"did_copy_files";
 
@@ -20,6 +21,8 @@ static NSString *const kDefaultDidCopy = @"did_copy_files";
     if (didPreload.boolValue == YES) {
         return YES;
     }
+    
+    [DWSCoreDataStack deleteDatabase];
     
     NSString *rootPath = [[NSBundle mainBundle] resourcePath];
     NSDirectoryEnumerator *dirEnum = [[NSFileManager defaultManager] enumeratorAtPath:rootPath];

@@ -13,6 +13,7 @@
 #import "UFWModelImageSync.h"
 #import "UFWNotifications.h"
 #import "UFWSelectionTracker.h"
+#import "LanguageInfoController.h"
 
 static NSString *const kKeyTopContainers = @"cat";
 
@@ -74,16 +75,13 @@ static NSString *const kKeyTopContainers = @"cat";
     NSAssert1(! error, @"Error fetching TOC: %@", error.userInfo);
     
     if (tocToUpdateArray.count == 0) {
-        [self postNotificationDownloadDone];
+        [self downloadNewTOCs];
     }
     else {
         UWTOC *toc = [tocToUpdateArray firstObject];
         [toc downloadWithCompletion:^(BOOL success) {
             if (success == NO) {
-                NSString *errorInstruction = NSLocalizedString(@"Could not refresh at this time.", nil);
-                NSString *errorTitle = NSLocalizedString(@"failed to download.", @"the title of the failed item will be inserted at the beginning.");
-                NSString *message = [NSString stringWithFormat:@"%@ %@ %@", toc.title, errorTitle, errorInstruction];
-                [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles: nil] show];
+                [self postErrorForTOC:toc];
                 [self postNotificationDownloadDone];
             }
             else {
@@ -91,6 +89,55 @@ static NSString *const kKeyTopContainers = @"cat";
             }
         }];
     }
+}
+
++ (void)downloadNewTOCs
+{
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:[UWVersion entityName]];
+    NSError *error = nil;
+    NSArray *versionsArray = [[DWSCoreDataStack managedObjectContext] executeFetchRequest:fetch error:&error];
+    NSAssert1(! error, @"Error fetching TOC: %@", error.userInfo);
+    
+    // Find the first toc to download from a partially downloaded version
+    UWVersion *versionToDownload = nil;
+    for (UWVersion *version in versionsArray) {
+        if ([version isAnyDownloaded] == YES && [version isAllDownloaded] == NO) {
+            versionToDownload = version;
+            break;
+        }
+    }
+    
+    if (versionToDownload == nil) {
+        [self postNotificationDownloadDone];
+    }
+    else {
+        [versionToDownload downloadWithCompletion:^(BOOL success, NSString *errorMessage) {
+            if (success == NO) {
+                [self postErrorForVersion:versionToDownload];
+                [self postNotificationDownloadDone];
+            }
+            else {
+                [self downloadNewTOCs];
+            }
+        }];
+    }
+}
+
++ (void)postErrorForTOC:(UWTOC *)toc
+{
+    NSString *errorInstruction = NSLocalizedString(@"Could not refresh at this time.", nil);
+    NSString *errorTitle = NSLocalizedString(@"failed to download.", @"the title of the failed item will be inserted at the beginning.");
+    NSString *message = [NSString stringWithFormat:@"%@ %@ %@", toc.title, errorTitle, errorInstruction];
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles: nil] show];
+}
+
++ (void)postErrorForVersion:(UWVersion *)version
+{
+    NSString *errorInstruction = NSLocalizedString(@"Could not refresh at this time.", nil);
+    NSString *errorTitle = NSLocalizedString(@"failed to download.", @"the title of the failed item will be inserted at the beginning.");
+    NSString *language = [LanguageInfoController nameForLanguageCode:version.language.lc];
+    NSString *message = [NSString stringWithFormat:@"%@ %@ %@", language, errorTitle, errorInstruction];
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles: nil] show];
 }
 
 

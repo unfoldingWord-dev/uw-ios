@@ -101,6 +101,16 @@ NSString *const kKeyVersionId = @"__kKeyVersionId";
     return YES;
 }
 
+- (BOOL)isAnyDownloaded
+{
+    for (UWTOC *toc in self.toc) {
+        if (toc.isDownloadedValue == YES) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 - (BOOL)isAnyFailedDownload
 {
     for (UWTOC *toc in self.toc) {
@@ -130,7 +140,16 @@ NSString *const kKeyVersionId = @"__kKeyVersionId";
 
 - (void)downloadNextTOC:(UWTOC *)toc completion:(VersionCompletion)completion
 {
+    // If the TOC is already downloaded and valid, then skip to the next one
     UWTOC *nextTOC = [self nextTOC:toc];
+    if ( [nextTOC isDownloadedAndValid]) {
+        [self downloadNextTOC:nextTOC completion:completion];
+        return;
+    }
+    else if (nextTOC == nil) {
+        completion(YES, nil);
+    }
+    
     [nextTOC downloadWithCompletion:^(BOOL success) {
         //        if (success == NO) {
         //            NSString *failure = NSLocalizedString(@"Failed Download", nil);
@@ -153,12 +172,13 @@ NSString *const kKeyVersionId = @"__kKeyVersionId";
             [[DWSCoreDataStack managedObjectContext] save:nil];
         }
         if ([self isAllDownloaded]) {
+            [[DWSCoreDataStack managedObjectContext] save:nil];
             completion(YES, nil);
             [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationDownloadCompleteForVersion object:nil userInfo:@{kKeyVersionId:self.objectID.URIRepresentation.absoluteString}];
         }
         else {
+            [[DWSCoreDataStack managedObjectContext] save:nil];
             completion(NO, @"Internal app error. Some items were not downloaded.");
-            [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationDownloadCompleteForVersion object:nil userInfo:@{kKeyVersionId:self.objectID.URIRepresentation.absoluteString}];
         }
 #warning This is a hack. Server should be fixed and commented lines added back and the success checks changed back.
 
@@ -169,17 +189,7 @@ NSString *const kKeyVersionId = @"__kKeyVersionId";
 - (UWTOC *)nextTOC:(UWTOC *)toc
 {
     NSArray *tocs = [self sortedTOCs];
-    if (toc == nil) {
-        if (tocs.count > 0) {
-            return tocs[0];
-        }
-        else {
-            NSAssert2(NO, @"%s: Do not call method when the version has no TOCS!", __PRETTY_FUNCTION__, self);
-            return nil;
-        }
-    }
-    else {
-        NSAssert2([tocs containsObject:toc], @"%s: Called with an incorrect TOC: %@", __PRETTY_FUNCTION__, toc);
+    if ([tocs containsObject:toc]) {
         BOOL found = NO;
         for (UWTOC *aTOC in [self sortedTOCs]) {
             if (found) {
@@ -190,6 +200,13 @@ NSString *const kKeyVersionId = @"__kKeyVersionId";
             }
         }
         // We must be on the last TOC.
+        return nil;
+    }
+    else if (tocs.count > 0) {
+        return tocs[0];
+    }
+    else {
+        NSAssert2(NO, @"%s: Do not call method when the version has no TOCS!", __PRETTY_FUNCTION__, self);
         return nil;
     }
 }

@@ -22,15 +22,13 @@
 
 + (USFMElement *)newElementWithCodeInfo:(NSString *)codeInfo textInfo:(NSString *)textInfo
 {
-    if ([self isUsingCode:codeInfo] == NO) {
+    USFMElement *element = [USFMElement new];
+    [element parseCodeInfo:codeInfo];
+    if ([self isUsingCode:element.code] == NO) {
         return nil;
     }
-    else {
-        USFMElement *element = [USFMElement new];
-        [element parseCodeInfo:codeInfo];
-        [element parseTextInfo:textInfo];
-        return element;
-    }
+    [element parseTextInfo:textInfo];
+    return element;
 }
 
 - (BOOL)isChapter
@@ -48,6 +46,16 @@
     return [self.code isEqualToString:@"p"];
 }
 
+- (BOOL)isLineBreak
+{
+    return [self.code isEqualToString:@"b"];
+}
+
+- (BOOL)isQuote
+{
+    return [self.code isEqualToString:@"q"];
+}
+
 #pragma mark - Parsing
 
 - (void) parseCodeInfo:(NSString *)code
@@ -60,7 +68,7 @@
         NSScanner *scanner = [NSScanner scannerWithString:code];
         NSString *codePart = nil;
         [scanner scanUpToCharactersFromSet:[NSCharacterSet decimalDigitCharacterSet] intoString:&codePart];
-        if (scanner.scanLocation == codePart.length ) {
+        if (scanner.scanLocation == code.length ) {
             self.code = code;
             return;
         }
@@ -119,7 +127,7 @@
 // Return codes we want to use.
 + (BOOL)isUsingCode:(NSString *)code
 {
-    NSArray *codes = @[@"p", @"v", @"c"];
+    NSArray *codes = @[@"p", @"v", @"c", @"q", @"b"];
     for (NSString *keeperCode in codes) {
         if ([keeperCode isEqualToString:code]) {
             return YES;

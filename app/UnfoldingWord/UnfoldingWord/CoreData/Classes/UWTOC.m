@@ -114,6 +114,16 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
     }
 }
 
+- (BOOL)isDownloadedAndValid
+{
+    if (self.isDownloadedValue == YES && self.isContentValidValue == YES && self.isContentChangedValue == NO) {
+        return YES;
+    }
+    else {
+        return NO;
+    }
+}
+
 #pragma mark - USFM
 
 - (BOOL)deleteUSFMContent

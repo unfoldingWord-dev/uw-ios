@@ -45,7 +45,7 @@
 {
     static NSArray *languageItems = nil;
     if (languageItems == nil) {
-        NSString *filePath = [[NSBundle mainBundle] pathForResource:@"languageInfo" ofType:@"plist"];
+        NSString *filePath = [[NSBundle mainBundle] pathForResource:@"langnames" ofType:@"plist"];
         NSArray *dictionaryArray = [NSArray arrayWithContentsOfFile:filePath];
         NSMutableArray *langArray = [NSMutableArray new];
         for (NSDictionary *dictionary in dictionaryArray) {

@@ -15,6 +15,8 @@ typedef void (^TOCDownloadCompletion) (BOOL success);
 
 - (BOOL)deleteAllContent;
 
+- (BOOL)isDownloadedAndValid;
+
 - (OpenChapter *)chapterForNumber:(NSInteger)number;
 
 @end

@@ -65,6 +65,17 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationVersionContentDeleted:) name:kNotificationVersionContentDelete object:nil];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (self.currentTOC.version.language != nil) {
+        NSInteger index = [self.arrayOfRowObjects indexOfObject:self.currentTOC.version.language];
+        if (index >= 0 && index < self.arrayOfRowObjects.count) {
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
+        }
+    }
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];

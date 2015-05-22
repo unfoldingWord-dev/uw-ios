@@ -61,7 +61,9 @@
             
             // Append the source text to the full text
             sourceText = [sourceText trimSpacesBeforeAfter];
-            [completeText appendFormat:@" %@", sourceText];
+            if (sourceText.length > 0) {
+                [completeText appendFormat:@" %@", sourceText];
+            }
             
             firstCode = NO;
             

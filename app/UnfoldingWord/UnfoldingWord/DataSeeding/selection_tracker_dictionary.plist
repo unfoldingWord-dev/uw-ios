@@ -5,7 +5,7 @@
 	<key>chapter_JSON</key>
 	<integer>1</integer>
 	<key>frame_JSON</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>toc_JSON</key>
 	<string>x-coredata://2558D6B0-AB11-4653-80F1-3234041C86DB/UWTOC/p78</string>
 	<key>toc_USFM</key>

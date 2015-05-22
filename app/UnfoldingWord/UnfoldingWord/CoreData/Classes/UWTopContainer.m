@@ -28,6 +28,7 @@ static NSString *const kLanguages = @"langs";
         [container updateWithDictionary:topDic];
         container.sortOrderValue = sort++;
     }
+    [[DWSCoreDataStack managedObjectContext] save:nil];
 }
 
 + (instancetype)objectForDictionary:(NSDictionary *)dictionary withObjects:(NSArray *)objects

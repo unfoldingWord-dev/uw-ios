@@ -18,6 +18,8 @@
 @property (nonatomic, readonly) BOOL isChapter;
 @property (nonatomic, readonly) BOOL isVerse;
 @property (nonatomic, readonly) BOOL isParagraph;
+@property (nonatomic, readonly) BOOL isQuote;
+@property (nonatomic, readonly) BOOL isLineBreak;
 
 + (USFMElement *)newElementWithCodeInfo:(NSString *)codeInfo textInfo:(NSString *)textInfo;
 

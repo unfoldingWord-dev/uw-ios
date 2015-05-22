@@ -20,6 +20,7 @@
 #import "UFWStatusInfoViewController.h"
 #import "UFWInfoView.h"
 #import "ACTLabelButton.h"
+#import "UFWNextChapterCell.h"
 
 static NSString *kMatchVersion = @"version";
 static NSString *kMatchBook = @"book";
@@ -29,6 +30,7 @@ static CGFloat kSideMargin = 10.f;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) NSString *cellName;
 @property (nonatomic, strong) NSString *cellNameEmpty;
+@property (nonatomic, strong) NSString *cellNextChapter;
 @property (nonatomic, strong) NSArray *arrayChapters;
 @property (nonatomic, assign) NSTextAlignment alignment;
 @property (nonatomic, assign) UIInterfaceOrientation lastOrientation;
@@ -92,6 +94,10 @@ static CGFloat kSideMargin = 10.f;
     self.cellNameEmpty = NSStringFromClass([EmptyCell class]);
     UINib *emptyNib = [UINib nibWithNibName:self.cellNameEmpty bundle:nil];
     [self.collectionView registerNib:emptyNib forCellWithReuseIdentifier:self.cellNameEmpty];
+    
+    self.cellNextChapter = NSStringFromClass([UFWNextChapterCell class]);
+    UINib *nextNib = [UINib nibWithNibName:self.cellNextChapter bundle:nil];
+    [self.collectionView registerNib:nextNib forCellWithReuseIdentifier:self.cellNextChapter];
     
     [self addBarButtonItems];
 }
@@ -220,7 +226,7 @@ static CGFloat kSideMargin = 10.f;
 {
     UFWStatusInfoViewController *statusVC = [[UFWStatusInfoViewController alloc] init];
     statusVC.status = self.toc.version.status;
-    CGFloat width = fmin((self.view.frame.size.width - 40), 480);
+    CGFloat width = fmin((self.view.frame.size.width - 40), 540);
     CGSize size = [UFWInfoView sizeForStatus:self.toc.version.status forWidth:width withDeleteButton:NO];
     self.customPopoverController = [[FPPopoverController alloc] initWithViewController:statusVC delegate:nil maxSize:size];
     self.customPopoverController.border = NO;
@@ -244,13 +250,22 @@ static CGFloat kSideMargin = 10.f;
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return (self.arrayChapters.count > 0) ? self.arrayChapters.count : 1;
+    if (self.arrayChapters.count == 0) {
+        return 1;
+    }
+    else {
+        return ([self nextTOC] == nil) ? self.arrayChapters.count : self.arrayChapters.count + 1;
+    }
 }
 
 // Note the collection view is actually 10 points larger on left and right, and the corresponding cell is also larger. This allows the illusion of space between the cells.
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.arrayChapters.count != 0) {
+    if (self.arrayChapters.count == 0) {
+        EmptyCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:self.cellNameEmpty forIndexPath:indexPath];
+        return cell;
+    }
+    else if (indexPath.row < self.arrayChapters.count) {
         USFMChapterCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:self.cellName forIndexPath:indexPath];
         USFMChapter *chapter = self.arrayChapters[indexPath.row];
         cell.textView.attributedText = chapter.attributedString;
@@ -259,8 +274,69 @@ static CGFloat kSideMargin = 10.f;
         return cell;
     }
     else {
-        EmptyCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:self.cellNameEmpty forIndexPath:indexPath];
-        return cell;
+        UFWNextChapterCell *nextChapterCell = [collectionView dequeueReusableCellWithReuseIdentifier:self.cellNextChapter forIndexPath:indexPath];
+        UWTOC *nextToc = [self nextTOC];
+        NSString *goToString = NSLocalizedString(@"Go to", @"The name of the bible chapter or book is put after the go to text.");
+        [nextChapterCell.buttonNextChapter setTitle:[NSString stringWithFormat:@"%@ %@", goToString, nextToc.title] forState:UIControlStateNormal];
+        if (nextChapterCell.buttonNextChapter.allTargets.count == 0) {
+            [nextChapterCell.buttonNextChapter addTarget:self action:@selector(onNextBookTouched:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        return nextChapterCell;
+    }
+}
+
+- (void)onNextBookTouched:(id)sender
+{
+    UWTOC *nextTOC = [self nextTOC];
+    if (nextTOC == nil) {
+        NSAssert2(NO, @"%s: Could not find next toc in array %@", __PRETTY_FUNCTION__, self.arrayChapters);
+        return;
+    }
+    
+    _toc = nextTOC;
+    self.arrayChapters = [self.toc.usfmInfo chapters];
+    
+    [UFWSelectionTracker setChapterUSFM:1];
+    [UFWSelectionTracker setUSFMTOC:nextTOC];
+
+    
+    NSIndexPath *nextIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    
+    [self.collectionView scrollToItemAtIndexPath:nextIndexPath atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
+    
+    CGRect cFrame = self.collectionView.frame;
+    [self.collectionView setFrame:CGRectMake(cFrame.size.width,cFrame.origin.y,cFrame.size.width, cFrame.size.height)];
+    
+    [UIView animateWithDuration:0.5f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction animations:^{
+        [self.collectionView setFrame:cFrame];
+    } completion:^(BOOL finished){
+        [self.collectionView reloadData];
+        [self updateNavTitle];
+        // do whatever post processing you want (such as resetting what is "current" and what is "next")
+    }];
+    
+}
+
+- (UWTOC *)nextTOC
+{
+    if (self.toc == nil) {
+        return nil;
+    }
+    
+    NSArray *sortedTOCs = [self.toc.version sortedTOCs];
+    NSInteger currentIndex = -1;
+    for (int i = 0; i < sortedTOCs.count ; i++) {
+        UWTOC *toc = sortedTOCs[i];
+        if ([toc isEqual:self.toc]) {
+            currentIndex = i;
+        }
+    }
+    NSInteger nextIndex = currentIndex + 1;
+    if ( nextIndex < sortedTOCs.count ) {
+        return sortedTOCs[nextIndex];
+    }
+    else {
+        return nil;
     }
 }
 
@@ -334,8 +410,10 @@ static CGFloat kSideMargin = 10.f;
     CGFloat offset = self.collectionView.contentOffset.x;
     NSInteger index = round(offset/self.collectionView.frame.size.width);
     NSInteger chapter = index + 1;
-    [UFWSelectionTracker setChapterUSFM:chapter];
-    [self updateNavTitle];
+    if (chapter <= self.arrayChapters.count) {
+        [UFWSelectionTracker setChapterUSFM:chapter];
+        [self updateNavTitle];
+    }
 }
 
 

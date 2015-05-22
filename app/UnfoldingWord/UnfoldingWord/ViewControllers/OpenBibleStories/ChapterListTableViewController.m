@@ -61,6 +61,11 @@
     UWTOC *toc = [UFWSelectionTracker TOCforJSON];
     [self setOpenContainer:toc.openContainer];
     [self.tableView reloadData];
+    
+    NSInteger selectedChapterIndex = [UFWSelectionTracker chapterNumberJSON] - 1;
+    if (selectedChapterIndex >= 0 && selectedChapterIndex < self.chapters.count) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:selectedChapterIndex inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
+    }
 }
 
 

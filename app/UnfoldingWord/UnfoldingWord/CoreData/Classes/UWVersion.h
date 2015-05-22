@@ -28,6 +28,9 @@ extern NSString *const kNotificationVersionContentDelete;
 /// Checks if all attached TOC objects are downloaded
 - (BOOL)isAllDownloaded;
 
+/// Checks if any attached TOC was downloaded.
+- (BOOL)isAnyDownloaded;
+
 /// Checks if any attached TOC objects have a failed download
 - (BOOL)isAnyFailedDownload;
 

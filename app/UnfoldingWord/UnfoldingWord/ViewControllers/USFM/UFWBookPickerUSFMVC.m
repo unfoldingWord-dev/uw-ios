@@ -42,6 +42,18 @@
     self.navigationItem.title = [LanguageInfoController nameForLanguageCode:self.version.language.lc];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    UWTOC *selectedToc = [UFWSelectionTracker TOCforUSFM];
+    if (selectedToc != nil) {
+        NSInteger index = [self.arrayOfTOCs indexOfObject:selectedToc];
+        if (index >= 0 && index < self.arrayOfTOCs.count) {
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
+        }
+    }
+}
+
 - (void)setVersion:(UWVersion *)version
 {
     _version = version;
