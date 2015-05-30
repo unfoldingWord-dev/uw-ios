@@ -264,10 +264,13 @@ static NSString *const kMatchChapter = @"chapter";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    if ( [self checkForRotationChange] == YES) {
+        [self.collectionView reloadData];
+    }
     [self jumpToCurrentFrameAnimated:YES];
+
 }
-
-
 
 - (void)jumpToCurrentFrameAnimated:(BOOL)animated
 {
@@ -386,6 +389,25 @@ static NSString *const kMatchChapter = @"chapter";
 }
 
 #pragma mark - Rotation
+
+- (BOOL)checkForRotationChange
+{
+    UIInterfaceOrientation currentOrient = [[UIApplication sharedApplication] statusBarOrientation];
+    if (self.lastOrientation == 0) {
+        self.lastOrientation = currentOrient;
+        return NO;
+    }
+    else if ( UIInterfaceOrientationIsLandscape(self.lastOrientation) && UIInterfaceOrientationIsLandscape(currentOrient)) {
+        return NO;
+    }
+    else if ( UIInterfaceOrientationIsPortrait(self.lastOrientation) && UIInterfaceOrientationIsPortrait(currentOrient)) {
+        return NO;
+    }
+    else {
+        self.lastOrientation = currentOrient;
+        return YES;
+    }
+}
 
 -(void) willRotateToInterfaceOrientation: (UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {

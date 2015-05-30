@@ -35,7 +35,7 @@ static NSString *const kVerseNumber = @"USFWVerseNumber";
 
 - (NSAttributedString *)attributedString
 {
-    UIFont *baseFont = FONT_LIGHT;
+    UIFont *baseFont = [FONT_LIGHT fontWithSize:19];
     UIFont *superScriptFont = [baseFont fontWithSize:(baseFont.pointSize/1.35)];
     NSDictionary *superScript = @{NSBaselineOffsetAttributeName:@(-1),NSKernAttributeName:@(1), NSFontAttributeName:superScriptFont, (NSString *)kCTSuperscriptAttributeName : @1};
     NSDictionary *normal = @{NSBaselineOffsetAttributeName:@(0), NSFontAttributeName:baseFont};
@@ -109,7 +109,7 @@ static NSString *const kVerseNumber = @"USFWVerseNumber";
     CGFloat multiplier = 15.0f;
     CGFloat indent = (level + 2.0f) * multiplier;
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.lineHeightMultiple = 1.0f;
+    paragraphStyle.lineHeightMultiple = 1.35f;
     paragraphStyle.paragraphSpacing = 0.0f;
     paragraphStyle.firstLineHeadIndent = indent - multiplier;
     paragraphStyle.headIndent = indent;
@@ -120,7 +120,7 @@ static NSString *const kVerseNumber = @"USFWVerseNumber";
 {
     // Create the formatting dictionaries we need
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.lineHeightMultiple = 1.0f;
+    paragraphStyle.lineHeightMultiple = 1.35f;
     paragraphStyle.paragraphSpacing = 10.0f;
     paragraphStyle.firstLineHeadIndent = 15.0f;
     paragraphStyle.headIndent = 0.0f;
