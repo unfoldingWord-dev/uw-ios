@@ -31,6 +31,21 @@
     return element;
 }
 
+- (BOOL)appendText:(NSString *)text
+{
+    if ([text isKindOfClass:[NSString class]] == NO || [text trimSpacesBeforeAfter].length == 0) {
+        return NO;
+    }
+    else if (self.isVerse || self.isQuote) {
+        text = [text trimSpacesBeforeAfter];
+        self.text = [self.text stringByAppendingFormat:@" %@", text];
+        return YES;
+    }
+    else {
+        return NO;
+    }
+}
+
 - (BOOL)isChapter
 {
     return [self.code isEqualToString:@"c"];

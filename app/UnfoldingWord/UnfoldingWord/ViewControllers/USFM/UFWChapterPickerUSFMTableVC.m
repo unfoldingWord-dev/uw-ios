@@ -10,9 +10,11 @@
 #import "UFWBookPickerUSFMVC.h"
 #import "UWCoreDataClasses.h"
 #import "Constants.h"
+#import "ACTSimpleChapterNumberCell.h"
 
 @interface UFWChapterPickerUSFMTableVC ()
 @property (nonatomic, assign) NSInteger numberOfChapters;
+@property (nonatomic, strong) NSString *cellIdChapter;
 @end
 
 @implementation UFWChapterPickerUSFMTableVC
@@ -23,6 +25,12 @@
     
     UIBarButtonItem *bbi = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
     self.navigationItem.rightBarButtonItem = bbi;
+    
+    self.cellIdChapter = NSStringFromClass([ACTSimpleChapterNumberCell class]);
+    UINib *chapterNib = [UINib nibWithNibName:self.cellIdChapter bundle:nil];
+    [self.tableView registerNib:chapterNib forCellReuseIdentifier:self.cellIdChapter];
+    
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)setToc:(UWTOC *)toc
@@ -50,11 +58,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"Default"];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Default"];
-    }
-    cell.textLabel.text = [NSString stringWithFormat:@"Chapter %ld", (long)(indexPath.row+1)];
+    ACTSimpleChapterNumberCell *cell = [self.tableView dequeueReusableCellWithIdentifier:self.cellIdChapter forIndexPath:indexPath];
+    cell.labelChapter.text = [NSString stringWithFormat:@"Chapter %ld", (long)(indexPath.row+1)];
     return cell;
 }
 

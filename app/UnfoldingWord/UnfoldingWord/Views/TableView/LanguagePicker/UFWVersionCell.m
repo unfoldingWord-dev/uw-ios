@@ -134,10 +134,10 @@
     [self.activityIndicator stopAnimating];
     self.imageViewVerify.hidden = NO;
     if ([self.version isAllValid]) {
-        self.imageViewVerify.image = [UIImage imageNamed:@"verifyGood"];
+        self.imageViewVerify.image = [UIImage imageNamed:IMAGE_VERIFY_GOOD];
     }
     else {
-        self.imageViewVerify.image = [UIImage imageNamed:@"verifyFail.png"];
+        self.imageViewVerify.image = [UIImage imageNamed:IMAGE_VERIFY_FAIL];
     }
     self.buttonDownload.hidden = YES;
 }
@@ -147,7 +147,7 @@
     [self.activityIndicator stopAnimating];
     self.buttonDownload.hidden = NO;
     self.imageViewVerify.hidden = YES;
-    [self.buttonDownload setBackgroundImage:[UIImage imageNamed:@"verifyExpired.png"] forState:UIControlStateNormal];
+    [self.buttonDownload setBackgroundImage:[UIImage imageNamed:IMAGE_VERIFY_EXPIRE] forState:UIControlStateNormal];
 }
 
 - (void)showUndownloaded

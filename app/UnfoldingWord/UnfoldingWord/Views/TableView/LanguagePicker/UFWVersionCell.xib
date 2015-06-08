@@ -100,8 +100,8 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="download_arrow.png" width="123" height="120"/>
+        <image name="download_arrow.png" width="66" height="66"/>
         <image name="level1Cell" width="27" height="27"/>
-        <image name="verifyGood.png" width="125" height="125"/>
+        <image name="verifyGood.png" width="66" height="66"/>
     </resources>
 </document>

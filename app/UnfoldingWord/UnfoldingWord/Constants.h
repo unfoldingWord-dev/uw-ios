@@ -22,3 +22,11 @@
 #define LEVEL_1_IMAGE @"level1Cell"
 #define LEVEL_2_IMAGE @"level2Cell"
 #define LEVEL_3_IMAGE @"level3Cell"
+
+#define LEVEL_1_REVERSE @"level1"
+#define LEVEL_2_REVERSE @"level2"
+#define LEVEL_3_REVERSE @"level3"
+
+#define IMAGE_VERIFY_GOOD @"verifyGood"
+#define IMAGE_VERIFY_FAIL @"verifyFail.png"
+#define IMAGE_VERIFY_EXPIRE @"verifyExpired.png"

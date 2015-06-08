@@ -151,15 +151,6 @@ NSString *const kKeyVersionId = @"__kKeyVersionId";
     }
     
     [nextTOC downloadWithCompletion:^(BOOL success) {
-        //        if (success == NO) {
-        //            NSString *failure = NSLocalizedString(@"Failed Download", nil);
-        //            failure = [NSString stringWithFormat:@"%@: %@", failure, nextTOC.title];
-        //            completion(NO, failure);
-        //            [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationDownloadCompleteForVersion object:nil userInfo:@{kKeyVersionId:self.objectID.URIRepresentation.absoluteString}];
-        //            return;
-        //        }
-        //        else {
-#warning Hack area.
         if ([self nextTOC:nextTOC] != nil) {
             [self downloadNextTOC:nextTOC completion:completion];
             if (success == NO) {
@@ -180,9 +171,6 @@ NSString *const kKeyVersionId = @"__kKeyVersionId";
             [[DWSCoreDataStack managedObjectContext] save:nil];
             completion(NO, @"Internal app error. Some items were not downloaded.");
         }
-#warning This is a hack. Server should be fixed and commented lines added back and the success checks changed back.
-
-        //        }
     }];
 }
 

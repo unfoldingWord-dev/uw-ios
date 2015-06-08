@@ -17,8 +17,11 @@
 #import "UFWBaseSettingsCell.h"
 #import "UFWBaseURLTableVC.h"
 #import "UFWSelectionTracker.h"
+#import "FPPopoverController.h"
+#import "UFWFirstLaunchInfoVC.h"
+#import "UFWAppInformationView.h"
 
-@interface UFWBaseVC () <UITableViewDataSource, UITableViewDelegate>
+@interface UFWBaseVC () <UITableViewDataSource, UITableViewDelegate, LaunchInfoDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UIView *viewTopBar;
@@ -28,6 +31,9 @@
 @property (nonatomic, strong) NSString *settingsCellID;
 @property (nonatomic, strong) NSArray *arrayTopLevelObjects;
 @property (nonatomic, assign) BOOL isLoadedOnce;
+
+@property (nonatomic, strong) FPPopoverController *customPopoverController;
+
 @end
 
 @implementation UFWBaseVC
@@ -74,6 +80,18 @@
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.001 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self selectTopContainer:[UFWSelectionTracker topContainer] animated:YES];
         });
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    static NSString *keyDidLaunch = @"did_launch";
+    BOOL didLaunch = [defaults boolForKey:keyDidLaunch];
+    if (didLaunch == NO) {
+        [self showPopOver];
+        [defaults setBool:YES forKey:keyDidLaunch];
     }
 }
 
@@ -205,6 +223,28 @@
 {
     self.buttonRefresh.hidden = NO;
     [self.activityIndicator stopAnimating];
+}
+
+
+#pragma mark - Version Info Popover
+
+- (void)showPopOver
+{
+    UFWFirstLaunchInfoVC *firstLaunchInfoVC = [[UFWFirstLaunchInfoVC alloc] init];
+    firstLaunchInfoVC.delegate = self;
+    CGFloat width = self.view.frame.size.width - 40;
+    CGSize size = [UFWAppInformationView sizeForWidth:width];
+    self.customPopoverController = [[FPPopoverController alloc] initWithViewController:firstLaunchInfoVC delegate:nil maxSize:size];
+    self.customPopoverController.border = NO;
+    [self.customPopoverController setShadowsHidden:YES];
+    
+    self.customPopoverController.arrowDirection = FPPopoverNoArrow;
+    [self.customPopoverController presentPopoverFromView:self.view];
+}
+
+-(void)userTappedAppInfo:(id)sender
+{
+    [self.customPopoverController dismissPopoverAnimated:YES];
 }
 
 @end

@@ -526,8 +526,9 @@ static NSString *const kMatchChapter = @"chapter";
     for (int i = 0; i < chaptersArray.count ; i++) {
         OpenChapter *chapter = chaptersArray[i];
         if ([chapter isEqual:self.chapter] && (i+1) < chaptersArray.count) {
-            nextChapter = chaptersArray[i+1];
-            chapterNumber = i+1;
+            NSInteger nextChapterIndex = i+1;
+            nextChapter = chaptersArray[nextChapterIndex];
+            chapterNumber = nextChapterIndex+1;
             break;
         }
     }

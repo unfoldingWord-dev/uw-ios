@@ -229,6 +229,13 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
+            // If we get a 404 error, then say the download failed, which will delete it.
+            if ([response isKindOfClass:[NSHTTPURLResponse class]] &&
+                ((NSHTTPURLResponse *)response).statusCode == 404) {
+                completion(NO);
+                return;
+            }
+            
             if (dictionary.allKeys.count > 0) {
                 NSString *signature = [dictionary objectOrNilForKey:@"sig"];
                 
@@ -370,7 +377,15 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
+            // If we get a 404 error, then say the download failed, which will delete it.
+            if ([response isKindOfClass:[NSHTTPURLResponse class]] &&
+                ((NSHTTPURLResponse *)response).statusCode == 404) {
+                completion(NO);
+                return;
+            }
+            
             if (dictionary.allKeys.count > 0) {
+                
                 NSString *signature = [dictionary objectOrNilForKey:@"sig"];
                 
                 if ( ! signature || ! [signature isKindOfClass:[NSString class]] || signature.length == 0) {

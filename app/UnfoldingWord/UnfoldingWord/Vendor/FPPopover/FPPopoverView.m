@@ -311,7 +311,7 @@
     
     else if(_arrowDirection == FPPopoverNoArrow)
     {
-        newContraints = [NSLayoutConstraint constraintsForView:_contentView insideView:self topMargin:10 bottomMargin:10 leftMargin:10 rightMargin:30];
+        newContraints = [NSLayoutConstraint constraintsForView:_contentView insideView:self topMargin:10 bottomMargin:10 leftMargin:10 rightMargin:10];
     }
 
     [self addConstraints:newContraints];

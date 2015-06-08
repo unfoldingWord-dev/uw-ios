@@ -33,11 +33,17 @@
     
     for (NSString *line in lines) {
         
+        // Skip over lines that don't have a code. If possible add them to the prior quote or verse. If not, delete them.
+        if (elements.count > 0 && [self didRequireFixMissingCodeForLine:line previousElement:elements.lastObject]) {
+            continue;
+        }
+        
         NSScanner *scanner = [[NSScanner alloc] initWithString:line];
         BOOL firstCode = YES;
         NSString *code = nil;
         NSMutableString *completeText = [NSMutableString new];
         do {
+            
             // Get to the first marker
             if (firstCode == YES) {
                 [scanner scanUpToString:@"\\" intoString:NULL];
@@ -77,6 +83,20 @@
     }
     
     return elements;
+}
+
++ (BOOL)didRequireFixMissingCodeForLine:(NSString *)line previousElement:(USFMElement *)element
+{
+    if ([line rangeOfString:@"\\"].location != NSNotFound) {
+        return NO;
+    }
+    else if (element.isVerse || element.isQuote) {
+        [element appendText:line];
+    }
+    else {
+        NSLog(@"Could not process line, so it was deleted: %@", line);
+    }
+    return YES;
 }
 
 + (NSCharacterSet *)usfmBreakCharacterSet
