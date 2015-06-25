@@ -9,11 +9,6 @@ static NSString *const kLanguageCode = @"lc";
 static NSString *const kModifiedDate = @"mod";
 static NSString *const kVersions = @"vers";
 
-
-@interface UWLanguage ()
-
-@end
-
 @implementation UWLanguage
 
 + (void)updateLanguages:(NSArray *)languages forContainer:(UWTopContainer *)container
@@ -62,6 +57,14 @@ static NSString *const kVersions = @"vers";
     return [versionArray sortedArrayUsingComparator:^NSComparisonResult(UWVersion *v1, UWVersion *v2) {
         return [v1.sortOrder compare:v2.sortOrder];
     }];
+}
+
+- (NSDictionary *)jsonRepresentionWithoutVersions
+{
+    NSMutableDictionary *topDictionary = [NSMutableDictionary new];
+    topDictionary[kModifiedDate] = self.mod;
+    topDictionary[kLanguageCode] = self.lc;
+    return topDictionary;
 }
 
 @end

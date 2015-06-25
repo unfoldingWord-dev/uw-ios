@@ -23,6 +23,7 @@
 #import "ACTLabelButton.h"
 #import "Constants.h"
 #import "NSString+Trim.h"
+#import "UnfoldingWord-Swift.h"
 
 static NSString *const kMatchVersion = @"version";
 static NSString *const kMatchChapter = @"chapter";
@@ -95,7 +96,9 @@ static NSString *const kMatchChapter = @"chapter";
     [buttonStatus addTarget:self action:@selector(showPopOverStatusInfo:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *bbiStatus = [[UIBarButtonItem alloc] initWithCustomView:buttonStatus];
     
-    self.navigationItem.rightBarButtonItems = @[bbiVersion, bbiStatus];
+    UIBarButtonItem *bbiShare = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userRequestedSharing:)];
+    
+    self.navigationItem.rightBarButtonItems = @[bbiShare, bbiVersion, bbiStatus];
 }
 
 - (void)updateNavTitle
@@ -171,6 +174,23 @@ static NSString *const kMatchChapter = @"chapter";
         [weakself dismissViewControllerAnimated:YES completion:^{}];
     }];
     [self presentViewController:navVC animated:YES completion:^{}];
+}
+
+#pragma mark - Sharing
+
+- (void)userRequestedSharing:(UIBarButtonItem *)activityBarButtonItem
+{
+    if (self.chapter.container.toc.version == nil) {
+        return;
+    }
+    
+    FileActivityController *fileController = [[FileActivityController alloc] initWithVersion:self.chapter.container.toc.version];
+    UIActivityViewController *activityVC = [fileController activityViewController];
+    activityVC.popoverPresentationController.barButtonItem = activityBarButtonItem;
+    [activityVC setCompletionWithItemsHandler:^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
+        [fileController cleanup];
+    }];
+    [self presentViewController:activityVC animated:YES completion:^{}];
 }
 
 

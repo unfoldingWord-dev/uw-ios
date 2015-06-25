@@ -42,5 +42,21 @@ static NSString *const kVersion = @"version";
     self.version = [dictionary objectOrNilForKey:kVersion];
 }
 
+- (NSDictionary *)jsonRepresention
+{
+    NSMutableDictionary *dictionary = [NSMutableDictionary new];
+    
+    dictionary[kCheckEntity] = self.checking_entity;
+    dictionary[kCheckLevel] = self.checking_level;
+    dictionary[kComments] = self.comments;
+    dictionary[kContributors] = self.contributors;
+    dictionary[kPubDate] = self.publish_date;
+    dictionary[kSourcetext] = self.source_text;
+    dictionary[kSourceTextVer] = self.source_text_version;
+    dictionary[kVersion] = self.version;
+    
+    return dictionary;
+}
+
 
 @end

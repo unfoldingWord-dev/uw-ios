@@ -30,3 +30,5 @@
 #define IMAGE_VERIFY_GOOD @"verifyGood"
 #define IMAGE_VERIFY_FAIL @"verifyFail.png"
 #define IMAGE_VERIFY_EXPIRE @"verifyExpired.png"
+
+static NSString *const SignatureFileAppend = @".sig"; // duplicated in Constants.swift

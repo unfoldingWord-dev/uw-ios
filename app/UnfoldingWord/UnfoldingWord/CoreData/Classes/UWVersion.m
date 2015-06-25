@@ -15,10 +15,6 @@ NSString *const kNotificationDownloadCompleteForVersion = @"__kNotificationDownl
 NSString *const kNotificationVersionContentDelete = @"__kNotificationVersionContentDelete";
 NSString *const kKeyVersionId = @"__kKeyVersionId";
 
-@interface UWVersion ()
-
-@end
-
 @implementation UWVersion
 
 + (void)updateVersions:(NSArray *)versions forLanguage:(UWLanguage *)language;
@@ -231,5 +227,24 @@ NSString *const kKeyVersionId = @"__kKeyVersionId";
     }
     return _dictionaryDownloads;
 }
+
+- (NSDictionary *)jsonRepresention
+{
+    NSMutableDictionary *dictionary = [NSMutableDictionary new];
+    
+    dictionary[kModifiedDate] = self.mod;
+    dictionary[kName] = self.name;
+    dictionary[kSlug] = self.slug;
+    dictionary[kStatus] = [self.status jsonRepresention];
+    
+    NSMutableArray *tocItems = [NSMutableArray new];
+    for (UWTOC *toc in self.toc) {
+        [tocItems addObject:[toc jsonRepresention]];
+    }
+    dictionary[kTOCItems] = tocItems;
+    
+    return dictionary;
+}
+
 
 @end

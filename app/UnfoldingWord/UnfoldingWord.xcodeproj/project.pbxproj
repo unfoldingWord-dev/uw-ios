@@ -182,6 +182,7 @@
 		5A43EB521B20F35E000EC306 /* zep-avd-ar-67397108-6D9C-4E9D-9140-0CF3D924E02C.usfm in Resources */ = {isa = PBXBuildFile; fileRef = 5A43EABA1B20F35E000EC306 /* zep-avd-ar-67397108-6D9C-4E9D-9140-0CF3D924E02C.usfm */; };
 		5A5996321B0A93980060668F /* AbyssinicaSIL-R.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5A5996251B0A93980060668F /* AbyssinicaSIL-R.ttf */; };
 		5A59974A1B0A9A3F0060668F /* UFWDataSeeder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5997491B0A9A3F0060668F /* UFWDataSeeder.m */; };
+		5A6997D41B2F859000BB0618 /* ufw_file_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A6997D31B2F859000BB0618 /* ufw_file_icon.png */; };
 		5A7A66EC1AEF06B500FF3EA1 /* NSString+Trim.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A7A66EB1AEF06B500FF3EA1 /* NSString+Trim.m */; };
 		5A7ECE201AFD2C08002C94AD /* NSBundle+DWSExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A7ECE1F1AFD2C08002C94AD /* NSBundle+DWSExtensions.m */; };
 		5A82BA721AF928E100C5044E /* UFWImporterUSFMEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A82BA6D1AF928E100C5044E /* UFWImporterUSFMEncoding.m */; };
@@ -885,6 +886,14 @@
 		5AAC5C601A97B46C001AFA3D /* FPTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AAC5C5D1A97B46C001AFA3D /* FPTouchView.m */; };
 		5AAC5C631A97C5DB001AFA3D /* NSLayoutConstraint+DWSExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AAC5C611A97C5DB001AFA3D /* NSLayoutConstraint+DWSExtensions.m */; };
 		5AAC5C661A97C5F5001AFA3D /* UIViewController+DWSExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AAC5C651A97C5F5001AFA3D /* UIViewController+DWSExtensions.m */; };
+		5ABFFD491B34882F006FB166 /* UWConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABFFD441B34882F006FB166 /* UWConstants.swift */; };
+		5ABFFD4A1B34882F006FB166 /* UWFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABFFD451B34882F006FB166 /* UWFile.swift */; };
+		5ABFFD4B1B34882F006FB166 /* UWFileExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABFFD461B34882F006FB166 /* UWFileExporter.swift */; };
+		5ABFFD4C1B34882F006FB166 /* UWFileImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABFFD471B34882F006FB166 /* UWFileImporter.swift */; };
+		5ABFFD4D1B34882F006FB166 /* UWUrlSourceItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABFFD481B34882F006FB166 /* UWUrlSourceItem.swift */; };
+		5AC377CF1B38744500E3BB36 /* FileActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC377CE1B38744500E3BB36 /* FileActivityController.swift */; };
+		5AC377D11B38C38300E3BB36 /* BluetoothFileSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC377D01B38C38300E3BB36 /* BluetoothFileSender.swift */; };
+		5AC377D31B38C62C00E3BB36 /* BluetoothFileReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC377D21B38C62C00E3BB36 /* BluetoothFileReceiver.swift */; };
 		5AC3DCB71B1F751000703AA2 /* ACTSimpleChapterNumberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3DCB51B1F751000703AA2 /* ACTSimpleChapterNumberCell.m */; };
 		5AC3DCB81B1F751000703AA2 /* ACTSimpleChapterNumberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5AC3DCB61B1F751000703AA2 /* ACTSimpleChapterNumberCell.xib */; };
 		5AC9E74D1B20F827001840A0 /* langnames2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5AC9E74C1B20F827001840A0 /* langnames2.plist */; };
@@ -1094,6 +1103,7 @@
 		5A5996311B0A93980060668F /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		5A5997481B0A9A3F0060668F /* UFWDataSeeder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFWDataSeeder.h; sourceTree = "<group>"; };
 		5A5997491B0A9A3F0060668F /* UFWDataSeeder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UFWDataSeeder.m; sourceTree = "<group>"; };
+		5A6997D31B2F859000BB0618 /* ufw_file_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ufw_file_icon.png; sourceTree = "<group>"; };
 		5A7A66EA1AEF06B500FF3EA1 /* NSString+Trim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Trim.h"; sourceTree = "<group>"; };
 		5A7A66EB1AEF06B500FF3EA1 /* NSString+Trim.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Trim.m"; sourceTree = "<group>"; };
 		5A7ECE1D1AFD2270002C94AD /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
@@ -1860,6 +1870,15 @@
 		5AAC5C621A97C5DB001AFA3D /* NSLayoutConstraint+DWSExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+DWSExtensions.h"; sourceTree = "<group>"; };
 		5AAC5C641A97C5F5001AFA3D /* UIViewController+DWSExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+DWSExtensions.h"; sourceTree = "<group>"; };
 		5AAC5C651A97C5F5001AFA3D /* UIViewController+DWSExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+DWSExtensions.m"; sourceTree = "<group>"; };
+		5ABFFD381B348678006FB166 /* UnfoldingWord-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UnfoldingWord-Bridging-Header.h"; sourceTree = "<group>"; };
+		5ABFFD441B34882F006FB166 /* UWConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWConstants.swift; sourceTree = "<group>"; };
+		5ABFFD451B34882F006FB166 /* UWFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWFile.swift; sourceTree = "<group>"; };
+		5ABFFD461B34882F006FB166 /* UWFileExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWFileExporter.swift; sourceTree = "<group>"; };
+		5ABFFD471B34882F006FB166 /* UWFileImporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWFileImporter.swift; sourceTree = "<group>"; };
+		5ABFFD481B34882F006FB166 /* UWUrlSourceItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWUrlSourceItem.swift; sourceTree = "<group>"; };
+		5AC377CE1B38744500E3BB36 /* FileActivityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileActivityController.swift; sourceTree = "<group>"; };
+		5AC377D01B38C38300E3BB36 /* BluetoothFileSender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothFileSender.swift; sourceTree = "<group>"; };
+		5AC377D21B38C62C00E3BB36 /* BluetoothFileReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothFileReceiver.swift; sourceTree = "<group>"; };
 		5AC3DCB41B1F751000703AA2 /* ACTSimpleChapterNumberCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACTSimpleChapterNumberCell.h; sourceTree = "<group>"; };
 		5AC3DCB51B1F751000703AA2 /* ACTSimpleChapterNumberCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACTSimpleChapterNumberCell.m; sourceTree = "<group>"; };
 		5AC3DCB61B1F751000703AA2 /* ACTSimpleChapterNumberCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACTSimpleChapterNumberCell.xib; sourceTree = "<group>"; };
@@ -2271,6 +2290,8 @@
 		5A749D481A965BD100FF5071 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				5ABFFD391B34873D006FB166 /* FileFormat */,
+				5AC377CD1B3873F800E3BB36 /* FileSharing */,
 				5A5997471B0A9A3F0060668F /* DataSeeder */,
 				5A9ABFDF1B0A364B00753AAB /* Verification */,
 				5A9ABAED1B0A356700753AAB /* MasterUpdater */,
@@ -2385,6 +2406,7 @@
 		5A9ABAF11B0A35F600753AAB /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				5A6997D31B2F859000BB0618 /* ufw_file_icon.png */,
 				5A9ABAF21B0A35F600753AAB /* arrow_right.png */,
 				5A9ABAF31B0A35F600753AAB /* delete.jpg */,
 				5A9ABAF41B0A35F600753AAB /* download_arrow.png */,
@@ -3285,6 +3307,28 @@
 			path = FPPopover;
 			sourceTree = "<group>";
 		};
+		5ABFFD391B34873D006FB166 /* FileFormat */ = {
+			isa = PBXGroup;
+			children = (
+				5ABFFD441B34882F006FB166 /* UWConstants.swift */,
+				5ABFFD451B34882F006FB166 /* UWFile.swift */,
+				5ABFFD461B34882F006FB166 /* UWFileExporter.swift */,
+				5ABFFD471B34882F006FB166 /* UWFileImporter.swift */,
+				5ABFFD481B34882F006FB166 /* UWUrlSourceItem.swift */,
+			);
+			path = FileFormat;
+			sourceTree = "<group>";
+		};
+		5AC377CD1B3873F800E3BB36 /* FileSharing */ = {
+			isa = PBXGroup;
+			children = (
+				5AC377CE1B38744500E3BB36 /* FileActivityController.swift */,
+				5AC377D01B38C38300E3BB36 /* BluetoothFileSender.swift */,
+				5AC377D21B38C62C00E3BB36 /* BluetoothFileReceiver.swift */,
+			);
+			path = FileSharing;
+			sourceTree = "<group>";
+		};
 		5AC3DCB31B1F74E300703AA2 /* SimpleChapterNumberCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -3432,6 +3476,7 @@
 			children = (
 				639258601A24506500B5B8D2 /* AppDelegate.h */,
 				639258611A24506500B5B8D2 /* AppDelegate.m */,
+				5ABFFD381B348678006FB166 /* UnfoldingWord-Bridging-Header.h */,
 				5A7ECE1D1AFD2270002C94AD /* Constants.h */,
 				5AEDC6F91B068D8500551D27 /* openssl */,
 				5AA7F2A51A34EEED00F49D40 /* Notifications */,
@@ -4268,6 +4313,7 @@
 				5A9ABE1B1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-13-14jpg in Resources */,
 				5A9ABFC51B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-50-03jpg in Resources */,
 				5A9ABE311B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-15-06jpg in Resources */,
+				5A6997D41B2F859000BB0618 /* ufw_file_icon.png in Resources */,
 				5A9ABED61B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-29-02jpg in Resources */,
 				5A9ABE4C1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-17-02jpg in Resources */,
 				5A9ABE111B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-13-04jpg in Resources */,
@@ -4413,6 +4459,7 @@
 				5A323B1D1A3381FB00099C94 /* NSDictionary+DWSNull.m in Sources */,
 				5AAC5C5E1A97B46C001AFA3D /* FPPopoverController.m in Sources */,
 				5A9ABADF1B0A350A00753AAB /* _UWTopContainer.m in Sources */,
+				5ABFFD491B34882F006FB166 /* UWConstants.swift in Sources */,
 				5A9ABAEB1B0A350A00753AAB /* DWSCoreDataStack.m in Sources */,
 				5AEDC62F1AFC1E0B00C722B9 /* UFWLanguageInfo.m in Sources */,
 				5A3E553D1A9D4CB700D1D920 /* DWImageGetter.m in Sources */,
@@ -4434,6 +4481,7 @@
 				5A9AC0011B0A370000753AAB /* UFWStatusInfoViewController.m in Sources */,
 				5A9AC03B1B0A38B100753AAB /* EmptyCell.m in Sources */,
 				5A9ABADD1B0A350A00753AAB /* _UWStatus.m in Sources */,
+				5AC377D11B38C38300E3BB36 /* BluetoothFileSender.swift in Sources */,
 				5A9AC0431B0A38B100753AAB /* UFWInfoView.m in Sources */,
 				5A8DCB971B02601A0010DD27 /* UFWSelectionTracker.m in Sources */,
 				5A9ABADA1B0A350A00753AAB /* _OpenFrame.m in Sources */,
@@ -4448,6 +4496,7 @@
 				5AAB78761A9299A800376C36 /* NSString+Date.m in Sources */,
 				5A9ABAE11B0A350A00753AAB /* OpenAppWordsList.m in Sources */,
 				5AA7F2A81A34EEED00F49D40 /* UFWNotifications.m in Sources */,
+				5AC377D31B38C62C00E3BB36 /* BluetoothFileReceiver.swift in Sources */,
 				5A9ABAE81B0A350A00753AAB /* UWTOC.m in Sources */,
 				5A9ABAE61B0A350A00753AAB /* UWLanguage.m in Sources */,
 				5AC3DCB71B1F751000703AA2 /* ACTSimpleChapterNumberCell.m in Sources */,
@@ -4455,6 +4504,7 @@
 				5AEDC6321AFC20CA00C722B9 /* LanguageInfoController.m in Sources */,
 				5A9ABAE51B0A350A00753AAB /* USFMInfo.m in Sources */,
 				5A9AC03F1B0A38B100753AAB /* UFWNextChapterCell.m in Sources */,
+				5AC377CF1B38744500E3BB36 /* FileActivityController.swift in Sources */,
 				5A9AC04A1B0A38B100753AAB /* ChapterCell.m in Sources */,
 				5A9ABAE21B0A350A00753AAB /* OpenChapter.m in Sources */,
 				6392585F1A24506500B5B8D2 /* main.m in Sources */,
@@ -4467,6 +4517,8 @@
 				5A9AC04E1B0A38B100753AAB /* UFWBaseUrlCell.m in Sources */,
 				5A9AC00B1B0A370000753AAB /* UFWTextChapterVC.m in Sources */,
 				5A9ABADB1B0A350A00753AAB /* _USFMInfo.m in Sources */,
+				5ABFFD4B1B34882F006FB166 /* UWFileExporter.swift in Sources */,
+				5ABFFD4C1B34882F006FB166 /* UWFileImporter.swift in Sources */,
 				5A36D3BB1B223FD8001D6E04 /* UFWFirstLaunchInfoVC.m in Sources */,
 				5A59974A1B0A9A3F0060668F /* UFWDataSeeder.m in Sources */,
 				5A9ABAF01B0A356700753AAB /* UFWMasterUpdater.m in Sources */,
@@ -4476,6 +4528,8 @@
 				5A9AC0501B0A38B100753AAB /* UFWTopLevelItemCell.m in Sources */,
 				5A9ABAEA1B0A350A00753AAB /* UWVersion.m in Sources */,
 				5A9ABAE91B0A350A00753AAB /* UWTopContainer.m in Sources */,
+				5ABFFD4D1B34882F006FB166 /* UWUrlSourceItem.swift in Sources */,
+				5ABFFD4A1B34882F006FB166 /* UWFile.swift in Sources */,
 				5A9ABAE71B0A350A00753AAB /* UWStatus.m in Sources */,
 				5A7A66EC1AEF06B500FF3EA1 /* NSString+Trim.m in Sources */,
 				5A9AC0021B0A370000753AAB /* UFWLanguagePickerVC.m in Sources */,
@@ -4609,7 +4663,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "UnfoldingWord/Categories/UnfoldingWord-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "UnfoldingWord/UnfoldingWord-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = AdHoc;
@@ -4760,7 +4814,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "UnfoldingWord/Categories/UnfoldingWord-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "UnfoldingWord/UnfoldingWord-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -4788,7 +4842,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "UnfoldingWord/Categories/UnfoldingWord-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "UnfoldingWord/UnfoldingWord-Bridging-Header.h";
 			};
 			name = Release;
 		};

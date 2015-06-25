@@ -15,7 +15,7 @@ static NSString *kCoreDataModelName = @"UnfoldingWord";
 /**
  kSeedNameInBundle: enter the database seed file in the app bundle. This is used if the previous database is wiped out or on first app launch. Setting to nil is the same as not seeding: an empty database is created instead.
  */
-static NSString *kSeedNameInBundle = @"UnfoldingWordSeed.sqlite";
+static NSString *kSeedNameInBundle = nil; //@"UnfoldingWordSeed.sqlite";
 
 // ================================================================================== //
 
