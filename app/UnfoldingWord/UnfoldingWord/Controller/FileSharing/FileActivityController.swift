@@ -32,10 +32,10 @@ import UIKit
                     return urlSaved
                 }
             }
-        return nil
+            return nil
+        }
     }
-}
-
+    
     func activityViewController() -> UIActivityViewController? {
         if let url = self.url {
             let items = [url]
@@ -64,7 +64,7 @@ import UIKit
         if let
             language = LanguageInfoController.nameForLanguageCode(self.version.language.lc),
             slug = self.version.slug{
-            return "\(language) (\(slug))"
+                return "\(language) (\(slug))"
         }
         else {
             return "UnfoldingWord file"

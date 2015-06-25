@@ -41,6 +41,10 @@ static NSString *const kMatchChapter = @"chapter";
 @property (nonatomic, strong) NSString *cellIDNextChapter;
 @property (nonatomic, strong) NSString *cellIdEmpty;
 
+@property (nonatomic, strong) BluetoothFileSender *sender;
+@property (nonatomic, strong) BluetoothFileReceiver *receiver;
+@property (nonatomic, strong) UIAlertController *alertController;
+
 @property (nonatomic, assign) BOOL didShowPicker;
 @end
 
@@ -80,25 +84,64 @@ static NSString *const kMatchChapter = @"chapter";
 
 - (void)createRightNavButtons
 {
-    // Add bar button items
-    ACTLabelButton *labelButton = [[ACTLabelButton alloc] initWithFrame:CGRectMake(0, 0, 80, 30)];
-    labelButton.text = NSLocalizedString(@"Version", nil);
-    labelButton.delegate = self;
-    labelButton.direction = ArrowDirectionDown;
-    labelButton.colorNormal = [UIColor whiteColor];
-    labelButton.colorHover = [UIColor lightGrayColor];
-    labelButton.matchingObject = kMatchVersion;
-    labelButton.userInteractionEnabled = YES;
-    UIBarButtonItem *bbiVersion = [[UIBarButtonItem alloc] initWithCustomView:labelButton];
+    //    // Add bar button items
+    //    ACTLabelButton *labelButton = [[ACTLabelButton alloc] initWithFrame:CGRectMake(0, 0, 80, 30)];
+    //    labelButton.text = NSLocalizedString(@"Version", nil);
+    //    labelButton.delegate = self;
+    //    labelButton.direction = ArrowDirectionDown;
+    //    labelButton.colorNormal = [UIColor whiteColor];
+    //    labelButton.colorHover = [UIColor lightGrayColor];
+    //    labelButton.matchingObject = kMatchVersion;
+    //    labelButton.userInteractionEnabled = YES;
+    //    UIBarButtonItem *bbiVersion = [[UIBarButtonItem alloc] initWithCustomView:labelButton];
+    //
+    //    UIButton *buttonStatus = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 26, 26)];
+    //    [buttonStatus setImage:[UFWInfoView imageReverseForStatus:self.chapter.container.toc.version.status] forState:UIControlStateNormal];
+    //    [buttonStatus addTarget:self action:@selector(showPopOverStatusInfo:) forControlEvents:UIControlEventTouchUpInside];
+    //    UIBarButtonItem *bbiStatus = [[UIBarButtonItem alloc] initWithCustomView:buttonStatus];
+    //
+    //    UIBarButtonItem *bbiShare = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userRequestedSharing:)];
+    //
+    //    self.navigationItem.rightBarButtonItems = @[bbiShare, bbiVersion, bbiStatus];
     
-    UIButton *buttonStatus = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 26, 26)];
-    [buttonStatus setImage:[UFWInfoView imageReverseForStatus:self.chapter.container.toc.version.status] forState:UIControlStateNormal];
-    [buttonStatus addTarget:self action:@selector(showPopOverStatusInfo:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *bbiStatus = [[UIBarButtonItem alloc] initWithCustomView:buttonStatus];
     
-    UIBarButtonItem *bbiShare = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userRequestedSharing:)];
+# warning Temporarily - delete this, then uncomment code above this
+    UIBarButtonItem *bbiSend = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStylePlain target:self action:@selector(send:)];
+    UIBarButtonItem *bbiReceive = [[UIBarButtonItem alloc] initWithTitle:@"Receive" style:UIBarButtonItemStylePlain target:self action:@selector(receive:)];
+    self.navigationItem.rightBarButtonItems = @[bbiSend, bbiReceive];
+}
+
+- (void)send:(id)sender
+{
+    UWVersion *version = self.chapter.container.toc.version;
+    UFWFileExporter *exporter = [[UFWFileExporter alloc] initWithVersion:version];
+    NSData *data = exporter.fileData;
+    if (data) {
+        __weak typeof(self) weakself = self;
+        
+        self.alertController = [UIAlertController alertControllerWithTitle:version.name message:@"Searching for other phones..." preferredStyle:UIAlertControllerStyleAlert];
+        [self.alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            [weakself cancel];
+        }]];
+        
+        self.sender = [[BluetoothFileSender alloc] initWithDataToSend:data updateBlock:^(NSInteger percent, BOOL complete) {
+            [weakself.alertController setTitle:[NSString stringWithFormat:@"Sending.\n%ld%% complete.", (long)percent]];
+            if (complete) {
+                [weakself dismissViewControllerAnimated:YES completion:^{
+                    NSLog(@"Complete");
+                }];
+            }
+        }];
+    }
+}
+
+- (void)cancel {
     
-    self.navigationItem.rightBarButtonItems = @[bbiShare, bbiVersion, bbiStatus];
+}
+
+- (void)receive:(id)receiver
+{
+    self.receiver = [[BluetoothFileReceiver alloc] init];
 }
 
 - (void)updateNavTitle
@@ -289,14 +332,14 @@ static NSString *const kMatchChapter = @"chapter";
         [self.collectionView reloadData];
     }
     [self jumpToCurrentFrameAnimated:YES];
-
+    
 }
 
 - (void)jumpToCurrentFrameAnimated:(BOOL)animated
 {
     NSInteger chapterNumber = self.chapter.number.integerValue;
     NSInteger selectedChapter = [UFWSelectionTracker chapterNumberJSON];
-
+    
     if ( chapterNumber != selectedChapter) {
         return;
     }
@@ -316,11 +359,11 @@ static NSString *const kMatchChapter = @"chapter";
 
 - (void)tapRecognized:(UITapGestureRecognizer *)tapRecognizer
 {
-//    // If we're in portrait mode, then ignore.
-//    if (self.view.bounds.size.width < self.view.bounds.size.height && ! self.navigationController.navigationBarHidden) {
-//        return;
-//    }
-
+    //    // If we're in portrait mode, then ignore.
+    //    if (self.view.bounds.size.width < self.view.bounds.size.height && ! self.navigationController.navigationBarHidden) {
+    //        return;
+    //    }
+    
     [self showOrHideNavigationBarAnimated:YES];
     [self.collectionViewLayout invalidateLayout];
 }
@@ -393,7 +436,7 @@ static NSString *const kMatchChapter = @"chapter";
         OpenFrame *frame = self.arrayOfFrames[indexPath.row];
         cell.frame_contentLabel.text = frame.text;
         cell.frame_contentLabel.textAlignment = [LanguageInfoController textAlignmentForLanguageCode:self.chapter.container.toc.version.language.lc];
-         [cell setFrameImage:nil];
+        [cell setFrameImage:nil];
         
         __weak typeof(self) weakself = self;
         [[DWImageGetter sharedInstance] retrieveImageWithURLString:frame.imageUrl completionBlock:^(NSString *originalUrl, UIImage *image) {
@@ -432,11 +475,11 @@ static NSString *const kMatchChapter = @"chapter";
 -(void) willRotateToInterfaceOrientation: (UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [self.customPopoverController dismissPopoverAnimated:YES];
-
-//    // Always show the navigation bar in portrait mode.
-//    if (UIDeviceOrientationIsPortrait(toInterfaceOrientation) && self.navigationController.navigationBarHidden) {
-//        [self showOrHideNavigationBarAnimated:YES];
-//    }
+    
+    //    // Always show the navigation bar in portrait mode.
+    //    if (UIDeviceOrientationIsPortrait(toInterfaceOrientation) && self.navigationController.navigationBarHidden) {
+    //        [self showOrHideNavigationBarAnimated:YES];
+    //    }
     
     if (self.lastOrientation != 0) {
         if ( UIInterfaceOrientationIsLandscape(self.lastOrientation) && UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
