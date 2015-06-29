@@ -9,25 +9,39 @@
 import Foundation
 import CoreBluetooth
 
+enum SendStatus {
+    case NotReady
+    case ReadyToStart
+    case InProgress
+}
+
 @objc final class BluetoothFileSender : NSObject, CBPeripheralManagerDelegate {
-    
-    // Percent complete is an Int from 0 to 100. 100 indicates that the transfer is complete.
-    typealias SendUpdateBlock = (percentComplete: Int, connected : Bool) -> ()
     
     lazy var manager : CBPeripheralManager = CBPeripheralManager(delegate: self, queue: nil)
     var characteristic : CBMutableCharacteristic?
-    var data : NSData
+    let data : NSData
     var sendIndex : Int = 0
-    var connected : Bool = false
-    let updateBlock : SendUpdateBlock
+    var status = SendStatus.NotReady
+    let updateBlock : FileUpdateBlock
     
-    init(dataToSend: NSData, updateBlock: SendUpdateBlock) {
+    init(dataToSend: NSData, updateBlock: FileUpdateBlock) {
         self.data = dataToSend
         self.updateBlock = updateBlock
         super.init()
         if self.manager.state == CBPeripheralManagerState.Resetting {
-            println("Resetting. Executing the if statement should lazy initialize")
-            self.sendIndex = -1 // just to ensure that the manager is lazy initialized in a release build
+            self.sendIndex = -1 // to ensure that the manager is lazy initialized and indicate there is no connection
+        }
+    }
+    
+    // This sends an update to via a non-optional progress block
+    func updateProgress(connected: Bool) {
+        if self.sendIndex <= 0 {
+            self.updateBlock(percentComplete: 0, connected: connected)
+        }
+        else {
+            print("\(self.sendIndex) / \(self.data.length)\n")
+            let percent =  Float(self.sendIndex) / Float(self.data.length)
+            self.updateBlock(percentComplete: percent, connected: true);
         }
     }
     
@@ -57,13 +71,15 @@ import CoreBluetooth
     func peripheralManager(peripheral: CBPeripheralManager!, central: CBCentral!, didSubscribeToCharacteristic characteristic: CBCharacteristic!) {
         println("Subscribed. start sending")
         self.sendIndex = 0
-        self.connected = true
+        self.status = SendStatus.ReadyToStart
+        updateProgress(true)
         send()
     }
     
     func peripheralManager(peripheral: CBPeripheralManager!, central: CBCentral!, didUnsubscribeFromCharacteristic characteristic: CBCharacteristic!) {
         println("unsubscribed")
-        self.connected = false
+        self.status = SendStatus.NotReady
+        updateProgress(false)
     }
     
     /** This callback comes in when the PeripheralManager is ready to send the next chunk of data.
@@ -76,26 +92,41 @@ import CoreBluetooth
     
     // Send based on whatever was last sent successfully. If we reach the end, then
     func send() {
-        if self.sendIndex < 0 {
+        if self.status == SendStatus.NotReady {
             return
         }
+        
+        updateProgress(true)
         
         if let
             characteristic = self.characteristic
         {
             do {
-                if (self.sendIndex >= data.length) { // Done transferring data
+                if self.status == SendStatus.ReadyToStart { // Before starting, send the length of the data
+                    if let size = Constants.Bluetooth.MessageSize.stringByAppendingFormat("%ld", self.data.length).dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
+                        let success = self.manager.updateValue(size, forCharacteristic: characteristic, onSubscribedCentrals: nil)
+                        if success == true {
+                            self.status = SendStatus.InProgress
+                        }
+                        else {
+                            break;
+                        }
+                    }
+                }
+                
+                if self.sendIndex >= data.length { // Send a done transfer message
                     let eom = Constants.Bluetooth.EndOfMessage.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
                     if manager.updateValue(eom, forCharacteristic: characteristic, onSubscribedCentrals: nil) {
                         break;
                     }
                 }
-                else {
+                else { // this is the only part that transmits the actual data
                     let numBytesToSend = min(Constants.Bluetooth.MAX_SIZE, data.length-self.sendIndex)
                     let dataToSend = data.subdataWithRange(NSMakeRange(self.sendIndex, numBytesToSend))
                     let success = manager.updateValue(dataToSend, forCharacteristic: characteristic, onSubscribedCentrals: nil)
                     if success == true {
                         self.sendIndex += numBytesToSend
+                        updateProgress(true)
                     }
                     else {
                         break;

@@ -8,6 +8,9 @@
 
 import Foundation
 
+// Percent complete is an Int from 0 to 100. 100 indicates that the transfer is complete.
+typealias FileUpdateBlock = (percentComplete: Float, connected : Bool) -> ()
+
 struct Constants {
     struct URLSource {
         static let signature = "sig"
@@ -29,9 +32,10 @@ struct Constants {
     static let FileExtension = "ufw"
     
     struct Bluetooth {
-        static let SERVICE_UUID = "E20A39F4-73F5-4BC4-A12F-17D1AD07A961"
-        static let CHARACTERISTIC_UUID = "08590F7E-DB05-467E-8757-72F6FAEB13D4"
+        static let SERVICE_UUID = "5440DDE8-3C15-4E96-A949-25F062A0142E"
+        static let CHARACTERISTIC_UUID = "45C060F5-4169-47D2-ADED-ACD0C0A2F9E5"
         static let MAX_SIZE = 20
-        static let EndOfMessage = "_EOM_"
+        static let EndOfMessage = "-_EOM_-"
+        static let MessageSize = "-_SIZE_-"
     }
 }

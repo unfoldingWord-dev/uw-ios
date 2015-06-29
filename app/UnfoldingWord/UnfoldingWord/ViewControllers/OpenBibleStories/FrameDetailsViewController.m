@@ -119,29 +119,68 @@ static NSString *const kMatchChapter = @"chapter";
     if (data) {
         __weak typeof(self) weakself = self;
         
-        self.alertController = [UIAlertController alertControllerWithTitle:version.name message:@"Searching for other phones..." preferredStyle:UIAlertControllerStyleAlert];
+        self.alertController = [UIAlertController alertControllerWithTitle:version.name message:@"Ready to send. Searching for a device to pair." preferredStyle:UIAlertControllerStyleAlert];
         [self.alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-            [weakself cancel];
+            [weakself dismissWithSuccess:NO];
         }]];
         
-        self.sender = [[BluetoothFileSender alloc] initWithDataToSend:data updateBlock:^(NSInteger percent, BOOL complete) {
-            [weakself.alertController setTitle:[NSString stringWithFormat:@"Sending.\n%ld%% complete.", (long)percent]];
-            if (complete) {
-                [weakself dismissViewControllerAnimated:YES completion:^{
-                    NSLog(@"Complete");
-                }];
+        // Create a bluetooth sender and use a progress block to let the users know the progress
+        self.sender = [[BluetoothFileSender alloc] initWithDataToSend:data updateBlock:^(float percent, BOOL connected) {
+            if (connected) {
+                [weakself.alertController setTitle:version.name];
+                [weakself.alertController setMessage:[NSString stringWithFormat:@"Sending...\n%.2f%% complete.", percent*100]];
+            }
+            if (percent >= .99999) {
+                [weakself.alertController setTitle:@"File sent successfully!"];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [weakself dismissWithSuccess:YES];
+                });
             }
         }];
+        
+        [UIApplication sharedApplication].idleTimerDisabled = YES;
+        [self presentViewController:self.alertController animated:YES completion:^{}];
     }
 }
 
-- (void)cancel {
-    
+- (void)dismissWithSuccess:(BOOL) success {
+    [self dismissViewControllerAnimated:YES completion:^{
+        self.receiver = nil;
+        self.sender = nil;
+        [UIApplication sharedApplication].idleTimerDisabled = NO;
+        
+        if (success) {
+            [[[UIAlertView alloc] initWithTitle:@"Success!" message:@"Your file was successfully transmitted!" delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
+        }
+    }];
 }
 
 - (void)receive:(id)receiver
 {
-    self.receiver = [[BluetoothFileReceiver alloc] init];
+    __weak typeof(self) weakself = self;
+    
+    self.alertController = [UIAlertController alertControllerWithTitle:@"Ready To Receive" message:@"Searching for devices." preferredStyle:UIAlertControllerStyleAlert];
+    [self.alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        [weakself dismissWithSuccess:NO];
+    }]];
+    
+    // Create a bluetooth sender and use a progress block to let the users know the progress
+    self.receiver = [[BluetoothFileReceiver alloc] initWithUpdateBlock:^(float percent , BOOL connected) {
+        if (connected) {
+            [weakself.alertController setTitle:@"Receiving..."];
+            [weakself.alertController setMessage:[NSString stringWithFormat:@"%.2f%% complete.", percent*100]];
+        }
+        if (percent >= .99999) {
+            [weakself.alertController setTitle:@"File received successfully!"];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [weakself dismissWithSuccess:YES];
+            });
+        }
+    }];
+    
+    [UIApplication sharedApplication].idleTimerDisabled = YES;
+    [self presentViewController:self.alertController animated:YES completion:^{}];
+
 }
 
 - (void)updateNavTitle
