@@ -23,6 +23,7 @@
 #import "ACTLabelButton.h"
 #import "Constants.h"
 #import "NSString+Trim.h"
+#import "UIViewController+FileTransfer.h"
 #import "UnfoldingWord-Swift.h"
 
 static NSString *const kMatchVersion = @"version";
@@ -40,10 +41,6 @@ static NSString *const kMatchChapter = @"chapter";
 @property (nonatomic, strong) NSString *cellIDFrame;
 @property (nonatomic, strong) NSString *cellIDNextChapter;
 @property (nonatomic, strong) NSString *cellIdEmpty;
-
-@property (nonatomic, strong) BluetoothFileSender *sender;
-@property (nonatomic, strong) BluetoothFileReceiver *receiver;
-@property (nonatomic, strong) UIAlertController *alertController;
 
 @property (nonatomic, assign) BOOL didShowPicker;
 @end
@@ -113,74 +110,12 @@ static NSString *const kMatchChapter = @"chapter";
 
 - (void)send:(id)sender
 {
-    UWVersion *version = self.chapter.container.toc.version;
-    UFWFileExporter *exporter = [[UFWFileExporter alloc] initWithVersion:version];
-    NSData *data = exporter.fileData;
-    if (data) {
-        __weak typeof(self) weakself = self;
-        
-        self.alertController = [UIAlertController alertControllerWithTitle:version.name message:@"Ready to send. Searching for a device to pair." preferredStyle:UIAlertControllerStyleAlert];
-        [self.alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-            [weakself dismissWithSuccess:NO];
-        }]];
-        
-        // Create a bluetooth sender and use a progress block to let the users know the progress
-        self.sender = [[BluetoothFileSender alloc] initWithDataToSend:data updateBlock:^(float percent, BOOL connected) {
-            if (connected) {
-                [weakself.alertController setTitle:version.name];
-                [weakself.alertController setMessage:[NSString stringWithFormat:@"Sending...\n%.2f%% complete.", percent*100]];
-            }
-            if (percent >= .99999) {
-                [weakself.alertController setTitle:@"File sent successfully!"];
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [weakself dismissWithSuccess:YES];
-                });
-            }
-        }];
-        
-        [UIApplication sharedApplication].idleTimerDisabled = YES;
-        [self presentViewController:self.alertController animated:YES completion:^{}];
-    }
-}
-
-- (void)dismissWithSuccess:(BOOL) success {
-    [self dismissViewControllerAnimated:YES completion:^{
-        self.receiver = nil;
-        self.sender = nil;
-        [UIApplication sharedApplication].idleTimerDisabled = NO;
-        
-        if (success) {
-            [[[UIAlertView alloc] initWithTitle:@"Success!" message:@"Your file was successfully transmitted!" delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
-        }
-    }];
+    [self transferFileForVersion:self.chapter.container.toc.version transferType:TransferTypeBluetooth role:TransferRoleSend];
 }
 
 - (void)receive:(id)receiver
 {
-    __weak typeof(self) weakself = self;
-    
-    self.alertController = [UIAlertController alertControllerWithTitle:@"Ready To Receive" message:@"Searching for devices." preferredStyle:UIAlertControllerStyleAlert];
-    [self.alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-        [weakself dismissWithSuccess:NO];
-    }]];
-    
-    // Create a bluetooth sender and use a progress block to let the users know the progress
-    self.receiver = [[BluetoothFileReceiver alloc] initWithUpdateBlock:^(float percent , BOOL connected) {
-        if (connected) {
-            [weakself.alertController setTitle:@"Receiving..."];
-            [weakself.alertController setMessage:[NSString stringWithFormat:@"%.2f%% complete.", percent*100]];
-        }
-        if (percent >= .99999) {
-            [weakself.alertController setTitle:@"File received successfully!"];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [weakself dismissWithSuccess:YES];
-            });
-        }
-    }];
-    
-    [UIApplication sharedApplication].idleTimerDisabled = YES;
-    [self presentViewController:self.alertController animated:YES completion:^{}];
-
+        [self transferFileForVersion:nil transferType:TransferTypeBluetooth role:TransferRoleReceive];
 }
 
 - (void)updateNavTitle

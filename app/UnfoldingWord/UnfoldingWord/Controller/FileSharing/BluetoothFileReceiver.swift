@@ -206,5 +206,9 @@ import CoreBluetooth
     
     deinit {
         self.manager.stopScan()
+        if let connection = self.discoveredPeripheral {
+            self.manager.cancelPeripheralConnection(connection)
+        }
+
     }
 }

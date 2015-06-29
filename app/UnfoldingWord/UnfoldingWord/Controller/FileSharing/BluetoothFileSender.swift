@@ -39,7 +39,6 @@ enum SendStatus {
             self.updateBlock(percentComplete: 0, connected: connected)
         }
         else {
-            print("\(self.sendIndex) / \(self.data.length)\n")
             let percent =  Float(self.sendIndex) / Float(self.data.length)
             self.updateBlock(percentComplete: percent, connected: true);
         }
@@ -138,6 +137,7 @@ enum SendStatus {
     
     deinit {
         self.manager.stopAdvertising()
+        self.manager.removeAllServices()
     }
     
 }

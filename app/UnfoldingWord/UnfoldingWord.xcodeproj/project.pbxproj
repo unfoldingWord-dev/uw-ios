@@ -905,6 +905,7 @@
 		5AEECBFD1A994C7400BC7E40 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5AEECBFF1A994C7400BC7E40 /* Localizable.strings */; };
 		5AEECC021A994C7500BC7E40 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5AEECC041A994C7500BC7E40 /* InfoPlist.strings */; };
 		5AFC90421AFACAE20012D177 /* UIView+ACTQuickLook.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFC90411AFACAE20012D177 /* UIView+ACTQuickLook.m */; };
+		5AFC9B601B41950500D453D0 /* UIViewController+FileTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFC9B5F1B41950500D453D0 /* UIViewController+FileTransfer.m */; };
 		5AFDC3391AF1366C002F58A0 /* NSManagedObject+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFDC3381AF1366C002F58A0 /* NSManagedObject+Convenience.m */; };
 		6392585F1A24506500B5B8D2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6392585E1A24506500B5B8D2 /* main.m */; };
 		639258621A24506500B5B8D2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 639258611A24506500B5B8D2 /* AppDelegate.m */; };
@@ -1983,6 +1984,8 @@
 		5AEECC161A994CDD00BC7E40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5AFC90401AFACAE20012D177 /* UIView+ACTQuickLook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ACTQuickLook.h"; sourceTree = "<group>"; };
 		5AFC90411AFACAE20012D177 /* UIView+ACTQuickLook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ACTQuickLook.m"; sourceTree = "<group>"; };
+		5AFC9B5E1B41950500D453D0 /* UIViewController+FileTransfer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+FileTransfer.h"; sourceTree = "<group>"; };
+		5AFC9B5F1B41950500D453D0 /* UIViewController+FileTransfer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+FileTransfer.m"; sourceTree = "<group>"; };
 		5AFDC3371AF1366C002F58A0 /* NSManagedObject+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Convenience.h"; sourceTree = "<group>"; };
 		5AFDC3381AF1366C002F58A0 /* NSManagedObject+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Convenience.m"; sourceTree = "<group>"; };
 		639258591A24506500B5B8D2 /* UnfoldingWord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnfoldingWord.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2030,6 +2033,8 @@
 		5A323B1A1A3381FB00099C94 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				5AFC9B5E1B41950500D453D0 /* UIViewController+FileTransfer.h */,
+				5AFC9B5F1B41950500D453D0 /* UIViewController+FileTransfer.m */,
 				5A7ECE1E1AFD2C08002C94AD /* NSBundle+DWSExtensions.h */,
 				5A7ECE1F1AFD2C08002C94AD /* NSBundle+DWSExtensions.m */,
 				5AFC90401AFACAE20012D177 /* UIView+ACTQuickLook.h */,
@@ -4485,6 +4490,7 @@
 				5A9AC0431B0A38B100753AAB /* UFWInfoView.m in Sources */,
 				5A8DCB971B02601A0010DD27 /* UFWSelectionTracker.m in Sources */,
 				5A9ABADA1B0A350A00753AAB /* _OpenFrame.m in Sources */,
+				5AFC9B601B41950500D453D0 /* UIViewController+FileTransfer.m in Sources */,
 				5A9AC0041B0A370000753AAB /* FrameDetailsViewController.m in Sources */,
 				5AAC5C631A97C5DB001AFA3D /* NSLayoutConstraint+DWSExtensions.m in Sources */,
 				5A9AC0451B0A38B100753AAB /* ACTLabelButton.m in Sources */,
