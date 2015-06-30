@@ -592,7 +592,6 @@ static NSString *const kMatchChapter = @"chapter";
         [self.collectionView reloadData];
         // do whatever post processing you want (such as resetting what is "current" and what is "next")
     }];
-    
 }
 
 @end

@@ -54,8 +54,8 @@ static char const * const KeyAlertController = "KeyAlertController";
         
         // Create a sender and apply the update block
         __weak typeof(self) weakself = self;
-        self.sender = [[BluetoothFileSender alloc] initWithDataToSend:data updateBlock:^(float percent, BOOL connected) {
-            [weakself updateProgress:percent connected:connected finished:NO role:roleSend];
+        self.sender = [[BluetoothFileSender alloc] initWithDataToSend:data updateBlock:^(float percent, BOOL connected , BOOL complete) {
+            [weakself updateProgress:percent connected:connected finished:complete role:roleSend];
         }];
     }
 }
@@ -69,8 +69,8 @@ static char const * const KeyAlertController = "KeyAlertController";
     
     // Create a receiver and apply the update block
     __weak typeof(self) weakself = self;
-    self.receiver = [[BluetoothFileReceiver alloc] initWithUpdateBlock:^(float percent, BOOL connected) {
-        [weakself updateProgress:percent connected:connected finished:NO role:roleReceive];
+    self.receiver = [[BluetoothFileReceiver alloc] initWithUpdateBlock:^(float percent, BOOL connected, BOOL complete) {
+        [weakself updateProgress:percent connected:connected finished:complete role:roleReceive];
     }];
 }
 
@@ -136,21 +136,38 @@ static char const * const KeyAlertController = "KeyAlertController";
 #pragma mark - Progress Update
 - (void)updateProgress:(CGFloat)percent connected:(BOOL)connected finished:(BOOL)finished role:(TransferRole)role
 {
-    if (connected == YES) {
+    if (finished == YES) {
+        if (role == TransferRoleReceive) {
+            [self saveFile:self.receiver.receivedData];
+        }
+        else if (role == TransferRoleSend) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self dismissWithSuccess:YES];
+            });
+        }
+    }
+    else if (connected == YES) {
         NSString *activity = (role == TransferRoleSend) ? kSending : kReceiving;
         [self.alertController setTitle:activity];
         [self.alertController setMessage:[NSString stringWithFormat:@"%.2f%% complete.", percent*100]];
-    }
-    else if (finished == YES) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self dismissWithSuccess:YES];
-        });
     }
     else { // not connected!
         NSString *message = (role == TransferRoleSend) ? kTextSearchSender : kTextSearchReceive;
         [self.alertController setTitle:kTitleSearching];
         [self.alertController setMessage:message];
     }
+}
+
+#pragma mark - Process File
+
+- (void)saveFile:(NSData *)fileData
+{
+    BOOL success = NO;
+    if (fileData != nil) {
+        UFWFileImporter *importer = [[UFWFileImporter alloc] initWithData:fileData];
+        success = importer.importFile;
+    }
+    [self dismissWithSuccess:success];
 }
 
 #pragma mark - Dynamic Property Setters and Getters

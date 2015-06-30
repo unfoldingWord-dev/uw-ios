@@ -9,7 +9,7 @@
 import Foundation
 
 // Percent complete is an Int from 0 to 100. 100 indicates that the transfer is complete.
-typealias FileUpdateBlock = (percentComplete: Float, connected : Bool) -> ()
+typealias FileUpdateBlock = (percentComplete: Float, connected : Bool, complete : Bool) -> ()
 
 struct Constants {
     struct URLSource {

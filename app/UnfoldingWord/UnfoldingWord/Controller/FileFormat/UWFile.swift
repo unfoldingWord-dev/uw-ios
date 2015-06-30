@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 @objc final class UFWFile {
 
     let sourceDictionary: NSDictionary
@@ -17,10 +16,12 @@ import UIKit
     var fileData : NSData {
         get {
             var error : NSError?
-            if let data = NSJSONSerialization.dataWithJSONObject(sourceDictionary, options: nil, error: &error) {
-                return data
+            if let
+            data = NSJSONSerialization.dataWithJSONObject(sourceDictionary, options: nil, error: &error),
+            zipData = data.gzippedDataWithCompressionLevel(0.95) {
+                return zipData
             }
-            assertionFailure("Could not create data from dictionary \(sourceDictionary) \n\n error: \(error)")
+            assertionFailure("Could not create gzipped data from dictionary \(sourceDictionary) \n\n error: \(error)")
             return NSData()
         }
     }
@@ -58,15 +59,18 @@ import UIKit
     init(fileData : NSData) {
         var dictionary: NSDictionary?
         var error : NSError?
-        if let data = NSJSONSerialization.JSONObjectWithData(fileData, options: NSJSONReadingOptions.AllowFragments, error: &error) as? NSDictionary {
-            dictionary = data
+
+        if let unzippedData = fileData.gunzippedData() {
+            if let data = NSJSONSerialization.JSONObjectWithData(fileData, options: NSJSONReadingOptions.AllowFragments, error: &error) as? NSDictionary {
+                dictionary = data
+            }
         }
         
         switch (dictionary) {
         case .None:
             self.sourceDictionary = NSDictionary()
             self.isValid = false
-            assertionFailure("Could not create dictionary from data \(fileData) \n\n error: \(error)")
+            assertionFailure("Could not create dictionary from gzipped data \(fileData) \n\n error: \(error)")
         case .Some:
             self.sourceDictionary = dictionary!
             self.isValid = true

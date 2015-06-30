@@ -9,6 +9,9 @@
 import Foundation
 import CoreBluetooth
 
+// typealias FileUpdateBlock = (percentComplete: Float, connected : Bool, complete : Bool) -> ()
+
+
 @objc final class BluetoothFileReceiver : NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     lazy var manager : CBCentralManager = CBCentralManager(delegate: self, queue: nil)
@@ -30,12 +33,12 @@ import CoreBluetooth
     
     // This sends an update to via a non-optional progress block
     func updateProgress(connected: Bool) {
-        if self.receivedData.length == 0 {
-            self.updateBlock(percentComplete: 0, connected: connected)
+        if self.receivedData.length == 0 && self.finished == false {
+            self.updateBlock(percentComplete: 0, connected: connected, complete: self.finished)
         }
         else {
             let percent =  Float(self.receivedData.length) / Float(self.totalDataByteSize)
-            self.updateBlock(percentComplete: percent, connected: true);
+            self.updateBlock(percentComplete: percent, connected: connected, complete: self.finished)
         }
     }
     
@@ -48,6 +51,7 @@ import CoreBluetooth
     
     // Step 2: Start scanning for devices that have the service we want
     func scanForUnfoldingWordService() {
+        self.finished = false
         self.manager.scanForPeripheralsWithServices([CBUUID(string: Constants.Bluetooth.SERVICE_UUID)], options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])
     }
     
@@ -82,7 +86,6 @@ import CoreBluetooth
         // We found a peripheral that wants to send us data. Stop looking and discover services on the peripheral
         self.manager.stopScan()
         self.receivedData = NSMutableData()
-        self.finished = false
         peripheral.delegate = self
         peripheral.discoverServices([CBUUID(string: Constants.Bluetooth.SERVICE_UUID)])
         updateProgress(true)
@@ -130,11 +133,11 @@ import CoreBluetooth
                     self.finished = true
                     peripheral.setNotifyValue(false, forCharacteristic: characteristic)
                     self.manager.cancelPeripheralConnection(peripheral)
-                    updateProgress(true)
+                    updateProgress(false)
                     return
                 }
                 // If we don't have any data yet, then check whether we're getting a string that tells the file size.
-                if self.receivedData.length == 0 && dataAsString.rangeOfString(Constants.Bluetooth.MessageSize).location == 0 {
+                if self.receivedData.length == 0 && dataAsString.rangeOfString(Constants.Bluetooth.MessageSize).location != NSNotFound {
                     let sizeString : NSString = dataAsString.stringByReplacingOccurrencesOfString(Constants.Bluetooth.MessageSize, withString: "")
                     self.totalDataByteSize = sizeString.integerValue
                     updateProgress(true)
@@ -198,9 +201,6 @@ import CoreBluetooth
         self.updateProgress(false)
         if self.finished == false {
             scanForUnfoldingWordService()
-        }
-        else {
-            println("Done receiving file.")
         }
     }
     

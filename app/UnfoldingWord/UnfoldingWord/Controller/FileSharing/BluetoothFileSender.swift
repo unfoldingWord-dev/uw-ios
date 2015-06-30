@@ -13,6 +13,7 @@ enum SendStatus {
     case NotReady
     case ReadyToStart
     case InProgress
+    case Complete
 }
 
 @objc final class BluetoothFileSender : NSObject, CBPeripheralManagerDelegate {
@@ -35,12 +36,13 @@ enum SendStatus {
     
     // This sends an update to via a non-optional progress block
     func updateProgress(connected: Bool) {
+        let complete = (self.status == SendStatus.Complete) ? true : false
         if self.sendIndex <= 0 {
-            self.updateBlock(percentComplete: 0, connected: connected)
+            self.updateBlock(percentComplete: 0, connected: connected, complete: complete)
         }
         else {
             let percent =  Float(self.sendIndex) / Float(self.data.length)
-            self.updateBlock(percentComplete: percent, connected: true);
+            self.updateBlock(percentComplete: percent, connected: connected, complete: complete)
         }
     }
     
@@ -68,7 +70,6 @@ enum SendStatus {
     /** Catch when someone subscribes to our characteristic, then start sending them data
     */
     func peripheralManager(peripheral: CBPeripheralManager!, central: CBCentral!, didSubscribeToCharacteristic characteristic: CBCharacteristic!) {
-        println("Subscribed. start sending")
         self.sendIndex = 0
         self.status = SendStatus.ReadyToStart
         updateProgress(true)
@@ -76,7 +77,6 @@ enum SendStatus {
     }
     
     func peripheralManager(peripheral: CBPeripheralManager!, central: CBCentral!, didUnsubscribeFromCharacteristic characteristic: CBCharacteristic!) {
-        println("unsubscribed")
         self.status = SendStatus.NotReady
         updateProgress(false)
     }
@@ -94,8 +94,9 @@ enum SendStatus {
         if self.status == SendStatus.NotReady {
             return
         }
-        
-        updateProgress(true)
+        if self.status == SendStatus.Complete {
+            
+        }
         
         if let
             characteristic = self.characteristic
@@ -106,9 +107,10 @@ enum SendStatus {
                         let success = self.manager.updateValue(size, forCharacteristic: characteristic, onSubscribedCentrals: nil)
                         if success == true {
                             self.status = SendStatus.InProgress
+                            updateProgress(true)
                         }
                         else {
-                            break;
+                            break
                         }
                     }
                 }
@@ -116,7 +118,10 @@ enum SendStatus {
                 if self.sendIndex >= data.length { // Send a done transfer message
                     let eom = Constants.Bluetooth.EndOfMessage.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
                     if manager.updateValue(eom, forCharacteristic: characteristic, onSubscribedCentrals: nil) {
-                        break;
+                        self.status = SendStatus.Complete
+                        updateProgress(true)
+                        stopAll()
+                        break
                     }
                 }
                 else { // this is the only part that transmits the actual data
@@ -128,16 +133,21 @@ enum SendStatus {
                         updateProgress(true)
                     }
                     else {
-                        break;
+                        break
                     }
                 }
             } while true
         }
     }
     
-    deinit {
+    func stopAll() {
         self.manager.stopAdvertising()
         self.manager.removeAllServices()
+
+    }
+    
+    deinit {
+        stopAll()
     }
     
 }
