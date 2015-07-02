@@ -38,4 +38,13 @@ struct Constants {
         static let EndOfMessage = "-_EOM_-"
         static let MessageSize = "-_SIZE_-"
     }
+    
+    struct MultiConnect {
+        static let KeyPathFractionCompleted = "fractionCompleted"
+        static let ServiceType = "ufw-mc-service"
+        static let PeerDisplaySender = "UnfoldingWord Sender"
+        static let PeerDisplayReceiver = "UnfoldingWord Receiver"
+        static let FilePathSend = "FileToSend.json"
+        static let FilePathReceive = "FileToReceive.json"
+    }
 }

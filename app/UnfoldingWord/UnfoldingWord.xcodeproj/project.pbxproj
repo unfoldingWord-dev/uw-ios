@@ -897,6 +897,8 @@
 		5AC3DCB71B1F751000703AA2 /* ACTSimpleChapterNumberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3DCB51B1F751000703AA2 /* ACTSimpleChapterNumberCell.m */; };
 		5AC3DCB81B1F751000703AA2 /* ACTSimpleChapterNumberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5AC3DCB61B1F751000703AA2 /* ACTSimpleChapterNumberCell.xib */; };
 		5AC9E74D1B20F827001840A0 /* langnames2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5AC9E74C1B20F827001840A0 /* langnames2.plist */; };
+		5AD0B49F1B445642006ABD21 /* MultiConnectSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD0B49E1B445642006ABD21 /* MultiConnectSender.swift */; };
+		5AD0B4A11B45CB68006ABD21 /* MultiConnectReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD0B4A01B45CB68006ABD21 /* MultiConnectReceiver.swift */; };
 		5AEDC62F1AFC1E0B00C722B9 /* UFWLanguageInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AEDC62D1AFC1E0B00C722B9 /* UFWLanguageInfo.m */; };
 		5AEDC6321AFC20CA00C722B9 /* LanguageInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AEDC6311AFC20CA00C722B9 /* LanguageInfoController.m */; };
 		5AEDC6F11B068B0200551D27 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AEDC6F01B068B0200551D27 /* SystemConfiguration.framework */; };
@@ -1888,6 +1890,8 @@
 		5AC3DCB51B1F751000703AA2 /* ACTSimpleChapterNumberCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACTSimpleChapterNumberCell.m; sourceTree = "<group>"; };
 		5AC3DCB61B1F751000703AA2 /* ACTSimpleChapterNumberCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACTSimpleChapterNumberCell.xib; sourceTree = "<group>"; };
 		5AC9E74C1B20F827001840A0 /* langnames2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = langnames2.plist; sourceTree = "<group>"; };
+		5AD0B49E1B445642006ABD21 /* MultiConnectSender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiConnectSender.swift; sourceTree = "<group>"; };
+		5AD0B4A01B45CB68006ABD21 /* MultiConnectReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiConnectReceiver.swift; sourceTree = "<group>"; };
 		5AEDC62C1AFC1E0B00C722B9 /* UFWLanguageInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFWLanguageInfo.h; sourceTree = "<group>"; };
 		5AEDC62D1AFC1E0B00C722B9 /* UFWLanguageInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UFWLanguageInfo.m; sourceTree = "<group>"; };
 		5AEDC6301AFC20CA00C722B9 /* LanguageInfoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageInfoController.h; sourceTree = "<group>"; };
@@ -3342,6 +3346,8 @@
 				5AC377CE1B38744500E3BB36 /* FileActivityController.swift */,
 				5AC377D01B38C38300E3BB36 /* BluetoothFileSender.swift */,
 				5AC377D21B38C62C00E3BB36 /* BluetoothFileReceiver.swift */,
+				5AD0B49E1B445642006ABD21 /* MultiConnectSender.swift */,
+				5AD0B4A01B45CB68006ABD21 /* MultiConnectReceiver.swift */,
 			);
 			path = FileSharing;
 			sourceTree = "<group>";
@@ -4524,6 +4530,7 @@
 				5A9ABADA1B0A350A00753AAB /* _OpenFrame.m in Sources */,
 				5AFC9B601B41950500D453D0 /* UIViewController+FileTransfer.m in Sources */,
 				5A9AC0041B0A370000753AAB /* FrameDetailsViewController.m in Sources */,
+				5AD0B4A11B45CB68006ABD21 /* MultiConnectReceiver.swift in Sources */,
 				5AAC5C631A97C5DB001AFA3D /* NSLayoutConstraint+DWSExtensions.m in Sources */,
 				5A9AC0451B0A38B100753AAB /* ACTLabelButton.m in Sources */,
 				5A9ABAD71B0A350A00753AAB /* _OpenAppWordsList.m in Sources */,
@@ -4557,6 +4564,7 @@
 				5A9AC04E1B0A38B100753AAB /* UFWBaseUrlCell.m in Sources */,
 				5A9AC00B1B0A370000753AAB /* UFWTextChapterVC.m in Sources */,
 				5A9ABADB1B0A350A00753AAB /* _USFMInfo.m in Sources */,
+				5AD0B49F1B445642006ABD21 /* MultiConnectSender.swift in Sources */,
 				5ABFFD4B1B34882F006FB166 /* UWFileExporter.swift in Sources */,
 				5ABFFD4C1B34882F006FB166 /* UWFileImporter.swift in Sources */,
 				5A36D3BB1B223FD8001D6E04 /* UFWFirstLaunchInfoVC.m in Sources */,

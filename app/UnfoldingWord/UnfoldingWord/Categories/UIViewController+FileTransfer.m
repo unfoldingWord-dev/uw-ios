@@ -130,6 +130,9 @@ static char const * const KeyAlertController = "KeyAlertController";
         if (success) {
             [[[UIAlertView alloc] initWithTitle:@"Success!" message:@"Your file was successfully transmitted!" delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
         }
+        else {
+            [[[UIAlertView alloc] initWithTitle:@"Failure" message:@"There was an error transmitting this file." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
+        }
     }];
 }
 
@@ -138,7 +141,11 @@ static char const * const KeyAlertController = "KeyAlertController";
 {
     if (finished == YES) {
         if (role == TransferRoleReceive) {
-            [self saveFile:self.receiver.receivedData];
+            [self.alertController setTitle:@"Importing"];
+            [self.alertController setMessage:@"Importing and saving the received file."];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self saveFile:self.receiver.receivedData];
+            });
         }
         else if (role == TransferRoleSend) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
