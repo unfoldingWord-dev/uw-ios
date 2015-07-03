@@ -43,6 +43,7 @@ import MultipeerConnectivity
     func browse() {
         self.browser = MCNearbyServiceBrowser(peer: self.localPeer, serviceType: Constants.MultiConnect.ServiceType)
         self.browser?.delegate = self
+        self.browser?.startBrowsingForPeers()
     }
     
     // MCNearbyServiceBrowserDelegate Methods
@@ -51,10 +52,13 @@ import MultipeerConnectivity
     }
     
     func browser(browser: MCNearbyServiceBrowser!, foundPeer peerID: MCPeerID!, withDiscoveryInfo info: [NSObject : AnyObject]!) {
-        browser?.stopBrowsingForPeers()
+        browser.stopBrowsingForPeers()
         updateProgressWithConnected(true, percent: 0, complete: false, error: false)
-        self.session = MCSession(peer: peerID)
-
+        if let session = MCSession(peer: peerID) {
+            self.session = session
+            session.delegate = self
+            browser.invitePeer(peerID, toSession: session, withContext: nil, timeout: 10.0) 
+         }
     }
     
     func browser(browser: MCNearbyServiceBrowser!, lostPeer peerID: MCPeerID!) {
@@ -118,7 +122,9 @@ import MultipeerConnectivity
     
     
     func session(session: MCSession!, peer peerID: MCPeerID!, didChangeState state: MCSessionState) {
-        // not used with sendResourceAtURL
+        if state == MCSessionState.NotConnected && session == self.session {
+            self.browser?.startBrowsingForPeers()
+        }
     }
     
     // Helpers

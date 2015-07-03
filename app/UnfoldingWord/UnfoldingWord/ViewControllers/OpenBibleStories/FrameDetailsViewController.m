@@ -101,7 +101,6 @@ static NSString *const kMatchChapter = @"chapter";
     //
     //    self.navigationItem.rightBarButtonItems = @[bbiShare, bbiVersion, bbiStatus];
     
-    
 # warning Temporarily - delete this, then uncomment code above this
     UIBarButtonItem *bbiSend = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStylePlain target:self action:@selector(send:)];
     UIBarButtonItem *bbiReceive = [[UIBarButtonItem alloc] initWithTitle:@"Receive" style:UIBarButtonItemStylePlain target:self action:@selector(receive:)];
@@ -110,12 +109,12 @@ static NSString *const kMatchChapter = @"chapter";
 
 - (void)send:(id)sender
 {
-    [self transferFileForVersion:self.chapter.container.toc.version transferType:TransferTypeBluetooth role:TransferRoleSend];
+    [self transferFileForVersion:self.chapter.container.toc.version transferType:TransferTypeWireless role:TransferRoleSend];
 }
 
 - (void)receive:(id)receiver
 {
-        [self transferFileForVersion:nil transferType:TransferTypeBluetooth role:TransferRoleReceive];
+        [self transferFileForVersion:nil transferType:TransferTypeWireless role:TransferRoleReceive];
 }
 
 - (void)updateNavTitle

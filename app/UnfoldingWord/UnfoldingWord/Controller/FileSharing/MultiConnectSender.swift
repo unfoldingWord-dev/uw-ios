@@ -49,6 +49,7 @@ import MultipeerConnectivity
         self.advertiser = MCNearbyServiceAdvertiser(peer: self.localPeer, discoveryInfo: nil, serviceType: Constants.MultiConnect.ServiceType)
         if let advertiser = self.advertiser {
             advertiser.delegate = self
+            advertiser.startAdvertisingPeer() 
         }
     }
     
@@ -98,9 +99,12 @@ import MultipeerConnectivity
     func advertiser(advertiser: MCNearbyServiceAdvertiser!, didReceiveInvitationFromPeer peerID: MCPeerID!, withContext context: NSData!, invitationHandler: ((Bool, MCSession!) -> Void)!) {
         if peerID.displayName == Constants.MultiConnect.PeerDisplayReceiver {
             if let createdSession = MCSession(peer: self.localPeer, securityIdentity: nil, encryptionPreference: MCEncryptionPreference.Required) {
+                if let advertiser = self.advertiser {
+                    advertiser.stopAdvertisingPeer()
+                }
                 self.session = createdSession
                 createdSession.delegate = self
-                invitationHandler(true, self.session)
+                invitationHandler(true, createdSession)
                 return;
             }
         }
@@ -127,7 +131,9 @@ import MultipeerConnectivity
     
     
     func session(session: MCSession!, peer peerID: MCPeerID!, didChangeState state: MCSessionState) {
-        // not used with sendResourceAtURL
+        if state == MCSessionState.Connected && session == self.session {
+            startSendingFileToPeer(peerID)
+        }
     }
     
     // Helpers

@@ -46,6 +46,16 @@ static char const * const KeyAlertController = "KeyAlertController";
                 break;
         }
     }
+    if (type == TransferTypeWireless) {
+        switch (role) {
+            case TransferRoleSend:
+                [self sendWirelessUWVersion:version];
+                break;
+            case TransferRoleReceive:
+                [self receiveWireless];
+                break;
+        }
+    }
 }
 
 - (void)sendWirelessUWVersion:(UWVersion *)version {
