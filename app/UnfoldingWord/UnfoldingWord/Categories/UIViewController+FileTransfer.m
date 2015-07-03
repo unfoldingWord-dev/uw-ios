@@ -17,14 +17,19 @@ static NSString *const kSending = @"Sending...";
 static NSString *const kReceiving = @"Receiving...";
 
 // Dynamic Setter Keys
-static char const * const KeySender = "KeySender";
-static char const * const KeyReceiver = "KeyReceiver";
+static char const * const KeyBTSender = "KeyBTSender";
+static char const * const KeyBTReceiver = "KeyBTReceiver";
+static char const * const KeyMCSender = "KeyMCSender";
+static char const * const KeyMCReceiver = "KeyMCReceiver";
+
 static char const * const KeyAlertController = "KeyAlertController";
 
 @implementation UIViewController (FileTransfer)
 
-@dynamic sender;
-@dynamic receiver;
+@dynamic senderBT;
+@dynamic receiverBT;
+@dynamic senderMC;
+@dynamic receiverMC;
 @dynamic alertController;
 
 - (void)transferFileForVersion:(UWVersion *)version transferType:(TransferType)type role:(TransferRole)role
@@ -43,6 +48,37 @@ static char const * const KeyAlertController = "KeyAlertController";
     }
 }
 
+- (void)sendWirelessUWVersion:(UWVersion *)version {
+    NSData *data = [self dataForVersion:version];
+    if (data) {
+        // Set up progress indicator using alert controller
+        TransferRole roleSend = TransferRoleSend;
+        [self presentAlertController];
+        [self updateProgress:0 connected:NO finished:NO role:roleSend type:TransferTypeWireless];
+        
+        // Create a sender and apply the update block
+        __weak typeof(self) weakself = self;
+        self.senderMC = [[MultiConnectSender alloc] initWithDataToSend:data filename:version.name updateBlock:^(float percent, BOOL connected , BOOL complete) {
+            [weakself updateProgress:percent connected:connected finished:complete role:roleSend type:TransferTypeWireless];
+        }];
+    }
+}
+
+- (void)receiveWireless
+{
+    // Set up progress indicator using alert controller
+    TransferRole roleReceive = TransferRoleReceive;
+    [self presentAlertController];
+    [self updateProgress:0 connected:NO finished:NO role:roleReceive type:TransferTypeWireless];
+    
+    // Create a receiver and apply the update block
+    __weak typeof(self) weakself = self;
+    self.receiverMC = [[MultiConnectReceiver alloc] initWithUpdateBlock:^(float percent, BOOL connected, BOOL complete) {
+        [weakself updateProgress:percent connected:connected finished:complete role:roleReceive type:TransferTypeWireless];
+    }];
+    
+}
+
 - (void)sendBluetoothUWVersion:(UWVersion *)version
 {
     NSData *data = [self dataForVersion:version];
@@ -50,12 +86,12 @@ static char const * const KeyAlertController = "KeyAlertController";
     if (data) {
         // Set up progress indicator using alert controller
         [self presentAlertController];
-        [self updateProgress:0 connected:NO finished:NO role:roleSend];
+        [self updateProgress:0 connected:NO finished:NO role:roleSend type:TransferTypeBluetooth];
         
         // Create a sender and apply the update block
         __weak typeof(self) weakself = self;
-        self.sender = [[BluetoothFileSender alloc] initWithDataToSend:data updateBlock:^(float percent, BOOL connected , BOOL complete) {
-            [weakself updateProgress:percent connected:connected finished:complete role:roleSend];
+        self.senderBT = [[BluetoothFileSender alloc] initWithDataToSend:data updateBlock:^(float percent, BOOL connected , BOOL complete) {
+            [weakself updateProgress:percent connected:connected finished:complete role:roleSend type:TransferTypeBluetooth];
         }];
     }
 }
@@ -65,12 +101,12 @@ static char const * const KeyAlertController = "KeyAlertController";
     // Set up progress indicator using alert controller
     TransferRole roleReceive = TransferRoleReceive;
     [self presentAlertController];
-    [self updateProgress:0 connected:NO finished:NO role:roleReceive];
+    [self updateProgress:0 connected:NO finished:NO role:roleReceive type:TransferTypeBluetooth];
     
     // Create a receiver and apply the update block
     __weak typeof(self) weakself = self;
-    self.receiver = [[BluetoothFileReceiver alloc] initWithUpdateBlock:^(float percent, BOOL connected, BOOL complete) {
-        [weakself updateProgress:percent connected:connected finished:complete role:roleReceive];
+    self.receiverBT = [[BluetoothFileReceiver alloc] initWithUpdateBlock:^(float percent, BOOL connected, BOOL complete) {
+        [weakself updateProgress:percent connected:connected finished:complete role:roleReceive type:TransferTypeBluetooth];
     }];
 }
 
@@ -93,8 +129,8 @@ static char const * const KeyAlertController = "KeyAlertController";
 {
     void (^cleanup)() = ^void() {
         [UIApplication sharedApplication].idleTimerDisabled = NO;
-        self.sender = nil;
-        self.receiver = nil;
+        self.senderBT = nil;
+        self.receiverBT = nil;
         self.alertController = nil;
     };
     
@@ -137,14 +173,25 @@ static char const * const KeyAlertController = "KeyAlertController";
 }
 
 #pragma mark - Progress Update
-- (void)updateProgress:(CGFloat)percent connected:(BOOL)connected finished:(BOOL)finished role:(TransferRole)role
+- (void)updateProgress:(CGFloat)percent connected:(BOOL)connected finished:(BOOL)finished role:(TransferRole)role type:(TransferType)type
 {
     if (finished == YES) {
         if (role == TransferRoleReceive) {
             [self.alertController setTitle:@"Importing"];
             [self.alertController setMessage:@"Importing and saving the received file."];
+            
+            NSData *data = nil;
+            switch (type) {
+                case TransferTypeBluetooth:
+                    data = self.receiverBT.receivedData;
+                case TransferTypeWireless:
+                    data = self.receiverMC.receivedFileData;
+                default:
+                    break;
+            }
+            
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self saveFile:self.receiver.receivedData];
+                [self saveFile:data];
             });
         }
         else if (role == TransferRoleSend) {
@@ -179,24 +226,44 @@ static char const * const KeyAlertController = "KeyAlertController";
 
 #pragma mark - Dynamic Property Setters and Getters
 
-- (BluetoothFileSender *)sender
+- (MultiConnectSender *)senderMC
 {
-    return objc_getAssociatedObject(self, KeySender);
+    return objc_getAssociatedObject(self, KeyMCSender);
 }
 
-- (void)setSender:(BluetoothFileSender *)sender
+- (void)setSenderMC:(MultiConnectSender *)senderMC
 {
-    objc_setAssociatedObject(self, KeySender, sender, OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, KeyMCSender, senderMC, OBJC_ASSOCIATION_RETAIN);
 }
 
-- (BluetoothFileReceiver *)receiver
+- (MultiConnectReceiver *)receiverMC
 {
-    return objc_getAssociatedObject(self, KeyReceiver);
+    return objc_getAssociatedObject(self, KeyMCReceiver);
 }
 
-- (void)setReceiver:(BluetoothFileReceiver *)receiver
+- (void)setReceiverMC:(MultiConnectReceiver *)receiverMC
 {
-    objc_setAssociatedObject(self, KeyReceiver, receiver, OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, KeyMCReceiver, receiverMC, OBJC_ASSOCIATION_RETAIN);
+}
+
+- (BluetoothFileSender *)senderBT
+{
+    return objc_getAssociatedObject(self, KeyBTSender);
+}
+
+- (void)setSenderBT:(BluetoothFileSender *)sender
+{
+    objc_setAssociatedObject(self, KeyBTSender, sender, OBJC_ASSOCIATION_RETAIN);
+}
+
+- (BluetoothFileReceiver *)receiverBT
+{
+    return objc_getAssociatedObject(self, KeyBTReceiver);
+}
+
+- (void)setReceiverBT:(BluetoothFileReceiver *)receiver
+{
+    objc_setAssociatedObject(self, KeyBTReceiver, receiver, OBJC_ASSOCIATION_RETAIN);
 }
 
 - (UIAlertController *)alertController
