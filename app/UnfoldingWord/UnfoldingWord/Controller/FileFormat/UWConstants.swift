@@ -29,7 +29,7 @@ struct Constants {
     
     static let SignatureFileAppend = ".sig" // duplicated in Constants.h
     
-    static let FileExtension = "ufw"
+    static let FileExtensionUFW = "ufw" // duplicated in Constants.h
     
     struct Bluetooth {
         static let SERVICE_UUID = "5440DDE8-3C15-4E96-A949-25F062A0142E"
@@ -47,4 +47,9 @@ struct Constants {
         static let FilePathSend = "FileToSend.json"
         static let FilePathReceive = "FileToReceive.json"
     }
+    
+    struct ITunes {
+        static let FilenameFiles = "ProcessedITunesFiles.archive"
+    }
 }
+

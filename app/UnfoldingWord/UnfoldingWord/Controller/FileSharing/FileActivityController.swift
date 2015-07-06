@@ -72,7 +72,7 @@ import UIKit
     }
     
     private func tempFileURL() -> NSURL? {
-        if let completeFilename = filename().stringByAppendingPathExtension(Constants.FileExtension) {
+        if let completeFilename = filename().stringByAppendingPathExtension(Constants.FileExtensionUFW) {
             let path = NSString.cachesDirectory().stringByAppendingPathComponent(completeFilename)
             return NSURL(fileURLWithPath: path)
         }

@@ -58,6 +58,11 @@
     return documentsDirectory;
 }
 
++ (NSString *)appDocumentsDirectory
+{
+   return  NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+}
+
 + (NSString *)cachesDirectory
 {
     return [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];

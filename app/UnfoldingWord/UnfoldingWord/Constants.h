@@ -32,3 +32,5 @@
 #define IMAGE_VERIFY_EXPIRE @"verifyExpired.png"
 
 static NSString *const SignatureFileAppend = @".sig"; // duplicated in Constants.swift
+
+static NSString *const FileExtensionUFW = @"ufw"; // duplicated in Constants.h

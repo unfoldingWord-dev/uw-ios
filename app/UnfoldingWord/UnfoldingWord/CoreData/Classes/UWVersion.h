@@ -43,5 +43,7 @@ extern NSString *const kNotificationVersionContentDelete;
 /// Returns a json representation of the version and its status information and TOC object array.
 - (NSDictionary *)jsonRepresention;
 
+/// A filename to use to display for the user. This filename is not guaranteed to be unique, but it generally will be.
+- (NSString *)filename;
 
 @end

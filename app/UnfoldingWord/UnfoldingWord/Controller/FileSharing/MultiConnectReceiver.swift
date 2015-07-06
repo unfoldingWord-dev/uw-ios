@@ -52,12 +52,15 @@ import MultipeerConnectivity
     }
     
     func browser(browser: MCNearbyServiceBrowser!, foundPeer peerID: MCPeerID!, withDiscoveryInfo info: [NSObject : AnyObject]!) {
+        
         browser.stopBrowsingForPeers()
-        updateProgressWithConnected(true, percent: 0, complete: false, error: false)
-        if let session = MCSession(peer: peerID) {
+        if let session = self.session {             // We already have a session
+            return;
+        }
+        else if let session = MCSession(peer: localPeer) {
             self.session = session
             session.delegate = self
-            browser.invitePeer(peerID, toSession: session, withContext: nil, timeout: 10.0) 
+            browser.invitePeer(peerID, toSession: session, withContext: nil, timeout: 30.0)
          }
     }
     
@@ -122,9 +125,17 @@ import MultipeerConnectivity
     
     
     func session(session: MCSession!, peer peerID: MCPeerID!, didChangeState state: MCSessionState) {
-        if state == MCSessionState.NotConnected && session == self.session {
+        if state == MCSessionState.NotConnected {
+            self.session = nil
             self.browser?.startBrowsingForPeers()
         }
+        if state == MCSessionState.Connected {
+            updateProgressWithConnected(true, percent: 0, complete: false, error: false)
+        }
+    }
+    
+    func session( session: MCSession!, didReceiveCertificate certificate: [AnyObject]!, fromPeer peerID: MCPeerID!,  certificateHandler: ((Bool) -> Void)!) {
+        certificateHandler(true)
     }
     
     // Helpers

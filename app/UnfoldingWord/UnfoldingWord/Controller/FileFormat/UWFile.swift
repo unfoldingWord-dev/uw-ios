@@ -61,7 +61,7 @@ import UIKit
         var error : NSError?
 
         if let unzippedData = fileData.gunzippedData() {
-            if let data = NSJSONSerialization.JSONObjectWithData(fileData, options: NSJSONReadingOptions.AllowFragments, error: &error) as? NSDictionary {
+            if let data = NSJSONSerialization.JSONObjectWithData(unzippedData, options: NSJSONReadingOptions.AllowFragments, error: &error) as? NSDictionary {
                 dictionary = data
             }
         }

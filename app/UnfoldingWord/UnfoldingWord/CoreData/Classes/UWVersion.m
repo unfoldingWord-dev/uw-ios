@@ -4,6 +4,7 @@
 
 #import "UWVersion.h"
 #import "UWCoreDataClasses.h"
+#import "Constants.h"
 
 static NSString *const kSlug = @"slug";
 static NSString *const kModifiedDate = @"mod";
@@ -42,6 +43,11 @@ NSString *const kKeyVersionId = @"__kKeyVersionId";
         }
     }
     return nil;
+}
+
+- (NSString *)filename {
+    
+    return [NSString stringWithFormat:@"%@_%@_%@.%@", self.language.topContainer.title, self.name, self.language.lc, FileExtensionUFW];
 }
 
 - (void)updateWithDictionary:(NSDictionary *)dictionary

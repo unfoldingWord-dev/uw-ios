@@ -899,6 +899,8 @@
 		5AC9E74D1B20F827001840A0 /* langnames2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5AC9E74C1B20F827001840A0 /* langnames2.plist */; };
 		5AD0B49F1B445642006ABD21 /* MultiConnectSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD0B49E1B445642006ABD21 /* MultiConnectSender.swift */; };
 		5AD0B4A11B45CB68006ABD21 /* MultiConnectReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD0B4A01B45CB68006ABD21 /* MultiConnectReceiver.swift */; };
+		5AD3CBE41B4A182D003F5F33 /* ITunesSharingReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD3CBE31B4A182D003F5F33 /* ITunesSharingReceiver.swift */; };
+		5AD3CBE61B4A185B003F5F33 /* ITunesSharingSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD3CBE51B4A185B003F5F33 /* ITunesSharingSender.swift */; };
 		5AEDC62F1AFC1E0B00C722B9 /* UFWLanguageInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AEDC62D1AFC1E0B00C722B9 /* UFWLanguageInfo.m */; };
 		5AEDC6321AFC20CA00C722B9 /* LanguageInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AEDC6311AFC20CA00C722B9 /* LanguageInfoController.m */; };
 		5AEDC6F11B068B0200551D27 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AEDC6F01B068B0200551D27 /* SystemConfiguration.framework */; };
@@ -909,8 +911,6 @@
 		5AFC90421AFACAE20012D177 /* UIView+ACTQuickLook.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFC90411AFACAE20012D177 /* UIView+ACTQuickLook.m */; };
 		5AFC9B601B41950500D453D0 /* UIViewController+FileTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFC9B5F1B41950500D453D0 /* UIViewController+FileTransfer.m */; };
 		5AFC9B671B41D1DC00D453D0 /* GZIP.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFC9B641B41D1DC00D453D0 /* GZIP.m */; };
-		5AFC9B681B41D1DC00D453D0 /* LICENCE.md in Sources */ = {isa = PBXBuildFile; fileRef = 5AFC9B651B41D1DC00D453D0 /* LICENCE.md */; };
-		5AFC9B691B41D1DC00D453D0 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 5AFC9B661B41D1DC00D453D0 /* README.md */; };
 		5AFC9B6B1B41D2FB00D453D0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AFC9B6A1B41D2FB00D453D0 /* libz.dylib */; };
 		5AFDC3391AF1366C002F58A0 /* NSManagedObject+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFDC3381AF1366C002F58A0 /* NSManagedObject+Convenience.m */; };
 		6392585F1A24506500B5B8D2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6392585E1A24506500B5B8D2 /* main.m */; };
@@ -1892,6 +1892,8 @@
 		5AC9E74C1B20F827001840A0 /* langnames2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = langnames2.plist; sourceTree = "<group>"; };
 		5AD0B49E1B445642006ABD21 /* MultiConnectSender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiConnectSender.swift; sourceTree = "<group>"; };
 		5AD0B4A01B45CB68006ABD21 /* MultiConnectReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiConnectReceiver.swift; sourceTree = "<group>"; };
+		5AD3CBE31B4A182D003F5F33 /* ITunesSharingReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITunesSharingReceiver.swift; sourceTree = "<group>"; };
+		5AD3CBE51B4A185B003F5F33 /* ITunesSharingSender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITunesSharingSender.swift; sourceTree = "<group>"; };
 		5AEDC62C1AFC1E0B00C722B9 /* UFWLanguageInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFWLanguageInfo.h; sourceTree = "<group>"; };
 		5AEDC62D1AFC1E0B00C722B9 /* UFWLanguageInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UFWLanguageInfo.m; sourceTree = "<group>"; };
 		5AEDC6301AFC20CA00C722B9 /* LanguageInfoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageInfoController.h; sourceTree = "<group>"; };
@@ -3348,6 +3350,8 @@
 				5AC377D21B38C62C00E3BB36 /* BluetoothFileReceiver.swift */,
 				5AD0B49E1B445642006ABD21 /* MultiConnectSender.swift */,
 				5AD0B4A01B45CB68006ABD21 /* MultiConnectReceiver.swift */,
+				5AD3CBE31B4A182D003F5F33 /* ITunesSharingReceiver.swift */,
+				5AD3CBE51B4A185B003F5F33 /* ITunesSharingSender.swift */,
 			);
 			path = FileSharing;
 			sourceTree = "<group>";
@@ -4504,7 +4508,6 @@
 				5ABFFD491B34882F006FB166 /* UWConstants.swift in Sources */,
 				5A9ABAEB1B0A350A00753AAB /* DWSCoreDataStack.m in Sources */,
 				5AEDC62F1AFC1E0B00C722B9 /* UFWLanguageInfo.m in Sources */,
-				5AFC9B681B41D1DC00D453D0 /* LICENCE.md in Sources */,
 				5A3E553D1A9D4CB700D1D920 /* DWImageGetter.m in Sources */,
 				5A9AC0461B0A38B100753AAB /* UFWLanguageNameCell.m in Sources */,
 				5A9AC0411B0A38B100753AAB /* USFMChapterCell.m in Sources */,
@@ -4524,9 +4527,11 @@
 				5A9AC0011B0A370000753AAB /* UFWStatusInfoViewController.m in Sources */,
 				5A9AC03B1B0A38B100753AAB /* EmptyCell.m in Sources */,
 				5A9ABADD1B0A350A00753AAB /* _UWStatus.m in Sources */,
+				5AD3CBE61B4A185B003F5F33 /* ITunesSharingSender.swift in Sources */,
 				5AC377D11B38C38300E3BB36 /* BluetoothFileSender.swift in Sources */,
 				5A9AC0431B0A38B100753AAB /* UFWInfoView.m in Sources */,
 				5A8DCB971B02601A0010DD27 /* UFWSelectionTracker.m in Sources */,
+				5AD3CBE41B4A182D003F5F33 /* ITunesSharingReceiver.swift in Sources */,
 				5A9ABADA1B0A350A00753AAB /* _OpenFrame.m in Sources */,
 				5AFC9B601B41950500D453D0 /* UIViewController+FileTransfer.m in Sources */,
 				5A9AC0041B0A370000753AAB /* FrameDetailsViewController.m in Sources */,
@@ -4559,7 +4564,6 @@
 				5A7ECE201AFD2C08002C94AD /* NSBundle+DWSExtensions.m in Sources */,
 				5A9ABAE41B0A350A00753AAB /* OpenFrame.m in Sources */,
 				5A9AC00A1B0A370000753AAB /* UFWChapterPickerUSFMTableVC.m in Sources */,
-				5AFC9B691B41D1DC00D453D0 /* README.md in Sources */,
 				5A82BA721AF928E100C5044E /* UFWImporterUSFMEncoding.m in Sources */,
 				5A9AC04E1B0A38B100753AAB /* UFWBaseUrlCell.m in Sources */,
 				5A9AC00B1B0A370000753AAB /* UFWTextChapterVC.m in Sources */,

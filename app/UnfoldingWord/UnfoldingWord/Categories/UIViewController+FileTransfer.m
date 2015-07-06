@@ -229,7 +229,9 @@ static char const * const KeyAlertController = "KeyAlertController";
     BOOL success = NO;
     if (fileData != nil) {
         UFWFileImporter *importer = [[UFWFileImporter alloc] initWithData:fileData];
-        success = importer.importFile;
+        if (importer.file.isValid) {
+            success = importer.importFile;
+        }
     }
     [self dismissWithSuccess:success];
 }
