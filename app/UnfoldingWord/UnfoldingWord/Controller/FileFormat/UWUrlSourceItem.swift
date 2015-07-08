@@ -36,7 +36,7 @@ struct UrlSourceItem {
             {
                 if let // If the top level is a dictionary with an object for the open bible stories, assign that open bible type
                     dictionary = json as? NSDictionary,
-                    book = dictionary[Constants.URLSource.open_chapter] as? NSString
+                    book = dictionary[Constants.URLSource.open_chapter] as? NSArray
                 {
                     return UrlContentType.OpenBibleStories(content)
                 }
