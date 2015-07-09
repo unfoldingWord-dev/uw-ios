@@ -109,7 +109,14 @@ static NSString *const kMatchChapter = @"chapter";
 
 - (void)send:(id)sender
 {
-    [self transferFileForVersion:self.chapter.container.toc.version transferType:TransferTypeWireless role:TransferRoleSend];
+    FileActivityController *fileController = [[FileActivityController alloc] initWithVersion:self.chapter.container.toc.version];
+    UIActivityViewController *activityController = fileController.activityViewController;
+    activityController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
+        
+    };
+    
+    [self presentViewController:activityController animated:YES completion:^{}];
+    
 }
 
 - (void)receive:(id)receiver
@@ -204,7 +211,7 @@ static NSString *const kMatchChapter = @"chapter";
     UIActivityViewController *activityVC = [fileController activityViewController];
     activityVC.popoverPresentationController.barButtonItem = activityBarButtonItem;
     [activityVC setCompletionWithItemsHandler:^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
-        [fileController cleanup];
+        [fileController  cleanup];
     }];
     [self presentViewController:activityVC animated:YES completion:^{}];
 }

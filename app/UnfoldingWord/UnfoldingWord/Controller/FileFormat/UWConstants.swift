@@ -48,6 +48,17 @@ struct Constants {
         static let FilePathReceive = "FileToReceive.json"
     }
     
+    struct Activity {
+        static let BluetoothSend = "BluetoothSend"
+        static let BluetoothReceive = "BluetoothReceive"
+        
+        static let MultiConnectSend = "MultiConnectSend"
+        static let MultiConnectReceive = "MultiConnectReceive"
+
+        static let iTunesSend = "iTunesSend"
+        static let iTunesReceive = "iTunesReceive"
+    }
+    
     struct ITunes {
         static let FilenameFiles = "ProcessedITunesFiles.archive"
     }

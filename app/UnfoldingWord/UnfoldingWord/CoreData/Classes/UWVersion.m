@@ -45,9 +45,16 @@ NSString *const kKeyVersionId = @"__kKeyVersionId";
     return nil;
 }
 
-- (NSString *)filename {
-    
-    return [NSString stringWithFormat:@"%@_%@_%@.%@", self.language.topContainer.title, self.name, self.language.lc, FileExtensionUFW];
+- (NSString *)filename
+{
+    UWTOC *toc = self.toc.anyObject;
+    OpenContainer *openCont = toc.openContainer;
+    if (openCont == nil) {
+        return [NSString stringWithFormat:@"%@_%@_%@.%@", self.language.topContainer.title, self.name, self.language.lc, FileExtensionUFW];
+    }
+    else {
+        return [NSString stringWithFormat:@"%@_%@.%@", self.name, self.language.lc, FileExtensionUFW];
+    }
 }
 
 - (void)updateWithDictionary:(NSDictionary *)dictionary

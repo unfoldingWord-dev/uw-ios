@@ -28,6 +28,7 @@
 		5A3E553C1A9D4CB700D1D920 /* DWImageFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3E55371A9D4CB700D1D920 /* DWImageFileManager.m */; };
 		5A3E553D1A9D4CB700D1D920 /* DWImageGetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3E55391A9D4CB700D1D920 /* DWImageGetter.m */; };
 		5A3E553E1A9D4CB700D1D920 /* UFWModelImageSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3E553B1A9D4CB700D1D920 /* UFWModelImageSync.m */; };
+		5A4325391B4EE11200105908 /* UFWFileActivityItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4325381B4EE11200105908 /* UFWFileActivityItemProvider.swift */; };
 		5A43EABB1B20F35E000EC306 /* -obs-am-am-83ABD1FB-9B3D-43FD-BBE2-19C11F1751D6.json in Resources */ = {isa = PBXBuildFile; fileRef = 5A43EA231B20F35E000EC306 /* -obs-am-am-83ABD1FB-9B3D-43FD-BBE2-19C11F1751D6.json */; };
 		5A43EABC1B20F35E000EC306 /* -obs-en-en-3833D27E-5B50-46B8-A732-198BEAA3E87D.json in Resources */ = {isa = PBXBuildFile; fileRef = 5A43EA241B20F35E000EC306 /* -obs-en-en-3833D27E-5B50-46B8-A732-198BEAA3E87D.json */; };
 		5A43EABD1B20F35E000EC306 /* -obs-es-es-DFDFEE21-584D-4F84-9094-D3154886D567.json in Resources */ = {isa = PBXBuildFile; fileRef = 5A43EA251B20F35E000EC306 /* -obs-es-es-DFDFEE21-584D-4F84-9094-D3154886D567.json */; };
@@ -180,6 +181,7 @@
 		5A43EB501B20F35E000EC306 /* zec-udb-en-733ADD33-44C7-4D29-BCA4-458184F50402.usfm in Resources */ = {isa = PBXBuildFile; fileRef = 5A43EAB81B20F35E000EC306 /* zec-udb-en-733ADD33-44C7-4D29-BCA4-458184F50402.usfm */; };
 		5A43EB511B20F35E000EC306 /* zec-ulb-en-414667E5-5DFC-40C5-A67A-F7D363F9D796.usfm in Resources */ = {isa = PBXBuildFile; fileRef = 5A43EAB91B20F35E000EC306 /* zec-ulb-en-414667E5-5DFC-40C5-A67A-F7D363F9D796.usfm */; };
 		5A43EB521B20F35E000EC306 /* zep-avd-ar-67397108-6D9C-4E9D-9140-0CF3D924E02C.usfm in Resources */ = {isa = PBXBuildFile; fileRef = 5A43EABA1B20F35E000EC306 /* zep-avd-ar-67397108-6D9C-4E9D-9140-0CF3D924E02C.usfm */; };
+		5A4F91321B4DAEB60038B338 /* UFWActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4F91311B4DAEB60038B338 /* UFWActivity.swift */; };
 		5A5996321B0A93980060668F /* AbyssinicaSIL-R.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5A5996251B0A93980060668F /* AbyssinicaSIL-R.ttf */; };
 		5A59974A1B0A9A3F0060668F /* UFWDataSeeder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5997491B0A9A3F0060668F /* UFWDataSeeder.m */; };
 		5A6997D41B2F859000BB0618 /* ufw_file_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A6997D31B2F859000BB0618 /* ufw_file_icon.png */; };
@@ -944,6 +946,7 @@
 		5A3E55391A9D4CB700D1D920 /* DWImageGetter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWImageGetter.m; sourceTree = "<group>"; };
 		5A3E553A1A9D4CB700D1D920 /* UFWModelImageSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFWModelImageSync.h; sourceTree = "<group>"; };
 		5A3E553B1A9D4CB700D1D920 /* UFWModelImageSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UFWModelImageSync.m; sourceTree = "<group>"; };
+		5A4325381B4EE11200105908 /* UFWFileActivityItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UFWFileActivityItemProvider.swift; sourceTree = "<group>"; };
 		5A43EA231B20F35E000EC306 /* -obs-am-am-83ABD1FB-9B3D-43FD-BBE2-19C11F1751D6.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "-obs-am-am-83ABD1FB-9B3D-43FD-BBE2-19C11F1751D6.json"; sourceTree = "<group>"; };
 		5A43EA241B20F35E000EC306 /* -obs-en-en-3833D27E-5B50-46B8-A732-198BEAA3E87D.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "-obs-en-en-3833D27E-5B50-46B8-A732-198BEAA3E87D.json"; sourceTree = "<group>"; };
 		5A43EA251B20F35E000EC306 /* -obs-es-es-DFDFEE21-584D-4F84-9094-D3154886D567.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "-obs-es-es-DFDFEE21-584D-4F84-9094-D3154886D567.json"; sourceTree = "<group>"; };
@@ -1096,6 +1099,7 @@
 		5A43EAB81B20F35E000EC306 /* zec-udb-en-733ADD33-44C7-4D29-BCA4-458184F50402.usfm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "zec-udb-en-733ADD33-44C7-4D29-BCA4-458184F50402.usfm"; sourceTree = "<group>"; };
 		5A43EAB91B20F35E000EC306 /* zec-ulb-en-414667E5-5DFC-40C5-A67A-F7D363F9D796.usfm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "zec-ulb-en-414667E5-5DFC-40C5-A67A-F7D363F9D796.usfm"; sourceTree = "<group>"; };
 		5A43EABA1B20F35E000EC306 /* zep-avd-ar-67397108-6D9C-4E9D-9140-0CF3D924E02C.usfm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "zep-avd-ar-67397108-6D9C-4E9D-9140-0CF3D924E02C.usfm"; sourceTree = "<group>"; };
+		5A4F91311B4DAEB60038B338 /* UFWActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UFWActivity.swift; sourceTree = "<group>"; };
 		5A5996251B0A93980060668F /* AbyssinicaSIL-R.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AbyssinicaSIL-R.ttf"; sourceTree = "<group>"; };
 		5A5996271B0A93980060668F /* AbyssinicaSILGraphiteFontFeatures.odt */ = {isa = PBXFileReference; lastKnownFileType = file; path = AbyssinicaSILGraphiteFontFeatures.odt; sourceTree = "<group>"; };
 		5A5996281B0A93980060668F /* AbyssinicaSILGraphiteFontFeatures.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = AbyssinicaSILGraphiteFontFeatures.pdf; sourceTree = "<group>"; };
@@ -3345,13 +3349,15 @@
 		5AC377CD1B3873F800E3BB36 /* FileSharing */ = {
 			isa = PBXGroup;
 			children = (
-				5AC377CE1B38744500E3BB36 /* FileActivityController.swift */,
 				5AC377D01B38C38300E3BB36 /* BluetoothFileSender.swift */,
 				5AC377D21B38C62C00E3BB36 /* BluetoothFileReceiver.swift */,
 				5AD0B49E1B445642006ABD21 /* MultiConnectSender.swift */,
 				5AD0B4A01B45CB68006ABD21 /* MultiConnectReceiver.swift */,
 				5AD3CBE31B4A182D003F5F33 /* ITunesSharingReceiver.swift */,
 				5AD3CBE51B4A185B003F5F33 /* ITunesSharingSender.swift */,
+				5AC377CE1B38744500E3BB36 /* FileActivityController.swift */,
+				5A4F91311B4DAEB60038B338 /* UFWActivity.swift */,
+				5A4325381B4EE11200105908 /* UFWFileActivityItemProvider.swift */,
 			);
 			path = FileSharing;
 			sourceTree = "<group>";
@@ -4576,6 +4582,7 @@
 				5A9ABAF01B0A356700753AAB /* UFWMasterUpdater.m in Sources */,
 				5A82BA731AF928E100C5044E /* USFMChapter.m in Sources */,
 				5A3E553C1A9D4CB700D1D920 /* DWImageFileManager.m in Sources */,
+				5A4F91321B4DAEB60038B338 /* UFWActivity.swift in Sources */,
 				5AFDC3391AF1366C002F58A0 /* NSManagedObject+Convenience.m in Sources */,
 				5A9AC0501B0A38B100753AAB /* UFWTopLevelItemCell.m in Sources */,
 				5A9ABAEA1B0A350A00753AAB /* UWVersion.m in Sources */,
@@ -4585,6 +4592,7 @@
 				5A9ABAE71B0A350A00753AAB /* UWStatus.m in Sources */,
 				5A7A66EC1AEF06B500FF3EA1 /* NSString+Trim.m in Sources */,
 				5A9AC0021B0A370000753AAB /* UFWLanguagePickerVC.m in Sources */,
+				5A4325391B4EE11200105908 /* UFWFileActivityItemProvider.swift in Sources */,
 				5A36D3B51B223F23001D6E04 /* UFWAppInformationView.m in Sources */,
 				5A9ABAD91B0A350A00753AAB /* _OpenContainer.m in Sources */,
 			);
