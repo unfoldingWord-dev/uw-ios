@@ -31,6 +31,16 @@
 #define IMAGE_VERIFY_FAIL @"verifyFail.png"
 #define IMAGE_VERIFY_EXPIRE @"verifyExpired.png"
 
-static NSString *const SignatureFileAppend = @".sig"; // duplicated in Constants.swift
+static NSString *const SignatureFileAppend = @".sig"; // Duplicated in UWConstants.swift
 
-static NSString *const FileExtensionUFW = @"ufw"; // duplicated in Constants.h
+static NSString *const FileExtensionUFW = @"ufw"; /// Duplicated in UWConstants.swift
+
+// Duplicated in UWConstants.swift
+static NSString *const  BluetoothSend = @"BluetoothSend";
+static NSString *const  BluetoothReceive = @"BluetoothReceive";
+
+static NSString *const  MultiConnectSend = @"MultiConnectSend";
+static NSString *const  MultiConnectReceive = @"MultiConnectReceive";
+
+static NSString *const  iTunesSend = @"iTunesSend";
+static NSString *const  iTunesReceive = @"iTunesReceive";

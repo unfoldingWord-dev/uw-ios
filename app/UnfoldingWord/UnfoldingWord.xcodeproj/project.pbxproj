@@ -29,6 +29,9 @@
 		5A3E553D1A9D4CB700D1D920 /* DWImageGetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3E55391A9D4CB700D1D920 /* DWImageGetter.m */; };
 		5A3E553E1A9D4CB700D1D920 /* UFWModelImageSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3E553B1A9D4CB700D1D920 /* UFWModelImageSync.m */; };
 		5A4325391B4EE11200105908 /* UFWFileActivityItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4325381B4EE11200105908 /* UFWFileActivityItemProvider.swift */; };
+		5A43253E1B4F2F7C00105908 /* bluetoothActivity.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A43253B1B4F2F7C00105908 /* bluetoothActivity.png */; };
+		5A43253F1B4F2F7C00105908 /* iTunesActivity.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A43253C1B4F2F7C00105908 /* iTunesActivity.png */; };
+		5A4325401B4F2F7C00105908 /* wirelessActivity.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A43253D1B4F2F7C00105908 /* wirelessActivity.png */; };
 		5A43EABB1B20F35E000EC306 /* -obs-am-am-83ABD1FB-9B3D-43FD-BBE2-19C11F1751D6.json in Resources */ = {isa = PBXBuildFile; fileRef = 5A43EA231B20F35E000EC306 /* -obs-am-am-83ABD1FB-9B3D-43FD-BBE2-19C11F1751D6.json */; };
 		5A43EABC1B20F35E000EC306 /* -obs-en-en-3833D27E-5B50-46B8-A732-198BEAA3E87D.json in Resources */ = {isa = PBXBuildFile; fileRef = 5A43EA241B20F35E000EC306 /* -obs-en-en-3833D27E-5B50-46B8-A732-198BEAA3E87D.json */; };
 		5A43EABD1B20F35E000EC306 /* -obs-es-es-DFDFEE21-584D-4F84-9094-D3154886D567.json in Resources */ = {isa = PBXBuildFile; fileRef = 5A43EA251B20F35E000EC306 /* -obs-es-es-DFDFEE21-584D-4F84-9094-D3154886D567.json */; };
@@ -181,6 +184,7 @@
 		5A43EB501B20F35E000EC306 /* zec-udb-en-733ADD33-44C7-4D29-BCA4-458184F50402.usfm in Resources */ = {isa = PBXBuildFile; fileRef = 5A43EAB81B20F35E000EC306 /* zec-udb-en-733ADD33-44C7-4D29-BCA4-458184F50402.usfm */; };
 		5A43EB511B20F35E000EC306 /* zec-ulb-en-414667E5-5DFC-40C5-A67A-F7D363F9D796.usfm in Resources */ = {isa = PBXBuildFile; fileRef = 5A43EAB91B20F35E000EC306 /* zec-ulb-en-414667E5-5DFC-40C5-A67A-F7D363F9D796.usfm */; };
 		5A43EB521B20F35E000EC306 /* zep-avd-ar-67397108-6D9C-4E9D-9140-0CF3D924E02C.usfm in Resources */ = {isa = PBXBuildFile; fileRef = 5A43EABA1B20F35E000EC306 /* zep-avd-ar-67397108-6D9C-4E9D-9140-0CF3D924E02C.usfm */; };
+		5A444F951B517C86005949C0 /* ITunesFilePickerTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A444F941B517C86005949C0 /* ITunesFilePickerTableVC.swift */; };
 		5A4F91321B4DAEB60038B338 /* UFWActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4F91311B4DAEB60038B338 /* UFWActivity.swift */; };
 		5A5996321B0A93980060668F /* AbyssinicaSIL-R.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5A5996251B0A93980060668F /* AbyssinicaSIL-R.ttf */; };
 		5A59974A1B0A9A3F0060668F /* UFWDataSeeder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5997491B0A9A3F0060668F /* UFWDataSeeder.m */; };
@@ -947,6 +951,9 @@
 		5A3E553A1A9D4CB700D1D920 /* UFWModelImageSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFWModelImageSync.h; sourceTree = "<group>"; };
 		5A3E553B1A9D4CB700D1D920 /* UFWModelImageSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UFWModelImageSync.m; sourceTree = "<group>"; };
 		5A4325381B4EE11200105908 /* UFWFileActivityItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UFWFileActivityItemProvider.swift; sourceTree = "<group>"; };
+		5A43253B1B4F2F7C00105908 /* bluetoothActivity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bluetoothActivity.png; sourceTree = "<group>"; };
+		5A43253C1B4F2F7C00105908 /* iTunesActivity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTunesActivity.png; sourceTree = "<group>"; };
+		5A43253D1B4F2F7C00105908 /* wirelessActivity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wirelessActivity.png; sourceTree = "<group>"; };
 		5A43EA231B20F35E000EC306 /* -obs-am-am-83ABD1FB-9B3D-43FD-BBE2-19C11F1751D6.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "-obs-am-am-83ABD1FB-9B3D-43FD-BBE2-19C11F1751D6.json"; sourceTree = "<group>"; };
 		5A43EA241B20F35E000EC306 /* -obs-en-en-3833D27E-5B50-46B8-A732-198BEAA3E87D.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "-obs-en-en-3833D27E-5B50-46B8-A732-198BEAA3E87D.json"; sourceTree = "<group>"; };
 		5A43EA251B20F35E000EC306 /* -obs-es-es-DFDFEE21-584D-4F84-9094-D3154886D567.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "-obs-es-es-DFDFEE21-584D-4F84-9094-D3154886D567.json"; sourceTree = "<group>"; };
@@ -1099,6 +1106,7 @@
 		5A43EAB81B20F35E000EC306 /* zec-udb-en-733ADD33-44C7-4D29-BCA4-458184F50402.usfm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "zec-udb-en-733ADD33-44C7-4D29-BCA4-458184F50402.usfm"; sourceTree = "<group>"; };
 		5A43EAB91B20F35E000EC306 /* zec-ulb-en-414667E5-5DFC-40C5-A67A-F7D363F9D796.usfm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "zec-ulb-en-414667E5-5DFC-40C5-A67A-F7D363F9D796.usfm"; sourceTree = "<group>"; };
 		5A43EABA1B20F35E000EC306 /* zep-avd-ar-67397108-6D9C-4E9D-9140-0CF3D924E02C.usfm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "zep-avd-ar-67397108-6D9C-4E9D-9140-0CF3D924E02C.usfm"; sourceTree = "<group>"; };
+		5A444F941B517C86005949C0 /* ITunesFilePickerTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITunesFilePickerTableVC.swift; sourceTree = "<group>"; };
 		5A4F91311B4DAEB60038B338 /* UFWActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UFWActivity.swift; sourceTree = "<group>"; };
 		5A5996251B0A93980060668F /* AbyssinicaSIL-R.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AbyssinicaSIL-R.ttf"; sourceTree = "<group>"; };
 		5A5996271B0A93980060668F /* AbyssinicaSILGraphiteFontFeatures.odt */ = {isa = PBXFileReference; lastKnownFileType = file; path = AbyssinicaSILGraphiteFontFeatures.odt; sourceTree = "<group>"; };
@@ -2110,6 +2118,16 @@
 			path = ImageManagement;
 			sourceTree = "<group>";
 		};
+		5A43253A1B4F2F7C00105908 /* ActivityIcons */ = {
+			isa = PBXGroup;
+			children = (
+				5A43253B1B4F2F7C00105908 /* bluetoothActivity.png */,
+				5A43253C1B4F2F7C00105908 /* iTunesActivity.png */,
+				5A43253D1B4F2F7C00105908 /* wirelessActivity.png */,
+			);
+			path = ActivityIcons;
+			sourceTree = "<group>";
+		};
 		5A43EA221B20F35E000EC306 /* DataSeeding */ = {
 			isa = PBXGroup;
 			children = (
@@ -2267,6 +2285,14 @@
 				5A43EABA1B20F35E000EC306 /* zep-avd-ar-67397108-6D9C-4E9D-9140-0CF3D924E02C.usfm */,
 			);
 			path = DataSeeding;
+			sourceTree = "<group>";
+		};
+		5A444F931B517C10005949C0 /* ITunesSharing */ = {
+			isa = PBXGroup;
+			children = (
+				5A444F941B517C86005949C0 /* ITunesFilePickerTableVC.swift */,
+			);
+			path = ITunesSharing;
 			sourceTree = "<group>";
 		};
 		5A59961A1B0A893F0060668F /* Fonts */ = {
@@ -2432,6 +2458,7 @@
 		5A9ABAF11B0A35F600753AAB /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				5A43253A1B4F2F7C00105908 /* ActivityIcons */,
 				5A6997D31B2F859000BB0618 /* ufw_file_icon.png */,
 				5A9ABAF21B0A35F600753AAB /* arrow_right.png */,
 				5A9ABAF31B0A35F600753AAB /* delete.jpg */,
@@ -3103,6 +3130,7 @@
 		5A9ABFE51B0A370000753AAB /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				5A444F931B517C10005949C0 /* ITunesSharing */,
 				5A36D3B81B223F95001D6E04 /* AppFirstLaunchInfoVC */,
 				5A9ABFE61B0A370000753AAB /* CheckingStatisVC */,
 				5A9ABFE91B0A370000753AAB /* LanguagePicker */,
@@ -4059,6 +4087,7 @@
 				5A43EACE1B20F35E000EC306 /* 1sa-avd-ar-3A963F3A-1616-4278-964B-237B0A625717.usfm in Resources */,
 				5A9ABF781B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-44-04jpg in Resources */,
 				5A9ABF361B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-38-06jpg in Resources */,
+				5A43253E1B4F2F7C00105908 /* bluetoothActivity.png in Resources */,
 				5A9ABFC61B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-50-04jpg in Resources */,
 				5A9ABF891B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-45-12jpg in Resources */,
 				5A9ABE601B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-18-08jpg in Resources */,
@@ -4119,6 +4148,7 @@
 				5A43EAD41B20F35E000EC306 /* 1ti-ulb-en-8BDB0721-6040-491C-8FF9-A34C3E3A1B1B.usfm in Resources */,
 				639258701A24506500B5B8D2 /* LaunchScreen.xib in Resources */,
 				5A9ABF551B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-41-01jpg in Resources */,
+				5A43253F1B4F2F7C00105908 /* iTunesActivity.png in Resources */,
 				5A9ABEF71B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-32-09jpg in Resources */,
 				5A9ABE9F1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-23-05jpg in Resources */,
 				5A43EB2A1B20F35E000EC306 /* luk-ulb-en-37DF82A6-74E7-4C10-A4CB-DDBD971244AE.usfm in Resources */,
@@ -4164,6 +4194,7 @@
 				5A43EAD31B20F35E000EC306 /* 1ti-udb-en-79F960C0-9F99-48FE-AE1B-10189C34D3AA.usfm in Resources */,
 				5A9ABF1C1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-35-11jpg in Resources */,
 				5A9ABF881B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-45-11jpg in Resources */,
+				5A4325401B4F2F7C00105908 /* wirelessActivity.png in Resources */,
 				5A9ABE191B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-13-12jpg in Resources */,
 				5A43EB251B20F35E000EC306 /* lam-udb-en-067AB87F-BF2B-4460-8CDA-3B93EF644057.usfm in Resources */,
 				5A43EAFD1B20F35E000EC306 /* gal-avd-ar-6F6A0C7E-D121-426F-9C52-A446C881AACD.usfm in Resources */,
@@ -4549,6 +4580,7 @@
 				639258621A24506500B5B8D2 /* AppDelegate.m in Sources */,
 				5A9AC0081B0A370000753AAB /* UFWBaseVC.m in Sources */,
 				5A9ABAE31B0A350A00753AAB /* OpenContainer.m in Sources */,
+				5A444F951B517C86005949C0 /* ITunesFilePickerTableVC.swift in Sources */,
 				5AAB78761A9299A800376C36 /* NSString+Date.m in Sources */,
 				5A9ABAE11B0A350A00753AAB /* OpenAppWordsList.m in Sources */,
 				5AA7F2A81A34EEED00F49D40 /* UFWNotifications.m in Sources */,

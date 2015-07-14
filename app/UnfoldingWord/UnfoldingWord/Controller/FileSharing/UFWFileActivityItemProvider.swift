@@ -13,7 +13,7 @@ final class UFWFileActivityItemProvider : UIActivityItemProvider {
     let version : UWVersion
     private var urlSaved : NSURL?
     
-    private var url : NSURL! {
+    var url : NSURL! {
         get {
             if let url = self.urlSaved {
                 return url

@@ -9,7 +9,8 @@ import Foundation
 
 @objc final class ITunesSharingReceiver : NSObject {
     
-    private var arrayExistingFileNames : Array<String>!
+    // This is a list of previously imported or created files that we don't want to include in the import list.
+    var arrayExistingFileNames : Array<String>!
     
     override init() {
         super.init()
@@ -20,14 +21,31 @@ import Foundation
         removeDeletedFilesFromExistingFileList()
     }
     
-    func arrayOfNewFilePaths() -> Array<NSString> {
+    func filesToDisplayForImport() -> Array<NSString> {
+        let filesInFolder = arrayOfFilePathsInDocumentsFolder()
+        return filesInFolder.filter(isIncluded)
+    }
+    
+    func isIncluded(filepath : NSString) -> Bool {
+        for excludedFilePath in self.arrayExistingFileNames {
+            if excludedFilePath == filepath {
+                return false
+            }
+        }
+        return true
+    }
+    
+    func arrayOfFilePathsInDocumentsFolder() -> Array<NSString> {
         
         let rootPath = NSString.appDocumentsDirectory()
         let enumerator = NSFileManager.defaultManager().enumeratorAtPath(rootPath)
         
         var filepathArray = Array<String>()
-        while let filepath = enumerator?.nextObject() as? String {
-            filepathArray.append(filepath)
+        while let filename = enumerator?.nextObject() as? NSString {
+            if filename.pathExtension == Constants.FileExtensionUFW {
+                let filepath = rootPath.stringByAppendingPathComponent(filename as String)
+                filepathArray.append(filepath)
+            }
         }
         
         return filepathArray

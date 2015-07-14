@@ -8,40 +8,67 @@
 import Foundation
 import UIKit
 
+
 @objc final class FileActivityController: NSObject {
     
-    private let version : UWVersion
-    private let urlProvider : UFWFileActivityItemProvider
+    let ufwVersion : UWVersion?
+    let isSend : Bool
+    let urlProvider : UFWFileActivityItemProvider?
     
-    init(version: UWVersion) {
-        self.version = version
-        
+    init(version: UWVersion?, shouldSend : Bool) {
+        self.ufwVersion = version
+        self.isSend = shouldSend
         let placeHolder = NSURL(fileURLWithPath: NSString.documentsDirectory(), isDirectory: true)
-        self.urlProvider = UFWFileActivityItemProvider(placeholderItem: placeHolder!, version: self.version)
+        
+        if shouldSend, let version = version {
+            self.urlProvider = UFWFileActivityItemProvider(placeholderItem: placeHolder!, version: version)
+        }
+        else {
+            self.urlProvider = nil
+        }
     }
     
     func activityViewController() -> UIActivityViewController? {
         
-        let items = [self.urlProvider, self.version.filename()]
-        let activityVC = UIActivityViewController(activityItems: items, applicationActivities: applicationActivities() )
-        activityVC.excludedActivityTypes = [UIActivityTypePostToWeibo, UIActivityTypePostToFacebook, UIActivityTypePostToTwitter,UIActivityTypeCopyToPasteboard, UIActivityTypeMessage, UIActivityTypePrint ];
-        return activityVC
+        if let version = self.ufwVersion, provider = self.urlProvider {
+            let items = [provider, version.filename()]
+            let activityVC = UIActivityViewController(activityItems: items, applicationActivities: applicationActivities() )
+            activityVC.excludedActivityTypes = [UIActivityTypePostToWeibo, UIActivityTypePostToFacebook, UIActivityTypePostToTwitter,UIActivityTypeCopyToPasteboard, UIActivityTypeMessage, UIActivityTypePrint ]
+            return activityVC
+        }
+        else if self.isSend == false {
+            let items = ["Receive Files"]
+            let activityVC = UIActivityViewController(activityItems: items, applicationActivities: applicationActivities() )
+            activityVC.excludedActivityTypes = [UIActivityTypePostToWeibo, UIActivityTypePostToFacebook, UIActivityTypePostToTwitter,UIActivityTypeCopyToPasteboard, UIActivityTypeMessage, UIActivityTypePrint, UIActivityTypeMail ]
+            return activityVC
+        }
+        else {
+            assertionFailure("No version or provider, and send is true.")
+            return nil
+        }
     }
     
     func applicationActivities() -> [UFWActivity] {
-        let bluetoothSend = UFWActivity(type: UFWActivityType.SendBluetooth)
-        let wirelessSend = UFWActivity(type: UFWActivityType.SendMultiConnect)
-        let itunesSend = UFWActivity(type: UFWActivityType.SendiTunes)
         
-        let bluetoothReceive = UFWActivity(type: UFWActivityType.GetBluetooth)
-        let wirelessReceive = UFWActivity(type: UFWActivityType.GetMultiConnect)
-        let itunesReceive = UFWActivity(type: UFWActivityType.GetiTunes)
-        
-        return [bluetoothSend, wirelessSend, itunesSend, bluetoothReceive, wirelessReceive, itunesReceive]
+        if self.isSend {
+            let bluetoothSend = UFWActivity(type: UFWActivityType.SendBluetooth)
+            let wirelessSend = UFWActivity(type: UFWActivityType.SendMultiConnect)
+            let itunesSend = UFWActivity(type: UFWActivityType.SendiTunes)
+            return [bluetoothSend, wirelessSend, itunesSend]
+        }
+        else {
+            let bluetoothReceive = UFWActivity(type: UFWActivityType.GetBluetooth)
+            let wirelessReceive = UFWActivity(type: UFWActivityType.GetMultiConnect)
+            let itunesReceive = UFWActivity(type: UFWActivityType.GetiTunes)
+            return [bluetoothReceive, wirelessReceive, itunesReceive]
+        }
     }
     
     func cleanup() {
-        self.urlProvider.cleanup()
+        if let provider = self.urlProvider {
+            provider.cleanup()
+        }
+
     }
     
 }

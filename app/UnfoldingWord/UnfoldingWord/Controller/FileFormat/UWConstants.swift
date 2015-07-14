@@ -11,6 +11,8 @@ import Foundation
 // Percent complete is an Int from 0 to 100. 100 indicates that the transfer is complete.
 typealias FileUpdateBlock = (percentComplete: Float, connected : Bool, complete : Bool) -> ()
 
+typealias ITunesPickerChooseBlock = (canceled : Bool, chosenPath : String?) -> ()
+
 struct Constants {
     struct URLSource {
         static let signature = "sig"
@@ -48,7 +50,7 @@ struct Constants {
         static let FilePathReceive = "FileToReceive.json"
     }
     
-    struct Activity {
+    struct Activity { // duplicated in Constants.h
         static let BluetoothSend = "BluetoothSend"
         static let BluetoothReceive = "BluetoothReceive"
         

@@ -8,18 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class UWVersion, BluetoothFileSender, BluetoothFileReceiver, MultiConnectReceiver, MultiConnectSender;
-
-typedef NS_ENUM(NSInteger, TransferType) {
-    TransferTypeBluetooth = 1,
-    TransferTypeWireless = 2,
-    TransferTypeEmail = 3,
-};
-
-typedef NS_ENUM(NSInteger, TransferRole) {
-    TransferRoleSend =1,
-    TransferRoleReceive =2,
-};
+@class UWVersion, BluetoothFileSender, BluetoothFileReceiver, MultiConnectReceiver, MultiConnectSender, FileActivityController;
 
 @interface UIViewController (FileTransfer)
 
@@ -31,6 +20,10 @@ typedef NS_ENUM(NSInteger, TransferRole) {
 
 @property (nonatomic, strong) UIAlertController *alertController;
 
-- (void)transferFileForVersion:(UWVersion *)version transferType:(TransferType)type role:(TransferRole)role;
+@property (nonatomic, strong) FileActivityController *fileActivityController;
+
+- (void)sendFileForVersion:(UWVersion *)version;
+
+- (void)receiveFile;
 
 @end

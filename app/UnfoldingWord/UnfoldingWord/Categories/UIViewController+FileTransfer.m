@@ -9,6 +9,18 @@
 #import "UIViewController+FileTransfer.h"
 #import "UnfoldingWord-Swift.h"
 #import "CoreDataClasses.h"
+#import "Constants.h"
+
+typedef NS_ENUM(NSInteger, TransferType) {
+    TransferTypeBluetooth = 1,
+    TransferTypeWireless = 2,
+    TransferTypeEmail = 3,
+};
+
+typedef NS_ENUM(NSInteger, TransferRole) {
+    TransferRoleSend =1,
+    TransferRoleReceive =2,
+};
 
 static NSString *const kTitleSearching =  @"Searching...";
 static NSString *const kTextSearchSender = @"Ready to send. Searching for a device to pair.";
@@ -17,12 +29,13 @@ static NSString *const kSending = @"Sending...";
 static NSString *const kReceiving = @"Receiving...";
 
 // Dynamic Setter Keys
-static char const * const KeyBTSender = "KeyBTSender";
-static char const * const KeyBTReceiver = "KeyBTReceiver";
-static char const * const KeyMCSender = "KeyMCSender";
-static char const * const KeyMCReceiver = "KeyMCReceiver";
+static char const *  KeyBTSender = "KeyBTSender";
+static char const *  KeyBTReceiver = "KeyBTReceiver";
+static char const *  KeyMCSender = "KeyMCSender";
+static char const *  KeyMCReceiver = "KeyMCReceiver";
 
-static char const * const KeyAlertController = "KeyAlertController";
+static char const *  KeyAlertController = "KeyAlertController";
+static char const *  KeyFileActivityController = "KeyFileActivityController";
 
 @implementation UIViewController (FileTransfer)
 
@@ -31,36 +44,65 @@ static char const * const KeyAlertController = "KeyAlertController";
 @dynamic senderMC;
 @dynamic receiverMC;
 @dynamic alertController;
+@dynamic fileActivityController;
 
-- (void)transferFileForVersion:(UWVersion *)version transferType:(TransferType)type role:(TransferRole)role
+- (void)sendFileForVersion:(UWVersion *)version;
 {
-    [UIApplication sharedApplication].idleTimerDisabled = YES;
+    [self initiateActivityPresentationWithVersion:version isSend:YES];
+}
+
+- (void)receiveFile;
+{
+    [self initiateActivityPresentationWithVersion:nil isSend:NO];
+}
+
+- (void) handleActivityType:(NSString *)activityType
+{
+    NSParameterAssert(self.fileActivityController);
     
-    if (type == TransferTypeBluetooth) {
-        switch (role) {
-            case TransferRoleSend:
-                [self sendBluetoothUWVersion:version];
-                break;
-            case TransferRoleReceive:
-                [self receiveBluetooth];
-                break;
+    if (self.fileActivityController.isSend) {
+        
+        if ([activityType isEqualToString:BluetoothSend]) {
+            [self sendBluetooth];
+        }
+        else if ([activityType isEqualToString:MultiConnectSend]) {
+            [self sendWireless];
+        }
+        else if ([activityType isEqualToString:iTunesSend]) {
+            [self sendiTunes];
         }
     }
-    if (type == TransferTypeWireless) {
-        switch (role) {
-            case TransferRoleSend:
-                [self sendWirelessUWVersion:version];
-                break;
-            case TransferRoleReceive:
-                [self receiveWireless];
-                break;
+    else {
+        
+        if ([activityType isEqualToString:BluetoothReceive]) {
+            [self receiveBluetooth];
+        }
+        else if ([activityType isEqualToString:MultiConnectReceive]) {
+            [self receiveWireless];
+        }
+        else if ([activityType isEqualToString:iTunesReceive]) {
+            [self receiveITunes];
         }
     }
 }
 
-- (void)sendWirelessUWVersion:(UWVersion *)version {
-    NSData *data = [self dataForVersion:version];
+- (void)initiateActivityPresentationWithVersion:(UWVersion *) version isSend:(BOOL)isSend {
+    self.fileActivityController = [[FileActivityController alloc] initWithVersion:version shouldSend:isSend];
+    UIActivityViewController *activityController = self.fileActivityController.activityViewController;
+    __weak typeof(self) weakself = self;
+    activityController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
+        if (completed) {
+            [weakself handleActivityType:activityType];
+        }
+    };
+    [self presentViewController:activityController animated:YES completion:^{}];
+}
+
+- (void)sendWireless {
+    NSData *data = [self data];
     if (data) {
+        NSString *title = self.fileActivityController.ufwVersion.name;
+        
         // Set up progress indicator using alert controller
         TransferRole roleSend = TransferRoleSend;
         [self presentAlertController];
@@ -68,9 +110,22 @@ static char const * const KeyAlertController = "KeyAlertController";
         
         // Create a sender and apply the update block
         __weak typeof(self) weakself = self;
-        self.senderMC = [[MultiConnectSender alloc] initWithDataToSend:data filename:version.name updateBlock:^(float percent, BOOL connected , BOOL complete) {
+        self.senderMC = [[MultiConnectSender alloc] initWithDataToSend:data filename:title updateBlock:^(float percent, BOOL connected , BOOL complete) {
             [weakself updateProgress:percent connected:connected finished:complete role:roleSend type:TransferTypeWireless];
         }];
+    }
+}
+
+- (void)sendiTunes {
+    NSData *data = [self data];
+    NSString *filename = [self.fileActivityController.ufwVersion filename];
+    
+    ITunesSharingSender *sender = [[ITunesSharingSender alloc] init];
+    if ( [sender sendToITunesFolder:data filename:filename]) {
+        [[[UIAlertView alloc] initWithTitle:@"Saved" message:[NSString stringWithFormat:@"The file %@ was successfully saved to your iTunes folder.", filename] delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
+    }
+    else {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Could not save to iTunes folder." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
     }
 }
 
@@ -89,9 +144,9 @@ static char const * const KeyAlertController = "KeyAlertController";
     
 }
 
-- (void)sendBluetoothUWVersion:(UWVersion *)version
+- (void)sendBluetooth
 {
-    NSData *data = [self dataForVersion:version];
+    NSData *data = [self data];
     TransferRole roleSend = TransferRoleSend;
     if (data) {
         // Set up progress indicator using alert controller
@@ -120,20 +175,33 @@ static char const * const KeyAlertController = "KeyAlertController";
     }];
 }
 
-#pragma mark - Helpers
-- (NSData *)dataForVersion:(UWVersion *)version
+
+- (void)receiveITunes
 {
+    UINavigationController *navController = [ITunesFilePickerTableVC pickerInsideNavController:^(BOOL canceled, NSString *filepath ) {
+        [self dismissViewControllerAnimated:YES completion:^{
+            NSLog(@"Now import the file!");
+        }];
+    }];
+    [self presentViewController:navController animated:YES completion:^{}];
+}
+
+#pragma mark - Helpers
+- (NSData *)data
+{
+    NSParameterAssert(self.fileActivityController);
     NSData *data = nil;
-    if (version != nil) {
-        UFWFileExporter *exporter = [[UFWFileExporter alloc] initWithVersion:version];
-        data = exporter.fileData;
+    if (self.fileActivityController != nil) {
+        NSURL *fileUrl = [self.fileActivityController.urlProvider url];
+        data = [[NSFileManager defaultManager] contentsAtPath:fileUrl.path];
     }
     
     if (data == nil) {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Could not create a file for %@", version.name] delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Could not create a file!" delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
     }
     return data;
 }
+
 
 - (void)resetAllState
 {
@@ -142,6 +210,7 @@ static char const * const KeyAlertController = "KeyAlertController";
         self.senderBT = nil;
         self.receiverBT = nil;
         self.alertController = nil;
+        self.fileActivityController = nil;
     };
     
     if ([self.presentedViewController isEqual:self.alertController]) {
@@ -288,5 +357,16 @@ static char const * const KeyAlertController = "KeyAlertController";
     objc_setAssociatedObject(self, KeyAlertController, alertController, OBJC_ASSOCIATION_RETAIN);
 }
 
+//fileActivityController
+
+- (FileActivityController *)fileActivityController
+{
+    return objc_getAssociatedObject(self, KeyFileActivityController);
+}
+
+- (void)setFileActivityController:(FileActivityController *)fileActivityController
+{
+    objc_setAssociatedObject(self, KeyFileActivityController, fileActivityController, OBJC_ASSOCIATION_RETAIN);
+}
 
 @end

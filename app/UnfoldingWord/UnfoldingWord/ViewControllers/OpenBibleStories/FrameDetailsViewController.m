@@ -102,26 +102,17 @@ static NSString *const kMatchChapter = @"chapter";
     //    self.navigationItem.rightBarButtonItems = @[bbiShare, bbiVersion, bbiStatus];
     
 # warning Temporarily - delete this, then uncomment code above this
-    UIBarButtonItem *bbiSend = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStylePlain target:self action:@selector(send:)];
-    UIBarButtonItem *bbiReceive = [[UIBarButtonItem alloc] initWithTitle:@"Receive" style:UIBarButtonItemStylePlain target:self action:@selector(receive:)];
+    UIBarButtonItem *bbiSend = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStylePlain target:self action:@selector(send)];
+    UIBarButtonItem *bbiReceive = [[UIBarButtonItem alloc] initWithTitle:@"Receive" style:UIBarButtonItemStylePlain target:self action:@selector(receive)];
     self.navigationItem.rightBarButtonItems = @[bbiSend, bbiReceive];
 }
 
-- (void)send:(id)sender
-{
-    FileActivityController *fileController = [[FileActivityController alloc] initWithVersion:self.chapter.container.toc.version];
-    UIActivityViewController *activityController = fileController.activityViewController;
-    activityController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
-        
-    };
-    
-    [self presentViewController:activityController animated:YES completion:^{}];
-    
+- (void)send {
+    [self sendFileForVersion:self.chapter.container.toc.version];
 }
 
-- (void)receive:(id)receiver
-{
-        [self transferFileForVersion:nil transferType:TransferTypeWireless role:TransferRoleReceive];
+- (void) receive {
+    [self receiveFile];
 }
 
 - (void)updateNavTitle
@@ -207,13 +198,13 @@ static NSString *const kMatchChapter = @"chapter";
         return;
     }
     
-    FileActivityController *fileController = [[FileActivityController alloc] initWithVersion:self.chapter.container.toc.version];
-    UIActivityViewController *activityVC = [fileController activityViewController];
-    activityVC.popoverPresentationController.barButtonItem = activityBarButtonItem;
-    [activityVC setCompletionWithItemsHandler:^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
-        [fileController  cleanup];
-    }];
-    [self presentViewController:activityVC animated:YES completion:^{}];
+//    FileActivityController *fileController = [[FileActivityController alloc] initWithVersion:self.chapter.container.toc.version];
+//    UIActivityViewController *activityVC = [fileController activityViewController];
+//    activityVC.popoverPresentationController.barButtonItem = activityBarButtonItem;
+//    [activityVC setCompletionWithItemsHandler:^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
+//        [fileController  cleanup];
+//    }];
+//    [self presentViewController:activityVC animated:YES completion:^{}];
 }
 
 

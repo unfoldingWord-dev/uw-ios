@@ -47,66 +47,53 @@ class UFWActivity : UIActivity {
         
         switch self.type {
         case .SendBluetooth:
-            return "Send"
+            return "Send by Bluetooth"
         case .SendiTunes:
-            return "Save"
+            return "Save to iTunes"
         case .SendMultiConnect:
-            return "Send"
+            return "Send by Wireless"
         case .GetBluetooth:
-            return "Receive"
+            return "Receive by Bluetooth"
         case .GetiTunes:
-            return "Import"
+            return "Import from iTunes"
         case .GetMultiConnect:
-            return "Receive"
+            return "Receive by Wireless"
         }
     }
     
     override func activityImage() -> UIImage? {
         switch self.type {
         case .SendBluetooth, .GetBluetooth:
-            if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Pad {
-                return UIImage(named: "BluetoothActivityiPad")
-            }
-            else {
-                return UIImage(named: "BluetoothActivityiPhone")
-            }
-
+            return UIImage(named: "bluetoothActivity.png")
         case .SendiTunes, .GetiTunes:
-            if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Pad {
-                return UIImage(named: "iTunesActivityiPad")
-            }
-            else {
-                return UIImage(named: "iTunesActivityiPhone")
-            }
-
+            return UIImage(named: "iTunesActivity.png")
         case .SendMultiConnect, .GetMultiConnect:
-            if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Pad {
-                return UIImage(named: "WirelessActivityiPad")
-            }
-            else {
-                return UIImage(named: "WirelessActivityiPhone")
-            }
+            return UIImage(named: "wirelessActivity.png")
         }
     }
     
     override func canPerformWithActivityItems(activityItems: [AnyObject]) -> Bool {
-//        for anObject in activityItems {
-//            if anObject is NSURL {
-//                let url = anObject as! NSURL
-//                if url.isFileReferenceURL() {
+        
+        switch self.type {
+        case .SendBluetooth, .SendiTunes, .SendMultiConnect:
+            for anObject in activityItems {
+                if anObject is NSURL {
                     return true
-//                }
-//            }
-//        }
-//        return false
+                }
+            }
+            return false
+        case .GetBluetooth, .GetiTunes, .GetMultiConnect:
+            return true
+        }
     }
     
     override func prepareWithActivityItems(activityItems: [AnyObject]) {
-        // required to override this method, but we don't need to actually do anything.
+        // required to override this method, but we don't need to actually do anything here.
     }
     
     override func performActivity() {
-        // This is just a shell. We'll get the fact that the activity is completed, and then return our own UI
+        activityDidFinish(true)
+        // Just a shell. We'll just say the activity completed. Then the view controller will handle the actual work.
     }
     
     override class func activityCategory() -> UIActivityCategory {

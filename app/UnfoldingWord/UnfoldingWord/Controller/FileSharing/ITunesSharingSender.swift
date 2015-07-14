@@ -10,17 +10,9 @@ import Foundation
 
 @objc final class ITunesSharingSender : NSObject {
     
-    let version : UWVersion
-    
-    init (version : UWVersion) {
-        self.version = version
-        super.init()
-    }
-    
-    func sendToITunesFolder() -> Bool {
-        let exporter = UFWFileExporter(version: self.version)
-        if let data = exporter.fileData {
-            let savePath = NSString.appDocumentsDirectory().stringByAppendingPathComponent(self.version.filename())
+    func sendToITunesFolder(data : NSData?, filename : String?) -> Bool {
+        if let data = data, filename = filename {
+            let savePath = NSString.appDocumentsDirectory().stringByAppendingPathComponent(filename)
             if NSFileManager.defaultManager().createFileAtPath(savePath, contents: data, attributes: nil) {
                 ITunesSharingReceiver().addExistingFilePath(savePath)
                 return true
