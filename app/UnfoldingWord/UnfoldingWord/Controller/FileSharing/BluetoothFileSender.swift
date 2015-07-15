@@ -121,8 +121,8 @@ enum SendStatus {
                         self.status = SendStatus.Complete
                         updateProgress(true)
                         stopAll()
-                        break
                     }
+                    break
                 }
                 else { // this is the only part that transmits the actual data
                     let numBytesToSend = min(Constants.Bluetooth.MAX_SIZE, data.length-self.sendIndex)

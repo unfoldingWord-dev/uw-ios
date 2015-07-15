@@ -9,9 +9,6 @@
 import Foundation
 import CoreBluetooth
 
-// typealias FileUpdateBlock = (percentComplete: Float, connected : Bool, complete : Bool) -> ()
-
-
 @objc final class BluetoothFileReceiver : NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     lazy var manager : CBCentralManager = CBCentralManager(delegate: self, queue: nil)
@@ -126,6 +123,9 @@ import CoreBluetooth
         if let error = error {
             return
         }
+        else if self.finished == true {
+            return
+        }
         else {
             // If we can make the data into a string, check to see whether it matches any control text at the start or end of the data file.
             if let dataAsString = NSString(data: characteristic.value, encoding: NSUTF8StringEncoding) {
@@ -198,8 +198,9 @@ import CoreBluetooth
     // Okay, we got disconnected. If we finished, then good. Otherwise start looking again
     func centralManager(central: CBCentralManager!, didDisconnectPeripheral peripheral: CBPeripheral!, error: NSError!) {
         self.discoveredPeripheral = nil
-        self.updateProgress(false)
+
         if self.finished == false {
+            self.updateProgress(false)
             scanForUnfoldingWordService()
         }
     }

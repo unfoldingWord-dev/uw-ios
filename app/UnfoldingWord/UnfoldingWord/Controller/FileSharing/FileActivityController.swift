@@ -37,7 +37,7 @@ import UIKit
             return activityVC
         }
         else if self.isSend == false {
-            let items = ["Receive Files"]
+            let items = Array<String>()
             let activityVC = UIActivityViewController(activityItems: items, applicationActivities: applicationActivities() )
             activityVC.excludedActivityTypes = [UIActivityTypePostToWeibo, UIActivityTypePostToFacebook, UIActivityTypePostToTwitter,UIActivityTypeCopyToPasteboard, UIActivityTypeMessage, UIActivityTypePrint, UIActivityTypeMail ]
             return activityVC

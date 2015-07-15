@@ -180,7 +180,10 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
 {
     UINavigationController *navController = [ITunesFilePickerTableVC pickerInsideNavController:^(BOOL canceled, NSString *filepath ) {
         [self dismissViewControllerAnimated:YES completion:^{
-            NSLog(@"Now import the file!");
+            if ( canceled == NO && filepath != nil) {
+                ITunesSharingReceiver *receiver = [[ITunesSharingReceiver alloc] init];
+                [receiver importFileAtPath:filepath];
+            }
         }];
     }];
     [self presentViewController:navController animated:YES completion:^{}];
@@ -263,8 +266,10 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
             switch (type) {
                 case TransferTypeBluetooth:
                     data = self.receiverBT.receivedData;
+                    break;
                 case TransferTypeWireless:
                     data = self.receiverMC.receivedFileData;
+                    break;
                 default:
                     break;
             }
