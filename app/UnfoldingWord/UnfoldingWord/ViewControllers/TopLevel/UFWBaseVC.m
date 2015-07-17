@@ -20,6 +20,7 @@
 #import "FPPopoverController.h"
 #import "UFWFirstLaunchInfoVC.h"
 #import "UFWAppInformationView.h"
+#import "UIViewController+FileTransfer.h"
 
 @interface UFWBaseVC () <UITableViewDataSource, UITableViewDelegate, LaunchInfoDelegate>
 
@@ -47,6 +48,9 @@
     titleImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.navigationItem.titleView = titleImageView;
     self.navigationItem.title = @"";
+    
+    UIBarButtonItem *bbiShare = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userRequestedSharing:)];
+    self.navigationItem.rightBarButtonItem = bbiShare;
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
@@ -94,6 +98,14 @@
         [defaults setBool:YES forKey:keyDidLaunch];
     }
 }
+
+#pragma mark - Sharing
+
+- (void)userRequestedSharing:(UIBarButtonItem *)activityBarButtonItem
+{
+    [self receiveFile];
+}
+
 
 - (void)loadTopLevelObjects
 {

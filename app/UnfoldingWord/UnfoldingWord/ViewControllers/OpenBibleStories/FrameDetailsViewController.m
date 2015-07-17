@@ -81,38 +81,25 @@ static NSString *const kMatchChapter = @"chapter";
 
 - (void)createRightNavButtons
 {
-    //    // Add bar button items
-    //    ACTLabelButton *labelButton = [[ACTLabelButton alloc] initWithFrame:CGRectMake(0, 0, 80, 30)];
-    //    labelButton.text = NSLocalizedString(@"Version", nil);
-    //    labelButton.delegate = self;
-    //    labelButton.direction = ArrowDirectionDown;
-    //    labelButton.colorNormal = [UIColor whiteColor];
-    //    labelButton.colorHover = [UIColor lightGrayColor];
-    //    labelButton.matchingObject = kMatchVersion;
-    //    labelButton.userInteractionEnabled = YES;
-    //    UIBarButtonItem *bbiVersion = [[UIBarButtonItem alloc] initWithCustomView:labelButton];
-    //
-    //    UIButton *buttonStatus = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 26, 26)];
-    //    [buttonStatus setImage:[UFWInfoView imageReverseForStatus:self.chapter.container.toc.version.status] forState:UIControlStateNormal];
-    //    [buttonStatus addTarget:self action:@selector(showPopOverStatusInfo:) forControlEvents:UIControlEventTouchUpInside];
-    //    UIBarButtonItem *bbiStatus = [[UIBarButtonItem alloc] initWithCustomView:buttonStatus];
-    //
-    //    UIBarButtonItem *bbiShare = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userRequestedSharing:)];
-    //
-    //    self.navigationItem.rightBarButtonItems = @[bbiShare, bbiVersion, bbiStatus];
+        // Add bar button items
+        ACTLabelButton *labelButton = [[ACTLabelButton alloc] initWithFrame:CGRectMake(0, 0, 80, 30)];
+        labelButton.text = NSLocalizedString(@"Version", nil);
+        labelButton.delegate = self;
+        labelButton.direction = ArrowDirectionDown;
+        labelButton.colorNormal = [UIColor whiteColor];
+        labelButton.colorHover = [UIColor lightGrayColor];
+        labelButton.matchingObject = kMatchVersion;
+        labelButton.userInteractionEnabled = YES;
+        UIBarButtonItem *bbiVersion = [[UIBarButtonItem alloc] initWithCustomView:labelButton];
     
-# warning Temporarily - delete this, then uncomment code above this
-    UIBarButtonItem *bbiSend = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStylePlain target:self action:@selector(send)];
-    UIBarButtonItem *bbiReceive = [[UIBarButtonItem alloc] initWithTitle:@"Receive" style:UIBarButtonItemStylePlain target:self action:@selector(receive)];
-    self.navigationItem.rightBarButtonItems = @[bbiSend, bbiReceive];
-}
-
-- (void)send {
-    [self sendFileForVersion:self.chapter.container.toc.version];
-}
-
-- (void) receive {
-    [self receiveFile];
+        UIButton *buttonStatus = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 26, 26)];
+        [buttonStatus setImage:[UFWInfoView imageReverseForStatus:self.chapter.container.toc.version.status] forState:UIControlStateNormal];
+        [buttonStatus addTarget:self action:@selector(showPopOverStatusInfo:) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *bbiStatus = [[UIBarButtonItem alloc] initWithCustomView:buttonStatus];
+    
+        UIBarButtonItem *bbiShare = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userRequestedSharing:)];
+    
+        self.navigationItem.rightBarButtonItems = @[bbiShare, bbiVersion, bbiStatus];
 }
 
 - (void)updateNavTitle
@@ -196,16 +183,9 @@ static NSString *const kMatchChapter = @"chapter";
 {
     if (self.chapter.container.toc.version == nil) {
         return;
-    }
-    
-//    FileActivityController *fileController = [[FileActivityController alloc] initWithVersion:self.chapter.container.toc.version];
-//    UIActivityViewController *activityVC = [fileController activityViewController];
-//    activityVC.popoverPresentationController.barButtonItem = activityBarButtonItem;
-//    [activityVC setCompletionWithItemsHandler:^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
-//        [fileController  cleanup];
-//    }];
-//    [self presentViewController:activityVC animated:YES completion:^{}];
-}
+    }    
+    [self sendFileForVersion:self.chapter.container.toc.version];
+ }
 
 
 #pragma mark - Language Picker

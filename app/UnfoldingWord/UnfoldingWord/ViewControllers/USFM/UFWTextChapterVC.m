@@ -21,6 +21,8 @@
 #import "UFWInfoView.h"
 #import "ACTLabelButton.h"
 #import "UFWNextChapterCell.h"
+#import "UIViewController+FileTransfer.h"
+
 
 static NSString *kMatchVersion = @"version";
 static NSString *kMatchBook = @"book";
@@ -119,7 +121,9 @@ static CGFloat kSideMargin = 10.f;
     [buttonStatus addTarget:self action:@selector(showPopOverStatusInfo:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *bbiStatus = [[UIBarButtonItem alloc] initWithCustomView:buttonStatus];
     
-    self.navigationItem.rightBarButtonItems = @[bbiVersion, bbiStatus];
+    UIBarButtonItem *bbiShare = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userRequestedSharing:)];
+    
+    self.navigationItem.rightBarButtonItems = @[bbiShare, bbiVersion, bbiStatus];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -155,6 +159,17 @@ static CGFloat kSideMargin = 10.f;
     else {
         NSAssert2(NO, @"%s: matching object %@ not recognized!", __PRETTY_FUNCTION__, matchingObject);
     }
+}
+
+
+#pragma mark - Sharing
+
+- (void)userRequestedSharing:(UIBarButtonItem *)activityBarButtonItem
+{
+    if (self.toc.version == nil) {
+        return;
+    }
+    [self sendFileForVersion:self.toc.version];
 }
 
 
