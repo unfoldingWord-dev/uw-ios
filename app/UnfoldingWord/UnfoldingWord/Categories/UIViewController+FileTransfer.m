@@ -67,9 +67,11 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
     if (self.fileActivityController.isSend) {
         
         if ([activityType isEqualToString:BluetoothSend]) {
+            [UIApplication sharedApplication].idleTimerDisabled = YES;
             [self sendBluetooth];
         }
         else if ([activityType isEqualToString:MultiConnectSend]) {
+            [UIApplication sharedApplication].idleTimerDisabled = YES;
             [self sendWireless];
         }
         else if ([activityType isEqualToString:iTunesSend]) {
@@ -79,9 +81,11 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
     else {
         
         if ([activityType isEqualToString:BluetoothReceive]) {
+            [UIApplication sharedApplication].idleTimerDisabled = YES;
             [self receiveBluetooth];
         }
         else if ([activityType isEqualToString:MultiConnectReceive]) {
+            [UIApplication sharedApplication].idleTimerDisabled = YES;
             [self receiveWireless];
         }
         else if ([activityType isEqualToString:iTunesReceive]) {
