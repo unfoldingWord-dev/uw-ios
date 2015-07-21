@@ -36,13 +36,33 @@ static CGFloat kSideMargin = 10.f;
 @property (nonatomic, strong) NSArray *arrayChapters;
 @property (nonatomic, assign) NSTextAlignment alignment;
 @property (nonatomic, assign) UIInterfaceOrientation lastOrientation;
-
 @property (nonatomic, strong) UWTOC *toc;
+
 @property (nonatomic, assign) BOOL didShowPicker;
 
 @property (nonatomic, strong) FPPopoverController *customPopoverController;
 
 @end
+
+/*
+ TODO:
+ 
+ Scrolling
+ Forward scrolling events to the collection view cells
+ Receive scrolling events from the collectin view cells
+ 
+ Forward horizontal scrolling to delegate
+ 
+ Adjust when the user changes the TOC from a different vc
+ 
+ Handle cases where there is either either nothing selected or the matching TOC is empty
+ 
+ #warning Need to auto-enter the TOC based on Main or Side TOC
+ #warning Need to create a toolbar at the top instead of the navigation bar.
+ 
+ */
+
+
 
 @implementation UFWTextChapterVC
 
@@ -178,7 +198,7 @@ static CGFloat kSideMargin = 10.f;
 - (void)userRequestedLanguageSelector:(id)sender
 {
     __weak typeof(self) weakself = self;
-    UIViewController *navVC = [UFWLanguagePickerVC navigationLanguagePickerWithTopContainer:self.topContainer completion:^(BOOL isCanceled, UWVersion *versionPicked) {
+    UIViewController *navVC = [UFWLanguagePickerVC navigationLanguagePickerWithTopContainer:self.toc.version.language.topContainer completion:^(BOOL isCanceled, UWVersion *versionPicked) {
         [weakself dismissViewControllerAnimated:YES completion:^{}];
         
         if (isCanceled) {
@@ -233,6 +253,7 @@ static CGFloat kSideMargin = 10.f;
         self.toc = tocPicked;
         
     }];
+    
     [self presentViewController:navVC animated:YES completion:^{
         
     }];
@@ -425,6 +446,30 @@ static CGFloat kSideMargin = 10.f;
     [self.collectionView reloadData];
     
     self.lastOrientation = toInterfaceOrientation;
+}
+
+#pragma mark - Syncing Methods with Matching View Controller
+
+- (void)scrollHorizontally:(CGFloat)offset
+{
+    CGPoint point = self.collectionView.contentOffset;
+    point.x += offset;
+    [self.collectionView setContentOffset:point];
+}
+
+- (void)scrollVertically:(CGFloat)offset
+{
+    // need to forward to collection view cell
+}
+
+- (void)recenterWithStartVerse:(NSInteger)startVerse endVerse:(NSInteger)endVerse
+{
+    // need to forward to collection view cell
+}
+
+- (void)changeToMatchTOC:(UWTOC *)toc
+{
+    
 }
 
 

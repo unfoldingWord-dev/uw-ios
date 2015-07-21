@@ -180,10 +180,10 @@
     UWTOC *toc = [version.toc anyObject];
     
     if (toc.isUSFMValue == YES) {
-        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"USFM" bundle:nil];
-        UFWTextChapterVC *chapterVC = [sb instantiateInitialViewController];
-        chapterVC.topContainer = topContainer;
-        [self.navigationController pushViewController:chapterVC animated:animated];
+//        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"USFM" bundle:nil];
+//        UFWTextChapterVC *chapterVC = [sb instantiateInitialViewController];
+//        chapterVC.topContainer = topContainer;
+//        [self.navigationController pushViewController:chapterVC animated:animated];
     }
     else {
         UICollectionViewFlowLayout *flow = [[UICollectionViewFlowLayout alloc] init];

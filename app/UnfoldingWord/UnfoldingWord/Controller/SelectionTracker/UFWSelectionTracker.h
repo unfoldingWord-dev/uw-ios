@@ -14,25 +14,27 @@
 // Always call on the main thread.
 
 // Setters: automatically saves to disk.
-+ (void)setUSFMTOC:(UWTOC *)toc;
-+ (void)setJSONTOC:(UWTOC *)toc;
++ (void)setUSFMTOC:(UWTOC * __nullable)toc;
++ (void)setUSFMTOCSide:(UWTOC * __nullable)toc;
++ (void)setJSONTOC:(UWTOC * __nullable)toc;
 + (void)setChapterUSFM:(NSInteger)chapter;
 + (void)setChapterJSON:(NSInteger)chapter;
 + (void)setFrameJSON:(NSInteger)frame;
 
-+ (void)setTopContainer:(UWTopContainer *)topContainer;
++ (void)setTopContainer:(UWTopContainer * __nullable)topContainer;
 
-+ (void)setUrlString:(NSString *)url;
++ (void)setUrlString:(NSString * __nullable)url;
 
 // Getters
-+ (UWTOC *)TOCforUSFM;
-+ (UWTOC *)TOCforJSON;
++ (UWTOC * __nullable)TOCforUSFM;
++ (UWTOC * __nullable)TOCforUSFMSide;
++ (UWTOC * __nullable)TOCforJSON;
 + (NSInteger)chapterNumberUSFM;
 + (NSInteger)chapterNumberJSON;
 + (NSInteger)frameNumberJSON;
 
-+ (UWTopContainer *)topContainer;
++ (UWTopContainer * __nullable)topContainer;
 
-+ (NSString *)urlString;
++ (NSString * __nonnull)urlString;
 
 @end
