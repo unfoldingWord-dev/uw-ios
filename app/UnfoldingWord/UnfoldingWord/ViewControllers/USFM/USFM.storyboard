@@ -17,8 +17,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="fyv-gM-tl2">
-                                <rect key="frame" x="-10" y="0.0" width="620" height="600"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="-10" y="44" width="620" height="556"/>
+                                <color key="backgroundColor" red="0.43925401730000002" green="1" blue="0.44185694419999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="GhN-pp-C2v">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -31,20 +31,42 @@
                                     <outlet property="delegate" destination="VXW-ec-y5Q" id="aNP-UJ-DWD"/>
                                 </connections>
                             </collectionView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jxf-KM-j2C">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <items/>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" red="0.16470588235294117" green="0.13333333333333333" blue="0.14117647058823529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="jxf-KM-j2C" firstAttribute="top" secondItem="mmW-UC-1gy" secondAttribute="top" id="3gv-sZ-oCd"/>
                             <constraint firstItem="qsf-bz-aZ6" firstAttribute="top" secondItem="fyv-gM-tl2" secondAttribute="bottom" id="OYV-7L-TLM"/>
                             <constraint firstAttribute="trailing" secondItem="fyv-gM-tl2" secondAttribute="trailing" constant="-10" id="SJg-IG-ee9"/>
+                            <constraint firstItem="jxf-KM-j2C" firstAttribute="leading" secondItem="mmW-UC-1gy" secondAttribute="leading" id="VuO-rp-8CG"/>
                             <constraint firstItem="fyv-gM-tl2" firstAttribute="top" secondItem="mmW-UC-1gy" secondAttribute="top" id="aDf-s1-uoO"/>
+                            <constraint firstAttribute="trailing" secondItem="jxf-KM-j2C" secondAttribute="trailing" id="qbz-LB-ESo"/>
                             <constraint firstItem="fyv-gM-tl2" firstAttribute="leading" secondItem="mmW-UC-1gy" secondAttribute="leading" constant="-10" id="u4w-vX-7bb"/>
+                            <constraint firstItem="fyv-gM-tl2" firstAttribute="top" secondItem="jxf-KM-j2C" secondAttribute="bottom" id="vpX-yM-Q6i"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="aDf-s1-uoO"/>
+                            </mask>
+                        </variation>
                     </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="collectionView" destination="fyv-gM-tl2" id="eoS-0S-Qcv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cYS-1z-uIc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="bIO-x1-gTB">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <items>
+                        <barButtonItem title="Item" id="Ji4-pL-hXD"/>
+                    </items>
+                </toolbar>
             </objects>
             <point key="canvasLocation" x="231" y="26"/>
         </scene>
@@ -67,14 +89,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jD3-73-CVd" userLabel="MainView">
                                 <rect key="frame" x="0.0" y="0.0" width="290" height="600"/>
                                 <color key="backgroundColor" red="1" green="0.090197819210000002" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="250" id="rVC-FN-Ees"/>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="rVC-FN-Ees"/>
-                                    </mask>
-                                </variation>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -82,7 +96,7 @@
                             <constraint firstAttribute="bottom" secondItem="jD3-73-CVd" secondAttribute="bottom" id="27P-bC-F9n"/>
                             <constraint firstItem="jD3-73-CVd" firstAttribute="width" secondItem="q2e-dA-xrq" secondAttribute="width" id="C3f-FQ-kEO"/>
                             <constraint firstItem="q2e-dA-xrq" firstAttribute="top" secondItem="Me5-wc-m5H" secondAttribute="bottom" id="CXI-ZT-cKs"/>
-                            <constraint firstAttribute="trailing" secondItem="q2e-dA-xrq" secondAttribute="trailing" priority="999" placeholder="YES" id="Hhu-zN-Khx"/>
+                            <constraint firstAttribute="trailing" secondItem="q2e-dA-xrq" secondAttribute="trailing" priority="999" id="Hhu-zN-Khx"/>
                             <constraint firstItem="q2e-dA-xrq" firstAttribute="leading" secondItem="jD3-73-CVd" secondAttribute="trailing" constant="20" id="I5R-dT-gms"/>
                             <constraint firstItem="jD3-73-CVd" firstAttribute="leading" secondItem="TKf-t6-rlm" secondAttribute="leading" id="QEM-Gw-4gt"/>
                             <constraint firstAttribute="trailing" secondItem="jD3-73-CVd" secondAttribute="trailing" priority="998" id="arw-KQ-4vg"/>

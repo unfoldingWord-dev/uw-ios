@@ -22,13 +22,13 @@
 #import "ACTLabelButton.h"
 #import "UFWNextChapterCell.h"
 #import "UIViewController+FileTransfer.h"
-
+#import "UnfoldingWord-Swift.h"
 
 static NSString *kMatchVersion = @"version";
 static NSString *kMatchBook = @"book";
 static CGFloat kSideMargin = 10.f;
 
-@interface UFWTextChapterVC () <ACTLabelButtonDelegate>
+@interface UFWTextChapterVC () <ACTLabelButtonDelegate, UIScrollViewDelegate, UITextViewDelegate>
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) NSString *cellName;
 @property (nonatomic, strong) NSString *cellNameEmpty;
@@ -36,25 +36,21 @@ static CGFloat kSideMargin = 10.f;
 @property (nonatomic, strong) NSArray *arrayChapters;
 @property (nonatomic, assign) NSTextAlignment alignment;
 @property (nonatomic, assign) UIInterfaceOrientation lastOrientation;
-@property (nonatomic, strong) UWTOC *toc;
 
 @property (nonatomic, assign) BOOL didShowPicker;
 
+@property (nonatomic, assign) CGPoint lastCollectionViewScrollOffset;
+@property (nonatomic, assign) CGPoint lastTextViewScrollOffset;
+
 @property (nonatomic, strong) FPPopoverController *customPopoverController;
+@property (nonatomic, strong) UWTOC* toc;
+@property (nonatomic, strong) UWVersion *version;
 
 @end
 
 /*
  TODO:
- 
- Scrolling
- Forward scrolling events to the collection view cells
- Receive scrolling events from the collectin view cells
- 
- Forward horizontal scrolling to delegate
- 
- Adjust when the user changes the TOC from a different vc
- 
+
  Handle cases where there is either either nothing selected or the matching TOC is empty
  
  #warning Need to auto-enter the TOC based on Main or Side TOC
@@ -63,12 +59,12 @@ static CGFloat kSideMargin = 10.f;
  */
 
 
-
 @implementation UFWTextChapterVC
 
 - (void)setToc:(UWTOC *)toc
 {
     _toc = toc;
+    self.version = toc.version;
     self.arrayChapters = [toc.usfmInfo chapters];
     
     [self updateNavTitle];
@@ -106,7 +102,13 @@ static CGFloat kSideMargin = 10.f;
     
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.collectionView.backgroundColor = BACKGROUND_GRAY;
-    self.toc = [UFWSelectionTracker TOCforUSFM];
+    
+    if (self.isSideTOC) {
+        self.toc = [UFWSelectionTracker TOCforUSFMSide];
+    }
+    else {
+        self.toc = [UFWSelectionTracker TOCforUSFM];
+    }
 
     // Register cells
     self.cellName = NSStringFromClass([USFMChapterCell class]);
@@ -326,6 +328,11 @@ static CGFloat kSideMargin = 10.f;
 
 - (void)onNextBookTouched:(id)sender
 {
+    [self animateToNextTOC];
+}
+
+- (void)animateToNextTOC
+{
     UWTOC *nextTOC = [self nextTOC];
     if (nextTOC == nil) {
         NSAssert2(NO, @"%s: Could not find next toc in array %@", __PRETTY_FUNCTION__, self.arrayChapters);
@@ -337,7 +344,7 @@ static CGFloat kSideMargin = 10.f;
     
     [UFWSelectionTracker setChapterUSFM:1];
     [UFWSelectionTracker setUSFMTOC:nextTOC];
-
+    
     
     NSIndexPath *nextIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     
@@ -353,7 +360,6 @@ static CGFloat kSideMargin = 10.f;
         [self updateNavTitle];
         // do whatever post processing you want (such as resetting what is "current" and what is "next")
     }];
-    
 }
 
 - (UWTOC *)nextTOC
@@ -450,41 +456,162 @@ static CGFloat kSideMargin = 10.f;
 
 #pragma mark - Syncing Methods with Matching View Controller
 
-- (void)scrollHorizontally:(CGFloat)offset
+- (void)scrollCollectionView:(CGFloat)offset;
 {
     CGPoint point = self.collectionView.contentOffset;
     point.x += offset;
     [self.collectionView setContentOffset:point];
 }
 
-- (void)scrollVertically:(CGFloat)offset
+- (void)scrollTextView:(CGFloat)offset;
 {
-    // need to forward to collection view cell
+    USFMChapterCell *cell = [self visibleChapterCell];
+    CGPoint adjustedPoint = cell.textView.contentOffset;
+    adjustedPoint.y += offset;
+    cell.textView.contentOffset = adjustedPoint;
 }
 
-- (void)recenterWithStartVerse:(NSInteger)startVerse endVerse:(NSInteger)endVerse
+- (void)adjustTextViewWithVerses:(VerseContainer)verses;
 {
-    // need to forward to collection view cell
-}
-
-- (void)changeToMatchTOC:(UWTOC *)toc
-{
+    USFMChapterCell *cell = [self visibleChapterCell];
+    if (cell == nil) {
+        return;
+    }
     
+    UITextView *textView = cell.textView;
+    
+    NSAttributedString *as = textView.attributedText;
+    __block NSRange startVerseRange = NSMakeRange(NSNotFound, 0);
+    __block NSRange endVerseRange = NSMakeRange(NSNotFound, 0);
+    
+    [as enumerateAttributesInRange:NSMakeRange(0, as.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
+        NSString *verse = attrs[USFM_VERSE_NUMBER];
+        if (verse) {
+            NSInteger number = verse.integerValue;
+            if (number == verses.min) {
+                startVerseRange = range;
+            }
+            else if (number == verses.max) {
+                endVerseRange = range;
+            }
+        }
+    }];
+    
+    NSAssert3(startVerseRange.location != NSNotFound && endVerseRange.location != NSNotFound, @"%s: We didn't even find the range of text for startRange %@ and endRange %@", __PRETTY_FUNCTION__, NSStringFromRange(startVerseRange), NSStringFromRange(endVerseRange));
+    
+    NSRange visibleRange = [self visibleRangeOfTextView:textView];
+    
+    if (visibleRange.location > startVerseRange.location) {
+        [textView scrollRangeToVisible:startVerseRange];
+    }
+}
+
+- (void)changeToMatchingTOC:(UWTOC* __nullable)toc;
+{
+    if (toc == nil) {
+        self.toc = nil;
+    }
+    else {
+        BOOL success = NO;
+        for (UWTOC *toc in self.version.toc) {
+            if ([toc.slug isKindOfClass:[NSString class]] == NO) {
+                NSAssert2(NO, @"%s: The toc did not have a slug. No way to track it: %@", __PRETTY_FUNCTION__, toc);
+                continue;
+            }
+            if ([self.toc.slug isEqualToString:toc.slug]) {
+                self.toc = toc;
+                success = YES;
+                break;
+            }
+        }
+        if (success == NO) { // No slug matches
+            self.toc = nil;
+        }
+    }
+}
+
+-(NSRange)visibleRangeOfTextView:(UITextView *)textView
+{
+    CGRect bounds = textView.frame;
+    bounds.origin = textView.contentOffset; // Scrolling changes the bounds of the view, but the size will be the same.
+    bounds.size.height -= 30.0f; // Not interested in anything near the bottom edge.
+    
+    UITextPosition *start = [textView characterRangeAtPoint:bounds.origin].start;
+    UITextPosition *end = [textView characterRangeAtPoint:CGPointMake(CGRectGetMaxX(bounds), CGRectGetMaxY(bounds))].end;
+    
+    float location = [textView offsetFromPosition:textView.beginningOfDocument toPosition:start];
+    float length = [textView offsetFromPosition:textView.beginningOfDocument toPosition:end] - location;
+    
+    return NSMakeRange(location, length);
 }
 
 
 #pragma mark - Scroll View Delegate
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGPoint offsetCurrent = scrollView.contentOffset;
+    if ([scrollView isEqual:self.collectionView]) {
+        CGFloat difference = offsetCurrent.x - self.lastCollectionViewScrollOffset.x;
+        [self.delegate userDidScrollWithVc:self horizontalOffset:difference];
+        self.lastCollectionViewScrollOffset = offsetCurrent;
+    }
+    else {
+        USFMChapterCell *cell = [self visibleChapterCell];
+        
+        if ([cell.textView isEqual:scrollView]) {
+            CGFloat difference = offsetCurrent.y -self.lastTextViewScrollOffset.y;
+            [self.delegate userDidScrollWithVc:self verticalOffset:difference];
+            self.lastTextViewScrollOffset = offsetCurrent;
+        }
+    }
+}
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    [self updateCurrentChapter];
+    [self handleScrollViewDoneDragging:scrollView];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if ( ! decelerate) {
+        [self handleScrollViewDoneDragging:scrollView];
+    }
+}
+
+- (void)handleScrollViewDoneDragging:(UIScrollView *)scrollView
+{
+    if ([scrollView isEqual:self.collectionView]) {
         [self updateCurrentChapter];
     }
+    else {
+        USFMChapterCell *cell = [self visibleChapterCell];
+        if ([cell.textView isEqual:scrollView]) {
+            VerseContainer verses = [self versesInTextView:cell.textView];
+            [self.delegate userFinishedScrollingWithVc:self verses:verses];
+        }
+    }
+}
+
+- (VerseContainer)versesInTextView:(UITextView *)textView
+{
+    NSAttributedString *as = textView.attributedText;
+    __block NSInteger lowestVerse = NSIntegerMax;
+    __block NSInteger highestVerse = 0;
+    
+    [as enumerateAttributesInRange:NSMakeRange(0, as.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
+        NSString *verse = attrs[USFM_VERSE_NUMBER];
+        if (verse) {
+            NSInteger number = verse.integerValue;
+            lowestVerse = MIN(lowestVerse, number);
+            highestVerse = MAX(highestVerse, number);
+        }
+    }];
+    
+    VerseContainer container;
+    container.min = lowestVerse;
+    container.max = highestVerse;
+    return container;
 }
 
 - (void)updateCurrentChapter
@@ -498,6 +625,20 @@ static CGFloat kSideMargin = 10.f;
     }
 }
 
+#pragma mark - Helpers
 
+/// Returns the current chapter cell if available. Will be nil if no cells or if the current cell is of the wrong type.
+- (USFMChapterCell *)visibleChapterCell
+{
+    CGPoint offset = self.collectionView.contentOffset;
+    for (USFMChapterCell *chapterCell in self.collectionView.visibleCells) {
+        if ([chapterCell isKindOfClass:[USFMChapterCell class]]) {
+            if (chapterCell.frame.origin.x == offset.x) {
+                return chapterCell;
+            }
+        }
+    }
+    return nil;
+}
 
 @end

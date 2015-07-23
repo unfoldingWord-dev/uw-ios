@@ -21,6 +21,7 @@
 #import "UFWFirstLaunchInfoVC.h"
 #import "UFWAppInformationView.h"
 #import "UIViewController+FileTransfer.h"
+#import "UnfoldingWord-Swift.h"
 
 @interface UFWBaseVC () <UITableViewDataSource, UITableViewDelegate, LaunchInfoDelegate>
 
@@ -180,10 +181,11 @@
     UWTOC *toc = [version.toc anyObject];
     
     if (toc.isUSFMValue == YES) {
-//        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"USFM" bundle:nil];
-//        UFWTextChapterVC *chapterVC = [sb instantiateInitialViewController];
-//        chapterVC.topContainer = topContainer;
-//        [self.navigationController pushViewController:chapterVC animated:animated];
+        
+        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"USFM" bundle:nil];
+        UFWContainerUSFMVC *containerVC = [sb instantiateViewControllerWithIdentifier:@"UFWContainerUSFMVC"];
+        containerVC.topContainer = topContainer;
+        [self.navigationController pushViewController:containerVC animated:YES];
     }
     else {
         UICollectionViewFlowLayout *flow = [[UICollectionViewFlowLayout alloc] init];

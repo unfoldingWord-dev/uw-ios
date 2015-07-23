@@ -1148,6 +1148,7 @@
 		5A8DCB961B02601A0010DD27 /* UFWSelectionTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UFWSelectionTracker.m; sourceTree = "<group>"; };
 		5A8DCB9B1B03B1A10010DD27 /* UINavigationController+UFWNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+UFWNavigationController.h"; sourceTree = "<group>"; };
 		5A8DCB9C1B03B1A10010DD27 /* UINavigationController+UFWNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+UFWNavigationController.m"; sourceTree = "<group>"; };
+		5A8E58671B60530200E2430F /* VerseContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VerseContainer.h; sourceTree = "<group>"; };
 		5A9ABAA91B0A350900753AAB /* _OpenAppWordsList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _OpenAppWordsList.h; sourceTree = "<group>"; };
 		5A9ABAAA1B0A350900753AAB /* _OpenAppWordsList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _OpenAppWordsList.m; sourceTree = "<group>"; };
 		5A9ABAAB1B0A350900753AAB /* _OpenChapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _OpenChapter.h; sourceTree = "<group>"; };
@@ -2368,6 +2369,7 @@
 		5A82BA6B1AF928E100C5044E /* USFM */ = {
 			isa = PBXGroup;
 			children = (
+				5A8E58671B60530200E2430F /* VerseContainer.h */,
 				5A82BA751AF929D600C5044E /* USFMCoding.h */,
 				5A82BA6C1AF928E100C5044E /* UFWImporterUSFMEncoding.h */,
 				5A82BA6D1AF928E100C5044E /* UFWImporterUSFMEncoding.m */,

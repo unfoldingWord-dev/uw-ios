@@ -11,3 +11,4 @@
 #import "UFWSelectionTracker.h"
 #import "GZIP.h"
 #import "NSLayoutConstraint+DWSExtensions.h"
+#import "VerseContainer.h"
