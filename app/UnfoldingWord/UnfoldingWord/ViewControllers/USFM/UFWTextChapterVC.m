@@ -128,6 +128,30 @@ static CGFloat kSideMargin = 10.f;
 
 - (void)updateNavTitle
 {
+//    if (self.toolBar.items.count == 0) {
+//        return;
+//    }
+//    NSMutableArray *items = self.toolBar.items.mutableCopy;
+//    NSInteger foundIndex = -1;
+//    NSInteger index = 0;
+//    for (UIBarButtonItem *bbi in items) {
+//        ACTLabelButton *button = (ACTLabelButton *)bbi.customView;
+//        if (button.matchingObject == kMatchBook) {
+//            foundIndex = index;
+//            break;
+//        }
+//    }
+//    NSAssert2(foundIndex != -1, @"%s: Could  not find the chapter in %@", __PRETTY_FUNCTION__, items);
+//    
+//    if (foundIndex >= 0) {
+//        UIBarButtonItem *bbiChapter = [[UIBarButtonItem alloc] initWithCustomView:[self navChapterButton]];
+//        [items replaceObjectAtIndex:foundIndex withObject:bbiChapter];
+//        self.toolBar.items = items;
+//    }
+}
+
+- (void)updateVersionTitle
+{
     if (self.toolBar.items.count == 0) {
         return;
     }
@@ -136,33 +160,25 @@ static CGFloat kSideMargin = 10.f;
     NSInteger index = 0;
     for (UIBarButtonItem *bbi in items) {
         if ([bbi.customView isKindOfClass:[ACTLabelButton class]]) {
-            foundIndex = index;
-            break;
+            ACTLabelButton *button = (ACTLabelButton *)bbi.customView;
+            if (button.matchingObject == kMatchVersion) {
+                foundIndex = index;
+                break;
+            }
         }
     }
     NSAssert2(foundIndex != -1, @"%s: Could  not find the chapter in %@", __PRETTY_FUNCTION__, items);
     
     if (foundIndex >= 0) {
-        UIBarButtonItem *bbiChapter = [[UIBarButtonItem alloc] initWithCustomView:[self navChapterButton]];
+        UIBarButtonItem *bbiChapter = [[UIBarButtonItem alloc] initWithCustomView:[self navVersionButton]];
         [items replaceObjectAtIndex:foundIndex withObject:bbiChapter];
         self.toolBar.items = items;
     }
-    
 }
 
 - (void)addBarButtonItems
 {
-    UIBarButtonItem *bbiChapter = [[UIBarButtonItem alloc] initWithCustomView:[self navChapterButton]];
-    
-    ACTLabelButton *labelButton = [[ACTLabelButton alloc] initWithFrame:CGRectMake(0, 0, 80, 30)];
-    labelButton.text = NSLocalizedString(@"Version", nil);
-    labelButton.delegate = self;
-    labelButton.direction = ArrowDirectionDown;
-    labelButton.colorNormal = [UIColor whiteColor];
-    labelButton.colorHover = [UIColor lightGrayColor];
-    labelButton.matchingObject = kMatchVersion;
-    labelButton.userInteractionEnabled = YES;
-    UIBarButtonItem *bbiVersion = [[UIBarButtonItem alloc] initWithCustomView:labelButton];
+    UIBarButtonItem *bbiVersion = [[UIBarButtonItem alloc] initWithCustomView:[self navVersionButton]];
 
     UIBarButtonItem *bbiSpacer =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
@@ -172,16 +188,33 @@ static CGFloat kSideMargin = 10.f;
     UIBarButtonItem *bbiStatus = [[UIBarButtonItem alloc] initWithCustomView:buttonStatus];
     
     UIBarButtonItem *bbiShare = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userRequestedSharing:)];
-    self.toolBar.items = @[bbiChapter, bbiVersion, bbiStatus, bbiSpacer, bbiShare];
+    self.toolBar.items = @[ bbiVersion, bbiStatus, bbiSpacer, bbiShare];
+}
+
+-(ACTLabelButton *)navVersionButton
+{
+    ACTLabelButton *labelButton = [[ACTLabelButton alloc] initWithFrame:CGRectMake(0, 0, 90, 30)];
+    labelButton.text = (self.version.name != nil) ? self.version.name : NSLocalizedString(@"Version", nil);
+    labelButton.frame = CGRectMake(0, 0, [labelButton.text widthUsingFont:labelButton.font] + [ACTLabelButton widthForArrow], 30);
+    labelButton.adjustsFontSizeToFitWidth = YES;
+    labelButton.minimumScaleFactor = 0.8;
+    labelButton.delegate = self;
+    labelButton.direction = ArrowDirectionDown;
+    labelButton.colorNormal = [UIColor whiteColor];
+    labelButton.colorHover = [UIColor lightGrayColor];
+    labelButton.matchingObject = kMatchVersion;
+    labelButton.userInteractionEnabled = YES;
+    return labelButton;
 }
 
 -(ACTLabelButton *)navChapterButton
 {
-    ACTLabelButton *labelButton = [[ACTLabelButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+    ACTLabelButton *labelButton = [[ACTLabelButton alloc] initWithFrame:CGRectMake(0, 0, 110, 30)];
     labelButton.numberOfLines = 2;
     labelButton.text = [self.toc.title stringByAppendingFormat:@" %ld", (long)[UFWSelectionTracker chapterNumberUSFM]];
     labelButton.font = FONT_MEDIUM;
-    labelButton.frame = CGRectMake(0, 0, [labelButton.text widthUsingFont:labelButton.font] + [ACTLabelButton widthForArrow], 38);
+    labelButton.adjustsFontSizeToFitWidth = YES;
+    labelButton.minimumScaleFactor = 0.8;
     labelButton.delegate = self;
     labelButton.direction = ArrowDirectionDown;
     labelButton.colorNormal = [UIColor whiteColor];
@@ -224,6 +257,11 @@ static CGFloat kSideMargin = 10.f;
     else {
         NSAssert2(NO, @"%s: matching object %@ not recognized!", __PRETTY_FUNCTION__, matchingObject);
     }
+}
+
+- (void)bookButtonPressed
+{
+    [self userRequestedBookPicker:self];
 }
 
 
@@ -283,6 +321,7 @@ static CGFloat kSideMargin = 10.f;
     [self presentViewController:navVC animated:YES completion:^{}];
 }
 
+
 #pragma mark - Book Chapter PIcker
 - (void)userRequestedBookPicker:(id)sender
 {
@@ -296,7 +335,7 @@ static CGFloat kSideMargin = 10.f;
         
         [UFWSelectionTracker setChapterUSFM:chapterPicked];
         [weakself updateSelectionTOC:tocPicked];
-
+        [weakself.delegate userChangedTOCWithVc:self pickedTOC:tocPicked];
         weakself.toc = tocPicked;
     }];
     
@@ -561,12 +600,8 @@ static CGFloat kSideMargin = 10.f;
     else if (localVerses.min == remoteVerses.min) {
         NSInteger difference = localVerses.charactersInMinVerse - remoteVerses.charactersInMinVerse;
         visibleRange.location += difference;
-        visibleRange.length -= 40;
-        textView.delegate = nil;
-        [textView scrollRangeToVisible:visibleRange];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0  * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            textView.delegate = self;
-        });
+        visibleRange.length -= 20; // trying to prevent overshooting and then snapping back.
+        [self scrollTextView:textView toRange:visibleRange];
     }
     else if (localVerses.min < remoteVerses.min) { // && localVerses.max != remoteVerses.max) {
         NSAttributedString *as = textView.attributedText;
@@ -581,15 +616,10 @@ static CGFloat kSideMargin = 10.f;
                 }
             }
         }];
-        NSLog(@"local min < remote");
         NSInteger charOffset = remoteVerses.totalCharactersInMinVerse - remoteVerses.charactersInMinVerse;
         startingVerseRange.location += charOffset;
-        startingVerseRange.length = visibleRange.length - 40;
-        textView.delegate = nil;
-        [textView scrollRangeToVisible:startingVerseRange];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            textView.delegate = self;
-        });
+        startingVerseRange.length = visibleRange.length - 20; // trying to prevent overshooting and then snapping back.
+        [self scrollTextView:textView toRange:startingVerseRange];
     }
     else if (localVerses.min > remoteVerses.min) { // && localVerses.max != remoteVerses.max) {
         NSAttributedString *as = textView.attributedText;
@@ -604,15 +634,19 @@ static CGFloat kSideMargin = 10.f;
                 }
             }
         }];
-        textView.delegate = nil;
         adjustedVerseRange.length = visibleRange.length;
-        [textView scrollRangeToVisible:adjustedVerseRange];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            textView.delegate = self;
-        });
-        NSLog(@"local min > remote");
-        NSLog(@"The final option!");
+
+        [self scrollTextView:textView toRange:adjustedVerseRange];
     }
+}
+
+- (void)scrollTextView:(UITextView *)textView toRange:(NSRange)range
+{
+    textView.delegate = nil;
+    [textView scrollRangeToVisible:range];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        textView.delegate = self;
+    });
 }
 
 - (void)changeToMatchingTOC:(UWTOC* __nullable)toc;
@@ -652,6 +686,11 @@ static CGFloat kSideMargin = 10.f;
     float length = [textView offsetFromPosition:textView.beginningOfDocument toPosition:end] - location;
     
     return NSMakeRange(location, length);
+}
+
+- (void)matchingCollectionViewDidFinishScrolling
+{
+    // Fade back in.
 }
 
 

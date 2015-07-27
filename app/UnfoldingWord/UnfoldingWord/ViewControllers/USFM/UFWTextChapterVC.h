@@ -22,7 +22,8 @@
 - (void)scrollTextView:(CGFloat)offset;
 - (void)adjustTextViewWithVerses:(VerseContainer)verses;
 - (void)changeToMatchingTOC:(UWTOC* __nullable)toc;
-
+- (void)matchingCollectionViewDidFinishScrolling;
+- (void)bookButtonPressed;
 - (void) changeToSize:(CGSize)size;
 
 @end

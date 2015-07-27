@@ -7,21 +7,27 @@
 
 import UIKit
 
-// These methods make sure that both views are equivalent -- trampolines for user interactions.
 @objc protocol USFMPanelDelegate {
+    // These methods make sure that both views are equivalent -- trampolines for user interactions.
     func userDidScroll(#vc : UFWTextChapterVC, verticalOffset : CGFloat)
     func userDidScroll(#vc : UFWTextChapterVC, horizontalOffset: CGFloat)
     func userFinishedScrolling(#vc : UFWTextChapterVC, verses : VerseContainer)
+    func userFinishedScrollingCollectionView(#vc : UFWTextChapterVC)
     func userChangedTOC(#vc : UFWTextChapterVC, pickedTOC : UWTOC)
+//
+//    // These are information to help rotation and sizing events.
+    func containerSize() -> CGSize
+    func containerSizeRotated() -> CGSize
 }
 
-class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate {
+class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelButtonDelegate {
     
     @IBOutlet weak var viewMain : UIView!
     @IBOutlet weak var viewSide : UIView!
     
     @IBOutlet weak var constraintSideViewToRightEdge : NSLayoutConstraint!
     @IBOutlet weak var constraintMainViewToRightEdge : NSLayoutConstraint!
+    @IBOutlet weak var constraintSpacerWidth : NSLayoutConstraint!
     
     var topContainer : UWTopContainer! // Must be assigned before view loads!
     
@@ -58,8 +64,8 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate {
         self.vcMain.delegate = self
         self.vcSide.delegate = self
         
-        self.navigationItem.title = self.topContainer.title
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Side", style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideBySideView")
+        self.navigationItem.titleView = navChapterButton(UFWSelectionTracker.TOCforUSFM())
+//        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Side", style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideBySideView")
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -129,6 +135,65 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate {
         if let matchingVC = matchingViewController(vc) {
             matchingVC.changeToMatchingTOC(pickedTOC)
         }
+        self.navigationItem.titleView = navChapterButton(UFWSelectionTracker.TOCforUSFM())
+    }
+    
+    func userFinishedScrollingCollectionView(#vc : UFWTextChapterVC)
+    {
+        
+    }
+    
+    func containerSize() -> CGSize
+    {
+        return self.viewMain.frame.size
+    }
+    
+    func containerSizeRotated() -> CGSize
+    {
+        
+        // Get height of status bar - either 44 or 36
+        return CGSizeZero
+    }
+    
+    func navChapterButton(toc : UWTOC?) -> ACTLabelButton
+    {
+        let button = ACTLabelButton(frame: CGRectMake(0, 0, 110, 30))
+
+        if let toc = toc {
+            button.text = "\(toc.title) \(UFWSelectionTracker.chapterNumberUSFM())"
+        }
+        else {
+            button.text = "Select Book"
+        }
+        
+        if let text = button.text, font = button.font {
+            button.frame = CGRectMake(0, 0, text.widthUsingFont(font) + ACTLabelButton.widthForArrow(), 38);
+        }
+        
+        button.font = UIFont(name: "HelveticaNeue-Medium", size: 17)
+        button.delegate = self
+        button.direction = ArrowDirection.Down
+        button.colorHover = UIColor.lightGrayColor()
+        button.colorNormal = UIColor.whiteColor()
+        button.userInteractionEnabled = true
+        
+        return button
+    }
+    func labelButtonPressed(labelButton : ACTLabelButton) {
+        self.vcMain.bookButtonPressed()
+    }
+
+    func windowHeight() -> CGFloat
+    {
+        let windowFrame = UIScreen.mainScreen().bounds
+        var height : CGFloat = 0
+        if self.view.bounds.size.width > self.view.bounds.size.height {
+            height = min(windowFrame.size.height, windowFrame.size.width)
+        }
+        else {
+            height = max(windowFrame.size.height, windowFrame.size.width)
+        }
+        return height
     }
     
     // Helpers
