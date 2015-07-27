@@ -3,6 +3,7 @@
 //
 
 #import "_UWVersion.h"
+
 @class UWLanguage;
 
 typedef void (^VersionCompletion) (BOOL success, NSString *errorMessage);
@@ -38,5 +39,11 @@ extern NSString *const kNotificationVersionContentDelete;
 - (BOOL)deleteAllContent;
 
 - (NSArray *)sortedTOCs;
+
+/// Returns a json representation of the version and its status information and TOC object array.
+- (NSDictionary *)jsonRepresention;
+
+/// A filename to use to display for the user. This filename is not guaranteed to be unique, but it generally will be.
+- (NSString *)filename;
 
 @end

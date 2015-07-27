@@ -6,6 +6,7 @@
 //
 
 #import "DWSCoreDataStack.h"
+#import "NSString+Trim.h"
 
 /**
  kCoreDataModelName: enter the name of the core data model that ends with xcdatamodeld. This is used to get the right data model. This name is also used as the save name for the sqlite database in the user's documents folder.
@@ -15,7 +16,7 @@ static NSString *kCoreDataModelName = @"UnfoldingWord";
 /**
  kSeedNameInBundle: enter the database seed file in the app bundle. This is used if the previous database is wiped out or on first app launch. Setting to nil is the same as not seeding: an empty database is created instead.
  */
-static NSString *kSeedNameInBundle = @"UnfoldingWordSeed.sqlite";
+static NSString *kSeedNameInBundle = nil; // @"UnfoldingWordSeed.sqlite";
 
 // ================================================================================== //
 
@@ -92,24 +93,22 @@ static NSString *kSeedNameInBundle = @"UnfoldingWordSeed.sqlite";
 
 + (NSURL *)storeUrl
 {
-    NSURL *documentsDirectory  = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-    NSURL *storeURL = [documentsDirectory URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.sqlite", kCoreDataModelName]];
-    return storeURL;
+    return [[self documentsDirectoryURL] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.sqlite", kCoreDataModelName]];
 }
 
 +(NSURL *)writeAheadLoggingUrl
 {
-    NSURL *documentsDirectory  = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-    NSURL *walUrl = [documentsDirectory URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.sqlite-wal", kCoreDataModelName]];
-    return walUrl;
-
+    return [[self documentsDirectoryURL]  URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.sqlite-wal", kCoreDataModelName]];
 }
 
 +(NSURL *)indexUrl
 {
-    NSURL *documentsDirectory  = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-    NSURL *indexUrl = [documentsDirectory URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.sqlite-shm", kCoreDataModelName]];
-    return indexUrl;
+    return [[self documentsDirectoryURL]  URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.sqlite-shm", kCoreDataModelName]];
+}
+
++ (NSURL *)documentsDirectoryURL
+{
+    return [NSURL fileURLWithPath:[NSString documentsDirectory]];
 }
 
 + (NSPersistentStoreCoordinator *)persistentStoreCoordinator

@@ -10,6 +10,7 @@
 #import "UFWMasterUpdater.h"
 #import "UFWMasterUpdater.h"
 #import "UFWDataSeeder.h"
+#import "UnfoldingWord-Swift.h"
 
 @interface AppDelegate ()
 
@@ -47,6 +48,26 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     // Saves changes in the application's managed object context before the application terminates.
 //    [self saveContext];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    
+    if ([UIApplication sharedApplication].protectedDataAvailable) {
+        NSData *data = [NSData dataWithContentsOfURL:url];
+        UFWFileImporter *importer = [[UFWFileImporter alloc] initWithData:data];
+        BOOL success = [importer importFile];
+        if (success == true) {
+            NSString *message = [NSString stringWithFormat:@"The app successfully imported \"%@\"", url.path.lastPathComponent];
+            [[[UIAlertView alloc] initWithTitle:@"Success" message:message delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
+        }
+        if (success == false) {
+            NSString *message = [NSString stringWithFormat:@"The app failed to import \"%@\"", url.path.lastPathComponent];
+            [[[UIAlertView alloc] initWithTitle:@"Failure" message:message delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
+        }
+    }
+    
+    return YES;
 }
 
 

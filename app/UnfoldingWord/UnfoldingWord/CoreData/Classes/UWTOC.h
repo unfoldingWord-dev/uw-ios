@@ -3,7 +3,8 @@
 //
 
 #import "_UWTOC.h"
-@class UWVersion, OpenChapter;
+
+@class UWVersion, OpenChapter, UWFile;
 
 typedef void (^TOCDownloadCompletion) (BOOL success);
 
@@ -18,5 +19,11 @@ typedef void (^TOCDownloadCompletion) (BOOL success);
 - (BOOL)isDownloadedAndValid;
 
 - (OpenChapter *)chapterForNumber:(NSInteger)number;
+
+- (NSDictionary *)jsonRepresention;
+
+- (BOOL)importWithUSFM:(NSString *)usfm signature:(NSString *)signature;
+
+- (BOOL)importWithOpenBible:(NSString *)openBible signature:(NSString *)signature;
 
 @end

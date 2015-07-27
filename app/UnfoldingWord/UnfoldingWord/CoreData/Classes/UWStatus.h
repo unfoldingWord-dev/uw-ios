@@ -8,5 +8,6 @@
 
 + (void)updateStatus:(NSDictionary *)status forVersion:(UWVersion *)version;
 
+- (NSDictionary *)jsonRepresention;
 
 @end

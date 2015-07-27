@@ -13,8 +13,6 @@
 #import <UIKit/UIKit.h>
 #import <CoreText/CoreText.h>
 
-static NSString *const kVerseNumber = @"USFWVerseNumber";
-
 @interface USFMChapter ()
 @property (nonatomic, strong) NSArray *elements;
 @end
@@ -50,6 +48,7 @@ static NSString *const kVerseNumber = @"USFWVerseNumber";
         if (element.isVerse) {
             
             if (element.text.length > 0) {
+                NSNumber *verseNumber = nil;
                 BOOL isShowQuote = (previousElement.isQuote && previousElement.text.length == 0);
                 NSParagraphStyle *paraStyle = nil;
                 if (isShowQuote) {
@@ -66,6 +65,10 @@ static NSString *const kVerseNumber = @"USFWVerseNumber";
                 if (element.stringNumber.length > 0) {
                     NSMutableAttributedString *superscriptString = [[NSMutableAttributedString alloc] initWithString:element.stringNumber attributes:superScript];
                     [superscriptString addAttribute:NSParagraphStyleAttributeName value:paraStyle range:NSMakeRange(0, superscriptString.length)];
+                    if (element.stringNumber.integerValue > 0) { // Add a verse number so we know where the user is.
+                        verseNumber = @(element.stringNumber.integerValue);
+                        [superscriptString addAttribute:USFM_VERSE_NUMBER value:verseNumber range:NSMakeRange(0, superscriptString.length)];
+                    }
                     [string appendAttributedString:superscriptString];
                 }
                 
@@ -77,8 +80,11 @@ static NSString *const kVerseNumber = @"USFWVerseNumber";
                     text = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ ", element.text] attributes:normal];
                 }
                 [text addAttribute:NSParagraphStyleAttributeName value:paraStyle range:NSMakeRange(0, text.length)];
-                [string appendAttributedString:text];
+                if (verseNumber) {
+                    [text addAttribute:USFM_VERSE_NUMBER value:verseNumber range:NSMakeRange(0, text.length)];
+                }
                 
+                [string appendAttributedString:text];
             }
 
         }

@@ -6,6 +6,7 @@
 
 
 #import "DWImageFileManager.h"
+#import "NSString+Trim.h"
 
 static NSInteger const kMaxCurrentDownloads = 3;
 
@@ -338,9 +339,7 @@ static NSInteger const kMaxCurrentDownloads = 3;
             break;
         case SaveTypeFile:
         {
-            NSArray *documentDirectory = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-            NSString *baseDirectory = [documentDirectory objectAtIndex:0];
-            directory = [baseDirectory stringByAppendingPathComponent:@"ImageFileManagerDirectory"];
+            directory = [[NSString documentsDirectory] stringByAppendingPathComponent:@"ImageFileManagerDirectory"];
             
             // Ensure the directory exists; otherwise, saving file there won't work
             [self.fileManager createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:nil];

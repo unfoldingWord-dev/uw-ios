@@ -16,6 +16,8 @@
 + (NSString *)documentsDirectory;
 + (NSString *)cachesDirectory;
 
++ (NSString *)appDocumentsDirectory;
+
 //- (BOOL)writeFileToDocumentsDirectory:(NSString *)filename atomically:(BOOL)useAuxiliaryFile encoding:(NSStringEncoding)enc error:(NSError **)error;
 //
 //+ (instancetype)stringWithContentsOfFileInDocumentsDirectory:(NSString *)filename encoding:(NSStringEncoding)enc error:(NSError **)error;

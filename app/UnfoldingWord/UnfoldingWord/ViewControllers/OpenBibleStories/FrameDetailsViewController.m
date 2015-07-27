@@ -23,6 +23,8 @@
 #import "ACTLabelButton.h"
 #import "Constants.h"
 #import "NSString+Trim.h"
+#import "UIViewController+FileTransfer.h"
+#import "UnfoldingWord-Swift.h"
 
 static NSString *const kMatchVersion = @"version";
 static NSString *const kMatchChapter = @"chapter";
@@ -79,23 +81,25 @@ static NSString *const kMatchChapter = @"chapter";
 
 - (void)createRightNavButtons
 {
-    // Add bar button items
-    ACTLabelButton *labelButton = [[ACTLabelButton alloc] initWithFrame:CGRectMake(0, 0, 80, 30)];
-    labelButton.text = NSLocalizedString(@"Version", nil);
-    labelButton.delegate = self;
-    labelButton.direction = ArrowDirectionDown;
-    labelButton.colorNormal = [UIColor whiteColor];
-    labelButton.colorHover = [UIColor lightGrayColor];
-    labelButton.matchingObject = kMatchVersion;
-    labelButton.userInteractionEnabled = YES;
-    UIBarButtonItem *bbiVersion = [[UIBarButtonItem alloc] initWithCustomView:labelButton];
+        // Add bar button items
+        ACTLabelButton *labelButton = [[ACTLabelButton alloc] initWithFrame:CGRectMake(0, 0, 80, 30)];
+        labelButton.text = NSLocalizedString(@"Version", nil);
+        labelButton.delegate = self;
+        labelButton.direction = ArrowDirectionDown;
+        labelButton.colorNormal = [UIColor whiteColor];
+        labelButton.colorHover = [UIColor lightGrayColor];
+        labelButton.matchingObject = kMatchVersion;
+        labelButton.userInteractionEnabled = YES;
+        UIBarButtonItem *bbiVersion = [[UIBarButtonItem alloc] initWithCustomView:labelButton];
     
-    UIButton *buttonStatus = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 26, 26)];
-    [buttonStatus setImage:[UFWInfoView imageReverseForStatus:self.chapter.container.toc.version.status] forState:UIControlStateNormal];
-    [buttonStatus addTarget:self action:@selector(showPopOverStatusInfo:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *bbiStatus = [[UIBarButtonItem alloc] initWithCustomView:buttonStatus];
+        UIButton *buttonStatus = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 26, 26)];
+        [buttonStatus setImage:[UFWInfoView imageReverseForStatus:self.chapter.container.toc.version.status] forState:UIControlStateNormal];
+        [buttonStatus addTarget:self action:@selector(showPopOverStatusInfo:) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *bbiStatus = [[UIBarButtonItem alloc] initWithCustomView:buttonStatus];
     
-    self.navigationItem.rightBarButtonItems = @[bbiVersion, bbiStatus];
+        UIBarButtonItem *bbiShare = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userRequestedSharing:)];
+    
+        self.navigationItem.rightBarButtonItems = @[bbiShare, bbiVersion, bbiStatus];
 }
 
 - (void)updateNavTitle
@@ -172,6 +176,16 @@ static NSString *const kMatchChapter = @"chapter";
     }];
     [self presentViewController:navVC animated:YES completion:^{}];
 }
+
+#pragma mark - Sharing
+
+- (void)userRequestedSharing:(UIBarButtonItem *)activityBarButtonItem
+{
+    if (self.chapter.container.toc.version == nil) {
+        return;
+    }    
+    [self sendFileForVersion:self.chapter.container.toc.version];
+ }
 
 
 #pragma mark - Language Picker
@@ -269,14 +283,14 @@ static NSString *const kMatchChapter = @"chapter";
         [self.collectionView reloadData];
     }
     [self jumpToCurrentFrameAnimated:YES];
-
+    
 }
 
 - (void)jumpToCurrentFrameAnimated:(BOOL)animated
 {
     NSInteger chapterNumber = self.chapter.number.integerValue;
     NSInteger selectedChapter = [UFWSelectionTracker chapterNumberJSON];
-
+    
     if ( chapterNumber != selectedChapter) {
         return;
     }
@@ -296,11 +310,11 @@ static NSString *const kMatchChapter = @"chapter";
 
 - (void)tapRecognized:(UITapGestureRecognizer *)tapRecognizer
 {
-//    // If we're in portrait mode, then ignore.
-//    if (self.view.bounds.size.width < self.view.bounds.size.height && ! self.navigationController.navigationBarHidden) {
-//        return;
-//    }
-
+    //    // If we're in portrait mode, then ignore.
+    //    if (self.view.bounds.size.width < self.view.bounds.size.height && ! self.navigationController.navigationBarHidden) {
+    //        return;
+    //    }
+    
     [self showOrHideNavigationBarAnimated:YES];
     [self.collectionViewLayout invalidateLayout];
 }
@@ -373,7 +387,7 @@ static NSString *const kMatchChapter = @"chapter";
         OpenFrame *frame = self.arrayOfFrames[indexPath.row];
         cell.frame_contentLabel.text = frame.text;
         cell.frame_contentLabel.textAlignment = [LanguageInfoController textAlignmentForLanguageCode:self.chapter.container.toc.version.language.lc];
-         [cell setFrameImage:nil];
+        [cell setFrameImage:nil];
         
         __weak typeof(self) weakself = self;
         [[DWImageGetter sharedInstance] retrieveImageWithURLString:frame.imageUrl completionBlock:^(NSString *originalUrl, UIImage *image) {
@@ -412,11 +426,11 @@ static NSString *const kMatchChapter = @"chapter";
 -(void) willRotateToInterfaceOrientation: (UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [self.customPopoverController dismissPopoverAnimated:YES];
-
-//    // Always show the navigation bar in portrait mode.
-//    if (UIDeviceOrientationIsPortrait(toInterfaceOrientation) && self.navigationController.navigationBarHidden) {
-//        [self showOrHideNavigationBarAnimated:YES];
-//    }
+    
+    //    // Always show the navigation bar in portrait mode.
+    //    if (UIDeviceOrientationIsPortrait(toInterfaceOrientation) && self.navigationController.navigationBarHidden) {
+    //        [self showOrHideNavigationBarAnimated:YES];
+    //    }
     
     if (self.lastOrientation != 0) {
         if ( UIInterfaceOrientationIsLandscape(self.lastOrientation) && UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
@@ -555,7 +569,6 @@ static NSString *const kMatchChapter = @"chapter";
         [self.collectionView reloadData];
         // do whatever post processing you want (such as resetting what is "current" and what is "next")
     }];
-    
 }
 
 @end

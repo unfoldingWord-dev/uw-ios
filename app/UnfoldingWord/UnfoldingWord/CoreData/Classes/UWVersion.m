@@ -4,6 +4,7 @@
 
 #import "UWVersion.h"
 #import "UWCoreDataClasses.h"
+#import "Constants.h"
 
 static NSString *const kSlug = @"slug";
 static NSString *const kModifiedDate = @"mod";
@@ -14,10 +15,6 @@ static NSString *const kTOCItems = @"toc";
 NSString *const kNotificationDownloadCompleteForVersion = @"__kNotificationDownloadCompleteForVersion";
 NSString *const kNotificationVersionContentDelete = @"__kNotificationVersionContentDelete";
 NSString *const kKeyVersionId = @"__kKeyVersionId";
-
-@interface UWVersion ()
-
-@end
 
 @implementation UWVersion
 
@@ -46,6 +43,18 @@ NSString *const kKeyVersionId = @"__kKeyVersionId";
         }
     }
     return nil;
+}
+
+- (NSString *)filename
+{
+    UWTOC *toc = self.toc.anyObject;
+    OpenContainer *openCont = toc.openContainer;
+    if (openCont == nil) {
+        return [NSString stringWithFormat:@"%@_%@_%@.%@", self.language.topContainer.title, self.name, self.language.lc, FileExtensionUFW];
+    }
+    else {
+        return [NSString stringWithFormat:@"%@_%@.%@", self.name, self.language.lc, FileExtensionUFW];
+    }
 }
 
 - (void)updateWithDictionary:(NSDictionary *)dictionary
@@ -231,5 +240,24 @@ NSString *const kKeyVersionId = @"__kKeyVersionId";
     }
     return _dictionaryDownloads;
 }
+
+- (NSDictionary *)jsonRepresention
+{
+    NSMutableDictionary *dictionary = [NSMutableDictionary new];
+    
+    dictionary[kModifiedDate] = self.mod;
+    dictionary[kName] = self.name;
+    dictionary[kSlug] = self.slug;
+    dictionary[kStatus] = [self.status jsonRepresention];
+    
+    NSMutableArray *tocItems = [NSMutableArray new];
+    for (UWTOC *toc in self.toc) {
+        [tocItems addObject:[toc jsonRepresention]];
+    }
+    dictionary[kTOCItems] = tocItems;
+    
+    return dictionary;
+}
+
 
 @end

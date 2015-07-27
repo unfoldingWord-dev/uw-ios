@@ -11,4 +11,7 @@
 
 + (void)updateLanguages:(NSArray *)languages forContainer:(UWTopContainer *)container;
 
+- (NSDictionary *)jsonRepresentionWithoutVersions;
+
+
 @end

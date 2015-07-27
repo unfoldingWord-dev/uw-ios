@@ -17,6 +17,7 @@ static NSString *const kDefaultDidCopy = @"did_copy_files";
 
 + (BOOL)seedDataIfNecessary
 {
+    return YES;
     NSNumber *didPreload = [[NSUserDefaults standardUserDefaults] objectForKey:kDefaultDidCopy];
     if (didPreload.boolValue == YES) {
         return YES;
