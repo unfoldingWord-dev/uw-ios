@@ -28,7 +28,7 @@ static NSString *kMatchVersion = @"version";
 static NSString *kMatchBook = @"book";
 static CGFloat kSideMargin = 10.f;
 
-@interface UFWTextChapterVC () <ACTLabelButtonDelegate, UIScrollViewDelegate, UITextViewDelegate>
+@interface UFWTextChapterVC () <ACTLabelButtonDelegate, UIScrollViewDelegate, UITextViewDelegate, UICollectionViewDelegate>
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) NSString *cellName;
 @property (nonatomic, strong) NSString *cellNameEmpty;
@@ -36,6 +36,7 @@ static CGFloat kSideMargin = 10.f;
 @property (nonatomic, strong) NSArray *arrayChapters;
 @property (nonatomic, assign) NSTextAlignment alignment;
 @property (nonatomic, assign) UIInterfaceOrientation lastOrientation;
+@property (nonatomic, weak) IBOutlet UIToolbar *toolBar;
 
 @property (nonatomic, assign) BOOL didShowPicker;
 
@@ -52,9 +53,7 @@ static CGFloat kSideMargin = 10.f;
  TODO:
 
  Handle cases where there is either either nothing selected or the matching TOC is empty
- 
  #warning Need to auto-enter the TOC based on Main or Side TOC
- #warning Need to create a toolbar at the top instead of the navigation bar.
  
  */
 
@@ -64,7 +63,12 @@ static CGFloat kSideMargin = 10.f;
 - (void)setToc:(UWTOC *)toc
 {
     _toc = toc;
-    self.version = toc.version;
+    if (toc != nil) {
+        self.version = toc.version;
+        self.topContainer = toc.version.language.topContainer;
+        [self updateSelectionTOC:toc];
+    }
+
     self.arrayChapters = [toc.usfmInfo chapters];
     
     [self updateNavTitle];
@@ -72,20 +76,14 @@ static CGFloat kSideMargin = 10.f;
     [self updateContentOffset];
 }
 
--(void)updateNavTitle
+- (void)updateSelectionTOC:(UWTOC *)toc
 {
-    ACTLabelButton *labelButton = [[ACTLabelButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
-    labelButton.numberOfLines = 2;
-    labelButton.text = [self.toc.title stringByAppendingFormat:@" %ld", (long)[UFWSelectionTracker chapterNumberUSFM]];
-    labelButton.font = FONT_MEDIUM;
-    labelButton.frame = CGRectMake(0, 0, [labelButton.text widthUsingFont:labelButton.font] + [ACTLabelButton widthForArrow], 38);
-    labelButton.delegate = self;
-    labelButton.direction = ArrowDirectionDown;
-    labelButton.colorNormal = [UIColor whiteColor];
-    labelButton.colorHover = [UIColor lightGrayColor];
-    labelButton.matchingObject = kMatchBook;
-    labelButton.userInteractionEnabled = YES;
-    self.navigationItem.titleView = labelButton;
+    if (self.isSideTOC) {
+        [UFWSelectionTracker setUSFMTOCSide:toc];
+    }
+    else {
+        [UFWSelectionTracker setUSFMTOC:toc];
+    }
 }
 
 - (void)updateContentOffset
@@ -100,6 +98,8 @@ static CGFloat kSideMargin = 10.f;
 {
     [super viewDidLoad];
     
+    self.toolBar.tintColor = [UIColor whiteColor];
+    self.toolBar.barTintColor = BACKGROUND_GRAY;
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.collectionView.backgroundColor = BACKGROUND_GRAY;
     
@@ -126,8 +126,34 @@ static CGFloat kSideMargin = 10.f;
     [self addBarButtonItems];
 }
 
+- (void)updateNavTitle
+{
+    if (self.toolBar.items.count == 0) {
+        return;
+    }
+    NSMutableArray *items = self.toolBar.items.mutableCopy;
+    NSInteger foundIndex = -1;
+    NSInteger index = 0;
+    for (UIBarButtonItem *bbi in items) {
+        if ([bbi.customView isKindOfClass:[ACTLabelButton class]]) {
+            foundIndex = index;
+            break;
+        }
+    }
+    NSAssert2(foundIndex != -1, @"%s: Could  not find the chapter in %@", __PRETTY_FUNCTION__, items);
+    
+    if (foundIndex >= 0) {
+        UIBarButtonItem *bbiChapter = [[UIBarButtonItem alloc] initWithCustomView:[self navChapterButton]];
+        [items replaceObjectAtIndex:foundIndex withObject:bbiChapter];
+        self.toolBar.items = items;
+    }
+    
+}
+
 - (void)addBarButtonItems
 {
+    UIBarButtonItem *bbiChapter = [[UIBarButtonItem alloc] initWithCustomView:[self navChapterButton]];
+    
     ACTLabelButton *labelButton = [[ACTLabelButton alloc] initWithFrame:CGRectMake(0, 0, 80, 30)];
     labelButton.text = NSLocalizedString(@"Version", nil);
     labelButton.delegate = self;
@@ -137,6 +163,8 @@ static CGFloat kSideMargin = 10.f;
     labelButton.matchingObject = kMatchVersion;
     labelButton.userInteractionEnabled = YES;
     UIBarButtonItem *bbiVersion = [[UIBarButtonItem alloc] initWithCustomView:labelButton];
+
+    UIBarButtonItem *bbiSpacer =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
     UIButton *buttonStatus = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 26, 26)];
     [buttonStatus setImage:[UFWInfoView imageReverseForStatus:self.toc.version.status] forState:UIControlStateNormal];
@@ -144,8 +172,23 @@ static CGFloat kSideMargin = 10.f;
     UIBarButtonItem *bbiStatus = [[UIBarButtonItem alloc] initWithCustomView:buttonStatus];
     
     UIBarButtonItem *bbiShare = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userRequestedSharing:)];
-    
-    self.navigationItem.rightBarButtonItems = @[bbiShare, bbiVersion, bbiStatus];
+    self.toolBar.items = @[bbiChapter, bbiVersion, bbiStatus, bbiSpacer, bbiShare];
+}
+
+-(ACTLabelButton *)navChapterButton
+{
+    ACTLabelButton *labelButton = [[ACTLabelButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+    labelButton.numberOfLines = 2;
+    labelButton.text = [self.toc.title stringByAppendingFormat:@" %ld", (long)[UFWSelectionTracker chapterNumberUSFM]];
+    labelButton.font = FONT_MEDIUM;
+    labelButton.frame = CGRectMake(0, 0, [labelButton.text widthUsingFont:labelButton.font] + [ACTLabelButton widthForArrow], 38);
+    labelButton.delegate = self;
+    labelButton.direction = ArrowDirectionDown;
+    labelButton.colorNormal = [UIColor whiteColor];
+    labelButton.colorHover = [UIColor lightGrayColor];
+    labelButton.matchingObject = kMatchBook;
+    labelButton.userInteractionEnabled = YES;
+    return labelButton;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -200,7 +243,7 @@ static CGFloat kSideMargin = 10.f;
 - (void)userRequestedLanguageSelector:(id)sender
 {
     __weak typeof(self) weakself = self;
-    UIViewController *navVC = [UFWLanguagePickerVC navigationLanguagePickerWithTopContainer:self.toc.version.language.topContainer completion:^(BOOL isCanceled, UWVersion *versionPicked) {
+    UIViewController *navVC = [UFWLanguagePickerVC navigationLanguagePickerWithTopContainer:self.topContainer completion:^(BOOL isCanceled, UWVersion *versionPicked) {
         [weakself dismissViewControllerAnimated:YES completion:^{}];
         
         if (isCanceled) {
@@ -233,7 +276,7 @@ static CGFloat kSideMargin = 10.f;
                 weakself.toc = arrayTOCs[0];
             }
         }
-        [UFWSelectionTracker setUSFMTOC:self.toc];
+        [weakself updateSelectionTOC:weakself.toc];
         [weakself addBarButtonItems];
     }];
     
@@ -243,22 +286,21 @@ static CGFloat kSideMargin = 10.f;
 #pragma mark - Book Chapter PIcker
 - (void)userRequestedBookPicker:(id)sender
 {
+    __weak typeof(self) weakself = self;
     UIViewController *navVC = [UFWBookPickerUSFMVC navigationBookPickerWithVersion:self.toc.version completion:^(BOOL isCanceled, UWTOC *tocPicked, NSInteger chapterPicked) {
-        [self dismissViewControllerAnimated:YES completion:^{}];
+        [weakself dismissViewControllerAnimated:YES completion:^{}];
         
         if (isCanceled || tocPicked == nil || chapterPicked <= 0) {
             return;
         }
         
         [UFWSelectionTracker setChapterUSFM:chapterPicked];
-        [UFWSelectionTracker setUSFMTOC:tocPicked];
-        self.toc = tocPicked;
-        
+        [weakself updateSelectionTOC:tocPicked];
+
+        weakself.toc = tocPicked;
     }];
     
-    [self presentViewController:navVC animated:YES completion:^{
-        
-    }];
+    [self presentViewController:navVC animated:YES completion:^{}];
 }
 
 #pragma mark - Version Info Popover
@@ -311,6 +353,7 @@ static CGFloat kSideMargin = 10.f;
         USFMChapter *chapter = self.arrayChapters[indexPath.row];
         cell.textView.attributedText = chapter.attributedString;
         cell.textView.textAlignment = [LanguageInfoController textAlignmentForLanguageCode:self.toc.version.language.lc];
+        cell.textView.delegate = self;
         cell.textView.contentOffset = CGPointMake(0, 0);
         return cell;
     }
@@ -343,8 +386,7 @@ static CGFloat kSideMargin = 10.f;
     self.arrayChapters = [self.toc.usfmInfo chapters];
     
     [UFWSelectionTracker setChapterUSFM:1];
-    [UFWSelectionTracker setUSFMTOC:nextTOC];
-    
+    [self updateSelectionTOC:nextTOC];
     
     NSIndexPath *nextIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     
@@ -454,24 +496,41 @@ static CGFloat kSideMargin = 10.f;
     self.lastOrientation = toInterfaceOrientation;
 }
 
+- (void) changeToSize:(CGSize)size
+{
+    [self.collectionView setNeedsUpdateConstraints];
+    [self.collectionView performBatchUpdates:^{
+        [self.collectionView layoutIfNeeded];
+        [self.collectionView.collectionViewLayout invalidateLayout];
+    } completion:^(BOOL finished) {
+    }];
+}
+
 #pragma mark - Syncing Methods with Matching View Controller
 
 - (void)scrollCollectionView:(CGFloat)offset;
 {
+    self.collectionView.delegate = nil;
     CGPoint point = self.collectionView.contentOffset;
     point.x += offset;
     [self.collectionView setContentOffset:point];
+    self.collectionView.delegate = self;
 }
 
 - (void)scrollTextView:(CGFloat)offset;
 {
     USFMChapterCell *cell = [self visibleChapterCell];
+    cell.textView.delegate = nil;
     CGPoint adjustedPoint = cell.textView.contentOffset;
     adjustedPoint.y += offset;
+    adjustedPoint.y = fmaxf(adjustedPoint.y, 0);
+    adjustedPoint.y = fminf(adjustedPoint.y, cell.textView.contentSize.height - cell.textView.frame.size.height);
     cell.textView.contentOffset = adjustedPoint;
+    
+    cell.textView.delegate = self;
 }
 
-- (void)adjustTextViewWithVerses:(VerseContainer)verses;
+- (void)adjustTextViewWithVerses:(VerseContainer)remoteVerses;
 {
     USFMChapterCell *cell = [self visibleChapterCell];
     if (cell == nil) {
@@ -480,29 +539,79 @@ static CGFloat kSideMargin = 10.f;
     
     UITextView *textView = cell.textView;
     
-    NSAttributedString *as = textView.attributedText;
-    __block NSRange startVerseRange = NSMakeRange(NSNotFound, 0);
-    __block NSRange endVerseRange = NSMakeRange(NSNotFound, 0);
-    
-    [as enumerateAttributesInRange:NSMakeRange(0, as.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
-        NSString *verse = attrs[USFM_VERSE_NUMBER];
-        if (verse) {
-            NSInteger number = verse.integerValue;
-            if (number == verses.min) {
-                startVerseRange = range;
-            }
-            else if (number == verses.max) {
-                endVerseRange = range;
-            }
-        }
-    }];
-    
-    NSAssert3(startVerseRange.location != NSNotFound && endVerseRange.location != NSNotFound, @"%s: We didn't even find the range of text for startRange %@ and endRange %@", __PRETTY_FUNCTION__, NSStringFromRange(startVerseRange), NSStringFromRange(endVerseRange));
-    
+    VerseContainer localVerses = [self versesInTextView:cell.textView];
     NSRange visibleRange = [self visibleRangeOfTextView:textView];
     
-    if (visibleRange.location > startVerseRange.location) {
-        [textView scrollRangeToVisible:startVerseRange];
+    // If we're at the start verse, then scroll to the very beginning.
+    if (localVerses.min == 1 && remoteVerses.min == 1 && remoteVerses.minIsAtStart) {
+        textView.delegate = nil;
+        [textView setContentOffset:CGPointZero animated:YES];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            textView.delegate = self;
+        });
+    }
+    else if (remoteVerses.maxIsAtEnd) {
+        textView.delegate = nil;
+        CGPoint endPoint = CGPointMake(0, textView.contentSize.height - textView.frame.size.height);
+        [textView setContentOffset:endPoint animated:YES];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            textView.delegate = self;
+        });
+    }
+    else if (localVerses.min == remoteVerses.min) {
+        NSInteger difference = localVerses.charactersInMinVerse - remoteVerses.charactersInMinVerse;
+        visibleRange.location += difference;
+        visibleRange.length -= 40;
+        textView.delegate = nil;
+        [textView scrollRangeToVisible:visibleRange];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0  * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            textView.delegate = self;
+        });
+    }
+    else if (localVerses.min < remoteVerses.min) { // && localVerses.max != remoteVerses.max) {
+        NSAttributedString *as = textView.attributedText;
+        __block NSRange startingVerseRange = NSMakeRange(NSNotFound, 0);
+        
+        [as enumerateAttributesInRange:NSMakeRange(0, as.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
+            NSString *verse = attrs[USFM_VERSE_NUMBER];
+            if (verse) {
+                NSInteger number = verse.integerValue;
+                if (number == remoteVerses.min && startingVerseRange.length < range.length) {
+                    startingVerseRange = range;
+                }
+            }
+        }];
+        NSLog(@"local min < remote");
+        NSInteger charOffset = remoteVerses.totalCharactersInMinVerse - remoteVerses.charactersInMinVerse;
+        startingVerseRange.location += charOffset;
+        startingVerseRange.length = visibleRange.length - 40;
+        textView.delegate = nil;
+        [textView scrollRangeToVisible:startingVerseRange];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            textView.delegate = self;
+        });
+    }
+    else if (localVerses.min > remoteVerses.min) { // && localVerses.max != remoteVerses.max) {
+        NSAttributedString *as = textView.attributedText;
+        __block NSRange adjustedVerseRange = NSMakeRange(NSNotFound, 0);
+        
+        [as enumerateAttributesInRange:NSMakeRange(0, as.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
+            NSString *verse = attrs[USFM_VERSE_NUMBER];
+            if (verse) {
+                NSInteger number = verse.integerValue;
+                if (number == remoteVerses.min && adjustedVerseRange.length < range.length) {
+                    adjustedVerseRange = range;
+                }
+            }
+        }];
+        textView.delegate = nil;
+        adjustedVerseRange.length = visibleRange.length;
+        [textView scrollRangeToVisible:adjustedVerseRange];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            textView.delegate = self;
+        });
+        NSLog(@"local min > remote");
+        NSLog(@"The final option!");
     }
 }
 
@@ -552,7 +661,7 @@ static CGFloat kSideMargin = 10.f;
 {
     CGPoint offsetCurrent = scrollView.contentOffset;
     if ([scrollView isEqual:self.collectionView]) {
-        CGFloat difference = offsetCurrent.x - self.lastCollectionViewScrollOffset.x;
+         CGFloat difference = offsetCurrent.x - self.lastCollectionViewScrollOffset.x;
         [self.delegate userDidScrollWithVc:self horizontalOffset:difference];
         self.lastCollectionViewScrollOffset = offsetCurrent;
     }
@@ -595,23 +704,71 @@ static CGFloat kSideMargin = 10.f;
 
 - (VerseContainer)versesInTextView:(UITextView *)textView
 {
-    NSAttributedString *as = textView.attributedText;
+    NSInteger maxLocation = textView.attributedText.string.length - 5; // 5 gives some wiggle room for spaces, etc.
+    NSRange visibleRange = [self visibleRangeOfTextView:textView];
+    NSAttributedString *as = [textView.attributedText attributedSubstringFromRange:visibleRange];
     __block NSInteger lowestVerse = NSIntegerMax;
     __block NSInteger highestVerse = 0;
+    __block NSInteger charHighest = 0;
+    __block NSInteger charLowest = 0;
+    __block BOOL lowestIsAtStart = NO;
+    __block BOOL highestIsAtEnd = NO;
     
+    // Go through and find the longest minimum verse and the longest maximum verse
     [as enumerateAttributesInRange:NSMakeRange(0, as.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
         NSString *verse = attrs[USFM_VERSE_NUMBER];
         if (verse) {
             NSInteger number = verse.integerValue;
-            lowestVerse = MIN(lowestVerse, number);
-            highestVerse = MAX(highestVerse, number);
+            // People will naturally want to line up by verse, so we really want the next full verse unless there are really a lot of characters left in the current verse.
+            NSInteger buffer = 40;
+            if ( (lowestVerse > number || lowestVerse == number)
+                && range.length > buffer ) {
+                lowestVerse = number;
+                charLowest = range.length;
+                
+                if ( (range.location+visibleRange.location) < 5) { // some wiggle room for spaces, numbers, etc.
+                    lowestIsAtStart = YES;
+                }
+            }
+            if (highestVerse < number || highestVerse == number) {
+                highestVerse = number;
+                charHighest = range.length;
+                
+                NSInteger endLocation = range.location + range.length + visibleRange.location;
+                if (endLocation >= maxLocation) {
+                    highestIsAtEnd = YES;
+                }
+            }
         }
     }];
     
     VerseContainer container;
+    
     container.min = lowestVerse;
+    container.charactersInMinVerse = charLowest;
+    container.minIsAtStart = lowestIsAtStart;
+    container.totalCharactersInMinVerse = [self totalCharactersInVerseNumber:lowestVerse forTextView:textView];
+    
     container.max = highestVerse;
+    container.charactersInMaxVerse = charHighest;
+    container.maxIsAtEnd = highestIsAtEnd;
+    
     return container;
+}
+
+- (NSInteger)totalCharactersInVerseNumber:(NSInteger)verseNumber forTextView:(UITextView *)textView
+{
+    __block NSInteger characters = 0;
+    [textView.attributedText enumerateAttributesInRange:NSMakeRange(0, textView.attributedText.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
+        NSString *verse = attrs[USFM_VERSE_NUMBER];
+        if (verse) {
+            NSInteger number = verse.integerValue;
+            if (number == verseNumber) {
+                characters = MAX(range.length, characters);
+            }
+        }
+    }];
+    return characters;
 }
 
 - (void)updateCurrentChapter

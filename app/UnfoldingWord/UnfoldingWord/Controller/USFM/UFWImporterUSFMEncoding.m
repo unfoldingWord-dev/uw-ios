@@ -93,9 +93,6 @@
     else if (element.isVerse || element.isQuote) {
         [element appendText:line];
     }
-    else {
-        NSLog(@"Could not process line, so it was deleted: %@", line);
-    }
     return YES;
 }
 

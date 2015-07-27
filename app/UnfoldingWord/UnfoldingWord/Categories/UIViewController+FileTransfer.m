@@ -122,7 +122,6 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
         }];
         
         [self updateProgress:0 connected:NO finished:NO role:roleSend type:TransferTypeWireless];
-
     }
 }
 

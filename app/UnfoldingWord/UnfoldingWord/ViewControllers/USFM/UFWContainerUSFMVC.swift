@@ -52,8 +52,11 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate {
         self.vcMain.topContainer = self.topContainer
         self.vcSide.topContainer = self.topContainer
         
-//        self.addChildViewController(self.vcMain, toView: self.viewMain)
-//        self.addChildViewController(self.vcSide, toView: self.viewSide)
+        addChildViewController(self.vcMain, toView: self.viewMain)
+        addChildViewController(self.vcSide, toView: self.viewSide)
+        
+        self.vcMain.delegate = self
+        self.vcSide.delegate = self
         
         self.navigationItem.title = self.topContainer.title
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Side", style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideBySideView")
@@ -84,10 +87,19 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate {
             self.constraintSideViewToRightEdge.priority = basicallyNothing
         }
         
+        self.vcSide.view.setNeedsUpdateConstraints()
+        self.vcMain.view.setNeedsUpdateConstraints()
+        
         let duration = animated ? 0.5 : 0.0
+        
         UIView.animateWithDuration(duration, animations: { () -> Void in
             self.view.layoutIfNeeded()
-        })
+            self.vcMain.view.layoutIfNeeded()
+            self.vcSide.view.layoutIfNeeded()
+        }) { (complete) -> Void in
+            self.vcMain.changeToSize(CGSizeZero)
+            self.vcSide.changeToSize(CGSizeZero)
+        }
     }
     
     // Delegate Methods - Trampolines

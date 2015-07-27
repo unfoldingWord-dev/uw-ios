@@ -23,4 +23,6 @@
 - (void)adjustTextViewWithVerses:(VerseContainer)verses;
 - (void)changeToMatchingTOC:(UWTOC* __nullable)toc;
 
+- (void) changeToSize:(CGSize)size;
+
 @end
