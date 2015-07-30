@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		5A2B79AE1B5EA22D00AD9993 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2B79AD1B5EA22D00AD9993 /* UIViewControllerExtension.swift */; };
+		5A2DFE061B6AA6D000465A3D /* USFMTextLocationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2DFE051B6AA6D000465A3D /* USFMTextLocationInfo.swift */; };
 		5A323B1D1A3381FB00099C94 /* NSDictionary+DWSNull.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A323B1C1A3381FB00099C94 /* NSDictionary+DWSNull.m */; };
 		5A36D3B51B223F23001D6E04 /* UFWAppInformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A36D3B31B223F23001D6E04 /* UFWAppInformationView.m */; };
 		5A36D3B61B223F23001D6E04 /* UFWAppInformationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A36D3B41B223F23001D6E04 /* UFWAppInformationView.xib */; };
@@ -942,6 +943,7 @@
 
 /* Begin PBXFileReference section */
 		5A2B79AD1B5EA22D00AD9993 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
+		5A2DFE051B6AA6D000465A3D /* USFMTextLocationInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = USFMTextLocationInfo.swift; sourceTree = "<group>"; };
 		5A323B1B1A3381FB00099C94 /* NSDictionary+DWSNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+DWSNull.h"; sourceTree = "<group>"; };
 		5A323B1C1A3381FB00099C94 /* NSDictionary+DWSNull.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+DWSNull.m"; sourceTree = "<group>"; };
 		5A36D3B21B223F23001D6E04 /* UFWAppInformationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFWAppInformationView.h; sourceTree = "<group>"; };
@@ -3206,6 +3208,7 @@
 		5A9ABFF91B0A370000753AAB /* USFM */ = {
 			isa = PBXGroup;
 			children = (
+				5A2DFE051B6AA6D000465A3D /* USFMTextLocationInfo.swift */,
 				5A9ABFFE1B0A370000753AAB /* UFWTextChapterVC.h */,
 				5A9ABFFF1B0A370000753AAB /* UFWTextChapterVC.m */,
 				5A9ABFFA1B0A370000753AAB /* UFWBookPickerUSFMVC.h */,
@@ -4568,6 +4571,7 @@
 				5A9AC0411B0A38B100753AAB /* USFMChapterCell.m in Sources */,
 				5A9ABAEC1B0A350A00753AAB /* UnfoldingWord.xcdatamodeld in Sources */,
 				5AAC5C601A97B46C001AFA3D /* FPTouchView.m in Sources */,
+				5A2DFE061B6AA6D000465A3D /* USFMTextLocationInfo.swift in Sources */,
 				5A3E553E1A9D4CB700D1D920 /* UFWModelImageSync.m in Sources */,
 				5A9ABAD81B0A350A00753AAB /* _OpenChapter.m in Sources */,
 				5A9AC0061B0A370000753AAB /* UFWBaseURLTableVC.m in Sources */,

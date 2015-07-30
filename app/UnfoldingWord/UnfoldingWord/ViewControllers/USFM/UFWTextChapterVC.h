@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "VerseContainer.h"
 
-@class UWTopContainer, UWTOC;
+@class UWTopContainer, UWTOC, USFMTextLocationInfo;
 @protocol USFMPanelDelegate;
 
 @interface UFWTextChapterVC : UIViewController
@@ -17,6 +17,7 @@
 @property (nonatomic, assign) BOOL isSideTOC;
 @property (nonatomic, weak) id <USFMPanelDelegate> __nullable delegate;
 @property (nonatomic, assign) BOOL isActive;
+@property (nonatomic, readonly) BOOL isSettingUp;
 
 - (void)scrollCollectionView:(CGFloat)offset;
 - (void)scrollTextView:(CGFloat)offset;
@@ -25,5 +26,15 @@
 - (void)matchingCollectionViewDidFinishScrolling;
 - (void)bookButtonPressed;
 - (void) changeToSize:(CGSize)size;
+- (void)updateVersionTitle;
+
+// returns a verse container that describes the verses currently visible in the textview.
+- (VerseContainer)versesVisible;
+
+- (USFMTextLocationInfo * __nonnull)currentTextLocation;
+- (void)scrollToLocation:(USFMTextLocationInfo *__nonnull)location animated:(BOOL)animated;
+
+- (void)willSetup;
+- (void)didSetup;
 
 @end

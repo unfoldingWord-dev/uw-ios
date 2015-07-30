@@ -14,11 +14,14 @@
 
 struct VerseContainer {
     NSInteger min;
-    NSInteger totalCharactersInMinVerse;
+    
+    CGRect minRectRelativeToScreenPosition;
     BOOL minIsAtStart;
+    
     NSInteger max;
+    CGRect maxRectRelativeToScreenPosition;
     BOOL maxIsAtEnd;
-    NSInteger charactersInMinVerse;
-    NSInteger charactersInMaxVerse;
+    
+    CGFloat rowHeight;
 };
 typedef struct VerseContainer VerseContainer;

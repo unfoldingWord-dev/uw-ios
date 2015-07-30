@@ -16,9 +16,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="jxf-KM-j2C">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <items/>
+                            </toolbar>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="fyv-gM-tl2">
-                                <rect key="frame" x="-10" y="44" width="620" height="556"/>
-                                <color key="backgroundColor" red="0.43925401730000002" green="1" blue="0.44185694419999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="-10" y="0.0" width="620" height="556"/>
+                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="GhN-pp-C2v">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -31,18 +35,17 @@
                                     <outlet property="delegate" destination="VXW-ec-y5Q" id="aNP-UJ-DWD"/>
                                 </connections>
                             </collectionView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="jxf-KM-j2C">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                <items/>
-                            </toolbar>
                         </subviews>
-                        <color key="backgroundColor" red="0.16470588235294117" green="0.13333333333333333" blue="0.14117647058823529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="jxf-KM-j2C" firstAttribute="top" secondItem="mmW-UC-1gy" secondAttribute="top" id="3gv-sZ-oCd"/>
+                            <constraint firstItem="fyv-gM-tl2" firstAttribute="top" secondItem="o4a-Ve-CpC" secondAttribute="bottom" id="8e9-1b-vML"/>
+                            <constraint firstItem="qsf-bz-aZ6" firstAttribute="top" secondItem="jxf-KM-j2C" secondAttribute="bottom" id="AOj-ZS-3m7"/>
                             <constraint firstItem="qsf-bz-aZ6" firstAttribute="top" secondItem="fyv-gM-tl2" secondAttribute="bottom" id="OYV-7L-TLM"/>
                             <constraint firstAttribute="trailing" secondItem="fyv-gM-tl2" secondAttribute="trailing" constant="-10" id="SJg-IG-ee9"/>
                             <constraint firstItem="jxf-KM-j2C" firstAttribute="leading" secondItem="mmW-UC-1gy" secondAttribute="leading" id="VuO-rp-8CG"/>
                             <constraint firstItem="fyv-gM-tl2" firstAttribute="top" secondItem="mmW-UC-1gy" secondAttribute="top" id="aDf-s1-uoO"/>
+                            <constraint firstItem="jxf-KM-j2C" firstAttribute="top" secondItem="fyv-gM-tl2" secondAttribute="bottom" id="bcv-mO-vrh"/>
                             <constraint firstAttribute="trailing" secondItem="jxf-KM-j2C" secondAttribute="trailing" id="qbz-LB-ESo"/>
                             <constraint firstItem="fyv-gM-tl2" firstAttribute="leading" secondItem="mmW-UC-1gy" secondAttribute="leading" constant="-10" id="u4w-vX-7bb"/>
                             <constraint firstItem="fyv-gM-tl2" firstAttribute="top" secondItem="jxf-KM-j2C" secondAttribute="bottom" id="vpX-yM-Q6i"/>
@@ -50,6 +53,9 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="aDf-s1-uoO"/>
+                                <exclude reference="vpX-yM-Q6i"/>
+                                <exclude reference="3gv-sZ-oCd"/>
+                                <exclude reference="OYV-7L-TLM"/>
                             </mask>
                         </variation>
                     </view>
@@ -84,21 +90,21 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q2e-dA-xrq" userLabel="SideView">
-                                <rect key="frame" x="310" y="0.0" width="290" height="600"/>
-                                <color key="backgroundColor" red="1" green="0.090197819210000002" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="301" y="0.0" width="299" height="600"/>
+                                <color key="backgroundColor" red="0.43925401730000002" green="1" blue="0.44185694419999999" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jD3-73-CVd" userLabel="MainView">
-                                <rect key="frame" x="0.0" y="0.0" width="290" height="600"/>
+                                <rect key="frame" x="0.0" y="0.0" width="299" height="600"/>
                                 <color key="backgroundColor" red="1" green="0.090197819210000002" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="jD3-73-CVd" secondAttribute="bottom" id="27P-bC-F9n"/>
                             <constraint firstItem="jD3-73-CVd" firstAttribute="width" secondItem="q2e-dA-xrq" secondAttribute="width" id="C3f-FQ-kEO"/>
                             <constraint firstItem="q2e-dA-xrq" firstAttribute="top" secondItem="Me5-wc-m5H" secondAttribute="bottom" id="CXI-ZT-cKs"/>
                             <constraint firstAttribute="trailing" secondItem="q2e-dA-xrq" secondAttribute="trailing" priority="999" id="Hhu-zN-Khx"/>
-                            <constraint firstItem="q2e-dA-xrq" firstAttribute="leading" secondItem="jD3-73-CVd" secondAttribute="trailing" constant="20" id="I5R-dT-gms"/>
+                            <constraint firstItem="q2e-dA-xrq" firstAttribute="leading" secondItem="jD3-73-CVd" secondAttribute="trailing" constant="2" id="I5R-dT-gms"/>
                             <constraint firstItem="jD3-73-CVd" firstAttribute="leading" secondItem="TKf-t6-rlm" secondAttribute="leading" id="QEM-Gw-4gt"/>
                             <constraint firstAttribute="trailing" secondItem="jD3-73-CVd" secondAttribute="trailing" priority="998" id="arw-KQ-4vg"/>
                             <constraint firstAttribute="trailing" secondItem="q2e-dA-xrq" secondAttribute="trailing" id="eF3-X6-oZP"/>

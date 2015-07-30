@@ -40,6 +40,8 @@
     
     NSMutableAttributedString *string = [NSMutableAttributedString new];
     USFMElement *previousElement = nil;
+    NSNumber *verseNumber = nil;
+
     for (USFMElement *element in self.elements) {
         
         NSString *lastStringCharacter = (string.length > 0) ? [string.string substringWithRange:NSMakeRange(string.string.length-1, 1)] : nil;
@@ -48,7 +50,6 @@
         if (element.isVerse) {
             
             if (element.text.length > 0) {
-                NSNumber *verseNumber = nil;
                 BOOL isShowQuote = (previousElement.isQuote && previousElement.text.length == 0);
                 NSParagraphStyle *paraStyle = nil;
                 if (isShowQuote) {
@@ -97,6 +98,9 @@
                 text = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", element.text] attributes:normal];
             }
             [text addAttribute:NSParagraphStyleAttributeName value:[self paragraphQuoteStyleWithIndentLevel:element.numberMarker.floatValue] range:NSMakeRange(0, text.length)];
+            if (verseNumber) {
+                [text addAttribute:USFM_VERSE_NUMBER value:verseNumber range:NSMakeRange(0, text.length)];
+            }
             [string appendAttributedString:text];
             
         }
