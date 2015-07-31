@@ -486,6 +486,8 @@ static CGFloat kSideMargin = 10.f;
         }
     }
     
+    USFMTextLocationInfo *currentTextLocation = [self currentTextLocation];
+
     CGFloat expectedWidth = [self.delegate expectedContainerWidthAfterRotation];
     
     CGFloat offsetIndex = [self currentIndex];
@@ -500,6 +502,7 @@ static CGFloat kSideMargin = 10.f;
     } completion:^(BOOL finished) {
         [self.collectionView setContentOffset:newOffset];
         self.lastCollectionViewScrollOffset = self.collectionView.contentOffset;
+        [self scrollToLocation:currentTextLocation animated:NO];
         [self updateVersionTitle];
         [UIView animateWithDuration:.35 delay:.15 options:UIViewAnimationOptionCurveEaseIn animations:^{
             self.collectionView.layer.opacity = 1.0;
@@ -575,6 +578,8 @@ static CGFloat kSideMargin = 10.f;
         return;
     }
     
+    [self willSetup];
+    
     UITextView *textView = cell.textView;
     NSAttributedString *as = textView.attributedText;
     __block CGFloat minY = CGFLOAT_MAX;
@@ -598,12 +603,24 @@ static CGFloat kSideMargin = 10.f;
     // Prevent the screen from scrolling past the end
     minY = fmin(minY, textView.contentSize.height - textView.frame.size.height);
     
-    [self willSetup];
-    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
+
+    CGFloat offset = fabs( textView.contentOffset.y - minY);
+    if (offset > textView.frame.size.height) {
+        NSLog(@"Offset larger than expected.");
+    }
+    
+    if (duration > 0.001) {
+        textView.userInteractionEnabled = NO;
+        [textView setContentOffset:CGPointMake(0, minY) animated:YES];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            textView.userInteractionEnabled = YES;
+            [self didSetup];
+        });
+    }
+    else {
         textView.contentOffset = CGPointMake(0, minY);
-    } completion:^(BOOL finished) {
         [self didSetup];
-    }];
+    }
 }
 
 - (void)changeToMatchingTOC:(UWTOC* __nullable)matchingTOC;

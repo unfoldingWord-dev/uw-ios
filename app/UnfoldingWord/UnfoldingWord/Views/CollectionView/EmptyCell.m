@@ -17,7 +17,7 @@
     self.contentView.backgroundColor = BACKGROUND_GRAY;
     self.label.textColor = [UIColor whiteColor];
     self.label.font = FONT_MEDIUM;
-    self.label.text = NSLocalizedString(@"You can download and select a item by tapping \"Version\" in the upper right corner.", nil);
+    self.label.text = NSLocalizedString(@"You can download and select a item by tapping \"Version\" in the lower left corner.", nil);
 }
 
 @end

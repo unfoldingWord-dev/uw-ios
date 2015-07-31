@@ -73,7 +73,8 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelButtonDel
         addChildViewController(self.vcSide, toView: self.viewSide)
         
         updateNavChapterButton()
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Side", style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideBySideView")
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "diglot"), style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideBySideView")
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -101,7 +102,8 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelButtonDel
     func arrangeViews(#startDark : Bool) {
         
         let verses = self.vcMain.versesVisible()
-        let initialLocation = self.vcMain.currentTextLocation()
+        let initialLocationMain = self.vcMain.currentTextLocation()
+        let initialLocationSide = self.vcSide.currentTextLocation()
         
         self.vcMain.willSetup()
         self.vcSide.willSetup()
@@ -141,8 +143,6 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelButtonDel
             self.vcMain.updateVersionTitle()
             self.vcSide.updateVersionTitle()
             
-            self.vcMain.scrollToLocation(initialLocation, animated: false)
-            self.vcSide.scrollToLocation(initialLocation, animated: false)
             
             self.vcSide.didSetup()
             self.vcMain.didSetup()
@@ -151,6 +151,8 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelButtonDel
                 coverView.layer.opacity = 0.0;
                 self.vcMain.adjustTextViewWithVerses(verses, animationDuration: 0.0)
                 self.vcSide.adjustTextViewWithVerses(verses, animationDuration: 0.0)
+                self.vcMain.scrollToLocation(initialLocationMain, animated: false)
+                self.vcSide.scrollToLocation(initialLocationSide, animated: false)
                 
             }, completion: { (completed) -> Void in
                 coverView.removeFromSuperview()
@@ -177,7 +179,7 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelButtonDel
     func userFinishedScrolling(#vc : UFWTextChapterVC, verses : VerseContainer)
     {
         if let matchingVC = matchingViewController(vc) {
-            matchingVC.adjustTextViewWithVerses(verses, animationDuration: 1.5);
+            matchingVC.adjustTextViewWithVerses(verses, animationDuration: 1.0);
         }
     }
     
@@ -273,10 +275,7 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelButtonDel
     
     func matchingViewController(vc : UFWTextChapterVC) -> UFWTextChapterVC?
     {
-        if self.vcSide.isActive  == false {
-            return nil
-        }
-        else if vc == self.vcMain {
+        if vc == self.vcMain {
             return self.vcSide
         }
         else if vc == self.vcSide {
