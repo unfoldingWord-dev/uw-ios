@@ -13,7 +13,10 @@ import UIKit
     func userDidScroll(#vc : UFWTextChapterVC, horizontalOffset: CGFloat)
     func userFinishedScrolling(#vc : UFWTextChapterVC, verses : VerseContainer)
     func userFinishedScrollingCollectionView(#vc : UFWTextChapterVC)
+    
+    
     func userChangedTOC(#vc : UFWTextChapterVC, pickedTOC : UWTOC)
+    func matchingVCVerses(#vc : UFWTextChapterVC) -> VerseContainer
 
 //    // These are information to help rotation and sizing events.
     func expectedContainerWidthAfterRotation() -> CGFloat
@@ -34,6 +37,8 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelButtonDel
     
     let vcMain : UFWTextChapterVC
     let vcSide : UFWTextChapterVC
+    
+    var initialLoadComplete : Bool = false
     
     override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
         self.vcMain = UFWContainerUSFMVC.createTextChapterVC()
@@ -73,7 +78,10 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelButtonDel
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        arrangeViews(startDark: true)
+        if initialLoadComplete == false {
+            arrangeViews(startDark: true)
+            initialLoadComplete = true
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -92,7 +100,8 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelButtonDel
     
     func arrangeViews(#startDark : Bool) {
         
-        let verses1 = self.vcMain.versesVisible()
+        let verses = self.vcMain.versesVisible()
+        let initialLocation = self.vcMain.currentTextLocation()
         
         self.vcMain.willSetup()
         self.vcSide.willSetup()
@@ -102,11 +111,10 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelButtonDel
         coverView.layer.opacity = startDark ? 1.0 : 0.0
         self.view.addSubview(coverView)
         
-        [UIView .animateWithDuration(0.25, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+        [UIView .animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
             coverView.layer.opacity = 1.0;
-        }, completion: { (completed) -> Void in
             
-            let verses = self.vcMain.versesVisible()
+        }, completion: { (completed) -> Void in
             
             let required : UILayoutPriority = 999
             let basicallyNothing : UILayoutPriority = 1
@@ -121,8 +129,7 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelButtonDel
             
             self.vcSide.view.setNeedsUpdateConstraints()
             self.vcMain.view.setNeedsUpdateConstraints()
-            
-            let mainPosition = self.vcMain.currentTextLocation()
+        
             
             self.view.layoutIfNeeded()
             self.vcMain.view.layoutIfNeeded()
@@ -132,20 +139,21 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelButtonDel
             self.vcSide.changeToSize(CGSizeZero)
             
             self.vcMain.updateVersionTitle()
-            
             self.vcSide.updateVersionTitle()
+            
+            self.vcMain.scrollToLocation(initialLocation, animated: false)
+            self.vcSide.scrollToLocation(initialLocation, animated: false)
             
             self.vcSide.didSetup()
             self.vcMain.didSetup()
 
             [UIView .animateWithDuration(0.25, delay: 0.15, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
                 coverView.layer.opacity = 0.0;
+                self.vcMain.adjustTextViewWithVerses(verses, animationDuration: 0.0)
+                self.vcSide.adjustTextViewWithVerses(verses, animationDuration: 0.0)
                 
             }, completion: { (completed) -> Void in
                 coverView.removeFromSuperview()
-                self.vcMain.adjustTextViewWithVerses(verses)
-                self.vcSide.adjustTextViewWithVerses(verses)
-
             })]
         })]
 
@@ -169,7 +177,7 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelButtonDel
     func userFinishedScrolling(#vc : UFWTextChapterVC, verses : VerseContainer)
     {
         if let matchingVC = matchingViewController(vc) {
-            matchingVC.adjustTextViewWithVerses(verses)
+            matchingVC.adjustTextViewWithVerses(verses, animationDuration: 1.5);
         }
     }
     
@@ -198,6 +206,16 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelButtonDel
         }
         else {
             return height
+        }
+    }
+    
+    func matchingVCVerses(#vc : UFWTextChapterVC) -> VerseContainer
+    {
+        if let matchingVC = matchingViewController(vc) {
+            return matchingVC.versesVisible()
+        }
+        else {
+            return VerseContainer(min: 1, minRectRelativeToScreenPosition: CGRectZero, minIsAtStart: true, max: 1, maxRectRelativeToScreenPosition: CGRectZero, maxIsAtEnd: false, rowHeight: 10)
         }
     }
     

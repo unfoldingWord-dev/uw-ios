@@ -87,6 +87,7 @@ static CGFloat kSideMargin = 10.f;
     // the tens are for margins to match the collectionview which extends 10 points off the left and right side of the frame.
     CGFloat offset = (chapter - 1) * (self.view.frame.size.width + kSideMargin + kSideMargin);
     [self.collectionView setContentOffset:CGPointMake(offset, 0) animated:NO];
+    self.lastCollectionViewScrollOffset = self.collectionView.contentOffset;
     [self didSetup];
 }
 
@@ -123,6 +124,16 @@ static CGFloat kSideMargin = 10.f;
     [self.collectionView registerNib:nextNib forCellWithReuseIdentifier:self.cellNextChapter];
     
     [self addBarButtonItems];
+}
+
+// For some reason, Apple seems to have non-zeroing references to some delegates, so we have to zero them out so that messages don't get sent to this object after it's dealloc'd
+- (void)dealloc
+{
+    USFMChapterCell *visibleChapterCell = [self visibleChapterCell];
+    visibleChapterCell.textView.delegate = nil;
+    self.collectionView.delegate = nil;
+    self.collectionView.dataSource = nil;
+    
 }
 
 - (void)updateVersionTitle
@@ -269,6 +280,7 @@ static CGFloat kSideMargin = 10.f;
                 }
                 if ([weakself.toc.slug isEqualToString:toc.slug]) {
                     weakself.toc = toc;
+                    
                     success = YES;
                     break;
                 }
@@ -378,7 +390,9 @@ static CGFloat kSideMargin = 10.f;
 
 - (void)animateToNextTOC
 {
+    [self willSetup];
     UWTOC *nextTOC = [self nextTOC];
+
     if (nextTOC == nil) {
         NSAssert2(NO, @"%s: Could not find next toc in array %@", __PRETTY_FUNCTION__, self.arrayChapters);
         return;
@@ -401,6 +415,10 @@ static CGFloat kSideMargin = 10.f;
         [self.collectionView setFrame:cFrame];
     } completion:^(BOOL finished){
         [self.collectionView reloadData];
+        self.lastCollectionViewScrollOffset = self.collectionView.contentOffset;
+        [self didSetup];
+        [self.delegate userChangedTOCWithVc:self pickedTOC:nextTOC];
+
         // do whatever post processing you want (such as resetting what is "current" and what is "next")
     }];
 }
@@ -481,6 +499,7 @@ static CGFloat kSideMargin = 10.f;
         
     } completion:^(BOOL finished) {
         [self.collectionView setContentOffset:newOffset];
+        self.lastCollectionViewScrollOffset = self.collectionView.contentOffset;
         [self updateVersionTitle];
         [UIView animateWithDuration:.35 delay:.15 options:UIViewAnimationOptionCurveEaseIn animations:^{
             self.collectionView.layer.opacity = 1.0;
@@ -501,6 +520,7 @@ static CGFloat kSideMargin = 10.f;
         [self.collectionView layoutIfNeeded];
         [self.collectionView.collectionViewLayout invalidateLayout];
     } completion:^(BOOL finished) {
+        self.matchingCollectionViewXOffset = 0.0f;
         [self didSetup];
     }];
 }
@@ -516,12 +536,13 @@ static CGFloat kSideMargin = 10.f;
     CGPoint point = self.collectionView.contentOffset;
     point.x += offset;
     [self.collectionView setContentOffset:point];
+    self.lastCollectionViewScrollOffset = self.collectionView.contentOffset;
     self.collectionView.delegate = self;
 }
 
 - (void)setFadeWithPoints:(CGFloat)points
 {
-    points = fabsf(points);
+    points = fabs(points);
     CGFloat amountToFullFade = 30.0f;
     CGFloat fullFade = 0.0f;
     CGFloat percent = (points > amountToFullFade) ? 0.0f : (amountToFullFade-points) / amountToFullFade;
@@ -543,6 +564,11 @@ static CGFloat kSideMargin = 10.f;
 }
 
 - (void)adjustTextViewWithVerses:(VerseContainer)remoteVerses;
+{
+    [self adjustTextViewWithVerses:remoteVerses animationDuration:1.0];
+}
+
+- (void)adjustTextViewWithVerses:(VerseContainer)remoteVerses animationDuration:(CGFloat)duration
 {
     USFMChapterCell *cell = [self visibleChapterCell];
     if (cell == nil) {
@@ -573,7 +599,7 @@ static CGFloat kSideMargin = 10.f;
     minY = fmin(minY, textView.contentSize.height - textView.frame.size.height);
     
     [self willSetup];
-    [UIView animateWithDuration:1.0f delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
+    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
         textView.contentOffset = CGPointMake(0, minY);
     } completion:^(BOOL finished) {
         [self didSetup];
@@ -647,6 +673,7 @@ static CGFloat kSideMargin = 10.f;
     
     [UIView animateWithDuration:duration animations:^{
         [self.collectionView setContentOffset:CGPointMake(offset, 0)];
+        self.lastCollectionViewScrollOffset = self.collectionView.contentOffset;
     } completion:^(BOOL finished) {
         USFMChapterCell *visibleCell = [self visibleChapterCell];
         UITextView *textView = visibleCell.textView;
@@ -767,6 +794,13 @@ static CGFloat kSideMargin = 10.f;
     
     __block CGFloat rowHeight = 0;
     
+    if (textView == nil) {
+        minVerse = 1;
+        maxVerse = 1;
+        minIsAtStart = YES;
+        rowHeight = 10;
+    }
+    
     // Go through and find the longest minimum verse and the longest maximum verse
     [as enumerateAttributesInRange:NSMakeRange(0, as.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
         NSString *verse = attrs[USFM_VERSE_NUMBER];
@@ -833,7 +867,8 @@ static CGFloat kSideMargin = 10.f;
                 
                 frame.origin.x = fmin(frame.origin.x, unadjustedFrame.origin.x);
                 frame.origin.y = fmin(frame.origin.y, unadjustedFrame.origin.y);
-                frame.size.height = fmax(frame.size.height, unadjustedFrame.size.height);
+                CGFloat currentHeight = (unadjustedFrame.origin.y - frame.origin.y) + unadjustedFrame.size.height;
+                frame.size.height = fmax(frame.size.height, currentHeight);
                 frame.size.width = fmax(frame.size.width, unadjustedFrame.size.width);
             }
         }

@@ -21,14 +21,16 @@
 
 - (void)scrollCollectionView:(CGFloat)offset;
 - (void)scrollTextView:(CGFloat)offset;
-- (void)adjustTextViewWithVerses:(VerseContainer)verses;
+- (void)adjustTextViewWithVerses:(VerseContainer)remoteVerses animationDuration:(CGFloat)duration;
 - (void)changeToMatchingTOC:(UWTOC* __nullable)toc;
 - (void)matchingCollectionViewDidFinishScrolling;
 - (void)bookButtonPressed;
 - (void) changeToSize:(CGSize)size;
 - (void)updateVersionTitle;
 
-// returns a verse container that describes the verses currently visible in the textview.
+- (void)animateToNextTOC;
+
+/// returns a verse container that describes the verses currently visible in the textview.
 - (VerseContainer)versesVisible;
 
 - (USFMTextLocationInfo * __nonnull)currentTextLocation;
