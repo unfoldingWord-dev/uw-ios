@@ -15,6 +15,7 @@ static NSString *const kBaseAPI = @"https://api.unfoldingword.org/uw/txt/2/catal
 static NSString *const kKeyTOCUSFM = @"toc_USFM";
 static NSString *const kKeyTOCUSFMSide = @"toc_side_USFM";
 static NSString *const kKeyTOCJSON = @"toc_JSON";
+static NSString *const kKeyTOCJSONSide = @"toc_JSON_side";
 static NSString *const kKeyChapterUSFM = @"chapter_USFM";
 static NSString *const kKeyChapterJSON = @"chapter_JSON";
 static NSString *const kDictionaryName = @"selection_tracker_dictionary.plist"; // where we store all this.
@@ -39,6 +40,11 @@ static NSString *const kKeyTopContainer = @"top_container";
 + (void)setJSONTOC:(UWTOC *)toc
 {
     [self setObject:toc.objectID.URIRepresentation.absoluteString forKey:kKeyTOCJSON];
+}
+
++ (void)setJSONTOCSide:(UWTOC * __nullable)toc;
+{
+    [self setObject:toc.objectID.URIRepresentation.absoluteString forKey:kKeyTOCJSONSide];
 }
 
 + (void)setChapterJSON:(NSInteger)chapter
@@ -84,6 +90,12 @@ static NSString *const kKeyTopContainer = @"top_container";
 + (UWTOC *)TOCforJSON;
 {
     NSString *absoluteUrl = [[self dictionary] objectForKey:kKeyTOCJSON];
+    return (UWTOC *)[self managedObjectforURLString:absoluteUrl];
+}
+
++ (UWTOC *)TOCforJSONSide
+{
+    NSString *absoluteUrl = [[self dictionary] objectForKey:kKeyTOCJSONSide];
     return (UWTOC *)[self managedObjectforURLString:absoluteUrl];
 }
 

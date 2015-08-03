@@ -26,23 +26,27 @@
 #import "UIViewController+FileTransfer.h"
 #import "UnfoldingWord-Swift.h"
 
-static NSString *const kMatchVersion = @"version";
 static NSString *const kMatchChapter = @"chapter";
 
-@interface FrameDetailsViewController () <UIGestureRecognizerDelegate, ACTLabelButtonDelegate>
-@property (nonatomic, strong) OpenChapter *chapter;
+@interface FrameDetailsViewController () <UIGestureRecognizerDelegate, ACTLabelButtonDelegate, FrameCellDelegate>
+
+@property (nonatomic, strong) OpenChapter *chapterMain;
+@property (nonatomic, strong) OpenChapter *chapterSide;
 
 @property (nonatomic, strong) FPPopoverController *customPopoverController;
 @property (nonatomic, strong) ACTLabelButton *buttonNavItem;
 
 @property (nonatomic, assign) UIInterfaceOrientation lastOrientation;
-@property (nonatomic, strong) NSArray *arrayOfFrames;
+@property (nonatomic, strong) NSArray *arrayOfFramesMain;
+@property (nonatomic, strong) NSArray *arrayOfFramesSide;
 
 @property (nonatomic, strong) NSString *cellIDFrame;
 @property (nonatomic, strong) NSString *cellIDNextChapter;
 @property (nonatomic, strong) NSString *cellIdEmpty;
 
 @property (nonatomic, assign) BOOL didShowPicker;
+@property (nonatomic, assign) BOOL isShowingSide;
+
 @end
 
 @implementation FrameDetailsViewController
@@ -57,11 +61,14 @@ static NSString *const kMatchChapter = @"chapter";
     
     self.collectionView.pagingEnabled = YES;
     
-    UWTOC *toc = [UFWSelectionTracker TOCforJSON];
-    OpenChapter *chapter = [toc chapterForNumber:[UFWSelectionTracker chapterNumberJSON]];
-    [self setChapter:chapter];
+    UWTOC *tocMain = [UFWSelectionTracker TOCforJSON];
+    UWTOC *tocSide = [UFWSelectionTracker TOCforJSONSide];
+
+    OpenChapter *chapterMain = [tocMain chapterForNumber:[UFWSelectionTracker chapterNumberJSON]];
+    OpenChapter *chapterSide = [tocSide chapterForNumber:[UFWSelectionTracker chapterNumberJSON]];
+    [self resetMainChapter:chapterMain sideChapter:chapterSide];
     
-    [self createRightNavButtons];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"diglot"] style:UIBarButtonItemStylePlain target:self action:@selector(userPressedDiglotBBI:)];
 }
 
 - (void)loadNibsForCollectionView
@@ -79,34 +86,12 @@ static NSString *const kMatchChapter = @"chapter";
     [self.collectionView registerNib:emptyNib forCellWithReuseIdentifier:self.cellIdEmpty];
 }
 
-- (void)createRightNavButtons
-{
-        // Add bar button items
-        ACTLabelButton *labelButton = [[ACTLabelButton alloc] initWithFrame:CGRectMake(0, 0, 80, 30)];
-        labelButton.text = NSLocalizedString(@"Version", nil);
-        labelButton.delegate = self;
-        labelButton.direction = ArrowDirectionDown;
-        labelButton.colorNormal = [UIColor whiteColor];
-        labelButton.colorHover = [UIColor lightGrayColor];
-        labelButton.matchingObject = kMatchVersion;
-        labelButton.userInteractionEnabled = YES;
-        UIBarButtonItem *bbiVersion = [[UIBarButtonItem alloc] initWithCustomView:labelButton];
-    
-        UIButton *buttonStatus = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 26, 26)];
-        [buttonStatus setImage:[UFWInfoView imageReverseForStatus:self.chapter.container.toc.version.status] forState:UIControlStateNormal];
-        [buttonStatus addTarget:self action:@selector(showPopOverStatusInfo:) forControlEvents:UIControlEventTouchUpInside];
-        UIBarButtonItem *bbiStatus = [[UIBarButtonItem alloc] initWithCustomView:buttonStatus];
-    
-        UIBarButtonItem *bbiShare = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userRequestedSharing:)];
-    
-        self.navigationItem.rightBarButtonItems = @[bbiShare, bbiVersion, bbiStatus];
-}
 
 - (void)updateNavTitle
 {
     ACTLabelButton *labelButton = [[ACTLabelButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
     labelButton.font = FONT_MEDIUM;
-    labelButton.text = self.chapter.title;
+    labelButton.text = self.chapterMain.title;
     CGFloat width = [labelButton.text widthUsingFont:labelButton.font] + [ACTLabelButton widthForArrow];
     labelButton.frame = CGRectMake(0, 0, width, 28);
     labelButton.delegate = self;
@@ -118,10 +103,13 @@ static NSString *const kMatchChapter = @"chapter";
     self.navigationItem.titleView = labelButton;
 }
 
-- (void)setChapter:(OpenChapter *)chapter
+- (void)resetMainChapter:(OpenChapter *)mainChapter sideChapter:(OpenChapter *)sideChapter
 {
-    _chapter = chapter;
-    self.arrayOfFrames = [chapter sortedFrames];
+    _chapterMain = mainChapter;
+    _chapterSide = sideChapter;
+    self.arrayOfFramesMain = [mainChapter sortedFrames];
+    self.arrayOfFramesSide = [sideChapter sortedFrames];
+    
     [self updateNavTitle];
     [self.collectionView reloadData];
 }
@@ -130,10 +118,7 @@ static NSString *const kMatchChapter = @"chapter";
 {
     NSString *matchingObject = labelButton.matchingObject;
     if ([matchingObject isKindOfClass:[NSString class]]) {
-        if ([matchingObject isEqualToString:kMatchVersion]) {
-            [self userRequestedLanguageSelector:labelButton];
-        }
-        else if ([matchingObject isEqualToString:kMatchChapter]) {
+        if ([matchingObject isEqualToString:kMatchChapter]) {
             [self userRequestedBookPicker:labelButton];
         }
     }
@@ -142,21 +127,48 @@ static NSString *const kMatchChapter = @"chapter";
     }
 }
 
+
+- (void)userPressedDiglotBBI:(UIBarButtonItem *)diglotBBI
+{
+    self.isShowingSide = ! self.isShowingSide;
+    FrameCell *visibleFrameCell = [self visibleFrameCell];
+    [visibleFrameCell setIsShowingSide:self.isShowingSide animated:YES];
+}
+
+/// Returns the current frame cell if available. Will be nil if no cells or if the current cell is of the wrong type.
+- (FrameCell *)visibleFrameCell
+{
+    CGPoint offset = self.collectionView.contentOffset;
+    for (FrameCell *frameCell in self.collectionView.visibleCells) {
+        if ([frameCell isKindOfClass:[FrameCell class]]) {
+            if (frameCell.frame.origin.x == offset.x) {
+                return frameCell;
+            }
+        }
+    }
+    return nil;
+}
+
 #pragma mark - Version Info Popover
 
-- (void)showPopOverStatusInfo:(id)sender
+- (void)showPopOverStatusInfo:(FrameCell *)cell view:(UIView *)view isSide:(BOOL)isSide
 {
     UFWStatusInfoViewController *statusVC = [[UFWStatusInfoViewController alloc] init];
-    statusVC.status = self.chapter.container.toc.version.status;
+    if (isSide == YES) {
+        statusVC.status = self.chapterSide.container.toc.version.status;
+    }
+    else {
+        statusVC.status = self.chapterMain.container.toc.version.status;
+    }
     CGFloat width = fmin((self.view.frame.size.width - 40), 530);
     CGSize size = [UFWInfoView sizeForStatus:statusVC.status forWidth:width withDeleteButton:NO];
     self.customPopoverController = [[FPPopoverController alloc] initWithViewController:statusVC delegate:nil maxSize:size];
     self.customPopoverController.border = NO;
     [self.customPopoverController setShadowsHidden:YES];
     
-    if ([sender isKindOfClass:[UIView class]]) {
+    if ([view isKindOfClass:[UIView class]]) {
         self.customPopoverController.arrowDirection = FPPopoverArrowDirectionAny;
-        [self.customPopoverController presentPopoverFromView:(UIView *)sender];
+        [self.customPopoverController presentPopoverFromView:view];
     }
     else {
         self.customPopoverController.arrowDirection = FPPopoverNoArrow;
@@ -168,9 +180,10 @@ static NSString *const kMatchChapter = @"chapter";
 - (void)userRequestedBookPicker:(id)sender
 {
     __weak typeof(self) weakself = self;
-    UIViewController *navVC = [ChapterListTableViewController navigationChapterPickerWithTopContainer:self.chapter.container.toc.version.language.topContainer completion:^(BOOL isCanceled, OpenChapter *selectedChapter) {
+    UIViewController *navVC = [ChapterListTableViewController navigationChapterPickerWithTopContainer:self.chapterMain.container.toc.version.language.topContainer completion:^(BOOL isCanceled, OpenChapter *selectedChapter) {
         if (isCanceled == NO && selectedChapter != nil) {
-            [weakself setChapter:selectedChapter];
+            OpenChapter *sideChapter = [weakself.chapterSide.container matchingChapter:selectedChapter];
+            [weakself resetMainChapter:selectedChapter sideChapter:sideChapter];
         }
         [weakself dismissViewControllerAnimated:YES completion:^{}];
     }];
@@ -179,20 +192,21 @@ static NSString *const kMatchChapter = @"chapter";
 
 #pragma mark - Sharing
 
-- (void)userRequestedSharing:(UIBarButtonItem *)activityBarButtonItem
+- (void)showSharing:(FrameCell *)cell view:(UIView *)view isSide:(BOOL)isSide
 {
-    if (self.chapter.container.toc.version == nil) {
+    OpenChapter *chapterSelected = (isSide == YES) ? self.chapterSide : self.chapterMain;
+    UWVersion *versionSelected = chapterSelected.container.toc.version;
+    if (versionSelected == nil) {
         return;
     }    
-    [self sendFileForVersion:self.chapter.container.toc.version];
+    [self sendFileForVersion:versionSelected];
  }
 
-
 #pragma mark - Language Picker
-- (void)userRequestedLanguageSelector:(id)sender
+- (void)showVersionSelector:(FrameCell *)cell view:(UIView *)view isSide:(BOOL)isSide;
 {
     __weak typeof(self) weakself = self;
-    UIViewController *navVC = [UFWLanguagePickerVC navigationLanguagePickerWithTopContainer:self.topContainer completion:^(BOOL isCanceled, UWVersion *versionPicked) {
+    UIViewController *navVC = [UFWLanguagePickerVC navigationLanguagePickerWithTopContainer:self.topContainer isSide:isSide completion:^(BOOL isCanceled, UWVersion *versionPicked) {
         [weakself dismissViewControllerAnimated:YES completion:^{}];
         
         if (isCanceled) {
@@ -205,7 +219,8 @@ static NSString *const kMatchChapter = @"chapter";
         }
         
         // Select the TOC
-        UWTOC *existingTOC = weakself.chapter.container.toc;
+        OpenChapter *currentChapter = (isSide == YES) ? weakself.chapterSide : weakself.chapterMain;
+        UWTOC *existingTOC = currentChapter.container.toc;
         UWTOC *selectedTOC = nil;
         if (existingTOC == nil) {
             selectedTOC = [versionPicked sortedTOCs][0];
@@ -245,7 +260,6 @@ static NSString *const kMatchChapter = @"chapter";
         }
         // End select chapter
         
-        
         // Select the frame
         if (selectedChapter.frames.count == 0) { // handle unexpected error.
             [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:@"No frames for your selection." delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles: nil] show];
@@ -259,17 +273,21 @@ static NSString *const kMatchChapter = @"chapter";
         }
         // End select frame
         
-        // Save the selections
-        [UFWSelectionTracker setJSONTOC:selectedTOC];
         [UFWSelectionTracker setChapterJSON:selectedChapter.number.integerValue];
         [UFWSelectionTracker setFrameJSON:frameIndex];
         
-        weakself.chapter = selectedChapter;
-        [weakself.collectionView reloadData];
+        // Save the selections
+        if (isSide) {
+            [UFWSelectionTracker setJSONTOCSide:selectedTOC];
+            [weakself resetMainChapter:self.chapterMain sideChapter:selectedChapter];
+        }
+        else {
+            [UFWSelectionTracker setJSONTOC:selectedTOC];
+            [weakself resetMainChapter:selectedChapter sideChapter:self.chapterSide];
+        }
+        
         [weakself jumpToCurrentFrameAnimated:NO];
-        
-        [weakself createRightNavButtons];
-        
+    
     }];
     
     [self presentViewController:navVC animated:YES completion:^{}];
@@ -288,7 +306,7 @@ static NSString *const kMatchChapter = @"chapter";
 
 - (void)jumpToCurrentFrameAnimated:(BOOL)animated
 {
-    NSInteger chapterNumber = self.chapter.number.integerValue;
+    NSInteger chapterNumber = self.chapterMain.number.integerValue;
     NSInteger selectedChapter = [UFWSelectionTracker chapterNumberJSON];
     
     if ( chapterNumber != selectedChapter) {
@@ -334,25 +352,26 @@ static NSString *const kMatchChapter = @"chapter";
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    if (self.chapter.frames.count == 0) {
+    // Always have a cell that
+    if (self.chapterMain.frames.count == 0) {
         return 1;
     }
     
-    NSArray *chaptersArray = [self.chapter.container.chapters.allObjects sortedArrayUsingComparator:^NSComparisonResult(OpenChapter *chap1, OpenChapter *chap2) {
-        return [chap1.number compare:chap2.number];
-    }];
+    // Calculate whether to add the "Next Chapter" cell at the end -- do this unless we're on the last chapter.
+    NSArray *chaptersArray = [self.chapterMain.container sortedChapters];
+
     OpenChapter *lastChapter = nil;
     
     if (chaptersArray.count > 0) {
         lastChapter = [chaptersArray lastObject];
     }
     
-    //If last chapter, there is no next chapter cell; otherwise add one.
-    if ([self.chapter isEqual:lastChapter]) {
-        return self.arrayOfFrames.count;
+    //If last chapter, there is no next chapter cell; otherwise need to add one.
+    if ([self.chapterMain isEqual:lastChapter]) {
+        return self.arrayOfFramesMain.count;
     }
     else {
-        return self.arrayOfFrames.count + 1;
+        return self.arrayOfFramesMain.count + 1;
     }
 }
 
@@ -368,11 +387,11 @@ static NSString *const kMatchChapter = @"chapter";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.chapter.frames.count == 0) { // nothing loaded
+    if (self.arrayOfFramesMain.count == 0) { // nothing loaded
         EmptyCell *emptyCell = [collectionView dequeueReusableCellWithReuseIdentifier:self.cellIdEmpty forIndexPath:indexPath];
         return emptyCell;
     }
-    else if ([self.arrayOfFrames count] == indexPath.row) // We passed the last frame
+    else if ([self.arrayOfFramesMain count] == indexPath.row) // We passed the last frame
     {
         UFWNextChapterCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:self.cellIDNextChapter forIndexPath:indexPath];
         [cell.buttonNextChapter setTitle:NSLocalizedString(@"nextChapter", nil) forState:UIControlStateNormal];
@@ -384,16 +403,39 @@ static NSString *const kMatchChapter = @"chapter";
     else // we're on a regular frame
     {
         FrameCell *cell =[collectionView dequeueReusableCellWithReuseIdentifier:self.cellIDFrame forIndexPath:indexPath];
-        OpenFrame *frame = self.arrayOfFrames[indexPath.row];
-        cell.frame_contentLabel.text = frame.text;
-        cell.frame_contentLabel.textAlignment = [LanguageInfoController textAlignmentForLanguageCode:self.chapter.container.toc.version.language.lc];
+        cell.delegate = self;
+        
+        NSInteger row = indexPath.row;
+        OpenFrame *frameMain = nil;
+        if (row < self.arrayOfFramesMain.count) {
+            frameMain = self.arrayOfFramesMain[row];
+        }
+        OpenFrame *frameSide = nil;
+        if (row < self.arrayOfFramesSide.count) {
+            frameSide = self.arrayOfFramesSide[row];
+        }
+        
+        cell.label_contentMain.text = frameMain.text;
+        cell.label_contentSide.textAlignment = [LanguageInfoController textAlignmentForLanguageCode:self.chapterMain.container.toc.version.language.lc];
+        [cell setVersionName:self.chapterMain.container.toc.version.name isSide:NO];
+        [cell setStatusImage:[UFWInfoView imageReverseForStatus:self.chapterMain.container.toc.version.status] isSide:NO];
+        
+        
+        cell.label_contentSide.text = frameSide.text;
+        cell.label_contentSide.textAlignment = [LanguageInfoController textAlignmentForLanguageCode:self.chapterSide.container.toc.version.language.lc];
+        [cell setVersionName:self.chapterSide.container.toc.version.name isSide:YES];
+        [cell setStatusImage:[UFWInfoView imageReverseForStatus:self.chapterSide.container.toc.version.status] isSide:YES];
+        
+        [cell setIsShowingSide:self.isShowingSide animated:NO];
+        
         [cell setFrameImage:nil];
+    
         
         __weak typeof(self) weakself = self;
-        [[DWImageGetter sharedInstance] retrieveImageWithURLString:frame.imageUrl completionBlock:^(NSString *originalUrl, UIImage *image) {
+        [[DWImageGetter sharedInstance] retrieveImageWithURLString:frameMain.imageUrl completionBlock:^(NSString *originalUrl, UIImage *image) {
             // Must double check that the image hasn't been recycled for a different chapter
             NSIndexPath *currentIP = [weakself.collectionView indexPathForCell:cell];
-            OpenFrame *currentFrame = [weakself.arrayOfFrames objectAtIndex:currentIP.row];
+            OpenFrame *currentFrame = [weakself.arrayOfFramesMain objectAtIndex:currentIP.row];
             if ([currentFrame.imageUrl isEqualToString:originalUrl]) {
                 [cell setFrameImage:image];
             }
@@ -504,9 +546,9 @@ static NSString *const kMatchChapter = @"chapter";
         self.navigationController.interactivePopGestureRecognizer.delegate = self;
     }
     
-    if (self.chapter.frames.count == 0 && self.didShowPicker == NO) {
+    if (self.chapterMain.frames.count == 0 && self.didShowPicker == NO) {
         self.didShowPicker = YES;
-        [self userRequestedLanguageSelector:nil];
+        [self showVersionSelector:nil view:nil isSide:NO];
     }
 }
 
@@ -531,30 +573,32 @@ static NSString *const kMatchChapter = @"chapter";
 
 -(void)onNextChapterTouched:(id)sender
 {
-    NSArray *chaptersArray = [self.chapter.container.chapters.allObjects sortedArrayUsingComparator:^NSComparisonResult(OpenChapter *chap1, OpenChapter *chap2) {
-        return [chap1.number compare:chap2.number];
-    }];
+    NSArray *chapterMainArray = [self.chapterMain.container sortedChapters];
     
-    OpenChapter *nextChapter = nil;
+    OpenChapter *nextChapterMain = nil;
     NSInteger chapterNumber = 0;
-    for (int i = 0; i < chaptersArray.count ; i++) {
-        OpenChapter *chapter = chaptersArray[i];
-        if ([chapter isEqual:self.chapter] && (i+1) < chaptersArray.count) {
+    for (int i = 0; i < chapterMainArray.count ; i++) {
+        OpenChapter *chapter = chapterMainArray[i];
+        if ([chapter isEqual:self.chapterMain] && (i+1) < chapterMainArray.count) {
             NSInteger nextChapterIndex = i+1;
-            nextChapter = chaptersArray[nextChapterIndex];
+            nextChapterMain = chapterMainArray[nextChapterIndex];
             chapterNumber = nextChapterIndex+1;
             break;
         }
     }
     
-    if ( ! nextChapter) {
-        NSAssert3(nextChapter, @"%s: Could not find next chapter in array %@ with chapter %@", __PRETTY_FUNCTION__, chaptersArray, self.chapter);
+    if ( ! nextChapterMain) {
+        NSAssert3(nextChapterMain, @"%s: Could not find next chapter in array %@ with chapter %@", __PRETTY_FUNCTION__, chapterMainArray, self.chapterMain);
         return;
     }
     
-    self.chapter = nextChapter;
     [UFWSelectionTracker setChapterJSON:chapterNumber];
     [UFWSelectionTracker setFrameJSON:0];
+    
+    OpenChapter *nextChapterSide = [self.chapterSide.container matchingChapter:nextChapterMain];
+    
+    self.chapterMain = nextChapterMain;
+    self.chapterSide = nextChapterSide;
     
     NSIndexPath *nextIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     

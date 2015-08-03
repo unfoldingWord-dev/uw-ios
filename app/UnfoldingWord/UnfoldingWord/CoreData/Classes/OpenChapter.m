@@ -13,10 +13,6 @@ static NSString *const kReference = @"ref";
 static NSString *const kNumber = @"number";
 static NSString *const kFrames = @"frames";
 
-@interface OpenChapter ()
-
-@end
-
 @implementation OpenChapter
 
 + (NSArray *)createChaptersFromArray:(NSArray *)chapters forOpenContainer:(OpenContainer *)container

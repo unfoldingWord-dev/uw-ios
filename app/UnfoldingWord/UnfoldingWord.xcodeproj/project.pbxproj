@@ -1907,6 +1907,7 @@
 		5ABFFD461B34882F006FB166 /* UWFileExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWFileExporter.swift; sourceTree = "<group>"; };
 		5ABFFD471B34882F006FB166 /* UWFileImporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWFileImporter.swift; sourceTree = "<group>"; };
 		5ABFFD481B34882F006FB166 /* UWUrlSourceItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWUrlSourceItem.swift; sourceTree = "<group>"; };
+		5AC121D61B6ECA3300D61BF7 /* FrameCellDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameCellDelegate.h; sourceTree = "<group>"; };
 		5AC377CE1B38744500E3BB36 /* FileActivityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileActivityController.swift; sourceTree = "<group>"; };
 		5AC377D01B38C38300E3BB36 /* BluetoothFileSender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothFileSender.swift; sourceTree = "<group>"; };
 		5AC377D21B38C62C00E3BB36 /* BluetoothFileReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothFileReceiver.swift; sourceTree = "<group>"; };
@@ -3179,6 +3180,7 @@
 			children = (
 				5A9ABFED1B0A370000753AAB /* ChapterListTableViewController.h */,
 				5A9ABFEE1B0A370000753AAB /* ChapterListTableViewController.m */,
+				5AC121D61B6ECA3300D61BF7 /* FrameCellDelegate.h */,
 				5A9ABFEF1B0A370000753AAB /* FrameDetailsViewController.h */,
 				5A9ABFF01B0A370000753AAB /* FrameDetailsViewController.m */,
 				5A9ABFF11B0A370000753AAB /* Open.storyboard */,

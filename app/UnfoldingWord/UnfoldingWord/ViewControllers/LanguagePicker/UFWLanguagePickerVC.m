@@ -28,13 +28,15 @@
 
 @property (nonatomic, copy) LanguagePickerCompletion completion;
 @property (nonatomic, strong) UWTOC *currentTOC;
+@property (nonatomic, assign) BOOL isSide;
 @end
 
 @implementation UFWLanguagePickerVC
 
-+ (UIViewController *)navigationLanguagePickerWithTopContainer:(UWTopContainer *)topContainer completion:(LanguagePickerCompletion)completion;
++ (UIViewController *)navigationLanguagePickerWithTopContainer:(UWTopContainer *)topContainer isSide:(BOOL)isSide completion:(LanguagePickerCompletion)completion;
 {
     UFWLanguagePickerVC *pickerVC = [[UFWLanguagePickerVC alloc] init];
+    pickerVC.isSide = isSide;
     pickerVC.topContainer = topContainer;
     pickerVC.completion = completion;
     return [UINavigationController navigationControllerWithUFWBaseViewController:pickerVC];
@@ -86,7 +88,24 @@
     // Make matching arrays to know which is selected.
     _topContainer = topContainer;
     self.arrayLanguages = topContainer.sortedLanguages;
-    self.currentTOC = (topContainer.isUSFM) ? [UFWSelectionTracker TOCforUSFM] : [UFWSelectionTracker TOCforJSON];
+
+    if (topContainer.isUSFM == YES) {
+        if (self.isSide == YES) {
+            self.currentTOC = [UFWSelectionTracker TOCforUSFMSide];
+        }
+        else {
+            self.currentTOC = [UFWSelectionTracker TOCforUSFM];
+        }
+    }
+    else {
+        if (self.isSide == YES) {
+            self.currentTOC = [UFWSelectionTracker TOCforJSONSide];
+        }
+        else {
+            self.currentTOC = [UFWSelectionTracker TOCforJSON];
+        }
+    }
+
     self.dictionaryOfVersionExpandedStates = [NSMutableDictionary new];
 
     UWLanguage *selectedLanguage = self.currentTOC.version.language;

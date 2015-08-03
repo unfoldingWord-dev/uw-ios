@@ -16,8 +16,11 @@
 // Setters: automatically saves to disk.
 + (void)setUSFMTOC:(UWTOC * __nullable)toc;
 + (void)setUSFMTOCSide:(UWTOC * __nullable)toc;
-+ (void)setJSONTOC:(UWTOC * __nullable)toc;
 + (void)setChapterUSFM:(NSInteger)chapter;
+
++ (void)setJSONTOC:(UWTOC * __nullable)toc;
++ (void)setJSONTOCSide:(UWTOC * __nullable)toc;
+
 + (void)setChapterJSON:(NSInteger)chapter;
 + (void)setFrameJSON:(NSInteger)frame;
 
@@ -28,8 +31,10 @@
 // Getters
 + (UWTOC * __nullable)TOCforUSFM;
 + (UWTOC * __nullable)TOCforUSFMSide;
-+ (UWTOC * __nullable)TOCforJSON;
 + (NSInteger)chapterNumberUSFM;
+
++ (UWTOC * __nullable)TOCforJSON;
++ (UWTOC * __nullable)TOCforJSONSide;
 + (NSInteger)chapterNumberJSON;
 + (NSInteger)frameNumberJSON;
 
