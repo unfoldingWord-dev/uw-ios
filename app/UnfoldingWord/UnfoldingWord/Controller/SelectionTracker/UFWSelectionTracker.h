@@ -11,7 +11,7 @@
 
 @interface UFWSelectionTracker : NSObject
 
-// Always call on the main thread.
+/// Always call on the main thread. These are just convenience methods that write preferences to a file on disk. Not using NSUserDefaults because syncing behavior is harder to define and predict.
 
 // Setters: automatically saves to disk.
 + (void)setUSFMTOC:(UWTOC * __nullable)toc;

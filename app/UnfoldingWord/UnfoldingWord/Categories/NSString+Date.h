@@ -10,8 +10,10 @@
 
 @interface NSString (Date)
 
+/// Returns a date object from the YYYYMMdd format (i.e. 20150131 for Jan 31, 2015)
 - (NSDate*)dateYYYYMMdd;
 
+/// Returns a string that tells the date in the current locale using a long style from the YYYYMMdd format (i.e. 20150131 for Jan 31, 2015)
 - (NSString *)formattedDateFromYYYYMMdd;
 
 @end

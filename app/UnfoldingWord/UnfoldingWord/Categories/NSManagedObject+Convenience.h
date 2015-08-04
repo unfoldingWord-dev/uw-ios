@@ -10,9 +10,10 @@
 
 @interface NSManagedObject (Convenience)
 
-/// Returns all incidences of the calling managed object. Requires the class name to be the same as the entity name. Use only on the main thread.
+/// Returns all incidences of the calling managed object's class. REQUIRES the class name to be the same as the entity name. Use only on the main thread.
 + (NSArray *)allObjects;
 
+/// Convenience method to see whether the uW formatted server date string is later than another uW formatted server date string.
 - (BOOL)isServerMod:(NSString *)serverString isAfterLocalMod:(NSString *)localString;
 
 @end

@@ -10,6 +10,7 @@
 
 @interface UFWVerifier : NSObject
 
+/// Uses the uW public key "uW_vk_2.pem" to verify a given saved file using a base64 encoded signature string.
 + (BOOL)verifyFile:(NSString *)filePath withSignature:(NSString *)signature;
 
 @end

@@ -12,6 +12,7 @@
 #define UnfoldingWord_VerseContainer_h
 #endif
 
+/// A struct to hold USFM verse information. This is used on the diglot (side-by-side) views to sync both sides to the same verse.
 struct VerseContainer {
     NSInteger min;
     
