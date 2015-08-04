@@ -64,5 +64,7 @@ struct Constants {
     struct ITunes {
         static let FilenameFiles = "ProcessedITunesFiles.archive"
     }
+    
+    static let Image_Diglot = "diglot"
 }
 

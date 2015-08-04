@@ -48,3 +48,6 @@ static NSString *const  MultiConnectReceive = @"MultiConnectReceive";
 
 static NSString *const  iTunesSend = @"iTunesSend";
 static NSString *const  iTunesReceive = @"iTunesReceive";
+
+
+static NSString *const IMAGE_DIGLOT = @"diglot";

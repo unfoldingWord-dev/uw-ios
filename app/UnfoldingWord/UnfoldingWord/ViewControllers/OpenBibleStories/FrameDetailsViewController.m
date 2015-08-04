@@ -26,8 +26,6 @@
 #import "UIViewController+FileTransfer.h"
 #import "UnfoldingWord-Swift.h"
 
-static NSString *const kMatchChapter = @"chapter";
-
 @interface FrameDetailsViewController () <UIGestureRecognizerDelegate, ACTLabelButtonDelegate, FrameCellDelegate>
 
 @property (nonatomic, strong) OpenChapter *chapterMain;
@@ -37,9 +35,11 @@ static NSString *const kMatchChapter = @"chapter";
 @property (nonatomic, strong) ACTLabelButton *buttonNavItem;
 
 @property (nonatomic, assign) UIInterfaceOrientation lastOrientation;
+
 @property (nonatomic, strong) NSArray *arrayOfFramesMain;
 @property (nonatomic, strong) NSArray *arrayOfFramesSide;
 
+/// Used to track which collection view cells to show.
 @property (nonatomic, strong) NSString *cellIDFrame;
 @property (nonatomic, strong) NSString *cellIDNextChapter;
 @property (nonatomic, strong) NSString *cellIdEmpty;
@@ -68,7 +68,7 @@ static NSString *const kMatchChapter = @"chapter";
     OpenChapter *chapterSide = [tocSide chapterForNumber:[UFWSelectionTracker chapterNumberJSON]];
     [self resetMainChapter:chapterMain sideChapter:chapterSide];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"diglot"] style:UIBarButtonItemStylePlain target:self action:@selector(userPressedDiglotBBI:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:IMAGE_DIGLOT] style:UIBarButtonItemStylePlain target:self action:@selector(userPressedDiglotBBI:)];
 }
 
 - (void)loadNibsForCollectionView
@@ -87,7 +87,7 @@ static NSString *const kMatchChapter = @"chapter";
 }
 
 
-- (void)updateNavTitle
+- (void)updateNavChapterTitle
 {
     ACTLabelButton *labelButton = [[ACTLabelButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
     labelButton.font = FONT_MEDIUM;
@@ -98,7 +98,6 @@ static NSString *const kMatchChapter = @"chapter";
     labelButton.direction = ArrowDirectionDown;
     labelButton.colorNormal = [UIColor whiteColor];
     labelButton.colorHover = [UIColor lightGrayColor];
-    labelButton.matchingObject = kMatchChapter;
     labelButton.userInteractionEnabled = YES;
     self.navigationItem.titleView = labelButton;
 }
@@ -110,23 +109,15 @@ static NSString *const kMatchChapter = @"chapter";
     self.arrayOfFramesMain = [mainChapter sortedFrames];
     self.arrayOfFramesSide = [sideChapter sortedFrames];
     
-    [self updateNavTitle];
+    [self updateNavChapterTitle];
     [self.collectionView reloadData];
 }
 
+/// ACTLabelButton Delegate Method
 - (void)labelButtonPressed:(ACTLabelButton *)labelButton;
 {
-    NSString *matchingObject = labelButton.matchingObject;
-    if ([matchingObject isKindOfClass:[NSString class]]) {
-        if ([matchingObject isEqualToString:kMatchChapter]) {
-            [self userRequestedBookPicker:labelButton];
-        }
-    }
-    else {
-        NSAssert2(NO, @"%s: matching object %@ not recognized!", __PRETTY_FUNCTION__, matchingObject);
-    }
+    [self userRequestedBookPicker:labelButton];
 }
-
 
 - (void)userPressedDiglotBBI:(UIBarButtonItem *)diglotBBI
 {
@@ -135,21 +126,23 @@ static NSString *const kMatchChapter = @"chapter";
     [visibleFrameCell setIsShowingSide:self.isShowingSide animated:YES];
 }
 
-/// Returns the current frame cell if available. Will be nil if no cells or if the current cell is of the wrong type.
-- (FrameCell *)visibleFrameCell
+#pragma mark - Chapter Picker
+- (void)userRequestedBookPicker:(id)sender
 {
-    CGPoint offset = self.collectionView.contentOffset;
-    for (FrameCell *frameCell in self.collectionView.visibleCells) {
-        if ([frameCell isKindOfClass:[FrameCell class]]) {
-            if (frameCell.frame.origin.x == offset.x) {
-                return frameCell;
-            }
+    __weak typeof(self) weakself = self;
+    UIViewController *navVC = [ChapterListTableViewController navigationChapterPickerWithTopContainer:self.chapterMain.container.toc.version.language.topContainer completion:^(BOOL isCanceled, OpenChapter *selectedChapter) {
+        if (isCanceled == NO && selectedChapter != nil) {
+            OpenChapter *sideChapter = [weakself.chapterSide.container matchingChapter:selectedChapter];
+            [weakself resetMainChapter:selectedChapter sideChapter:sideChapter];
         }
-    }
-    return nil;
+        [weakself dismissViewControllerAnimated:YES completion:^{}];
+    }];
+    [self presentViewController:navVC animated:YES completion:^{}];
 }
 
-#pragma mark - Version Info Popover
+#pragma mark - FrameCellDelegate Methods -
+
+#pragma mark Status Info Popover
 
 - (void)showPopOverStatusInfo:(FrameCell *)cell view:(UIView *)view isSide:(BOOL)isSide
 {
@@ -176,21 +169,7 @@ static NSString *const kMatchChapter = @"chapter";
     }
 }
 
-#pragma mark - Chapter Picker
-- (void)userRequestedBookPicker:(id)sender
-{
-    __weak typeof(self) weakself = self;
-    UIViewController *navVC = [ChapterListTableViewController navigationChapterPickerWithTopContainer:self.chapterMain.container.toc.version.language.topContainer completion:^(BOOL isCanceled, OpenChapter *selectedChapter) {
-        if (isCanceled == NO && selectedChapter != nil) {
-            OpenChapter *sideChapter = [weakself.chapterSide.container matchingChapter:selectedChapter];
-            [weakself resetMainChapter:selectedChapter sideChapter:sideChapter];
-        }
-        [weakself dismissViewControllerAnimated:YES completion:^{}];
-    }];
-    [self presentViewController:navVC animated:YES completion:^{}];
-}
-
-#pragma mark - Sharing
+#pragma mark Sharing
 
 - (void)showSharing:(FrameCell *)cell view:(UIView *)view isSide:(BOOL)isSide
 {
@@ -202,7 +181,7 @@ static NSString *const kMatchChapter = @"chapter";
     [self sendFileForVersion:versionSelected];
  }
 
-#pragma mark - Language Picker
+#pragma mark Version Picker
 - (void)showVersionSelector:(FrameCell *)cell view:(UIView *)view isSide:(BOOL)isSide;
 {
     __weak typeof(self) weakself = self;
@@ -302,19 +281,6 @@ static NSString *const kMatchChapter = @"chapter";
     }
     [self jumpToCurrentFrameAnimated:YES];
     
-}
-
-- (void)jumpToCurrentFrameAnimated:(BOOL)animated
-{
-    NSInteger chapterNumber = self.chapterMain.number.integerValue;
-    NSInteger selectedChapter = [UFWSelectionTracker chapterNumberJSON];
-    
-    if ( chapterNumber != selectedChapter) {
-        return;
-    }
-    
-    NSInteger currentFrame = [UFWSelectionTracker frameNumberJSON];
-    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:currentFrame inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:animated];
 }
 
 #pragma mark - Tap Gesture Hide Nav Bar
@@ -512,7 +478,7 @@ static NSString *const kMatchChapter = @"chapter";
     self.lastOrientation = toInterfaceOrientation;
 }
 
-#pragma mark <UICollectionViewDelegate>
+#pragma mark - ScrollView Delegate - Resets Top Info
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
@@ -531,7 +497,7 @@ static NSString *const kMatchChapter = @"chapter";
     CGPoint currentOffset = self.collectionView.contentOffset;
     NSInteger index = (int)currentOffset.x / (self.view.bounds.size.width);
     [UFWSelectionTracker setFrameJSON:index];
-    [self updateNavTitle];
+    [self updateNavChapterTitle];
 }
 
 #pragma mark - Methods to prevent the back gesture
@@ -568,6 +534,36 @@ static NSString *const kMatchChapter = @"chapter";
     return NO;
 }
 
+
+#pragma mark - Helpers
+
+- (void)jumpToCurrentFrameAnimated:(BOOL)animated
+{
+    NSInteger chapterNumber = self.chapterMain.number.integerValue;
+    NSInteger selectedChapter = [UFWSelectionTracker chapterNumberJSON];
+    
+    if ( chapterNumber != selectedChapter) {
+        return;
+    }
+    
+    NSInteger currentFrame = [UFWSelectionTracker frameNumberJSON];
+    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:currentFrame inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:animated];
+}
+
+
+/// Returns the current frame cell if available. Will be nil if no cells or if the current cell is of the wrong type.
+- (FrameCell *)visibleFrameCell
+{
+    CGPoint offset = self.collectionView.contentOffset;
+    for (FrameCell *frameCell in self.collectionView.visibleCells) {
+        if ([frameCell isKindOfClass:[FrameCell class]]) {
+            if (frameCell.frame.origin.x == offset.x) {
+                return frameCell;
+            }
+        }
+    }
+    return nil;
+}
 
 #pragma mark - NextChapter Methods
 
@@ -611,6 +607,7 @@ static NSString *const kMatchChapter = @"chapter";
         [self.collectionView setFrame:cFrame];
     } completion:^(BOOL finished){
         [self.collectionView reloadData];
+        [self updateNavChapterTitle];
         // do whatever post processing you want (such as resetting what is "current" and what is "next")
     }];
 }
