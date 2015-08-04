@@ -15,17 +15,20 @@ static NSInteger const kTagShareBBI = 1113;
 
 @interface FrameCell () <ACTLabelButtonDelegate>
 
-@property (nonatomic, weak) IBOutlet UIView *viewTextBackground;
-@property (nonatomic, weak) IBOutlet UIView *viewTextBackgroundSide;
-
 @property (weak, nonatomic) IBOutlet UIImageView *frame_Image;
 @property (nonatomic, strong) NSLayoutConstraint *constraintImageRatio;
 
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *constraintMainToRight;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *constraintSideToRight;
 
+@property (nonatomic, weak) IBOutlet UIView *viewTextBackground;
+@property (nonatomic, weak) IBOutlet UIView *viewTextBackgroundSide;
+
 @property (nonatomic, weak) IBOutlet UIToolbar *toolBarMain;
 @property (nonatomic, weak) IBOutlet UIToolbar *toolBarSide;
+
+@property (nonatomic, strong) NSString *versionNameMain;
+@property (nonatomic, strong) NSString *versionNameSide;
 
 @end
 
@@ -102,7 +105,14 @@ static NSInteger const kTagShareBBI = 1113;
 - (void)createButtonsForToolBar:(UIToolbar *)toolbar
 {
     // Add bar button items
-    UIBarButtonItem *bbiVersion = [self labelBBIWithTitle:NSLocalizedString(@"Version", nil)];
+    NSString *versionName = NSLocalizedString(@"Version", nil);
+    if ([self.toolBarMain isEqual:toolbar] && self.versionNameMain != nil) {
+        versionName = self.versionNameMain;
+    }
+    else if ([self.toolBarSide isEqual:toolbar] && self.versionNameSide != nil) {
+        versionName = self.versionNameSide;
+    }
+    UIBarButtonItem *bbiVersion = [self labelBBIWithTitle:versionName];
     
     UIBarButtonItem *bbiStatus = [self statusBBIWithImage:nil];
     
@@ -156,6 +166,12 @@ static NSInteger const kTagShareBBI = 1113;
 
 - (void)setVersionName:(NSString *)name isSide:(BOOL)isSide
 {
+    if (isSide) {
+        self.versionNameSide = name;
+    }
+    else {
+        self.versionNameMain = name;
+    }
     UIToolbar *toolbar = (isSide == YES) ? self.toolBarSide : self.toolBarMain;
     NSInteger index = [self indexOfTag:kTagVersionBBI inToolBar:toolbar];
     UIBarButtonItem *item = [self labelBBIWithTitle:name];
