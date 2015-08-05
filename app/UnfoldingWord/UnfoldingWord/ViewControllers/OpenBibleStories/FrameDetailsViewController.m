@@ -104,14 +104,25 @@
 
 - (void)resetMainChapter:(OpenChapter *)mainChapter sideChapter:(OpenChapter *)sideChapter
 {
-    _chapterMain = mainChapter;
-    _chapterSide = sideChapter;
-    self.arrayOfFramesMain = [mainChapter sortedFrames];
-    self.arrayOfFramesSide = [sideChapter sortedFrames];
+    self.chapterMain = mainChapter;
+    self.chapterSide = sideChapter;
     
     [self updateNavChapterTitle];
     [self.collectionView reloadData];
 }
+
+- (void)setChapterMain:(OpenChapter *)chapterMain
+{
+    _chapterMain = chapterMain;
+    self.arrayOfFramesMain = [chapterMain sortedFrames];
+}
+
+- (void)setChapterSide:(OpenChapter *)chapterSide
+{
+    _chapterSide = chapterSide;
+    self.arrayOfFramesSide = [chapterSide sortedFrames];
+}
+
 
 /// ACTLabelButton Delegate Method
 - (void)labelButtonPressed:(ACTLabelButton *)labelButton;
