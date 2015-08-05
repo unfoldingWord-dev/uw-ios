@@ -18,8 +18,16 @@ static NSInteger const kTagShareBBI = 1113;
 @property (weak, nonatomic) IBOutlet UIImageView *frame_Image;
 @property (nonatomic, strong) NSLayoutConstraint *constraintImageRatio;
 
+// Used to show and hide the side diglot view
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *constraintMainToRight;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *constraintSideToRight;
+
+// Used to show and hide the toolbar at the bottom
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *constraintMainToolbarHeight;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *constraintSideToolbarHeight;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *constraintMainToolbarSpaceToBottom;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *constraintSideToolbarSpaceToBottom;
+
 
 @property (nonatomic, weak) IBOutlet UIView *viewTextBackground;
 @property (nonatomic, weak) IBOutlet UIView *viewTextBackgroundSide;
@@ -85,6 +93,26 @@ static NSInteger const kTagShareBBI = 1113;
         [self createButtonsForToolBar:self.toolBarMain];
         [self createButtonsForToolBar:self.toolBarSide];
     }];
+}
+
+- (void)setIsShowingFullScreen:(BOOL)isFullScreen animated:(BOOL)animated
+{
+    if (isFullScreen == YES) {
+        // if full screen, hide the toolbar under just below the bottom of the screen.
+        self.constraintMainToolbarSpaceToBottom.constant = -self.constraintMainToolbarHeight.constant;
+        self.constraintSideToolbarSpaceToBottom.constant = -self.constraintSideToolbarHeight.constant;
+    } else {
+        self.constraintMainToolbarSpaceToBottom.constant = 0;
+        self.constraintSideToolbarSpaceToBottom.constant = 0;
+    }
+    
+    [self setNeedsUpdateConstraints];
+    
+    CGFloat duration = (animated == YES) ? 0.25 : 0.0;
+    [UIView animateWithDuration:duration animations:^{
+        [self layoutIfNeeded];
+    } completion:^(BOOL finished) {}];
+
 }
 
 - (void)setFrameImage:(UIImage *)image

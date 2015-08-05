@@ -118,7 +118,11 @@
             </variation>
             <connections>
                 <outlet property="constraintMainToRight" destination="5jn-w2-uot" id="n5G-h3-sFv"/>
+                <outlet property="constraintMainToolbarHeight" destination="NBq-M5-oHt" id="68N-kC-vzZ"/>
+                <outlet property="constraintMainToolbarSpaceToBottom" destination="Atz-7u-d0A" id="Eap-Di-edf"/>
                 <outlet property="constraintSideToRight" destination="0og-j9-gi5" id="tcd-Zo-UEm"/>
+                <outlet property="constraintSideToolbarHeight" destination="y4C-Ja-XMF" id="f1i-bi-5Ho"/>
+                <outlet property="constraintSideToolbarSpaceToBottom" destination="Dh1-fI-WIr" id="Z4h-ig-LaT"/>
                 <outlet property="frame_Image" destination="Yh1-K5-1he" id="paM-Df-ShV"/>
                 <outlet property="label_contentMain" destination="z1F-9Q-UTm" id="5D2-zr-xiy"/>
                 <outlet property="label_contentSide" destination="32o-jQ-W0v" id="AvR-d7-afT"/>

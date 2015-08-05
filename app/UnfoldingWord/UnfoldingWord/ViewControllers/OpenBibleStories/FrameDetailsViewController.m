@@ -306,6 +306,8 @@
 - (void)showOrHideNavigationBarAnimated:(BOOL)animated
 {
     BOOL hide = (self.navigationController.navigationBarHidden) ? NO : YES;
+    FrameCell *frameCell = [self visibleFrameCell];
+    [frameCell setIsShowingFullScreen:hide animated:animated];
     [self.navigationController setNavigationBarHidden:hide animated:animated];
 }
 
@@ -393,6 +395,7 @@
         [cell setStatusImage:[UFWInfoView imageReverseForStatus:self.chapterSide.container.toc.version.status] isSide:YES];
         
         [cell setIsShowingSide:self.isShowingSide animated:NO];
+        [cell setIsShowingFullScreen:self.navigationController.navigationBarHidden animated:NO];
         
         [cell setFrameImage:nil];
     
