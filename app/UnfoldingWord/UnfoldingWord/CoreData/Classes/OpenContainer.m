@@ -57,4 +57,14 @@ static NSString *const kLanguage = @"language";
     }];
 }
 
+- (OpenChapter *)matchingChapter:(OpenChapter *)otherChapter
+{
+    for (OpenChapter *candidateChapter in self.chapters) {
+        if ([candidateChapter.number isEqualToString:otherChapter.number]) {
+            return candidateChapter;
+        }
+    }
+    return nil;
+}
+
 @end

@@ -67,8 +67,7 @@ enum SendStatus {
         }
     }
     
-    /** Catch when someone subscribes to our characteristic, then start sending them data
-    */
+    /** Catch when someone subscribes to our characteristic, then start sending them data */
     func peripheralManager(peripheral: CBPeripheralManager!, central: CBCentral!, didSubscribeToCharacteristic characteristic: CBCharacteristic!) {
         self.sendIndex = 0
         self.status = SendStatus.ReadyToStart

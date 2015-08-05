@@ -255,7 +255,8 @@ static CGFloat kSideMargin = 10.f;
 - (void)userRequestedLanguageSelector:(id)sender
 {
     __weak typeof(self) weakself = self;
-    UIViewController *navVC = [UFWLanguagePickerVC navigationLanguagePickerWithTopContainer:self.topContainer completion:^(BOOL isCanceled, UWVersion *versionPicked) {
+
+    UIViewController *navVC = [UFWLanguagePickerVC navigationLanguagePickerWithTopContainer:self.topContainer isSide:NO completion:^(BOOL isCanceled, UWVersion *versionPicked) {
         [weakself dismissViewControllerAnimated:YES completion:^{}];
         
         if (isCanceled) {

@@ -11,7 +11,10 @@
 
 @interface NSBundle (DWSExtensions)
 
+/// Extracts the top object in a nib, measures it and returns the size.
 + (CGSize) sizeForNibName:(NSString *)nibName;
+
+/// Returns the top object for a nib. For example, for a nib with a tableview cell, it would return the cell.
 + (UIView *)topLevelViewForNibName:(NSString *)nibName;
 
 

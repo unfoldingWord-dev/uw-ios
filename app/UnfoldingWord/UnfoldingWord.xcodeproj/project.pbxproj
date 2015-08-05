@@ -859,7 +859,6 @@
 		5A9AC0021B0A370000753AAB /* UFWLanguagePickerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9ABFEB1B0A370000753AAB /* UFWLanguagePickerVC.m */; };
 		5A9AC0031B0A370000753AAB /* ChapterListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9ABFEE1B0A370000753AAB /* ChapterListTableViewController.m */; };
 		5A9AC0041B0A370000753AAB /* FrameDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9ABFF01B0A370000753AAB /* FrameDetailsViewController.m */; };
-		5A9AC0051B0A370000753AAB /* Open.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A9ABFF11B0A370000753AAB /* Open.storyboard */; };
 		5A9AC0061B0A370000753AAB /* UFWBaseURLTableVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9ABFF41B0A370000753AAB /* UFWBaseURLTableVC.m */; };
 		5A9AC0071B0A370000753AAB /* Base.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A9ABFF61B0A370000753AAB /* Base.storyboard */; };
 		5A9AC0081B0A370000753AAB /* UFWBaseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9ABFF81B0A370000753AAB /* UFWBaseVC.m */; };
@@ -1838,7 +1837,6 @@
 		5A9ABFEE1B0A370000753AAB /* ChapterListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChapterListTableViewController.m; sourceTree = "<group>"; };
 		5A9ABFEF1B0A370000753AAB /* FrameDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrameDetailsViewController.h; sourceTree = "<group>"; };
 		5A9ABFF01B0A370000753AAB /* FrameDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FrameDetailsViewController.m; sourceTree = "<group>"; };
-		5A9ABFF11B0A370000753AAB /* Open.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Open.storyboard; sourceTree = "<group>"; };
 		5A9ABFF31B0A370000753AAB /* UFWBaseURLTableVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFWBaseURLTableVC.h; sourceTree = "<group>"; };
 		5A9ABFF41B0A370000753AAB /* UFWBaseURLTableVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UFWBaseURLTableVC.m; sourceTree = "<group>"; };
 		5A9ABFF61B0A370000753AAB /* Base.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Base.storyboard; sourceTree = "<group>"; };
@@ -1907,6 +1905,7 @@
 		5ABFFD461B34882F006FB166 /* UWFileExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWFileExporter.swift; sourceTree = "<group>"; };
 		5ABFFD471B34882F006FB166 /* UWFileImporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWFileImporter.swift; sourceTree = "<group>"; };
 		5ABFFD481B34882F006FB166 /* UWUrlSourceItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWUrlSourceItem.swift; sourceTree = "<group>"; };
+		5AC121D61B6ECA3300D61BF7 /* FrameCellDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameCellDelegate.h; sourceTree = "<group>"; };
 		5AC377CE1B38744500E3BB36 /* FileActivityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileActivityController.swift; sourceTree = "<group>"; };
 		5AC377D01B38C38300E3BB36 /* BluetoothFileSender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothFileSender.swift; sourceTree = "<group>"; };
 		5AC377D21B38C62C00E3BB36 /* BluetoothFileReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothFileReceiver.swift; sourceTree = "<group>"; };
@@ -3179,9 +3178,9 @@
 			children = (
 				5A9ABFED1B0A370000753AAB /* ChapterListTableViewController.h */,
 				5A9ABFEE1B0A370000753AAB /* ChapterListTableViewController.m */,
+				5AC121D61B6ECA3300D61BF7 /* FrameCellDelegate.h */,
 				5A9ABFEF1B0A370000753AAB /* FrameDetailsViewController.h */,
 				5A9ABFF01B0A370000753AAB /* FrameDetailsViewController.m */,
-				5A9ABFF11B0A370000753AAB /* Open.storyboard */,
 			);
 			path = OpenBibleStories;
 			sourceTree = "<group>";
@@ -4466,7 +4465,6 @@
 				5A9ABEDD1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-29-09jpg in Resources */,
 				5A9ABE911B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-21-13jpg in Resources */,
 				5A9ABDFE1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-11-07jpg in Resources */,
-				5A9AC0051B0A370000753AAB /* Open.storyboard in Resources */,
 				5A9AC04F1B0A38B100753AAB /* UFWBaseUrlCell.xib in Resources */,
 				5A43EAE31B20F35E000EC306 /* 2th-ulb-en-74670937-3D69-4868-8C41-4B29386C504D.usfm in Resources */,
 				5A43EB001B20F35E000EC306 /* gen-avd-ar-AD75A733-AB17-4510-BF04-9359BCB5AA06.usfm in Resources */,

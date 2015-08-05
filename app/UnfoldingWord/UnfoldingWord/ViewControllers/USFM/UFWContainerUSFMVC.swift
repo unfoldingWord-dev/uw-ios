@@ -18,7 +18,7 @@ import UIKit
     func userChangedTOC(#vc : UFWTextChapterVC, pickedTOC : UWTOC)
     func matchingVCVerses(#vc : UFWTextChapterVC) -> VerseContainer
 
-//    // These are information to help rotation and sizing events.
+    // These are information to help rotation and sizing events.
     func expectedContainerWidthAfterRotation() -> CGFloat
 }
 
@@ -31,8 +31,6 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelButtonDel
     @IBOutlet weak var constraintMainViewToRightEdge : NSLayoutConstraint!
     @IBOutlet weak var constraintSpacerWidth : NSLayoutConstraint!
     
-    var isScrollingCollectionView: Bool
-    
     var topContainer : UWTopContainer! // Must be assigned before view loads!
     
     let vcMain : UFWTextChapterVC
@@ -42,26 +40,26 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelButtonDel
     
     override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
         self.vcMain = UFWContainerUSFMVC.createTextChapterVC()
+        self.vcMain.isSideTOC = false;
         self.vcSide = UFWContainerUSFMVC.createTextChapterVC()
+        self.vcSide.isSideTOC = true;
         self.topContainer = nil // Must be assigned before view loads!
-        self.isScrollingCollectionView = false
+        
         super.init(nibName: nibNameOrNil, bundle: nil)
     }
     
     required init(coder aDecoder: NSCoder) {
         self.vcMain = UFWContainerUSFMVC.createTextChapterVC()
+        self.vcMain.isSideTOC = false;
         self.vcSide = UFWContainerUSFMVC.createTextChapterVC()
+        self.vcSide.isSideTOC = true;
         self.topContainer = nil // Must be assigned before view loads!
-        self.isScrollingCollectionView = false
 
         super.init(coder: aDecoder)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.vcMain.isSideTOC = false
-        self.vcSide.isSideTOC = true
         
         self.vcMain.topContainer = self.topContainer
         self.vcSide.topContainer = self.topContainer
@@ -74,7 +72,7 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelButtonDel
         
         updateNavChapterButton()
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "diglot"), style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideBySideView")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: Constants.Image_Diglot), style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideBySideView")
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -94,11 +92,12 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelButtonDel
     
     // User Interaction - Open and Close 
     
-    @IBAction func toggleSideBySideView() {
+    func toggleSideBySideView() {
         self.vcSide.isActive = !self.vcSide.isActive
         arrangeViews(startDark: false)
     }
     
+    /// The animates the views into place. It really isn't working well right now, but the problems are hidden with fades.
     func arrangeViews(#startDark : Bool) {
         
         let verses = self.vcMain.versesVisible()
@@ -286,55 +285,3 @@ class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelButtonDel
         }
     }
 }
-
-//
-//
-///// animated version when I have time
-//
-//func arrangeViews(#animated : Bool) {
-//    
-//    let required : UILayoutPriority = 999
-//    let basicallyNothing : UILayoutPriority = 1
-//    
-//    if self.vcSide.isActive {
-//        self.constraintMainViewToRightEdge.priority = basicallyNothing
-//        self.constraintSideViewToRightEdge.priority = required
-//    } else {
-//        self.constraintMainViewToRightEdge.priority = required
-//        self.constraintSideViewToRightEdge.priority = basicallyNothing
-//    }
-//    
-//    let duration = animated ? 0.0 : 0.0
-//    
-//    
-//    self.vcSide.view.setNeedsUpdateConstraints()
-//    self.vcMain.view.setNeedsUpdateConstraints()
-//    
-//    self.vcMain.willSetup()
-//    self.vcSide.willSetup()
-//    
-//    let mainPosition = self.vcMain.currentTextLocation()
-//    
-//    UIView.animateWithDuration(duration, animations: { () -> Void in
-//        self.view.layoutIfNeeded()
-//        
-//        self.vcMain.view.layoutIfNeeded()
-//        self.vcSide.view.layoutIfNeeded()
-//        
-//        self.vcMain.scrollToLocation(mainPosition, animated: false)
-//        
-//        
-//        }) { (complete) -> Void in
-//            
-//            self.vcMain.updateVersionTitle()
-//            self.vcMain.changeToSize(CGSizeZero)
-//            self.vcMain.scrollToLocation(mainPosition, animated: false)
-//            
-//            self.vcSide.changeToSize(CGSizeZero)
-//            self.vcSide.updateVersionTitle()
-//            self.vcSide.adjustTextViewWithVerses(self.vcMain.versesVisible())
-//            
-//            self.vcSide.didSetup()
-//            self.vcMain.didSetup()
-//    }
-//}

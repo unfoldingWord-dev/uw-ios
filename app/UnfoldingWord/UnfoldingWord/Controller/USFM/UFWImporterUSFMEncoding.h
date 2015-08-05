@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-@class UFWBible;
 
 @interface UFWImporterUSFMEncoding : NSObject
 
+/// Returns an array of USFMChapter objects from a raw usfm string from the server.
 + (NSArray *)chaptersFromString:(NSString *)usfmString;
 
 @end

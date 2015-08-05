@@ -10,6 +10,8 @@
 
 @class UWVersion, BluetoothFileSender, BluetoothFileReceiver, MultiConnectReceiver, MultiConnectSender, FileActivityController;
 
+/// This class adds UWVersion file transfer capabilities to any view controller.
+
 @interface UIViewController (FileTransfer)
 
 @property (nonatomic, strong) BluetoothFileSender *senderBT;

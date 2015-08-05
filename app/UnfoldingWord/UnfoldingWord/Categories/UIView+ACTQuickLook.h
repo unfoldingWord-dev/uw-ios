@@ -10,6 +10,7 @@
 
 @interface UIView (ACTQuickLook)
 
+/// Debugging method that allows any view to be seen in the debugger. In practice, this doesn't always work, but it's super useful when it does.
 - (UIImage *)debugQuickLookObject;
 
 @end

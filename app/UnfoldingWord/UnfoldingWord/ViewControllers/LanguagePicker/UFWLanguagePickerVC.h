@@ -16,6 +16,6 @@ typedef void (^LanguagePickerCompletion) (BOOL isCanceled, UWVersion *versionPic
 
 @property (nonatomic, strong) UWTopContainer *topContainer;
 
-+ (UIViewController *)navigationLanguagePickerWithTopContainer:(UWTopContainer *)topContainer completion:(LanguagePickerCompletion)completion;
++ (UIViewController *)navigationLanguagePickerWithTopContainer:(UWTopContainer *)topContainer isSide:(BOOL)isSide completion:(LanguagePickerCompletion)completion;
 
 @end
