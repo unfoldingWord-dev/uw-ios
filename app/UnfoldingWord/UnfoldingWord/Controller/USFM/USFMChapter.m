@@ -26,7 +26,7 @@
         return element.stringNumber;
     }
     else {
-        NSAssert2(NO, @"%s: The first element was not the chapter. Element code: %@", __PRETTY_FUNCTION__, element.code);
+        NSAssert2(NO, @"%s: The first element was not the chapter. Element: %@", __PRETTY_FUNCTION__, element);
         return nil;
     }
 }
@@ -50,7 +50,7 @@
         if (element.isVerse) {
             
             if (element.text.length > 0) {
-                BOOL isShowQuote = (previousElement.isQuote && previousElement.text.length == 0);
+                BOOL isShowQuote = (element.isQuote || (previousElement.isQuote && previousElement.text.length == 0));
                 NSParagraphStyle *paraStyle = nil;
                 if (isShowQuote) {
                     paraStyle = [self paragraphQuoteStyleWithIndentLevel:previousElement.numberMarker.floatValue];
