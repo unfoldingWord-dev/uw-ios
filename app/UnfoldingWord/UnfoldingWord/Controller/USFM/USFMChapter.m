@@ -82,7 +82,7 @@
                 }
                 [text addAttribute:NSParagraphStyleAttributeName value:paraStyle range:NSMakeRange(0, text.length)];
                 if (verseNumber) {
-                    [text addAttribute:USFM_VERSE_NUMBER value:verseNumber range:NSMakeRange(0, text.length)];
+                    [text addAttribute:USFM_VERSE_NUMBER value:verseNumber range:NSMakeRange(0, text.length-1)]; // The 1 is because there's no need to include invisible end elements as part of the verse.
                 }
                 
                 [string appendAttributedString:text];
@@ -99,7 +99,7 @@
             }
             [text addAttribute:NSParagraphStyleAttributeName value:[self paragraphQuoteStyleWithIndentLevel:element.numberMarker.floatValue] range:NSMakeRange(0, text.length)];
             if (verseNumber) {
-                [text addAttribute:USFM_VERSE_NUMBER value:verseNumber range:NSMakeRange(0, text.length)];
+                [text addAttribute:USFM_VERSE_NUMBER value:verseNumber range:NSMakeRange(0, text.length-1)]; // The 1 is because there's no need to include invisible end elements as part of the verse.
             }
             [string appendAttributedString:text];
             
@@ -136,7 +136,6 @@
     paragraphStyle.headIndent = 0.0f;
     return paragraphStyle;
 }
-
 
 #pragma mark - Create Chapters
 
