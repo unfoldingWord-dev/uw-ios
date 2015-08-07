@@ -419,8 +419,6 @@ static CGFloat kSideMargin = 10.f;
         self.lastCollectionViewScrollOffset = self.collectionView.contentOffset;
         [self didSetup];
         [self.delegate userChangedTOCWithVc:self pickedTOC:nextTOC];
-
-        // do whatever post processing you want (such as resetting what is "current" and what is "next")
     }];
 }
 
@@ -455,6 +453,7 @@ static CGFloat kSideMargin = 10.f;
 
 #pragma mark - Rotation
 
+// If this vc's view is hidden (for example, it is presenting another view controller), then it never gets notified of any user rotation events. This method remembers the last orientation and checks.
 - (BOOL)checkForRotationChange
 {
     UIInterfaceOrientation currentOrient = [[UIApplication sharedApplication] statusBarOrientation];
@@ -567,11 +566,6 @@ static CGFloat kSideMargin = 10.f;
     cell.textView.delegate = self;
 }
 
-- (void)adjustTextViewWithVerses:(VerseContainer)remoteVerses;
-{
-    [self adjustTextViewWithVerses:remoteVerses animationDuration:1.0];
-}
-
 - (void)adjustTextViewWithVerses:(VerseContainer)remoteVerses animationDuration:(CGFloat)duration
 {
     USFMChapterCell *cell = [self visibleChapterCell];
@@ -583,30 +577,45 @@ static CGFloat kSideMargin = 10.f;
     
     UITextView *textView = cell.textView;
     NSAttributedString *as = textView.attributedText;
-    __block CGFloat minY = CGFLOAT_MAX;
-    
     NSInteger verseToFind = (remoteVerses.maxIsAtEnd) ? remoteVerses.max : remoteVerses.min;
     
-    [as enumerateAttributesInRange:NSMakeRange(0, as.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
-        NSString *verse = attrs[USFM_VERSE_NUMBER];
-        if (verse) {
-            NSInteger number = verse.integerValue;
-            if (number == verseToFind) {
-                CGRect locationRect = [self frameOfTextRange:range inTextView:textView];
-                minY = fmin(minY, locationRect.origin.y);
-            }
-        }
-    }];
+    CGFloat minY = [self minYForVerse:verseToFind inAttributedString:as inTextView:textView];
+    
+    CGFloat relativeOffset = 0;
+    
+    CGFloat yOriginOffset = remoteVerses.minRectRelativeToScreenPosition.origin.y;
+    CGFloat verseHeight = remoteVerses.minRectRelativeToScreenPosition.size.height;
+    
+    CGFloat remoteVisiblePoints = verseHeight + yOriginOffset;
+    
+    CGFloat remotePercentAboveOrigin = remoteVisiblePoints / verseHeight;
+    CGFloat percentBelowOrigin = 1 - remotePercentAboveOrigin;
+    
+    CGFloat nextY = [self minYForVerse:verseToFind+1 inAttributedString:as inTextView:textView];
+    CGFloat distanceBetweenVerses = nextY - minY;
+    
+    if (remoteVisiblePoints < 90 && verseHeight > 90) {
+        // 90 points is approximately a line or two. If we only have a couple of lines, then just match with the next verse, balanced by the percent showing across verses
+        minY = nextY;
+        relativeOffset = remoteVisiblePoints * remotePercentAboveOrigin;
+    }
+    else {
+        // Trying to show relatively the same amount of verse for both sides. This is important because some verses are more than twice as long as their matching verses in another language or bible version.
+        relativeOffset = -distanceBetweenVerses * percentBelowOrigin;
+    }
+    
+    // Never go more than a full screen back.
+    relativeOffset = fmax(relativeOffset, - textView.bounds.size.height);
     
     // Adjust so the first visible verse starts in the same place on both screens.
-    minY -= remoteVerses.minRectRelativeToScreenPosition.origin.y;
+    minY -= relativeOffset;
 
     // Prevent the screen from scrolling past the end
     minY = fmin(minY, textView.contentSize.height - textView.frame.size.height);
-    
 
     CGFloat offset = fabs( textView.contentOffset.y - minY);
     if (offset > textView.frame.size.height) {
+        // Scrollview jumps around by some other method. Still trying to track down why this happens.
         NSLog(@"Offset larger than expected.");
     }
     
@@ -622,6 +631,22 @@ static CGFloat kSideMargin = 10.f;
         textView.contentOffset = CGPointMake(0, minY);
         [self didSetup];
     }
+}
+
+- (CGFloat)minYForVerse:(NSInteger)verseToFind inAttributedString:(NSAttributedString *)as inTextView:(UITextView *)textView
+{
+    __block CGFloat minY = CGFLOAT_MAX;
+    [as enumerateAttributesInRange:NSMakeRange(0, as.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
+        NSString *verse = attrs[USFM_VERSE_NUMBER];
+        if (verse) {
+            NSInteger number = verse.integerValue;
+            if (number == verseToFind) {
+                CGRect locationRect = [self frameOfTextRange:range inTextView:textView];
+                minY = fmin(minY, locationRect.origin.y);
+            }
+        }
+    }];
+    return minY;
 }
 
 - (void)changeToMatchingTOC:(UWTOC* __nullable)matchingTOC;
@@ -679,8 +704,7 @@ static CGFloat kSideMargin = 10.f;
 {
     USFMChapterCell *visibleCell = [self visibleChapterCell];
     NSRange range = [self visibleRangeOfTextView:visibleCell.textView];
-    NSInteger index = [self currentIndex];
-    return [[USFMTextLocationInfo alloc] initWithRange:range index:index];
+    return [[USFMTextLocationInfo alloc] initWithRange:range index:[UFWSelectionTracker chapterNumberUSFM]-1];
 }
 
 - (void)scrollToLocation:(USFMTextLocationInfo *)location animated:(BOOL)animated
@@ -831,20 +855,18 @@ static CGFloat kSideMargin = 10.f;
             //            NSLog(@"temp: %@", tempAs);
             if ( minVerse >= number && textFrame.size.width > 10 && range.length > 5) { // Prevent return characters from causing an issue.
                 CGRect fullRect = [self fullFrameOfVerse:number inTextView:textView];
-                CGFloat wiggleRoom = 10;
-                if (fullRect.origin.y >= -wiggleRoom || fullRect.size.height > (textView.frame.size.height - wiggleRoom) ) {
+//                CGFloat wiggleRoom = 10;
+//                if (fullRect.origin.y >= -wiggleRoom || fullRect.size.height > (textView.frame.size.height - wiggleRoom) ) {
                     minRelativeRect = fullRect;
                     if ( textView.contentOffset.y < 5.0 ) { // 5 = wiggle room
                         minIsAtStart = YES;
                     }
                     minVerse = number;
-                }
+//                }
             }
             if (maxVerse < number || maxVerse == number) {
                 maxVerse = number;
-                CGRect textFrame = [self frameOfTextRange:range inTextView:textView];
-                textFrame.origin.y += textView.contentOffset.y;
-                maxRelativeRect = textFrame;
+                maxRelativeRect = [self fullFrameOfVerse:number inTextView:textView];
                 if ( (textView.contentOffset.y + textView.frame.size.height) > (textView.contentSize.height - 10) ) { // 10 = wiggle room
                     maxIsAtEnd = YES;
                 }

@@ -9,8 +9,14 @@
 #import "USFMElement.h"
 #import "NSString+Trim.h"
 
+static NSString *const codeParagraph = @"p";
+static NSString *const codeVerse = @"v";
+static NSString *const codeChapter = @"c";
+static NSString *const codeQuote = @"q";
+static NSString *const codeLineBreak = @"b";
+
 @interface USFMElement ()
-@property (nonatomic, strong) NSString *code;
+@property (nonatomic, strong) NSArray *codes;
 @property (nonatomic, strong) NSString *text;
 @property (nonatomic, strong) NSString *stringNumber;
 @property (nonatomic, strong) NSNumber *numberMarker;
@@ -20,15 +26,17 @@
 
 #pragma mark - Outside Methods
 
-+ (USFMElement *)newElementWithCodeInfo:(NSString *)codeInfo textInfo:(NSString *)textInfo
++ (USFMElement *)newElementWithCodeInfo:(NSArray *)codeInfo textInfo:(NSString *)textInfo
 {
     USFMElement *element = [USFMElement new];
     [element parseCodeInfo:codeInfo];
-    if ([self isUsingCode:element.code] == NO) {
+    if ([element containsAtLeastOneValidCode]) {
+        [element parseTextInfo:textInfo];
+        return element;
+    }
+    else {
         return nil;
     }
-    [element parseTextInfo:textInfo];
-    return element;
 }
 
 - (BOOL)appendText:(NSString *)text
@@ -48,53 +56,67 @@
 
 - (BOOL)isChapter
 {
-    return [self.code isEqualToString:@"c"];
+    return [self hasCode:codeChapter];
 }
 
 - (BOOL)isVerse
 {
-    return [self.code isEqualToString:@"v"];
+    return [self hasCode:codeVerse];
 }
 
 - (BOOL)isParagraph
 {
-    return [self.code isEqualToString:@"p"];
+    return self.codes.count == 1 && [self hasCode:codeParagraph];
+
 }
 
 - (BOOL)isLineBreak
 {
-    return [self.code isEqualToString:@"b"];
+    return self.codes.count == 1 && [self hasCode:codeLineBreak];
 }
 
 - (BOOL)isQuote
 {
-    return [self.code isEqualToString:@"q"];
+    return [self hasCode:codeQuote];
+}
+
+- (BOOL)hasCode:(NSString *)code
+{
+    for (NSString *aCode in self.codes) {
+        if ([code isEqualToString:aCode]) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 #pragma mark - Parsing
 
-- (void) parseCodeInfo:(NSString *)code
+- (void) parseCodeInfo:(NSArray *)codes
 {
-    if (code.length <= 1) {
-        self.code = code;
-        return;
-    }
-    else {
-        NSScanner *scanner = [NSScanner scannerWithString:code];
-        NSString *codePart = nil;
-        [scanner scanUpToCharactersFromSet:[NSCharacterSet decimalDigitCharacterSet] intoString:&codePart];
-        if (scanner.scanLocation == code.length ) {
-            self.code = code;
-            return;
+    NSMutableArray *finalCodes = [NSMutableArray new];
+    
+    for (NSString *code in codes) {
+        if (code.length <= 1) {
+            [finalCodes addObject:code];
         }
         else {
-            NSString *numberPart = [code substringWithRange:NSMakeRange(scanner.scanLocation, code.length - scanner.scanLocation)];
-            if (numberPart.integerValue > 0) {
-                self.numberMarker = @(numberPart.integerValue);
+            NSScanner *scanner = [NSScanner scannerWithString:code];
+            NSString *codePart = nil;
+            [scanner scanUpToCharactersFromSet:[NSCharacterSet decimalDigitCharacterSet] intoString:&codePart];
+            if (scanner.scanLocation == code.length ) {
+                [finalCodes addObject:code];
             }
-            self.code = codePart;
+            else {
+                NSString *numberPart = [code substringWithRange:NSMakeRange(scanner.scanLocation, code.length - scanner.scanLocation)];
+                if (numberPart.integerValue > 0) {
+                    self.numberMarker = @(numberPart.integerValue);
+                }
+                [finalCodes addObject:codePart];
+            }
         }
     }
+    self.codes = finalCodes;
 }
 
 - (void)parseTextInfo:(NSString *)text
@@ -133,22 +155,28 @@
 // Right now, only a chapter and verse expects a number at the start of the text portion.
 - (BOOL)expectsNumber
 {
-    if ([self.code isEqualToString:@"v"] || [self.code isEqualToString:@"c"]) {
+    if ([self isVerse] || [self isChapter]) {
         return YES;
     }
     return NO;
 }
 
 // Return codes we want to use.
-+ (BOOL)isUsingCode:(NSString *)code
+- (BOOL)containsAtLeastOneValidCode
 {
-    NSArray *codes = @[@"p", @"v", @"c", @"q", @"b"];
-    for (NSString *keeperCode in codes) {
-        if ([keeperCode isEqualToString:code]) {
-            return YES;
+    for (NSString *keeperCode in [self validCodes]) {
+        for (NSString *existingCode in self.codes) {
+            if ([keeperCode isEqualToString:existingCode]) {
+                return YES;
+            }
         }
     }
     return NO;
+}
+
+- (NSArray *)validCodes
+{
+    return @[codeParagraph, codeVerse, codeChapter, codeQuote, codeLineBreak];
 }
 
 @end

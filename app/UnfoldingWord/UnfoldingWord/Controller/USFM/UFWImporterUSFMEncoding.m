@@ -42,6 +42,7 @@
         BOOL firstCode = YES;
         NSString *code = nil;
         NSMutableString *completeText = [NSMutableString new];
+        NSMutableArray *codes = [NSMutableArray new];
         do {
             
             // Get to the first marker
@@ -51,11 +52,16 @@
             
             // Scan the code
             [scanner scanString:@"\\" intoString:NULL];
+            code = nil;
             if (firstCode == YES) { // the first code is the only one we're using.
                 [scanner scanUpToCharactersFromSet:[self usfmBreakCharacterSet] intoString:&code];
             }
             else { // If there are multiple codes on the same line, we're just going to ignore them right now.
-                [scanner scanUpToCharactersFromSet:[self usfmBreakCharacterSet] intoString:NULL];
+                [scanner scanUpToCharactersFromSet:[self usfmBreakCharacterSet] intoString:&code];
+            }
+            
+            if (code != nil) {
+                [codes addObject:code];
             }
             
             // Remove stop characters after the code.
@@ -76,7 +82,7 @@
         } while ( ! [scanner isAtEnd]);
         
         // Now create one element with the line, ignoring mid-line codes
-        USFMElement *element = [USFMElement newElementWithCodeInfo:code textInfo:completeText];
+        USFMElement *element = [USFMElement newElementWithCodeInfo:codes textInfo:completeText];
         if (element != nil) {
             [elements addObject:element];
         }

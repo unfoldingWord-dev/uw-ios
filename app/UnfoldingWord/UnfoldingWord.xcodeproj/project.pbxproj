@@ -190,8 +190,6 @@
 		5A4F91321B4DAEB60038B338 /* UFWActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4F91311B4DAEB60038B338 /* UFWActivity.swift */; };
 		5A5996321B0A93980060668F /* AbyssinicaSIL-R.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5A5996251B0A93980060668F /* AbyssinicaSIL-R.ttf */; };
 		5A59974A1B0A9A3F0060668F /* UFWDataSeeder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5997491B0A9A3F0060668F /* UFWDataSeeder.m */; };
-		5A5E0F4F1B5DAE1100390B4B /* USFMChapterContainerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A5E0F4D1B5DAE1100390B4B /* USFMChapterContainerCell.xib */; };
-		5A5E0F501B5DAE1100390B4B /* USFMChapterContainerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5E0F4E1B5DAE1100390B4B /* USFMChapterContainerCell.m */; };
 		5A5E0F521B5DB21C00390B4B /* UFWContainerUSFMVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5E0F511B5DB21C00390B4B /* UFWContainerUSFMVC.swift */; };
 		5A6997D41B2F859000BB0618 /* ufw_file_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A6997D31B2F859000BB0618 /* ufw_file_icon.png */; };
 		5A7A66EC1AEF06B500FF3EA1 /* NSString+Trim.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A7A66EB1AEF06B500FF3EA1 /* NSString+Trim.m */; };
@@ -1128,9 +1126,6 @@
 		5A5996311B0A93980060668F /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		5A5997481B0A9A3F0060668F /* UFWDataSeeder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFWDataSeeder.h; sourceTree = "<group>"; };
 		5A5997491B0A9A3F0060668F /* UFWDataSeeder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UFWDataSeeder.m; sourceTree = "<group>"; };
-		5A5E0F4C1B5DAE1100390B4B /* USFMChapterContainerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = USFMChapterContainerCell.h; sourceTree = "<group>"; };
-		5A5E0F4D1B5DAE1100390B4B /* USFMChapterContainerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = USFMChapterContainerCell.xib; sourceTree = "<group>"; };
-		5A5E0F4E1B5DAE1100390B4B /* USFMChapterContainerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = USFMChapterContainerCell.m; sourceTree = "<group>"; };
 		5A5E0F511B5DB21C00390B4B /* UFWContainerUSFMVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UFWContainerUSFMVC.swift; sourceTree = "<group>"; };
 		5A6997D31B2F859000BB0618 /* ufw_file_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ufw_file_icon.png; sourceTree = "<group>"; };
 		5A7A66EA1AEF06B500FF3EA1 /* NSString+Trim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Trim.h"; sourceTree = "<group>"; };
@@ -3260,9 +3255,6 @@
 		5A9AC0191B0A38B100753AAB /* USFM */ = {
 			isa = PBXGroup;
 			children = (
-				5A5E0F4C1B5DAE1100390B4B /* USFMChapterContainerCell.h */,
-				5A5E0F4D1B5DAE1100390B4B /* USFMChapterContainerCell.xib */,
-				5A5E0F4E1B5DAE1100390B4B /* USFMChapterContainerCell.m */,
 				5A9AC01A1B0A38B100753AAB /* USFMChapterCell.h */,
 				5A9AC01B1B0A38B100753AAB /* USFMChapterCell.m */,
 				5A9AC01C1B0A38B100753AAB /* USFMChapterCell.xib */,
@@ -4436,7 +4428,6 @@
 				5A9ABEF01B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-32-02jpg in Resources */,
 				5A43EADD1B20F35E000EC306 /* 2pe-avd-ar-E7D55D78-6E96-47DC-A5A2-135C0917FC10.usfm in Resources */,
 				5A9ABDEB1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-09-15jpg in Resources */,
-				5A5E0F4F1B5DAE1100390B4B /* USFMChapterContainerCell.xib in Resources */,
 				5A9ABDD11B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-08-04jpg in Resources */,
 				5A9ABDF01B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-10-05jpg in Resources */,
 				6392586D1A24506500B5B8D2 /* Images.xcassets in Resources */,
@@ -4616,7 +4607,6 @@
 				5AC377CF1B38744500E3BB36 /* FileActivityController.swift in Sources */,
 				5A9AC04A1B0A38B100753AAB /* ChapterCell.m in Sources */,
 				5A9ABAE21B0A350A00753AAB /* OpenChapter.m in Sources */,
-				5A5E0F501B5DAE1100390B4B /* USFMChapterContainerCell.m in Sources */,
 				6392585F1A24506500B5B8D2 /* main.m in Sources */,
 				5A9AC0091B0A370000753AAB /* UFWBookPickerUSFMVC.m in Sources */,
 				5A9AC0031B0A370000753AAB /* ChapterListTableViewController.m in Sources */,
