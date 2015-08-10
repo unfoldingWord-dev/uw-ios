@@ -24,10 +24,10 @@
 
 @property (nonatomic, strong) FileActivityController *fileActivityController;
 
-/// Use this method in your view controller to manage sending a version. There is nothing more to do.
+/// Use this method in your view controller to manage sending a version as a file, either through a network, email, or saving to iTunes. There is nothing more to do.
 - (void)sendFileForVersion:(UWVersion *)version;
 
-/// Use this method in your view controller to manage receiving a version. There is nothing more to do to import a version, although some lists of versions might need to be refreshed after using this (future improvement).
+/// Use this method in your view controller to manage receiving a version as a file, either through a network, email, or opening from iTunes. There is nothing more to do to import a version, although some lists of versions might need to be refreshed after using this (future improvement).
 - (void)receiveFile;
 
 @end
