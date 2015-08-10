@@ -849,7 +849,7 @@
 		5A9ABFE31B0A364C00753AAB /* UFWVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9ABFE11B0A364C00753AAB /* UFWVerifier.m */; };
 		5A9ABFE41B0A364C00753AAB /* uW_vk_2.pem in Resources */ = {isa = PBXBuildFile; fileRef = 5A9ABFE21B0A364C00753AAB /* uW_vk_2.pem */; };
 		5A9AC0011B0A370000753AAB /* UFWStatusInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9ABFE81B0A370000753AAB /* UFWStatusInfoViewController.m */; };
-		5A9AC0021B0A370000753AAB /* UFWLanguagePickerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9ABFEB1B0A370000753AAB /* UFWLanguagePickerVC.m */; };
+		5A9AC0021B0A370000753AAB /* UFWVersionPickerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9ABFEB1B0A370000753AAB /* UFWVersionPickerVC.m */; };
 		5A9AC0031B0A370000753AAB /* ChapterListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9ABFEE1B0A370000753AAB /* ChapterListTableViewController.m */; };
 		5A9AC0041B0A370000753AAB /* FrameDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9ABFF01B0A370000753AAB /* FrameDetailsViewController.m */; };
 		5A9AC0061B0A370000753AAB /* UFWBaseURLTableVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9ABFF41B0A370000753AAB /* UFWBaseURLTableVC.m */; };
@@ -1817,8 +1817,8 @@
 		5A9ABFE21B0A364C00753AAB /* uW_vk_2.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = uW_vk_2.pem; sourceTree = "<group>"; };
 		5A9ABFE71B0A370000753AAB /* UFWStatusInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFWStatusInfoViewController.h; sourceTree = "<group>"; };
 		5A9ABFE81B0A370000753AAB /* UFWStatusInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UFWStatusInfoViewController.m; sourceTree = "<group>"; };
-		5A9ABFEA1B0A370000753AAB /* UFWLanguagePickerVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFWLanguagePickerVC.h; sourceTree = "<group>"; };
-		5A9ABFEB1B0A370000753AAB /* UFWLanguagePickerVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UFWLanguagePickerVC.m; sourceTree = "<group>"; };
+		5A9ABFEA1B0A370000753AAB /* UFWVersionPickerVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFWVersionPickerVC.h; sourceTree = "<group>"; };
+		5A9ABFEB1B0A370000753AAB /* UFWVersionPickerVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UFWVersionPickerVC.m; sourceTree = "<group>"; };
 		5A9ABFED1B0A370000753AAB /* ChapterListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChapterListTableViewController.h; sourceTree = "<group>"; };
 		5A9ABFEE1B0A370000753AAB /* ChapterListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChapterListTableViewController.m; sourceTree = "<group>"; };
 		5A9ABFEF1B0A370000753AAB /* FrameDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrameDetailsViewController.h; sourceTree = "<group>"; };
@@ -3157,8 +3157,8 @@
 		5A9ABFE91B0A370000753AAB /* LanguagePicker */ = {
 			isa = PBXGroup;
 			children = (
-				5A9ABFEA1B0A370000753AAB /* UFWLanguagePickerVC.h */,
-				5A9ABFEB1B0A370000753AAB /* UFWLanguagePickerVC.m */,
+				5A9ABFEA1B0A370000753AAB /* UFWVersionPickerVC.h */,
+				5A9ABFEB1B0A370000753AAB /* UFWVersionPickerVC.m */,
 			);
 			path = LanguagePicker;
 			sourceTree = "<group>";
@@ -4677,7 +4677,7 @@
 				5A9ABAE91B0A350A00753AAB /* UWTopContainer.m in Sources */,
 				5A9ABAE71B0A350A00753AAB /* UWStatus.m in Sources */,
 				5A7A66EC1AEF06B500FF3EA1 /* NSString+Trim.m in Sources */,
-				5A9AC0021B0A370000753AAB /* UFWLanguagePickerVC.m in Sources */,
+				5A9AC0021B0A370000753AAB /* UFWVersionPickerVC.m in Sources */,
 				5A36D3B51B223F23001D6E04 /* UFWAppInformationView.m in Sources */,
 				5A9ABAD91B0A350A00753AAB /* _OpenContainer.m in Sources */,
 			);

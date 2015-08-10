@@ -18,11 +18,11 @@ import UIKit
     func userChangedTOC(#vc : UFWTextChapterVC, pickedTOC : UWTOC)
     func matchingVCVerses(#vc : UFWTextChapterVC) -> VerseContainer
 
-    // These are information to help rotation and sizing events.
+    // Information to help rotation and sizing events.
     func expectedContainerWidthAfterRotation() -> CGFloat
 }
 
-class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelButtonDelegate {
+final class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelButtonDelegate {
     
     @IBOutlet weak var viewMain : UIView!
     @IBOutlet weak var viewSide : UIView!

@@ -12,7 +12,7 @@
 #import "UWCoreDataClasses.h"
 #import "USFMCoding.h"
 #import "EmptyCell.h"
-#import "UFWLanguagePickerVC.h"
+#import "UFWVersionPickerVC.h"
 #import "LanguageInfoController.h"
 #import "UFWSelectionTracker.h"
 #import "UFWBookPickerUSFMVC.h"
@@ -212,7 +212,7 @@ static CGFloat kSideMargin = 10.f;
 {
     [super viewDidAppear:animated];
     if (self.toc == nil && self.didShowPicker == NO) {
-        [self userRequestedLanguageSelector:nil];
+        [self userRequestedVersionPicker:nil];
         self.didShowPicker = YES;
     }
 }
@@ -222,7 +222,7 @@ static CGFloat kSideMargin = 10.f;
     NSString *matchingObject = labelButton.matchingObject;
     if ([matchingObject isKindOfClass:[NSString class]]) {
         if ([matchingObject isEqualToString:kMatchVersion]) {
-            [self userRequestedLanguageSelector:labelButton];
+            [self userRequestedVersionPicker:labelButton];
         }
         else if ([matchingObject isEqualToString:kMatchBook]) {
             [self userRequestedBookPicker:labelButton];
@@ -252,11 +252,11 @@ static CGFloat kSideMargin = 10.f;
 
 #pragma mark - Language Picker
 
-- (void)userRequestedLanguageSelector:(id)sender
+- (void)userRequestedVersionPicker:(id)sender
 {
     __weak typeof(self) weakself = self;
 
-    UIViewController *navVC = [UFWLanguagePickerVC navigationLanguagePickerWithTopContainer:self.topContainer isSide:NO completion:^(BOOL isCanceled, UWVersion *versionPicked) {
+    UIViewController *navVC = [UFWVersionPickerVC navigationLanguagePickerWithTopContainer:self.topContainer isSide:NO completion:^(BOOL isCanceled, UWVersion *versionPicked) {
         [weakself dismissViewControllerAnimated:YES completion:^{}];
         
         if (isCanceled) {
@@ -291,6 +291,7 @@ static CGFloat kSideMargin = 10.f;
             }
         }
         [weakself updateSelectionTOC:weakself.toc];
+        [weakself.delegate userChangedTOCWithVc:self pickedTOC:weakself.toc];
         [weakself addBarButtonItems];
     }];
     
