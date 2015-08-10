@@ -10,7 +10,7 @@
 
 @class UWVersion, BluetoothFileSender, BluetoothFileReceiver, MultiConnectReceiver, MultiConnectSender, FileActivityController;
 
-/// This class adds UWVersion file transfer capabilities to any view controller.
+/// This class adds UWVersion file transfer capabilities to any view controller. Used in conjunction with UFWActivity objects that are presented by a UIActivityViewController;
 
 @interface UIViewController (FileTransfer)
 
@@ -24,8 +24,10 @@
 
 @property (nonatomic, strong) FileActivityController *fileActivityController;
 
+/// Use this method in your view controller to manage sending a version. There is nothing more to do.
 - (void)sendFileForVersion:(UWVersion *)version;
 
+/// Use this method in your view controller to manage receiving a version. There is nothing more to do to import a version, although some lists of versions might need to be refreshed after using this (future improvement).
 - (void)receiveFile;
 
 @end

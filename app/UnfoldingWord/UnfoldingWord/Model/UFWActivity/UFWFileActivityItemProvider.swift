@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// This is an item provider. It's only purpose to to allow the app not to need to assemble a whole version into a file before we know for sure that the user will really want to send it. The activity view controller already takes too long to show up, but this hopefully helps a little.
 final class UFWFileActivityItemProvider : UIActivityItemProvider {
     
     let version : UWVersion

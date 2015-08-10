@@ -31,6 +31,7 @@
     }
 }
 
+/// Goes through all the USFMElements in a chapter and composes styled attributed text that is keyed to verses.
 - (NSAttributedString *)attributedString
 {
     UIFont *baseFont = [FONT_LIGHT fontWithSize:19];
@@ -47,6 +48,7 @@
         NSString *lastStringCharacter = (string.length > 0) ? [string.string substringWithRange:NSMakeRange(string.string.length-1, 1)] : nil;
         BOOL isLastCharacterReturn = ([lastStringCharacter rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]].location != NSNotFound);
         
+        // Handle verses - can also contain embedded quotes
         if (element.isVerse) {
             
             if (element.text.length > 0) {
@@ -89,6 +91,7 @@
             }
 
         }
+        // Handle quotes that are NOT verses.
         else if (element.isQuote && element.text.length > 0) {
             NSMutableAttributedString *text = nil;
             if (isLastCharacterReturn == NO) {
@@ -104,6 +107,7 @@
             [string appendAttributedString:text];
             
         }
+        // Handle newline characters - replace all with \n
         else if ( (element.isParagraph || element.isLineBreak) && string.string.length > 0) { // Don't add returns to an empty string!
             NSAttributedString *para = [[NSAttributedString alloc] initWithString:@"\n" attributes:normal];
             [string appendAttributedString:para];
