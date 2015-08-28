@@ -189,7 +189,7 @@
     if (versionSelected == nil) {
         return;
     }    
-    [self sendFileForVersion:versionSelected];
+    [self sendFileForVersion:versionSelected fromBarButtonOrView:view];
  }
 
 #pragma mark Version Picker

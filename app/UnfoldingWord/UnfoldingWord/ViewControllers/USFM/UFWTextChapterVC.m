@@ -246,7 +246,7 @@ static CGFloat kSideMargin = 10.f;
     if (self.toc.version == nil) {
         return;
     }
-    [self sendFileForVersion:self.toc.version];
+    [self sendFileForVersion:self.toc.version fromBarButtonOrView:activityBarButtonItem];
 }
 
 

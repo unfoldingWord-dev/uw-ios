@@ -104,7 +104,7 @@
 
 - (void)userRequestedSharing:(UIBarButtonItem *)activityBarButtonItem
 {
-    [self receiveFile];
+    [self receiveFileFromBarButtonOrView:activityBarButtonItem];
 }
 
 
