@@ -50,14 +50,14 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
 @dynamic alertController;
 @dynamic fileActivityController;
 
-- (void)sendFileForVersion:(UWVersion *)version;
+- (void)sendFileForVersion:(UWVersion *)version fromBarButtonOrView:(id)item;
 {
-    [self initiateActivityPresentationWithVersion:version isSend:YES];
+    [self initiateActivityPresentationWithVersion:version isSend:YES fromItem:item];
 }
 
-- (void)receiveFile;
+- (void)receiveFileFromBarButtonOrView:(id)item;
 {
-    [self initiateActivityPresentationWithVersion:nil isSend:NO];
+    [self initiateActivityPresentationWithVersion:nil isSend:NO fromItem:item];
 }
 
 - (void) handleActivityType:(NSString *)activityType
@@ -94,7 +94,9 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
     }
 }
 
-- (void)initiateActivityPresentationWithVersion:(UWVersion *) version isSend:(BOOL)isSend {
+- (void)initiateActivityPresentationWithVersion:(UWVersion *) version isSend:(BOOL)isSend fromItem:(id)item {
+    NSLog(@"start present");
+
     self.fileActivityController = [[FileActivityController alloc] initWithVersion:version shouldSend:isSend];
     UIActivityViewController *activityController = self.fileActivityController.activityViewController;
     __weak typeof(self) weakself = self;
@@ -103,7 +105,26 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
             [weakself handleActivityType:activityType];
         }
     };
-    [self presentViewController:activityController animated:YES completion:^{}];
+    
+    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        
+        UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:activityController];
+
+        if ([item isKindOfClass:[UIBarButtonItem class]]) {
+            [popover presentPopoverFromBarButtonItem:(UIBarButtonItem *)item permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        }
+        else if ([item isKindOfClass:[UIView class]]) {
+            UIView *itemView = (UIView *)item;
+            [popover presentPopoverFromRect:itemView.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        }
+        else {
+            [popover presentPopoverFromRect:CGRectMake(self.view.frame.size.width / 2.0, self.view.frame.size.height - 10, 1, 1) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
+        }
+    }
+    else {
+        [self presentViewController:activityController animated:YES completion:^{}];
+    }
+
 }
 
 - (void)sendWireless {

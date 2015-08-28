@@ -20,6 +20,7 @@ class UFWActivity : UIActivity {
     
     let type : UFWActivityType
     
+    /// Creates an activity object suitable to use in a UIActivityViewController. Note that these activities don't actually do anything. Picking one just lets the calling view controller actually present the correct UI to complete the activity.
     init(type : UFWActivityType) {
         self.type = type
         super.init()

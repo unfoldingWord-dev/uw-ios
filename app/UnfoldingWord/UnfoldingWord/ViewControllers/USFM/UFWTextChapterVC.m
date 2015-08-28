@@ -12,7 +12,7 @@
 #import "UWCoreDataClasses.h"
 #import "USFMCoding.h"
 #import "EmptyCell.h"
-#import "UFWLanguagePickerVC.h"
+#import "UFWVersionPickerVC.h"
 #import "LanguageInfoController.h"
 #import "UFWSelectionTracker.h"
 #import "UFWBookPickerUSFMVC.h"
@@ -212,7 +212,7 @@ static CGFloat kSideMargin = 10.f;
 {
     [super viewDidAppear:animated];
     if (self.toc == nil && self.didShowPicker == NO) {
-        [self userRequestedLanguageSelector:nil];
+        [self userRequestedVersionPicker:nil];
         self.didShowPicker = YES;
     }
 }
@@ -222,7 +222,7 @@ static CGFloat kSideMargin = 10.f;
     NSString *matchingObject = labelButton.matchingObject;
     if ([matchingObject isKindOfClass:[NSString class]]) {
         if ([matchingObject isEqualToString:kMatchVersion]) {
-            [self userRequestedLanguageSelector:labelButton];
+            [self userRequestedVersionPicker:labelButton];
         }
         else if ([matchingObject isEqualToString:kMatchBook]) {
             [self userRequestedBookPicker:labelButton];
@@ -246,17 +246,17 @@ static CGFloat kSideMargin = 10.f;
     if (self.toc.version == nil) {
         return;
     }
-    [self sendFileForVersion:self.toc.version];
+    [self sendFileForVersion:self.toc.version fromBarButtonOrView:activityBarButtonItem];
 }
 
 
 #pragma mark - Language Picker
 
-- (void)userRequestedLanguageSelector:(id)sender
+- (void)userRequestedVersionPicker:(id)sender
 {
     __weak typeof(self) weakself = self;
 
-    UIViewController *navVC = [UFWLanguagePickerVC navigationLanguagePickerWithTopContainer:self.topContainer isSide:NO completion:^(BOOL isCanceled, UWVersion *versionPicked) {
+    UIViewController *navVC = [UFWVersionPickerVC navigationLanguagePickerWithTopContainer:self.topContainer isSide:NO completion:^(BOOL isCanceled, UWVersion *versionPicked) {
         [weakself dismissViewControllerAnimated:YES completion:^{}];
         
         if (isCanceled) {
@@ -291,6 +291,7 @@ static CGFloat kSideMargin = 10.f;
             }
         }
         [weakself updateSelectionTOC:weakself.toc];
+        [weakself.delegate userChangedTOCWithVc:self pickedTOC:weakself.toc];
         [weakself addBarButtonItems];
     }];
     
@@ -532,15 +533,15 @@ static CGFloat kSideMargin = 10.f;
 
 - (void)scrollCollectionView:(CGFloat)offset;
 {
+    [self willSetup];
     self.matchingCollectionViewXOffset += offset;
     [self setFadeWithPoints:self.matchingCollectionViewXOffset];
     
-    self.collectionView.delegate = nil;
     CGPoint point = self.collectionView.contentOffset;
     point.x += offset;
     [self.collectionView setContentOffset:point];
     self.lastCollectionViewScrollOffset = self.collectionView.contentOffset;
-    self.collectionView.delegate = self;
+    [self didSetup];
 }
 
 - (void)setFadeWithPoints:(CGFloat)points
@@ -555,15 +556,15 @@ static CGFloat kSideMargin = 10.f;
 
 - (void)scrollTextView:(CGFloat)offset;
 {
+    [self willSetup];
     USFMChapterCell *cell = [self visibleChapterCell];
-    cell.textView.delegate = nil;
     CGPoint adjustedPoint = cell.textView.contentOffset;
     adjustedPoint.y += offset;
     adjustedPoint.y = fmaxf(adjustedPoint.y, 0);
     adjustedPoint.y = fminf(adjustedPoint.y, cell.textView.contentSize.height - cell.textView.frame.size.height);
     cell.textView.contentOffset = adjustedPoint;
     
-    cell.textView.delegate = self;
+    [self didSetup];
 }
 
 - (void)adjustTextViewWithVerses:(VerseContainer)remoteVerses animationDuration:(CGFloat)duration
@@ -603,9 +604,6 @@ static CGFloat kSideMargin = 10.f;
         // Trying to show relatively the same amount of verse for both sides. This is important because some verses are more than twice as long as their matching verses in another language or bible version.
         relativeOffset = -distanceBetweenVerses * percentBelowOrigin;
     }
-    
-    // Never go more than a full screen back.
-    relativeOffset = fmax(relativeOffset, - textView.bounds.size.height);
     
     // Adjust so the first visible verse starts in the same place on both screens.
     minY -= relativeOffset;
@@ -764,7 +762,7 @@ static CGFloat kSideMargin = 10.f;
         USFMChapterCell *cell = [self visibleChapterCell];
         
         if ([cell.textView isEqual:scrollView]) {
-            CGFloat difference = offsetCurrent.y -self.lastTextViewScrollOffset.y;
+            CGFloat difference = offsetCurrent.y - self.lastTextViewScrollOffset.y;
             [self.delegate userDidScrollWithVc:self verticalOffset:difference];
             self.lastTextViewScrollOffset = offsetCurrent;
         }
@@ -851,18 +849,14 @@ static CGFloat kSideMargin = 10.f;
             rowHeight = fmax(rowHeight, textFrame.size.height);
             
             NSInteger number = verse.integerValue;
-            //            NSAttributedString *tempAs = [as attributedSubstringFromRange:range];
-            //            NSLog(@"temp: %@", tempAs);
+            
             if ( minVerse >= number && textFrame.size.width > 10 && range.length > 5) { // Prevent return characters from causing an issue.
                 CGRect fullRect = [self fullFrameOfVerse:number inTextView:textView];
-//                CGFloat wiggleRoom = 10;
-//                if (fullRect.origin.y >= -wiggleRoom || fullRect.size.height > (textView.frame.size.height - wiggleRoom) ) {
-                    minRelativeRect = fullRect;
-                    if ( textView.contentOffset.y < 5.0 ) { // 5 = wiggle room
-                        minIsAtStart = YES;
-                    }
-                    minVerse = number;
-//                }
+                minRelativeRect = fullRect;
+                if ( textView.contentOffset.y < 5.0 ) { // 5 = wiggle room
+                    minIsAtStart = YES;
+                }
+                minVerse = number;
             }
             if (maxVerse < number || maxVerse == number) {
                 maxVerse = number;
@@ -897,8 +891,6 @@ static CGFloat kSideMargin = 10.f;
     
     [textView.attributedText enumerateAttributesInRange:NSMakeRange(0, textView.attributedText.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
         NSString *verse = attrs[USFM_VERSE_NUMBER];
-        //        NSAttributedString *tempAS = [textView.attributedText attributedSubstringFromRange:range];
-        //        NSLog(@"Temp attribute string: %@", tempAS);
         if (verse) {
             NSInteger number = verse.integerValue;
             if ( verseNumber == number) {

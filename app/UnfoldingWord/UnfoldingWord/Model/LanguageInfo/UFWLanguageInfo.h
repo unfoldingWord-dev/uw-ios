@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-
+/// There's a lot of commented code here because it mimics the actual source file. I'm leaving it in b/c I think they might want it added back at some point.
 
 @interface UFWLanguageInfo : NSObject <NSCoding, NSCopying>
 

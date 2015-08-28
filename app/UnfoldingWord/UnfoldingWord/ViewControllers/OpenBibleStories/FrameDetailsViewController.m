@@ -15,7 +15,7 @@
 #import "UFWSelectionTracker.h"
 #import "LanguageInfoController.h"
 #import "UFWNextChapterCell.h"
-#import "UFWLanguagePickerVC.h"
+#import "UFWVersionPickerVC.h"
 #import "ChapterListTableViewController.h"
 #import "EmptyCell.h"
 #import "UFWStatusInfoViewController.h"
@@ -189,14 +189,14 @@
     if (versionSelected == nil) {
         return;
     }    
-    [self sendFileForVersion:versionSelected];
+    [self sendFileForVersion:versionSelected fromBarButtonOrView:view];
  }
 
 #pragma mark Version Picker
 - (void)showVersionSelector:(FrameCell *)cell view:(UIView *)view isSide:(BOOL)isSide;
 {
     __weak typeof(self) weakself = self;
-    UIViewController *navVC = [UFWLanguagePickerVC navigationLanguagePickerWithTopContainer:self.topContainer isSide:isSide completion:^(BOOL isCanceled, UWVersion *versionPicked) {
+    UIViewController *navVC = [UFWVersionPickerVC navigationLanguagePickerWithTopContainer:self.topContainer isSide:isSide completion:^(BOOL isCanceled, UWVersion *versionPicked) {
         [weakself dismissViewControllerAnimated:YES completion:^{}];
         
         if (isCanceled) {

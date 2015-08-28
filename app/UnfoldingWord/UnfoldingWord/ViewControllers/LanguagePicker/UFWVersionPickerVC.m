@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Acts Media Inc. All rights reserved.
 //
 
-#import "UFWLanguagePickerVC.h"
+#import "UFWVersionPickerVC.h"
 #import "ACTLabelButton.h"
 #import "UFWLanguageNameCell.h"
 #import "UFWVersionCell.h"
@@ -16,7 +16,7 @@
 #import "UINavigationController+UFWNavigationController.h"
 #import "UFWSelectionTracker.h"
 
-@interface UFWLanguagePickerVC () <ACTLabelButtonDelegate, CellExpandableDelegate>
+@interface UFWVersionPickerVC () <ACTLabelButtonDelegate, CellExpandableDelegate>
 
 @property (nonatomic, strong) NSArray *arrayLanguages;
 @property (nonatomic, strong) NSMutableArray *arrayLanguagesSelected;
@@ -26,16 +26,16 @@
 @property (nonatomic, strong) NSString *cellLanguage;
 @property (nonatomic, strong) NSString *cellVersion;
 
-@property (nonatomic, copy) LanguagePickerCompletion completion;
+@property (nonatomic, copy) VersionPickerCompletion completion;
 @property (nonatomic, strong) UWTOC *currentTOC;
 @property (nonatomic, assign) BOOL isSide;
 @end
 
-@implementation UFWLanguagePickerVC
+@implementation UFWVersionPickerVC
 
-+ (UIViewController *)navigationLanguagePickerWithTopContainer:(UWTopContainer *)topContainer isSide:(BOOL)isSide completion:(LanguagePickerCompletion)completion;
++ (UIViewController *)navigationLanguagePickerWithTopContainer:(UWTopContainer *)topContainer isSide:(BOOL)isSide completion:(VersionPickerCompletion)completion;
 {
-    UFWLanguagePickerVC *pickerVC = [[UFWLanguagePickerVC alloc] init];
+    UFWVersionPickerVC *pickerVC = [[UFWVersionPickerVC alloc] init];
     pickerVC.isSide = isSide;
     pickerVC.topContainer = topContainer;
     pickerVC.completion = completion;
