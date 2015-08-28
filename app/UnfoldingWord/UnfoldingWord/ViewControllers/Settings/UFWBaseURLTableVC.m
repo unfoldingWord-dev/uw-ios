@@ -9,6 +9,7 @@
 #import "UFWBaseURLTableVC.h"
 #import "UFWBaseUrlCell.h"
 #import "UFWSelectionTracker.h"
+#import "NSLayoutConstraint+DWSExtensions.h"
 #import "Constants.h"
 
 static CGFloat kHeightUrl = 98.0f;
@@ -32,13 +33,13 @@ static NSInteger const kVersion = 2;
     self.cellIdUrlEntry = NSStringFromClass([UFWBaseUrlCell class]);
     UINib *urlEntryNib = [UINib nibWithNibName:self.cellIdUrlEntry bundle:nil];
     [self.tableView registerNib:urlEntryNib forCellReuseIdentifier:self.cellIdUrlEntry];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [[self urlEntryView] setDelegate:self];
-//    [[self urlEntryView] becomeFirstResponder];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -70,6 +71,15 @@ static NSInteger const kVersion = 2;
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdDefault];
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kCellIdDefault];
+            
+            // Add a line at the bottom
+            UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(1, 1, 1, 1)];
+            bottomLine.backgroundColor = [UIColor lightGrayColor];
+            bottomLine.translatesAutoresizingMaskIntoConstraints = NO;
+            [cell.contentView addSubview:bottomLine];
+            NSArray *constraints = [NSLayoutConstraint constraintsBottomAnchorView:bottomLine insideView:cell.contentView height:0.5];
+            [cell.contentView addConstraints:constraints];
+            
         }
         if (indexPath.row == kReset) {
             cell.textLabel.text = NSLocalizedString(@"Reset URL", nil);

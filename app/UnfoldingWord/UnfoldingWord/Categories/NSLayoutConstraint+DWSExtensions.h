@@ -34,6 +34,8 @@
 + (NSArray *)constraintsForView:(UIView *)subview insideView:(UIView *)containerView topMargin:(CGFloat)topMargin leftMargin:(CGFloat)leftMargin rightMargin:(CGFloat)rightMargin minimumHeight:(CGFloat)height;
 
 + (NSArray *)constraintsTopAnchorView:(UIView *)subview insideView:(UIView *)containerView height:(CGFloat)height;
++ (NSArray *)constraintsBottomAnchorView:(UIView *)subview insideView:(UIView *)containerView height:(CGFloat)height;
+
 
 + (NSArray *)constraintsForSizedView:(UIView *)subview insideView:(UIView *)containerView topMargin:(CGFloat)topMargin leftMargin:(CGFloat)leftMargin;
 
