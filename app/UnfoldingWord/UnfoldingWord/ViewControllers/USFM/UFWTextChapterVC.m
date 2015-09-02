@@ -211,7 +211,7 @@ static CGFloat kSideMargin = 10.f;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if (self.toc == nil && self.didShowPicker == NO && [self isSideTOC] == NO) {
+    if (self.toc == nil && self.didShowPicker == NO && [self isSideTOC] ==  NO) {
         [self userRequestedVersionPicker:nil];
         self.didShowPicker = YES;
     }

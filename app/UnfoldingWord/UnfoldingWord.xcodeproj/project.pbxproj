@@ -194,6 +194,9 @@
 		5A82BA721AF928E100C5044E /* UFWImporterUSFMEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A82BA6D1AF928E100C5044E /* UFWImporterUSFMEncoding.m */; };
 		5A8DCB971B02601A0010DD27 /* UFWSelectionTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A8DCB961B02601A0010DD27 /* UFWSelectionTracker.m */; };
 		5A8DCB9D1B03B1A10010DD27 /* UINavigationController+UFWNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A8DCB9C1B03B1A10010DD27 /* UINavigationController+UFWNavigationController.m */; };
+		5A9A1FC41B950FA700ED8225 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9A1FC31B950FA700ED8225 /* AVFoundation.framework */; };
+		5A9A1FC61B950FC100ED8225 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9A1FC51B950FC100ED8225 /* MediaPlayer.framework */; };
+		5A9A1FC91B95141F00ED8225 /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9A1FC81B95141F00ED8225 /* AudioPlayerView.swift */; };
 		5A9ABAD71B0A350A00753AAB /* _OpenAppWordsList.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9ABAAA1B0A350900753AAB /* _OpenAppWordsList.m */; };
 		5A9ABAD81B0A350A00753AAB /* _OpenChapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9ABAAC1B0A350900753AAB /* _OpenChapter.m */; };
 		5A9ABAD91B0A350A00753AAB /* _OpenContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9ABAAE1B0A350900753AAB /* _OpenContainer.m */; };
@@ -898,6 +901,8 @@
 		5AC3DCB81B1F751000703AA2 /* ACTSimpleChapterNumberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5AC3DCB61B1F751000703AA2 /* ACTSimpleChapterNumberCell.xib */; };
 		5AD0B49F1B445642006ABD21 /* MultiConnectSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD0B49E1B445642006ABD21 /* MultiConnectSender.swift */; };
 		5AD0B4A11B45CB68006ABD21 /* MultiConnectReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD0B4A01B45CB68006ABD21 /* MultiConnectReceiver.swift */; };
+		5AD20D8B1B960166000B813B /* AudioPlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5AD20D8A1B960166000B813B /* AudioPlayerView.xib */; };
+		5AD20D8D1B9665B7000B813B /* FileDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD20D8C1B9665B7000B813B /* FileDownloader.swift */; };
 		5AD3CBE41B4A182D003F5F33 /* ITunesSharingReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD3CBE31B4A182D003F5F33 /* ITunesSharingReceiver.swift */; };
 		5AD3CBE61B4A185B003F5F33 /* ITunesSharingSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD3CBE51B4A185B003F5F33 /* ITunesSharingSender.swift */; };
 		5AEDC6321AFC20CA00C722B9 /* LanguageInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AEDC6311AFC20CA00C722B9 /* LanguageInfoController.m */; };
@@ -1125,6 +1130,7 @@
 		5A5997491B0A9A3F0060668F /* UFWDataSeeder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UFWDataSeeder.m; sourceTree = "<group>"; };
 		5A5E0F511B5DB21C00390B4B /* UFWContainerUSFMVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UFWContainerUSFMVC.swift; sourceTree = "<group>"; };
 		5A6997D31B2F859000BB0618 /* ufw_file_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ufw_file_icon.png; sourceTree = "<group>"; };
+		5A763CB71B97B982009F9460 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		5A7A66EA1AEF06B500FF3EA1 /* NSString+Trim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Trim.h"; sourceTree = "<group>"; };
 		5A7A66EB1AEF06B500FF3EA1 /* NSString+Trim.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Trim.m"; sourceTree = "<group>"; };
 		5A7ECE1D1AFD2270002C94AD /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
@@ -1136,6 +1142,9 @@
 		5A8DCB961B02601A0010DD27 /* UFWSelectionTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UFWSelectionTracker.m; sourceTree = "<group>"; };
 		5A8DCB9B1B03B1A10010DD27 /* UINavigationController+UFWNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+UFWNavigationController.h"; sourceTree = "<group>"; };
 		5A8DCB9C1B03B1A10010DD27 /* UINavigationController+UFWNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+UFWNavigationController.m"; sourceTree = "<group>"; };
+		5A9A1FC31B950FA700ED8225 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		5A9A1FC51B950FC100ED8225 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		5A9A1FC81B95141F00ED8225 /* AudioPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
 		5A9ABAA91B0A350900753AAB /* _OpenAppWordsList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _OpenAppWordsList.h; sourceTree = "<group>"; };
 		5A9ABAAA1B0A350900753AAB /* _OpenAppWordsList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _OpenAppWordsList.m; sourceTree = "<group>"; };
 		5A9ABAAB1B0A350900753AAB /* _OpenChapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _OpenChapter.h; sourceTree = "<group>"; };
@@ -1897,6 +1906,8 @@
 		5AC3DCB61B1F751000703AA2 /* ACTSimpleChapterNumberCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACTSimpleChapterNumberCell.xib; sourceTree = "<group>"; };
 		5AD0B49E1B445642006ABD21 /* MultiConnectSender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiConnectSender.swift; sourceTree = "<group>"; };
 		5AD0B4A01B45CB68006ABD21 /* MultiConnectReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiConnectReceiver.swift; sourceTree = "<group>"; };
+		5AD20D8A1B960166000B813B /* AudioPlayerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AudioPlayerView.xib; sourceTree = "<group>"; };
+		5AD20D8C1B9665B7000B813B /* FileDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileDownloader.swift; sourceTree = "<group>"; };
 		5AD3CBE31B4A182D003F5F33 /* ITunesSharingReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITunesSharingReceiver.swift; sourceTree = "<group>"; };
 		5AD3CBE51B4A185B003F5F33 /* ITunesSharingSender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITunesSharingSender.swift; sourceTree = "<group>"; };
 		5AEDC6301AFC20CA00C722B9 /* LanguageInfoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageInfoController.h; sourceTree = "<group>"; };
@@ -2038,6 +2049,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A9A1FC61B950FC100ED8225 /* MediaPlayer.framework in Frameworks */,
+				5A9A1FC41B950FA700ED8225 /* AVFoundation.framework in Frameworks */,
 				5AFC9B6B1B41D2FB00D453D0 /* libz.dylib in Frameworks */,
 				5AEDC6F11B068B0200551D27 /* SystemConfiguration.framework in Frameworks */,
 				5AF0529A1B756D31003EA5A4 /* libssl_iOS.a in Frameworks */,
@@ -2058,6 +2071,9 @@
 		1B0CD4AF2D42B49EF521F9C6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5A763CB71B97B982009F9460 /* QuartzCore.framework */,
+				5A9A1FC51B950FC100ED8225 /* MediaPlayer.framework */,
+				5A9A1FC31B950FA700ED8225 /* AVFoundation.framework */,
 				5AFC9B6A1B41D2FB00D453D0 /* libz.dylib */,
 				5AEDC6F71B068D1900551D27 /* libcommonCrypto.dylib */,
 				5AEDC6F01B068B0200551D27 /* SystemConfiguration.framework */,
@@ -2378,6 +2394,16 @@
 				5A8DCB961B02601A0010DD27 /* UFWSelectionTracker.m */,
 			);
 			path = SelectionTracker;
+			sourceTree = "<group>";
+		};
+		5A9A1FC71B95140D00ED8225 /* AudioPlayerView */ = {
+			isa = PBXGroup;
+			children = (
+				5A9A1FC81B95141F00ED8225 /* AudioPlayerView.swift */,
+				5AD20D8A1B960166000B813B /* AudioPlayerView.xib */,
+				5AD20D8C1B9665B7000B813B /* FileDownloader.swift */,
+			);
+			path = AudioPlayerView;
 			sourceTree = "<group>";
 		};
 		5A9ABAA61B0A350900753AAB /* CoreData */ = {
@@ -3212,6 +3238,7 @@
 		5A9AC00D1B0A38B100753AAB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5A9A1FC71B95140D00ED8225 /* AudioPlayerView */,
 				5A36D3B11B223F23001D6E04 /* AppInfoView */,
 				5A9AC00E1B0A38B100753AAB /* CollectionView */,
 				5A9AC01D1B0A38B100753AAB /* InfoView */,
@@ -3705,6 +3732,7 @@
 		639258511A24506500B5B8D2 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Acts Media Inc.";
 				TargetAttributes = {
@@ -4037,6 +4065,7 @@
 				5A43EAC81B20F35E000EC306 /* 1jn-udb-en-3283E163-7FC6-43EA-AFAE-D192B501D879.usfm in Resources */,
 				5A9ABD791B0A35FA00753AAB /* icon-small.png in Resources */,
 				5A9ABE5C1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-18-04jpg in Resources */,
+				5AD20D8B1B960166000B813B /* AudioPlayerView.xib in Resources */,
 				5A9ABFB61B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-49-06jpg in Resources */,
 				5A9ABEA91B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-24-05jpg in Resources */,
 				5A9ABF8D1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-46-03jpg in Resources */,
@@ -4671,6 +4700,7 @@
 				5A9ABAF01B0A356700753AAB /* UFWMasterUpdater.m in Sources */,
 				5A3E553C1A9D4CB700D1D920 /* DWImageFileManager.m in Sources */,
 				5A2B79AE1B5EA22D00AD9993 /* UIViewControllerExtension.swift in Sources */,
+				5AD20D8D1B9665B7000B813B /* FileDownloader.swift in Sources */,
 				5AFDC3391AF1366C002F58A0 /* NSManagedObject+Convenience.m in Sources */,
 				5A9AC0501B0A38B100753AAB /* UFWTopLevelItemCell.m in Sources */,
 				5A9ABAEA1B0A350A00753AAB /* UWVersion.m in Sources */,
@@ -4679,6 +4709,7 @@
 				5A7A66EC1AEF06B500FF3EA1 /* NSString+Trim.m in Sources */,
 				5A9AC0021B0A370000753AAB /* UFWVersionPickerVC.m in Sources */,
 				5A36D3B51B223F23001D6E04 /* UFWAppInformationView.m in Sources */,
+				5A9A1FC91B95141F00ED8225 /* AudioPlayerView.swift in Sources */,
 				5A9ABAD91B0A350A00753AAB /* _OpenContainer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

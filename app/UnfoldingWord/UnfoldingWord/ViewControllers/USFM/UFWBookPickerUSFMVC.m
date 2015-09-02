@@ -28,6 +28,8 @@
     UFWBookPickerUSFMVC *pickerVC = [[UFWBookPickerUSFMVC alloc] init];
     pickerVC.version = version;
     pickerVC.completion = completion;
+    
+    
     return [UINavigationController navigationControllerWithUFWBaseViewController:pickerVC];
 }
 

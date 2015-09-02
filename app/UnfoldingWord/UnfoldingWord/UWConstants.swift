@@ -13,6 +13,9 @@ typealias FileUpdateBlock = (percentComplete: Float, connected : Bool, complete 
 
 typealias ITunesPickerChooseBlock = (canceled : Bool, chosenPath : String?) -> ()
 
+typealias AudioDownloadCompletionBlock = (success : Bool, data : NSData?) -> ()
+typealias AudioDownloadProgressBlock = (percentDone : Float) -> ()
+
 struct Constants {
     struct URLSource {
         static let signature = "sig"
