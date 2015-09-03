@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VXW-ec-y5Q">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VXW-ec-y5Q">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
@@ -90,30 +90,43 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q2e-dA-xrq" userLabel="SideView">
-                                <rect key="frame" x="301" y="0.0" width="299" height="600"/>
+                                <rect key="frame" x="301" y="0.0" width="299" height="556"/>
                                 <color key="backgroundColor" red="0.43925401730000002" green="1" blue="0.44185694419999999" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jD3-73-CVd" userLabel="MainView">
-                                <rect key="frame" x="0.0" y="0.0" width="299" height="600"/>
+                                <rect key="frame" x="0.0" y="0.0" width="299" height="556"/>
                                 <color key="backgroundColor" red="1" green="0.090197819210000002" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qNq-1n-cbN">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <items>
+                                    <barButtonItem image="share-active" id="KHL-Ps-Vyw"/>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="qNq-1n-cbN" firstAttribute="top" secondItem="q2e-dA-xrq" secondAttribute="bottom" id="0Vc-xU-FFV"/>
                             <constraint firstAttribute="bottom" secondItem="jD3-73-CVd" secondAttribute="bottom" id="27P-bC-F9n"/>
                             <constraint firstItem="jD3-73-CVd" firstAttribute="width" secondItem="q2e-dA-xrq" secondAttribute="width" id="C3f-FQ-kEO"/>
                             <constraint firstItem="q2e-dA-xrq" firstAttribute="top" secondItem="Me5-wc-m5H" secondAttribute="bottom" id="CXI-ZT-cKs"/>
+                            <constraint firstItem="qNq-1n-cbN" firstAttribute="leading" secondItem="TKf-t6-rlm" secondAttribute="leading" id="HXS-nX-X4s"/>
                             <constraint firstAttribute="trailing" secondItem="q2e-dA-xrq" secondAttribute="trailing" priority="999" id="Hhu-zN-Khx"/>
                             <constraint firstItem="q2e-dA-xrq" firstAttribute="leading" secondItem="jD3-73-CVd" secondAttribute="trailing" constant="2" id="I5R-dT-gms"/>
                             <constraint firstItem="jD3-73-CVd" firstAttribute="leading" secondItem="TKf-t6-rlm" secondAttribute="leading" id="QEM-Gw-4gt"/>
                             <constraint firstAttribute="trailing" secondItem="jD3-73-CVd" secondAttribute="trailing" priority="998" id="arw-KQ-4vg"/>
+                            <constraint firstItem="pKx-sk-nHT" firstAttribute="top" secondItem="qNq-1n-cbN" secondAttribute="bottom" id="bHY-nw-WwH"/>
                             <constraint firstAttribute="trailing" secondItem="q2e-dA-xrq" secondAttribute="trailing" id="eF3-X6-oZP"/>
                             <constraint firstItem="jD3-73-CVd" firstAttribute="top" secondItem="Me5-wc-m5H" secondAttribute="bottom" id="f6r-Xo-ep0"/>
                             <constraint firstItem="pKx-sk-nHT" firstAttribute="top" secondItem="q2e-dA-xrq" secondAttribute="bottom" id="jrg-7A-7lP"/>
+                            <constraint firstItem="qNq-1n-cbN" firstAttribute="top" secondItem="jD3-73-CVd" secondAttribute="bottom" id="vrp-I3-v3r"/>
+                            <constraint firstAttribute="trailing" secondItem="qNq-1n-cbN" secondAttribute="trailing" id="wVf-VI-KaQ"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="27P-bC-F9n"/>
                                 <exclude reference="eF3-X6-oZP"/>
+                                <exclude reference="jrg-7A-7lP"/>
                             </mask>
                         </variation>
                     </view>
@@ -134,4 +147,7 @@
             <point key="canvasLocation" x="229" y="680"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="share-active" width="44" height="44"/>
+    </resources>
 </document>

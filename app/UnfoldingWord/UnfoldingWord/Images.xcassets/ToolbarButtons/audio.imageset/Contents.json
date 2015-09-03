@@ -3,17 +3,15 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "diglot@1x.png"
+      "filename" : "audio-normal.pdf"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "diglot@2x.png"
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "diglot@3x.png"
+      "scale" : "3x"
     }
   ],
   "info" : {

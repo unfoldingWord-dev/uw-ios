@@ -11,20 +11,20 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-1:43" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9eb-ti-fpe" userLabel="Label Time Trailing">
-                    <rect key="frame" x="261" y="5" width="36" height="18"/>
+                    <rect key="frame" x="261" y="7" width="36" height="18"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2:34" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YJ3-tV-uwY" userLabel="Label Time Leading">
-                    <rect key="frame" x="62" y="5" width="30" height="18"/>
+                    <rect key="frame" x="84" y="7" width="30" height="18"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wPE-cX-0go" userLabel="Button Play Pause">
-                    <rect key="frame" x="20" y="16" width="22" height="22"/>
-                    <state key="normal">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wPE-cX-0go" userLabel="Button Play Pause">
+                    <rect key="frame" x="20" y="5" width="44" height="44"/>
+                    <state key="normal" backgroundImage="play">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
@@ -32,23 +32,22 @@
                     </connections>
                 </button>
                 <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.01" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="YIW-Jt-PVP">
-                    <rect key="frame" x="60" y="17" width="239" height="31"/>
-                    <color key="thumbTintColor" red="0.43925401730000002" green="1" blue="0.44185694419999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <rect key="frame" x="82" y="17" width="217" height="31"/>
                     <connections>
                         <action selector="userChangedSliderValue:" destination="iN0-l3-epB" eventType="valueChanged" id="or5-P7-hse"/>
                     </connections>
                 </slider>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Downloading..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c9e-Vx-wr4">
-                    <rect key="frame" x="101" y="16" width="115" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <rect key="frame" x="100" y="16" width="118" height="21"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.96247632575757569" green="0.96247632575757569" blue="0.96247632575757569" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="centerY" secondItem="YIW-Jt-PVP" secondAttribute="centerY" constant="-5" id="2a7-07-4kR"/>
-                <constraint firstItem="9eb-ti-fpe" firstAttribute="centerY" secondItem="YIW-Jt-PVP" secondAttribute="centerY" constant="-18" id="2cY-PC-Uoy"/>
+                <constraint firstItem="9eb-ti-fpe" firstAttribute="centerY" secondItem="YIW-Jt-PVP" secondAttribute="centerY" constant="-16" id="2cY-PC-Uoy"/>
                 <constraint firstItem="YIW-Jt-PVP" firstAttribute="centerX" secondItem="YJ3-tV-uwY" secondAttribute="centerX" id="4ds-Lb-kPD"/>
                 <constraint firstItem="wPE-cX-0go" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="H0u-zq-GCB"/>
                 <constraint firstItem="YIW-Jt-PVP" firstAttribute="centerX" secondItem="9eb-ti-fpe" secondAttribute="centerX" id="I6I-VW-QCa"/>
@@ -56,7 +55,7 @@
                 <constraint firstAttribute="trailing" secondItem="YIW-Jt-PVP" secondAttribute="trailing" constant="20" id="ccl-oE-ZwO"/>
                 <constraint firstItem="YIW-Jt-PVP" firstAttribute="leading" secondItem="wPE-cX-0go" secondAttribute="trailing" constant="20" id="ftP-Ux-1m7"/>
                 <constraint firstAttribute="centerY" secondItem="wPE-cX-0go" secondAttribute="centerY" id="g8v-P2-hgq"/>
-                <constraint firstItem="YIW-Jt-PVP" firstAttribute="centerY" secondItem="YJ3-tV-uwY" secondAttribute="centerY" constant="18" id="irD-l0-jOY"/>
+                <constraint firstItem="YIW-Jt-PVP" firstAttribute="centerY" secondItem="YJ3-tV-uwY" secondAttribute="centerY" constant="16" id="irD-l0-jOY"/>
                 <constraint firstAttribute="centerY" secondItem="c9e-Vx-wr4" secondAttribute="centerY" id="jOj-gp-wAi"/>
                 <constraint firstItem="9eb-ti-fpe" firstAttribute="trailing" secondItem="YIW-Jt-PVP" secondAttribute="trailing" id="mTT-69-zku"/>
                 <constraint firstItem="YIW-Jt-PVP" firstAttribute="leading" secondItem="YJ3-tV-uwY" secondAttribute="leading" id="t1F-gE-acB"/>
@@ -85,4 +84,7 @@
             <point key="canvasLocation" x="323.5" y="440.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="play" width="44" height="44"/>
+    </resources>
 </document>

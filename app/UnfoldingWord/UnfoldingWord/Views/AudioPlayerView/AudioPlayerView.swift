@@ -20,11 +20,19 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
     
     var audioData : NSData?
     
-    @IBOutlet weak var sliderTime: UISlider!
+    @IBOutlet weak var sliderTime: UISlider! {
+        didSet {
+            sliderTime.setThumbImage(UIImage(named: "thumb-audio"), forState: UIControlState.Normal)
+            sliderTime.minimumTrackTintColor = UIColor(red: 0.0, green: 0.769, blue: 0.980, alpha: 1.0)
+        }
+    }
+    
     @IBOutlet weak var labelTimeLeading: UILabel!
     @IBOutlet weak var labelTimeTrailing: UILabel!
     @IBOutlet weak var buttonPlayPause: UIButton!
     @IBOutlet weak var labelDownloading: UILabel!
+    
+    
     
     var currentTime : NSTimeInterval {
         get {
@@ -168,11 +176,9 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
         if let player = self.player {
             if player.playing {
                 pause()
-                // Update button to be play button
             }
             else {
                 playAtTime(duration * Double(sliderTime.value) )
-                // Update button to be pause button
             }
         }
         updateTimeUI()
@@ -200,6 +206,7 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
     private func updateTimeUI() {
         updateSliderLabels()
         updateSliderLocation()
+        updatePlayPauseButton()
     }
     
     private func updateSliderLabels() {
@@ -221,6 +228,13 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
         updateTimeUI()
         if (currentTime + 0.01) >= duration { // play time is over
             unscheduleCurrentTimer()
+        }
+    }
+    
+    func updatePlayPauseButton() {
+        if let player = self.player {
+            let buttonImage = (player.playing) ? "pause" : "play"
+            self.buttonPlayPause.setBackgroundImage(UIImage(named: buttonImage), forState: UIControlState.Normal)
         }
     }
     
