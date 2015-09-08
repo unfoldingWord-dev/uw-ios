@@ -74,6 +74,7 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
         playerView.url = url
         playerView.downloadData()
         playerView.updateTimeUI()
+        playerView.setTranslatesAutoresizingMaskIntoConstraints(false)
         return playerView
     }
     
@@ -110,20 +111,20 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
     }
     
     func showDownloadingUI() {
-        setDownloadingUIOn(true)
+        updateDownloadingUI(isDownloading: true)
     }
     
     func showPlayerUI() {
-        setDownloadingUIOn(false)
+        updateDownloadingUI(isDownloading: false)
     }
     
-    func setDownloadingUIOn(isDownloadingOn : Bool) {
+    func updateDownloadingUI(#isDownloading : Bool) {
         
-        let playOpacity : Float = isDownloadingOn ? 0.0 : 1.0
-        let downOpacity : Float = isDownloadingOn ? 1.0 : 0.0
+        let playOpacity : Float = isDownloading ? 0.0 : 1.0
+        let downOpacity : Float = isDownloading ? 1.0 : 0.0
         
         UIView.animateWithDuration(0.25, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
-            self.sliderTime.hidden = isDownloadingOn
+            self.sliderTime.hidden = isDownloading
             self.labelTimeLeading.layer.opacity = playOpacity
             self.labelTimeTrailing.layer.opacity = playOpacity
             self.buttonPlayPause.layer.opacity = playOpacity
@@ -136,7 +137,7 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
     private func updateDownloadPercentDone(percent : Float) {
         let percentWhole = percent * 100.0
         let percentString = String(format: "%.0f%%", arguments: [percentWhole])
-        self.labelDownloading.text = "\(percentString) complete"
+        self.labelDownloading.text = "\(percentString) downloaded"
     }
     
     func createPlayerWithData(data : NSData) {
@@ -166,7 +167,17 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
     func pause() {
         if let player = self.player where player.playing == true {
             player.pause()
+            updatePlayPauseButton()
             unscheduleCurrentTimer()
+        }
+    }
+    
+    func isPlaying() -> Bool {
+        if let player = player {
+            return player.playing
+        }
+        else {
+            return false
         }
     }
     

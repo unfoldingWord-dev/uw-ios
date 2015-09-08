@@ -16,7 +16,21 @@ typealias ITunesPickerChooseBlock = (canceled : Bool, chosenPath : String?) -> (
 typealias AudioDownloadCompletionBlock = (success : Bool, data : NSData?) -> ()
 typealias AudioDownloadProgressBlock = (percentDone : Float) -> ()
 
+enum ActionType {
+    case Audio
+    case Video
+    case font
+    case Diglot
+    case Share
+}
+
+enum FontSize : Float {
+    case Smallest = 9, Small = 12, Regular = 15, Large = 18, Largest = 21
+}
+
 struct Constants {
+
+    
     struct URLSource {
         static let signature = "sig"
         static let open_chapter = "chapters"

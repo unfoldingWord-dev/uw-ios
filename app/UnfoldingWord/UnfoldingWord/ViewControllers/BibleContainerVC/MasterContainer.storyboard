@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <scenes>
+        <!--ContainerVC-->
+        <scene sceneID="Ch3-2H-Vy9">
+            <objects>
+                <viewController storyboardIdentifier="ContainerVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XX1-Hz-zFs" customClass="ContainerVC" customModule="UnfoldingWord" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="vRe-1B-OeP"/>
+                        <viewControllerLayoutGuide type="bottom" id="lKk-Yd-nBZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="EZX-ox-VIQ">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pqc-pV-fjy" userLabel="ViewAccessories">
+                                <rect key="frame" x="0.0" y="503" width="600" height="53"/>
+                                <color key="backgroundColor" red="1" green="0.090197819210000002" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="53" id="DhO-tK-o6H"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r2g-Cl-zUS" userLabel="ViewMainContent">
+                                <rect key="frame" x="0.0" y="20" width="600" height="483"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w7J-bD-6LT">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <items>
+                                    <barButtonItem image="audio" id="ah1-b6-7bs">
+                                        <connections>
+                                            <action selector="userPressSpeakerButton:" destination="XX1-Hz-zFs" id="d4K-Dc-d7L"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="HBx-M2-aBt"/>
+                                    <barButtonItem image="video" id="0ax-m6-hkj">
+                                        <connections>
+                                            <action selector="userPressedVideoButton:" destination="XX1-Hz-zFs" id="4T7-fV-Q71"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="OC6-hu-4Nv"/>
+                                    <barButtonItem image="font" id="Bba-n1-Jua">
+                                        <connections>
+                                            <action selector="userPressedFontButton:" destination="XX1-Hz-zFs" id="Bab-2i-RKZ"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="EMa-YV-Wd7"/>
+                                    <barButtonItem image="diglot" id="e7f-5o-dq5">
+                                        <connections>
+                                            <action selector="userPressedDiglotButton:" destination="XX1-Hz-zFs" id="DLJ-jP-a6T"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Phr-y1-SxH"/>
+                                    <barButtonItem image="share" id="j5a-vw-VFS">
+                                        <connections>
+                                            <action selector="userPressedShareButton:" destination="XX1-Hz-zFs" id="QAj-Pb-HDe"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="barTintColor" red="0.17243571999999999" green="0.6027659407" blue="0.40910381759999997" alpha="1" colorSpace="calibratedRGB"/>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="pqc-pV-fjy" firstAttribute="leading" secondItem="EZX-ox-VIQ" secondAttribute="leading" id="0mh-kZ-yj9"/>
+                            <constraint firstItem="lKk-Yd-nBZ" firstAttribute="top" secondItem="w7J-bD-6LT" secondAttribute="bottom" id="1Jq-e5-FGs"/>
+                            <constraint firstItem="pqc-pV-fjy" firstAttribute="top" secondItem="r2g-Cl-zUS" secondAttribute="bottom" id="4Gi-zm-KpF"/>
+                            <constraint firstAttribute="trailing" secondItem="w7J-bD-6LT" secondAttribute="trailing" id="5bh-16-e1E"/>
+                            <constraint firstItem="r2g-Cl-zUS" firstAttribute="leading" secondItem="EZX-ox-VIQ" secondAttribute="leading" id="8Ja-ff-hdn"/>
+                            <constraint firstAttribute="trailing" secondItem="r2g-Cl-zUS" secondAttribute="trailing" id="QTX-Fv-Qac"/>
+                            <constraint firstItem="w7J-bD-6LT" firstAttribute="top" secondItem="pqc-pV-fjy" secondAttribute="bottom" id="bzs-X6-DuP"/>
+                            <constraint firstItem="w7J-bD-6LT" firstAttribute="leading" secondItem="EZX-ox-VIQ" secondAttribute="leading" id="c38-Id-OCd"/>
+                            <constraint firstItem="r2g-Cl-zUS" firstAttribute="top" secondItem="vRe-1B-OeP" secondAttribute="bottom" id="vIC-9M-gC1"/>
+                            <constraint firstAttribute="trailing" secondItem="pqc-pV-fjy" secondAttribute="trailing" id="vYg-Jl-ExV"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="barButtonDiglot" destination="e7f-5o-dq5" id="ygM-XL-t8d"/>
+                        <outlet property="barButtonFont" destination="Bba-n1-Jua" id="FLh-IA-ENA"/>
+                        <outlet property="barButtonShare" destination="j5a-vw-VFS" id="WB8-j1-xPd"/>
+                        <outlet property="barButtonSpeaker" destination="ah1-b6-7bs" id="BDy-OU-640"/>
+                        <outlet property="barButtonVideo" destination="0ax-m6-hkj" id="siO-IQ-B1C"/>
+                        <outlet property="constraintAccessorySpaceToToolBar" destination="bzs-X6-DuP" id="WKI-nh-rpr"/>
+                        <outlet property="contraintToolbarSpaceToBottom" destination="c38-Id-OCd" id="QrR-6s-NHq"/>
+                        <outlet property="toolbarBottom" destination="w7J-bD-6LT" id="Nzg-6z-pKf"/>
+                        <outlet property="viewAccessories" destination="pqc-pV-fjy" id="GXY-t8-yrP"/>
+                        <outlet property="viewMainContent" destination="r2g-Cl-zUS" id="v1b-re-qCg"/>
+                        <outletCollection property="userToolbarButtons" destination="0ax-m6-hkj" collectionClass="NSMutableArray" id="AmD-CD-pUQ"/>
+                        <outletCollection property="userToolbarButtons" destination="ah1-b6-7bs" collectionClass="NSMutableArray" id="Ws8-DR-760"/>
+                        <outletCollection property="userToolbarButtons" destination="Bba-n1-Jua" collectionClass="NSMutableArray" id="7JT-QS-FMb"/>
+                        <outletCollection property="userToolbarButtons" destination="e7f-5o-dq5" collectionClass="NSMutableArray" id="qlc-aS-hbD"/>
+                        <outletCollection property="userToolbarButtons" destination="j5a-vw-VFS" collectionClass="NSMutableArray" id="FcQ-NK-lWF"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0sv-Bh-xU1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="454" y="449"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="audio" width="44" height="44"/>
+        <image name="diglot" width="44" height="44"/>
+        <image name="font" width="44" height="44"/>
+        <image name="share" width="44" height="44"/>
+        <image name="video" width="44" height="44"/>
+    </resources>
+</document>

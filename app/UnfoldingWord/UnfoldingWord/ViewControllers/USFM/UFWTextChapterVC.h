@@ -19,6 +19,9 @@
 @property (nonatomic, assign) BOOL isActive;
 @property (nonatomic, readonly) BOOL isSettingUp;
 
+@property (nonatomic, readonly, strong) UWTOC* __nullable currentToc;
+@property (nonatomic, readonly, assign) NSInteger currentChapterIndex;
+
 - (void)scrollCollectionView:(CGFloat)offset;
 - (void)scrollTextView:(CGFloat)offset;
 - (void)adjustTextViewWithVerses:(VerseContainer)remoteVerses animationDuration:(CGFloat)duration;

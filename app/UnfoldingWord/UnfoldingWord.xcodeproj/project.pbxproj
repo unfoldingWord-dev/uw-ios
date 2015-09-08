@@ -185,6 +185,8 @@
 		5A43EB511B20F35E000EC306 /* zec-ulb-en-414667E5-5DFC-40C5-A67A-F7D363F9D796.usfm in Resources */ = {isa = PBXBuildFile; fileRef = 5A43EAB91B20F35E000EC306 /* zec-ulb-en-414667E5-5DFC-40C5-A67A-F7D363F9D796.usfm */; };
 		5A43EB521B20F35E000EC306 /* zep-avd-ar-67397108-6D9C-4E9D-9140-0CF3D924E02C.usfm in Resources */ = {isa = PBXBuildFile; fileRef = 5A43EABA1B20F35E000EC306 /* zep-avd-ar-67397108-6D9C-4E9D-9140-0CF3D924E02C.usfm */; };
 		5A444F951B517C86005949C0 /* ITunesFilePickerTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A444F941B517C86005949C0 /* ITunesFilePickerTableVC.swift */; };
+		5A45ECBB1B990B8600F345C6 /* MasterContainer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A45ECBA1B990B8600F345C6 /* MasterContainer.storyboard */; };
+		5A45ECBD1B99F03C00F345C6 /* ContainerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A45ECBC1B99F03C00F345C6 /* ContainerVC.swift */; };
 		5A5996321B0A93980060668F /* AbyssinicaSIL-R.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5A5996251B0A93980060668F /* AbyssinicaSIL-R.ttf */; };
 		5A59974A1B0A9A3F0060668F /* UFWDataSeeder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5997491B0A9A3F0060668F /* UFWDataSeeder.m */; };
 		5A5E0F521B5DB21C00390B4B /* UFWContainerUSFMVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5E0F511B5DB21C00390B4B /* UFWContainerUSFMVC.swift */; };
@@ -1114,6 +1116,8 @@
 		5A43EAB91B20F35E000EC306 /* zec-ulb-en-414667E5-5DFC-40C5-A67A-F7D363F9D796.usfm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "zec-ulb-en-414667E5-5DFC-40C5-A67A-F7D363F9D796.usfm"; sourceTree = "<group>"; };
 		5A43EABA1B20F35E000EC306 /* zep-avd-ar-67397108-6D9C-4E9D-9140-0CF3D924E02C.usfm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "zep-avd-ar-67397108-6D9C-4E9D-9140-0CF3D924E02C.usfm"; sourceTree = "<group>"; };
 		5A444F941B517C86005949C0 /* ITunesFilePickerTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITunesFilePickerTableVC.swift; sourceTree = "<group>"; };
+		5A45ECBA1B990B8600F345C6 /* MasterContainer.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MasterContainer.storyboard; sourceTree = "<group>"; };
+		5A45ECBC1B99F03C00F345C6 /* ContainerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerVC.swift; sourceTree = "<group>"; };
 		5A5996251B0A93980060668F /* AbyssinicaSIL-R.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AbyssinicaSIL-R.ttf"; sourceTree = "<group>"; };
 		5A5996271B0A93980060668F /* AbyssinicaSILGraphiteFontFeatures.odt */ = {isa = PBXFileReference; lastKnownFileType = file; path = AbyssinicaSILGraphiteFontFeatures.odt; sourceTree = "<group>"; };
 		5A5996281B0A93980060668F /* AbyssinicaSILGraphiteFontFeatures.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = AbyssinicaSILGraphiteFontFeatures.pdf; sourceTree = "<group>"; };
@@ -2318,6 +2322,15 @@
 			path = ITunesSharing;
 			sourceTree = "<group>";
 		};
+		5A45ECB91B990B6D00F345C6 /* BibleContainerVC */ = {
+			isa = PBXGroup;
+			children = (
+				5A45ECBA1B990B8600F345C6 /* MasterContainer.storyboard */,
+				5A45ECBC1B99F03C00F345C6 /* ContainerVC.swift */,
+			);
+			path = BibleContainerVC;
+			sourceTree = "<group>";
+		};
 		5A59961A1B0A893F0060668F /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -3158,6 +3171,7 @@
 		5A9ABFE51B0A370000753AAB /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				5A45ECB91B990B6D00F345C6 /* BibleContainerVC */,
 				5A444F931B517C10005949C0 /* ITunesSharing */,
 				5A36D3B81B223F95001D6E04 /* AppFirstLaunchInfoVC */,
 				5A9ABFE61B0A370000753AAB /* CheckingStatusVC */,
@@ -4285,6 +4299,7 @@
 				5A43EB4E1B20F35E000EC306 /* UnfoldingWordSeed.sqlite in Resources */,
 				5A9ABE0B1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-12-12jpg in Resources */,
 				5A9ABF941B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-46-10jpg in Resources */,
+				5A45ECBB1B990B8600F345C6 /* MasterContainer.storyboard in Resources */,
 				5A43EB061B20F35E000EC306 /* hag-avd-ar-E50473B2-B07D-4D7F-937A-FCB2D5D096DE.usfm in Resources */,
 				5A9ABF011B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-33-03jpg in Resources */,
 				5A43EB111B20F35E000EC306 /* jdg-udb-en-15C391E9-8935-4910-8CA1-5AF34F7AC95B.usfm in Resources */,
@@ -4688,6 +4703,7 @@
 				5AF051F51B756BD1003EA5A4 /* USFMElement.m in Sources */,
 				5A82BA721AF928E100C5044E /* UFWImporterUSFMEncoding.m in Sources */,
 				5A9AC04E1B0A38B100753AAB /* UFWBaseUrlCell.m in Sources */,
+				5A45ECBD1B99F03C00F345C6 /* ContainerVC.swift in Sources */,
 				5A9AC00B1B0A370000753AAB /* UFWTextChapterVC.m in Sources */,
 				5A9ABADB1B0A350A00753AAB /* _USFMInfo.m in Sources */,
 				5AD0B49F1B445642006ABD21 /* MultiConnectSender.swift in Sources */,

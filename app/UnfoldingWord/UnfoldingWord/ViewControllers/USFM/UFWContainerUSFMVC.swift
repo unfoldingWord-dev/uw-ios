@@ -36,6 +36,8 @@ final class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelBut
     let vcMain : UFWTextChapterVC
     let vcSide : UFWTextChapterVC
     
+    weak var masterContainer : ContainerVC?
+    
     var initialLoadComplete : Bool = false
     
     override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
@@ -72,6 +74,8 @@ final class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelBut
         
         updateNavChapterButton()
         
+        addMasterContainerBlocks()
+        
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: Constants.Image_Diglot), style: UIBarButtonItemStyle.Plain, target: self, action: "toggleSideBySideView")
     }
     
@@ -88,6 +92,21 @@ final class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelBut
         
         self.vcMain.delegate = self
         self.vcSide.delegate = self
+    }
+    
+    func addMasterContainerBlocks() {
+        
+        //   typealias AudioActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapterIndex : Int?, setToOn: Bool)
+        if let master = self.masterContainer {
+            master.actionSpeaker = { (barButton : UIBarButtonItem, isOn: Bool) in
+                if isOn == false, let toc = self.vcMain.currentToc where self.vcMain.currentChapterIndex >= 0 {
+                    return (toc, self.vcMain.currentChapterIndex, true)
+                }
+                else {
+                    return (nil, nil, false)
+                }
+            }
+        }
     }
     
     // User Interaction - Open and Close 

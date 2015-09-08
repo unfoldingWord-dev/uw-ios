@@ -36,7 +36,6 @@ static CGFloat kSideMargin = 10.f;
 @property (nonatomic, strong) NSArray *arrayChapters;
 @property (nonatomic, assign) NSTextAlignment alignment;
 @property (nonatomic, assign) UIInterfaceOrientation lastOrientation;
-@property (nonatomic, weak) IBOutlet UIToolbar *toolBar;
 
 @property (nonatomic, assign) BOOL didShowPicker;
 
@@ -70,6 +69,17 @@ static CGFloat kSideMargin = 10.f;
     [self updateContentOffset];
 }
 
+- (UWTOC *)currentToc
+{
+    return self.toc;
+}
+
+- (NSInteger)currentChapterIndex
+{
+    NSInteger chapter = [UFWSelectionTracker chapterNumberUSFM];
+    return chapter-1;
+}
+
 - (void)updateSelectionTOC:(UWTOC *)toc
 {
     if (self.isSideTOC) {
@@ -98,8 +108,8 @@ static CGFloat kSideMargin = 10.f;
     
     self.countSetup = 0;
     
-    self.toolBar.tintColor = [UIColor whiteColor];
-    self.toolBar.barTintColor = BACKGROUND_GRAY;
+//    self.toolBar.tintColor = [UIColor whiteColor];
+//    self.toolBar.barTintColor = BACKGROUND_GRAY;
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.collectionView.backgroundColor = BACKGROUND_GRAY;
     
@@ -138,62 +148,63 @@ static CGFloat kSideMargin = 10.f;
 
 - (void)updateVersionTitle
 {
-    if (self.toolBar.items.count == 0) {
-        return;
-    }
-    NSMutableArray *items = self.toolBar.items.mutableCopy;
-    NSInteger foundIndex = -1;
-    NSInteger index = 0;
-    for (UIBarButtonItem *bbi in items) {
-        if ([bbi.customView isKindOfClass:[ACTLabelButton class]]) {
-            ACTLabelButton *button = (ACTLabelButton *)bbi.customView;
-            if (button.matchingObject == kMatchVersion) {
-                foundIndex = index;
-                break;
-            }
-        }
-    }
-    NSAssert2(foundIndex != -1, @"%s: Could  not find the chapter in %@", __PRETTY_FUNCTION__, items);
-    
-    if (foundIndex >= 0) {
-        UIBarButtonItem *bbiChapter = [[UIBarButtonItem alloc] initWithCustomView:[self navVersionButton]];
-        [items replaceObjectAtIndex:foundIndex withObject:bbiChapter];
-        self.toolBar.items = items;
-    }
+//    if (self.toolBar.items.count == 0) {
+//        return;
+//    }
+//    NSMutableArray *items = self.toolBar.items.mutableCopy;
+//    NSInteger foundIndex = -1;
+//    NSInteger index = 0;
+//    for (UIBarButtonItem *bbi in items) {
+//        if ([bbi.customView isKindOfClass:[ACTLabelButton class]]) {
+//            ACTLabelButton *button = (ACTLabelButton *)bbi.customView;
+//            if (button.matchingObject == kMatchVersion) {
+//                foundIndex = index;
+//                break;
+//            }
+//        }
+//    }
+//    NSAssert2(foundIndex != -1, @"%s: Could  not find the chapter in %@", __PRETTY_FUNCTION__, items);
+//    
+//    if (foundIndex >= 0) {
+//        UIBarButtonItem *bbiChapter = [[UIBarButtonItem alloc] initWithCustomView:[self navVersionButton]];
+//        [items replaceObjectAtIndex:foundIndex withObject:bbiChapter];
+//        self.toolBar.items = items;
+//    }
 }
 
 - (void)addBarButtonItems
 {
-    UIBarButtonItem *bbiVersion = [[UIBarButtonItem alloc] initWithCustomView:[self navVersionButton]];
-
-    UIBarButtonItem *bbiSpacer =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    
-    UIButton *buttonStatus = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 26, 26)];
-    [buttonStatus setImage:[UFWInfoView imageReverseForStatus:self.toc.version.status] forState:UIControlStateNormal];
-    [buttonStatus addTarget:self action:@selector(showPopOverStatusInfo:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *bbiStatus = [[UIBarButtonItem alloc] initWithCustomView:buttonStatus];
-    
-    UIBarButtonItem *bbiShare = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userRequestedSharing:)];
-    self.toolBar.items = @[ bbiVersion, bbiSpacer, bbiStatus, bbiShare];
+//    UIBarButtonItem *bbiVersion = [[UIBarButtonItem alloc] initWithCustomView:[self navVersionButton]];
+//
+//    UIBarButtonItem *bbiSpacer =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+//    
+//    UIButton *buttonStatus = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 26, 26)];
+//    [buttonStatus setImage:[UFWInfoView imageReverseForStatus:self.toc.version.status] forState:UIControlStateNormal];
+//    [buttonStatus addTarget:self action:@selector(showPopOverStatusInfo:) forControlEvents:UIControlEventTouchUpInside];
+//    UIBarButtonItem *bbiStatus = [[UIBarButtonItem alloc] initWithCustomView:buttonStatus];
+//    
+//    UIBarButtonItem *bbiShare = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userRequestedSharing:)];
+//    self.toolBar.items = @[ bbiVersion, bbiSpacer, bbiStatus, bbiShare];
 }
 
 -(ACTLabelButton *)navVersionButton
 {
-    ACTLabelButton *labelButton = [[ACTLabelButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
-    labelButton.text = (self.version.name != nil) ? self.version.name : NSLocalizedString(@"Version", nil);
-    CGFloat availableWidth = self.toolBar.frame.size.width - 100.0f; // need 100 for other elements on the bar.
-    CGFloat specifiedWidth = fminf([labelButton.text widthUsingFont:labelButton.font] + [ACTLabelButton widthForArrow], availableWidth);
-    labelButton.frame = CGRectMake(0, 0,specifiedWidth, 30);
-    
-    labelButton.adjustsFontSizeToFitWidth = YES;
-    labelButton.minimumScaleFactor = 0.8;
-    labelButton.delegate = self;
-    labelButton.direction = ArrowDirectionDown;
-    labelButton.colorNormal = [UIColor whiteColor];
-    labelButton.colorHover = [UIColor lightGrayColor];
-    labelButton.matchingObject = kMatchVersion;
-    labelButton.userInteractionEnabled = YES;
-    return labelButton;
+//    ACTLabelButton *labelButton = [[ACTLabelButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+//    labelButton.text = (self.version.name != nil) ? self.version.name : NSLocalizedString(@"Version", nil);
+//    CGFloat availableWidth = self.toolBar.frame.size.width - 100.0f; // need 100 for other elements on the bar.
+//    CGFloat specifiedWidth = fminf([labelButton.text widthUsingFont:labelButton.font] + [ACTLabelButton widthForArrow], availableWidth);
+//    labelButton.frame = CGRectMake(0, 0,specifiedWidth, 30);
+//    
+//    labelButton.adjustsFontSizeToFitWidth = YES;
+//    labelButton.minimumScaleFactor = 0.8;
+//    labelButton.delegate = self;
+//    labelButton.direction = ArrowDirectionDown;
+//    labelButton.colorNormal = [UIColor whiteColor];
+//    labelButton.colorHover = [UIColor lightGrayColor];
+//    labelButton.matchingObject = kMatchVersion;
+//    labelButton.userInteractionEnabled = YES;
+//    return labelButton;
+    return nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated

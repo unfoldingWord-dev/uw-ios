@@ -129,16 +129,16 @@
 
 #pragma mark - Table view data source
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return  53.0f;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (self.playerView == nil) {
-        self.playerView = [AudioPlayerView playerWithUrl:[NSURL URLWithString:@"https://api.unfoldingword.org/uw/audio/beta/01-GEN-br256.mp3"]];
-    }
-    return self.playerView;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+//    return  53.0f;
+//}
+//
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+//    if (self.playerView == nil) {
+//        self.playerView = [AudioPlayerView playerWithUrl:[NSURL URLWithString:@"https://api.unfoldingword.org/uw/audio/beta/01-GEN-br256.mp3"]];
+//    }
+//    return self.playerView;
+//}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -195,8 +195,8 @@
     
     if (toc.isUSFMValue == YES) {
         
-        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"USFM" bundle:nil];
-        UFWContainerUSFMVC *containerVC = [sb instantiateViewControllerWithIdentifier:@"UFWContainerUSFMVC"];
+        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"MasterContainer" bundle:nil];
+        ContainerVC *containerVC = [sb instantiateViewControllerWithIdentifier:@"ContainerVC"];
         containerVC.topContainer = topContainer;
         [self.navigationController pushViewController:containerVC animated:YES];
     }
