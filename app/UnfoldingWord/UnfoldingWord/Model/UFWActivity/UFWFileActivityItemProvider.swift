@@ -38,14 +38,17 @@ final class UFWFileActivityItemProvider : UIActivityItemProvider {
         super.init(placeholderItem: placeholderItem)
     }
     
-    override func item() -> AnyObject! {
+    override func item() -> AnyObject {
         return url;
     }
     
     // Removes the file from storage. Technically, it should get removed eventually because it's in the caches folder, but this does it right away.
     func cleanup () {
         if let url = self.urlSaved {
-            NSFileManager.defaultManager().removeItemAtURL(url, error: nil)
+            do {
+                try NSFileManager.defaultManager().removeItemAtURL(url)
+            } catch _ {
+            }
         }
     }
     

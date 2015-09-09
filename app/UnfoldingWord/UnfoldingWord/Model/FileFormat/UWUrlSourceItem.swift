@@ -32,7 +32,7 @@ struct UrlSourceItem {
             }
             else if let
                 data = content.dataUsingEncoding(NSUTF8StringEncoding),
-                json: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+                json: AnyObject = try? NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
             {
                 if let // If the top level is a dictionary with an object for the open bible stories, assign that open bible type
                     dictionary = json as? NSDictionary,

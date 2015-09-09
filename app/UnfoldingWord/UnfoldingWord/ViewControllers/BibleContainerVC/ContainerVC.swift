@@ -50,7 +50,7 @@ class ContainerVC: UIViewController {
         super.init(nibName: nibNameOrNil, bundle: nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -66,9 +66,9 @@ class ContainerVC: UIViewController {
             let theContainerVC: UFWContainerUSFMVC = sb.instantiateViewControllerWithIdentifier("UFWContainerUSFMVC") as! UFWContainerUSFMVC
             theContainerVC.topContainer = topContainer
             theContainerVC.masterContainer = self
-            theContainerVC.view.setTranslatesAutoresizingMaskIntoConstraints(false)
+            theContainerVC.view.translatesAutoresizingMaskIntoConstraints = false
             self.viewMainContent.addSubview(theContainerVC.view)
-            let constraints = NSLayoutConstraint.constraintsForView(theContainerVC.view, insideView: self.viewMainContent, topMargin: 0, bottomMargin: 0, leftMargin: 0, rightMargin: 0)
+            let constraints = NSLayoutConstraint.constraintsForView(theContainerVC.view, insideView: self.viewMainContent, topMargin: 0, bottomMargin: 0, leftMargin: 0, rightMargin: 0) as! [NSLayoutConstraint]
             self.viewMainContent.addConstraints(constraints)
             self.containerVC = theContainerVC
         }
@@ -91,7 +91,7 @@ class ContainerVC: UIViewController {
             //WARNING: This is always the same. Remove when we have actual info
             //////
             
-            if let toc = response.toc, url = NSURL(string: "https://api.unfoldingword.org/uw/audio/beta/01-GEN-br256.mp3") where response.setToOn == true {
+            if let _ = response.toc, url = NSURL(string: "https://api.unfoldingword.org/uw/audio/beta/01-GEN-br256.mp3") where response.setToOn == true {
                 insertAudioPlayerIntoAccessoryViewWithUrl(url)
                 setBarButton(barButton, toOn: true)
                 ensureAccessoryViewIsInState(showing: true)
@@ -104,21 +104,21 @@ class ContainerVC: UIViewController {
     }
     
     @IBAction func userPressedVideoButton(sender: AnyObject) {
-        println("Implement")
+        print("Implement")
     }
     
     @IBAction func userPressedFontButton(barButton: UIBarButtonItem) {
-        println("Implement")
+        print("Implement")
         
     }
     
     @IBAction func userPressedDiglotButton(barButton: UIBarButtonItem) {
-        println("Implement")
+        print("Implement")
         
     }
     
     @IBAction func userPressedShareButton(barButton: UIBarButtonItem) {
-        println("Implement")
+        print("Implement")
         
     }
     
@@ -144,7 +144,7 @@ class ContainerVC: UIViewController {
             view.removeFromSuperview()
         }
         viewAccessories.addSubview(view)
-        let constraints = NSLayoutConstraint.constraintsForView(view, insideView: viewAccessories, topMargin: 0, bottomMargin: 0, leftMargin: 0, rightMargin: 0)
+        let constraints = NSLayoutConstraint.constraintsForView(view, insideView: viewAccessories, topMargin: 0, bottomMargin: 0, leftMargin: 0, rightMargin: 0) as! [NSLayoutConstraint]
         viewAccessories.addConstraints(constraints)
     }
     
@@ -159,7 +159,7 @@ class ContainerVC: UIViewController {
         }
     }
     
-    private func animateContstraintChanges(#duration : NSTimeInterval, completion : (Bool) -> Void ) {
+    private func animateContstraintChanges(duration duration : NSTimeInterval, completion : (Bool) -> Void ) {
         self.view.setNeedsUpdateConstraints()
         
         UIView.animateWithDuration(duration, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
@@ -206,7 +206,7 @@ class ContainerVC: UIViewController {
     }
     
     // Showing and hiding bottom bars
-    private func updateAccessoryUI(#isShowing : Bool, duration: NSTimeInterval) {
+    private func updateAccessoryUI(isShowing isShowing : Bool, duration: NSTimeInterval) {
         
         let hidden = viewAccessories.frame.size.height * -1.0
         let distance : CGFloat = (isShowing) ? 0.0 : hidden
@@ -214,7 +214,7 @@ class ContainerVC: UIViewController {
         animateContstraintChanges(duration: duration) { (didComplete) -> Void in }
     }
     
-    private func updateToolbarUI(#isShowing : Bool, duration: NSTimeInterval) {
+    private func updateToolbarUI(isShowing isShowing : Bool, duration: NSTimeInterval) {
         let hidden = toolbarBottom.frame.size.height * -1.0
         let distance : CGFloat = (isShowing) ? 0.0 : hidden
         contraintToolbarSpaceToBottom.constant = distance

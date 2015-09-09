@@ -79,19 +79,16 @@ import Foundation
     private func deleteFileForFilePath(path : String) -> Bool {
         
         if NSFileManager.defaultManager().fileExistsAtPath(path) {
-            var error : NSError? = nil
-            NSFileManager.defaultManager().removeItemAtPath(path, error: &error)
-            if let error = error {
-                println(error)
+            do {
+                try NSFileManager.defaultManager().removeItemAtPath(path)
+            }
+            catch let error as NSError {
+                print(error)
                 return false
             }
-            else {
-                return true
-            }
         }
-        else {
-            return true
-        }
+        return true
+        
     }
     
     private func saveFileList() {

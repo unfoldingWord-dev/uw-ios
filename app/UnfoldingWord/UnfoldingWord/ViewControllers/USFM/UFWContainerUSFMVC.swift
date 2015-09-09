@@ -9,14 +9,14 @@ import UIKit
 
 @objc protocol USFMPanelDelegate {
     // These methods make sure that both views are equivalent -- trampolines for user interactions.
-    func userDidScroll(#vc : UFWTextChapterVC, verticalOffset : CGFloat)
-    func userDidScroll(#vc : UFWTextChapterVC, horizontalOffset: CGFloat)
-    func userFinishedScrolling(#vc : UFWTextChapterVC, verses : VerseContainer)
-    func userFinishedScrollingCollectionView(#vc : UFWTextChapterVC)
+    func userDidScroll(vc vc : UFWTextChapterVC, verticalOffset : CGFloat)
+    func userDidScroll(vc vc : UFWTextChapterVC, horizontalOffset: CGFloat)
+    func userFinishedScrolling(vc vc : UFWTextChapterVC, verses : VerseContainer)
+    func userFinishedScrollingCollectionView(vc vc : UFWTextChapterVC)
     
     
-    func userChangedTOC(#vc : UFWTextChapterVC, pickedTOC : UWTOC)
-    func matchingVCVerses(#vc : UFWTextChapterVC) -> VerseContainer
+    func userChangedTOC(vc vc : UFWTextChapterVC, pickedTOC : UWTOC)
+    func matchingVCVerses(vc vc : UFWTextChapterVC) -> VerseContainer
 
     // Information to help rotation and sizing events.
     func expectedContainerWidthAfterRotation() -> CGFloat
@@ -50,7 +50,7 @@ final class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelBut
         super.init(nibName: nibNameOrNil, bundle: nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         self.vcMain = UFWContainerUSFMVC.createTextChapterVC()
         self.vcMain.isSideTOC = false;
         self.vcSide = UFWContainerUSFMVC.createTextChapterVC()
@@ -117,7 +117,7 @@ final class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelBut
     }
     
     /// The animates the views into place. It really isn't working well right now, but the problems are hidden with fades.
-    func arrangeViews(#startDark : Bool) {
+    func arrangeViews(startDark startDark : Bool) {
         
         let verses = self.vcMain.versesVisible()
         let initialLocationMain = self.vcMain.currentTextLocation()
@@ -180,28 +180,28 @@ final class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelBut
     }
     
     // Delegate Methods - Trampolines
-    func userDidScroll(#vc : UFWTextChapterVC, verticalOffset : CGFloat)
+    func userDidScroll(vc vc : UFWTextChapterVC, verticalOffset : CGFloat)
     {
         if let matchingVC = matchingViewController(vc) {
             matchingVC.scrollTextView(verticalOffset)
         }
     }
     
-    func userDidScroll(#vc : UFWTextChapterVC, horizontalOffset: CGFloat)
+    func userDidScroll(vc vc : UFWTextChapterVC, horizontalOffset: CGFloat)
     {
         if let matchingVC = matchingViewController(vc) {
             matchingVC.scrollCollectionView(horizontalOffset)
         }
     }
     
-    func userFinishedScrolling(#vc : UFWTextChapterVC, verses : VerseContainer)
+    func userFinishedScrolling(vc vc : UFWTextChapterVC, verses : VerseContainer)
     {
         if let matchingVC = matchingViewController(vc) {
             matchingVC.adjustTextViewWithVerses(verses, animationDuration: 1.0);
         }
     }
     
-    func userChangedTOC(#vc : UFWTextChapterVC, pickedTOC : UWTOC)
+    func userChangedTOC(vc vc : UFWTextChapterVC, pickedTOC : UWTOC)
     {
         if let matchingVC = matchingViewController(vc) {
             matchingVC.changeToMatchingTOC(pickedTOC)
@@ -209,7 +209,7 @@ final class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelBut
         updateNavChapterButton()
     }
     
-    func userFinishedScrollingCollectionView(#vc : UFWTextChapterVC)
+    func userFinishedScrollingCollectionView(vc vc : UFWTextChapterVC)
     {
         if let matchingVC = matchingViewController(vc) {
             matchingVC.matchingCollectionViewDidFinishScrolling()
@@ -221,7 +221,7 @@ final class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelBut
     {
         let height = windowHeight()
         if self.vcSide.isActive {
-            var availableSpace = height - self.constraintSpacerWidth.constant
+            let availableSpace = height - self.constraintSpacerWidth.constant
             return availableSpace / 2.0
         }
         else {
@@ -229,7 +229,7 @@ final class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelBut
         }
     }
     
-    func matchingVCVerses(#vc : UFWTextChapterVC) -> VerseContainer
+    func matchingVCVerses(vc vc : UFWTextChapterVC) -> VerseContainer
     {
         if let matchingVC = matchingViewController(vc) {
             return matchingVC.versesVisible()

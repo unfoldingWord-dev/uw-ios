@@ -21,7 +21,7 @@ import UIKit
         let placeHolder = NSURL(fileURLWithPath: NSString.documentsDirectory(), isDirectory: true)
         
         if shouldSend, let version = version {
-            self.urlProvider = UFWFileActivityItemProvider(placeholderItem: placeHolder!, version: version)
+            self.urlProvider = UFWFileActivityItemProvider(placeholderItem: placeHolder, version: version)
         }
         else {
             self.urlProvider = nil

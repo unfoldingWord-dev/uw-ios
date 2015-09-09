@@ -10,6 +10,6 @@
 
 @interface UFWTopLevelItemCell : UITableViewCell
 
-@property (nonatomic, weak) IBOutlet UILabel *labelName;
+@property (nonatomic, strong) IBOutlet UILabel * __nonnull labelName;
 
 @end

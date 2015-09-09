@@ -33,13 +33,13 @@ class ITunesFilePickerTableVC: UITableViewController {
         self.chooseBlock = block
     }
     
-    override init!(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         self.sharingReceiver = ITunesSharingReceiver()
         self.arrayFileNames = self.sharingReceiver.filesToDisplayForImport()
         super.init(nibName: nibNameOrNil, bundle: nil)
     }
 
-    required init!(coder aDecoder: NSCoder!) {
+    required init!(coder aDecoder: NSCoder) {
         assertionFailure("Don't use this!")
         self.sharingReceiver = ITunesSharingReceiver()
         self.arrayFileNames = self.sharingReceiver.filesToDisplayForImport()

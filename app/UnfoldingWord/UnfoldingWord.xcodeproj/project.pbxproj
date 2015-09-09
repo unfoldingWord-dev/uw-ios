@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		5A0DD1D71BA0E50F00F351C7 /* String+Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0DD1D61BA0E50F00F351C7 /* String+Paths.swift */; settings = {ASSET_TAGS = (); }; };
 		5A2B79AE1B5EA22D00AD9993 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2B79AD1B5EA22D00AD9993 /* UIViewControllerExtension.swift */; };
 		5A323B1D1A3381FB00099C94 /* NSDictionary+DWSNull.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A323B1C1A3381FB00099C94 /* NSDictionary+DWSNull.m */; };
 		5A36D3B51B223F23001D6E04 /* UFWAppInformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A36D3B31B223F23001D6E04 /* UFWAppInformationView.m */; };
@@ -923,6 +924,8 @@
 		5AF051F61B756BD1003EA5A4 /* USFMTextLocationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF051EC1B756BD1003EA5A4 /* USFMTextLocationInfo.swift */; };
 		5AF052991B756D31003EA5A4 /* libcrypto_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AF052971B756D31003EA5A4 /* libcrypto_iOS.a */; };
 		5AF0529A1B756D31003EA5A4 /* libssl_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AF052981B756D31003EA5A4 /* libssl_iOS.a */; };
+		5AF0B6B41B9FAB6E00987463 /* USFMPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0B6B31B9FAB6E00987463 /* USFMPageViewController.swift */; };
+		5AF0B6B61BA080C300987463 /* USFMChapterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0B6B51BA080C300987463 /* USFMChapterVC.swift */; };
 		5AFC90421AFACAE20012D177 /* UIView+ACTQuickLook.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFC90411AFACAE20012D177 /* UIView+ACTQuickLook.m */; };
 		5AFC9B601B41950500D453D0 /* UIViewController+FileTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFC9B5F1B41950500D453D0 /* UIViewController+FileTransfer.m */; };
 		5AFC9B671B41D1DC00D453D0 /* GZIP.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFC9B641B41D1DC00D453D0 /* GZIP.m */; };
@@ -946,6 +949,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5A0DD1D61BA0E50F00F351C7 /* String+Paths.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Paths.swift"; sourceTree = "<group>"; };
 		5A2B79AD1B5EA22D00AD9993 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		5A323B1B1A3381FB00099C94 /* NSDictionary+DWSNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+DWSNull.h"; sourceTree = "<group>"; };
 		5A323B1C1A3381FB00099C94 /* NSDictionary+DWSNull.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+DWSNull.m"; sourceTree = "<group>"; };
@@ -2025,6 +2029,8 @@
 		5AF052961B756D31003EA5A4 /* x509v3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x509v3.h; sourceTree = "<group>"; };
 		5AF052971B756D31003EA5A4 /* libcrypto_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto_iOS.a; sourceTree = "<group>"; };
 		5AF052981B756D31003EA5A4 /* libssl_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl_iOS.a; sourceTree = "<group>"; };
+		5AF0B6B31B9FAB6E00987463 /* USFMPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = USFMPageViewController.swift; sourceTree = "<group>"; };
+		5AF0B6B51BA080C300987463 /* USFMChapterVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = USFMChapterVC.swift; sourceTree = "<group>"; };
 		5AFC90401AFACAE20012D177 /* UIView+ACTQuickLook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ACTQuickLook.h"; sourceTree = "<group>"; };
 		5AFC90411AFACAE20012D177 /* UIView+ACTQuickLook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ACTQuickLook.m"; sourceTree = "<group>"; };
 		5AFC9B5E1B41950500D453D0 /* UIViewController+FileTransfer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+FileTransfer.h"; sourceTree = "<group>"; };
@@ -2109,6 +2115,7 @@
 				5A8DCB9B1B03B1A10010DD27 /* UINavigationController+UFWNavigationController.h */,
 				5A8DCB9C1B03B1A10010DD27 /* UINavigationController+UFWNavigationController.m */,
 				5A2B79AD1B5EA22D00AD9993 /* UIViewControllerExtension.swift */,
+				5A0DD1D61BA0E50F00F351C7 /* String+Paths.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -3245,6 +3252,8 @@
 				5A9ABFFD1B0A370000753AAB /* UFWChapterPickerUSFMTableVC.m */,
 				5A9AC0001B0A370000753AAB /* USFM.storyboard */,
 				5A5E0F511B5DB21C00390B4B /* UFWContainerUSFMVC.swift */,
+				5AF0B6B31B9FAB6E00987463 /* USFMPageViewController.swift */,
+				5AF0B6B51BA080C300987463 /* USFMChapterVC.swift */,
 			);
 			path = USFM;
 			sourceTree = "<group>";
@@ -3746,8 +3755,9 @@
 		639258511A24506500B5B8D2 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Acts Media Inc.";
 				TargetAttributes = {
 					5A323AFA1A3375CD00099C94 = {
@@ -4668,11 +4678,13 @@
 				5AD0B4A11B45CB68006ABD21 /* MultiConnectReceiver.swift in Sources */,
 				5AAC5C631A97C5DB001AFA3D /* NSLayoutConstraint+DWSExtensions.m in Sources */,
 				5AF051EE1B756BD1003EA5A4 /* UWFile.swift in Sources */,
+				5AF0B6B41B9FAB6E00987463 /* USFMPageViewController.swift in Sources */,
 				5A9AC0451B0A38B100753AAB /* ACTLabelButton.m in Sources */,
 				5A9ABAD71B0A350A00753AAB /* _OpenAppWordsList.m in Sources */,
 				5AFC90421AFACAE20012D177 /* UIView+ACTQuickLook.m in Sources */,
 				639258621A24506500B5B8D2 /* AppDelegate.m in Sources */,
 				5A9AC0081B0A370000753AAB /* UFWBaseVC.m in Sources */,
+				5A0DD1D71BA0E50F00F351C7 /* String+Paths.swift in Sources */,
 				5A9ABAE31B0A350A00753AAB /* OpenContainer.m in Sources */,
 				5A444F951B517C86005949C0 /* ITunesFilePickerTableVC.swift in Sources */,
 				5AAB78761A9299A800376C36 /* NSString+Date.m in Sources */,
@@ -4715,6 +4727,7 @@
 				5A59974A1B0A9A3F0060668F /* UFWDataSeeder.m in Sources */,
 				5A9ABAF01B0A356700753AAB /* UFWMasterUpdater.m in Sources */,
 				5A3E553C1A9D4CB700D1D920 /* DWImageFileManager.m in Sources */,
+				5AF0B6B61BA080C300987463 /* USFMChapterVC.swift in Sources */,
 				5A2B79AE1B5EA22D00AD9993 /* UIViewControllerExtension.swift in Sources */,
 				5AD20D8D1B9665B7000B813B /* FileDownloader.swift in Sources */,
 				5AFDC3391AF1366C002F58A0 /* NSManagedObject+Convenience.m in Sources */,
@@ -4853,6 +4866,7 @@
 					"$(SDKROOT)/usr/lib/system",
 					"$(PROJECT_DIR)/UnfoldingWord/openssl",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.unfoldingword.iosapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "UnfoldingWord/UnfoldingWord-Bridging-Header.h";
@@ -4876,6 +4890,7 @@
 				);
 				INFOPLIST_FILE = UnfoldingWordTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.unfoldingword.iosapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UnfoldingWord.app/UnfoldingWord";
@@ -4923,6 +4938,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -5004,6 +5020,7 @@
 					"$(SDKROOT)/usr/lib/system",
 					"$(PROJECT_DIR)/UnfoldingWord/openssl",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.unfoldingword.iosapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "UnfoldingWord/UnfoldingWord-Bridging-Header.h";
@@ -5032,6 +5049,7 @@
 					"$(SDKROOT)/usr/lib/system",
 					"$(PROJECT_DIR)/UnfoldingWord/openssl",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.unfoldingword.iosapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "UnfoldingWord/UnfoldingWord-Bridging-Header.h";
@@ -5054,6 +5072,7 @@
 				);
 				INFOPLIST_FILE = UnfoldingWordTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.unfoldingword.iosapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UnfoldingWord.app/UnfoldingWord";
@@ -5072,6 +5091,7 @@
 				);
 				INFOPLIST_FILE = UnfoldingWordTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.unfoldingword.iosapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UnfoldingWord.app/UnfoldingWord";

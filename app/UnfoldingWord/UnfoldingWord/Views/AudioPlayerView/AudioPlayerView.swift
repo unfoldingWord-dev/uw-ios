@@ -74,11 +74,11 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
         playerView.url = url
         playerView.downloadData()
         playerView.updateTimeUI()
-        playerView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        playerView.translatesAutoresizingMaskIntoConstraints = false
         return playerView
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         self.player = nil
         super.init(coder: aDecoder)
     }
@@ -118,7 +118,7 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
         updateDownloadingUI(isDownloading: false)
     }
     
-    func updateDownloadingUI(#isDownloading : Bool) {
+    func updateDownloadingUI(isDownloading isDownloading : Bool) {
         
         let playOpacity : Float = isDownloading ? 0.0 : 1.0
         let downOpacity : Float = isDownloading ? 1.0 : 0.0
@@ -142,13 +142,13 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
     
     func createPlayerWithData(data : NSData) {
         
-        var error : NSError?
-        self.player = AVAudioPlayer(data: data, error: &error)
-        if error != nil {
-            println("Error creating url \(url): \(error?.userInfo)")
-        }
-        else if let player = self.player {
-            player.prepareToPlay()
+        do {
+            let createdPlayer = try AVAudioPlayer(data: data)
+            createdPlayer.prepareToPlay()
+            self.player = createdPlayer
+        } catch let error as NSError {
+            print("Error creating url \(url): \(error.userInfo)")
+            self.player = nil
         }
     }
     

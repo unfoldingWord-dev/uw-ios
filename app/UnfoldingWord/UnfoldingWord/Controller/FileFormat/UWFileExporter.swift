@@ -47,7 +47,7 @@ import CoreData
     
     /// Each toc item has two things retrieved from urls: its file contents and its signature. Each item is keyed to a url in the return dictionary. For example, if we have five TOC's, then we would expect 10 items in the dictionary (2 for each TOC).
     private func createUrlSources() -> NSDictionary {
-        var sources = NSMutableDictionary()
+        let sources = NSMutableDictionary()
         
         for tocItem in sourceVersion.sortedTOCs() {
             let toc = tocItem as! UWTOC
@@ -59,7 +59,7 @@ import CoreData
             {
                 sources.setValue(fileString, forKey: url)
             } else {
-                println("The toc \(toc.title) is missing information for its file contents.")
+                print("The toc \(toc.title) is missing information for its file contents.")
             }
             
             if let
@@ -69,7 +69,7 @@ import CoreData
                 sources.setValue(signature, forKey: url)
 
             } else {
-                println("The toc \(toc.title) is missing information for its signature")
+                print("The toc \(toc.title) is missing information for its signature")
             }
         }
         return sources
@@ -93,7 +93,7 @@ import CoreData
     // Helpers
     private func fileContents(filename : NSString) -> NSString? {
         let path = NSString.documentsDirectory().stringByAppendingPathComponent(filename as String)
-        let string = NSString(contentsOfFile: path, encoding: NSUTF8StringEncoding, error: nil)
+        let string = try? NSString(contentsOfFile: path, encoding: NSUTF8StringEncoding)
         return string
     }
     

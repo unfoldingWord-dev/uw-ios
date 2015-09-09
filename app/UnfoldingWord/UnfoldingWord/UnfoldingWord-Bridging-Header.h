@@ -13,3 +13,5 @@
 #import "NSLayoutConstraint+DWSExtensions.h"
 #import "VerseContainer.h"
 #import "ACTLabelButton.h"
+#import "USFMChapter.h"
+#import "UFWLanguageInfo.h"

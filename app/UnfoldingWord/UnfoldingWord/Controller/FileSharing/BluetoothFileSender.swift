@@ -47,7 +47,7 @@ enum SendStatus {
     }
     
     // Delegate Methods
-    func peripheralManagerDidUpdateState(peripheral: CBPeripheralManager!) {
+    func peripheralManagerDidUpdateState(peripheral: CBPeripheralManager) {
         
         if peripheral.state == CBPeripheralManagerState.PoweredOn {
             
@@ -68,14 +68,14 @@ enum SendStatus {
     }
     
     /** Catch when someone subscribes to our characteristic, then start sending them data */
-    func peripheralManager(peripheral: CBPeripheralManager!, central: CBCentral!, didSubscribeToCharacteristic characteristic: CBCharacteristic!) {
+    func peripheralManager(peripheral: CBPeripheralManager, central: CBCentral, didSubscribeToCharacteristic characteristic: CBCharacteristic) {
         self.sendIndex = 0
         self.status = SendStatus.ReadyToStart
         updateProgress(true)
         send()
     }
     
-    func peripheralManager(peripheral: CBPeripheralManager!, central: CBCentral!, didUnsubscribeFromCharacteristic characteristic: CBCharacteristic!) {
+    func peripheralManager(peripheral: CBPeripheralManager, central: CBCentral, didUnsubscribeFromCharacteristic characteristic: CBCharacteristic) {
         self.status = SendStatus.NotReady
         updateProgress(false)
     }
@@ -83,7 +83,7 @@ enum SendStatus {
     /** This callback comes in when the PeripheralManager is ready to send the next chunk of data.
     *  This is to ensure that packets will arrive in the order they are sent
     */
-    func peripheralManagerIsReadyToUpdateSubscribers(peripheral: CBPeripheralManager!) {
+    func peripheralManagerIsReadyToUpdateSubscribers(peripheral: CBPeripheralManager) {
         // Don't reset the sendIndex because this method gets called every time the pipeline has empty space.
         send()
     }
@@ -100,7 +100,7 @@ enum SendStatus {
         if let
             characteristic = self.characteristic
         {
-            do {
+            repeat {
                 if self.status == SendStatus.ReadyToStart { // Before starting, send the length of the data
                     if let size = Constants.Bluetooth.MessageSize.stringByAppendingFormat("%ld", self.data.length).dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
                         let success = self.manager.updateValue(size, forCharacteristic: characteristic, onSubscribedCentrals: nil)
@@ -116,7 +116,7 @@ enum SendStatus {
                 
                 if self.sendIndex >= data.length { // Send a done transfer message
                     let eom = Constants.Bluetooth.EndOfMessage.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-                    if manager.updateValue(eom, forCharacteristic: characteristic, onSubscribedCentrals: nil) {
+                    if manager.updateValue(eom!, forCharacteristic: characteristic, onSubscribedCentrals: nil) {
                         self.status = SendStatus.Complete
                         updateProgress(true)
                         stopAll()

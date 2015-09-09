@@ -7,7 +7,7 @@
 
 import UIKit
 
-@objc final class UFWFile {
+@objc final class UFWFile : NSObject {
 
     let sourceDictionary: NSDictionary
     let isValid : Bool
@@ -15,13 +15,11 @@ import UIKit
     /// Returns the data containing the JSON string that represents all the data needed to create teh 
     var fileData : NSData {
         get {
-            var error : NSError?
-            if let
-            data = NSJSONSerialization.dataWithJSONObject(sourceDictionary, options: nil, error: &error),
+            if let data = try? NSJSONSerialization.dataWithJSONObject(sourceDictionary, options: []),
             zipData = data.gzippedDataWithCompressionLevel(0.95) {
                 return zipData
             }
-            assertionFailure("Could not create gzipped data from dictionary \(sourceDictionary) \n\n error: \(error)")
+            assertionFailure("Could not create gzipped data from dictionary \(sourceDictionary)")
             return NSData()
         }
     }
@@ -58,19 +56,17 @@ import UIKit
     
     init(fileData : NSData) {
         var dictionary: NSDictionary?
-        var error : NSError?
 
-        if let unzippedData = fileData.gunzippedData() {
-            if let data = NSJSONSerialization.JSONObjectWithData(unzippedData, options: NSJSONReadingOptions.AllowFragments, error: &error) as? NSDictionary {
+        if let unzippedData = fileData.gunzippedData(),
+            data = try? NSJSONSerialization.JSONObjectWithData(unzippedData, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary {
                 dictionary = data
-            }
         }
         
         switch (dictionary) {
         case .None:
             self.sourceDictionary = NSDictionary()
             self.isValid = false
-            assertionFailure("Could not create dictionary from gzipped data \(fileData) \n\n error: \(error)")
+            assertionFailure("Could not create dictionary from gzipped data \(fileData)")
         case .Some:
             self.sourceDictionary = dictionary!
             self.isValid = true
@@ -79,16 +75,13 @@ import UIKit
     }
     
     class func validateSource(source : NSDictionary?) -> Bool {
-        if let
-            source = source,
-            top_level = source[Constants.FileFormat.TopLevel] as? NSDictionary,
-            sourceArray = source[Constants.FileFormat.SourcesArray] as? NSDictionary
+        
+        guard let source = source, _ = source[Constants.FileFormat.TopLevel] as? NSDictionary,
+            _ = source[Constants.FileFormat.SourcesArray] as? NSDictionary else
         {
-            return true
-        }
-        else {
             assertionFailure("At least one object was missing from the source.")
             return false
         }
+        return true
     }
 }

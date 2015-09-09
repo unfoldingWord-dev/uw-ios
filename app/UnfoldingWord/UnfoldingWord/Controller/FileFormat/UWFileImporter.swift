@@ -24,7 +24,7 @@ import CoreData
             return false
         }
         
-        var topDictionary = self.file.topLevelObject
+        let topDictionary = self.file.topLevelObject
         UWTopContainer.updateFromArray([topDictionary])
         
         if let
@@ -94,7 +94,7 @@ import CoreData
         let topDictionary = self.file.topLevelObject
         if let
             top = UWTopContainer(forDictionary: topDictionary as [NSObject : AnyObject]),
-            version = top.versionForDictionary(topDictionary as [NSObject : AnyObject])
+            _ = top.versionForDictionary(topDictionary as [NSObject : AnyObject])
         {
             return true
         }
