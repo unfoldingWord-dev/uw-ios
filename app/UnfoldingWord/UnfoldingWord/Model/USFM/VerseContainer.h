@@ -35,5 +35,6 @@ struct VerseContainer {
     
     /// The height of a row of text.
     CGFloat rowHeight;
+    
 };
 typedef struct VerseContainer VerseContainer;

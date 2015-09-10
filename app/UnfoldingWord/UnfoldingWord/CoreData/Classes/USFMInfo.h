@@ -8,6 +8,6 @@
 
 - (BOOL)validateSignature;
 
-- (NSArray *)chapters;
+- (NSArray * __nullable)chapters;
 
 @end
