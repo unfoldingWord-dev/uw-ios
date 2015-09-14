@@ -27,17 +27,15 @@
 @property (nonatomic, strong) NSString *cellVersion;
 
 @property (nonatomic, copy) VersionPickerCompletion completion;
-@property (nonatomic, strong) UWTOC *currentTOC;
-@property (nonatomic, assign) BOOL isSide;
+@property (nonatomic, strong) UWTOC *initialTOC;
 @end
 
 @implementation UFWVersionPickerVC
 
-+ (UIViewController *)navigationLanguagePickerWithTopContainer:(UWTopContainer *)topContainer isSide:(BOOL)isSide completion:(VersionPickerCompletion)completion;
++ (UIViewController *)navigationLanguagePickerWithTOC:(UWTOC *)toc completion:(VersionPickerCompletion)completion
 {
     UFWVersionPickerVC *pickerVC = [[UFWVersionPickerVC alloc] init];
-    pickerVC.isSide = isSide;
-    pickerVC.topContainer = topContainer;
+    pickerVC.initialTOC = toc;
     pickerVC.completion = completion;
     return [UINavigationController navigationControllerWithUFWBaseViewController:pickerVC];
 }
@@ -48,7 +46,7 @@
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    self.navigationItem.title = self.topContainer.title;
+    self.navigationItem.title = self.initialTOC.version.language.topContainer.title;
     
     UIBarButtonItem *bbi = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
     self.navigationItem.rightBarButtonItem = bbi;
@@ -70,8 +68,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    if (self.currentTOC.version.language != nil) {
-        NSInteger index = [self.arrayOfRowObjects indexOfObject:self.currentTOC.version.language];
+    if (self.initialTOC.version.language != nil) {
+        NSInteger index = [self.arrayOfRowObjects indexOfObject:self.initialTOC.version.language];
         if (index >= 0 && index < self.arrayOfRowObjects.count) {
             [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
         }
@@ -83,32 +81,15 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
--(void)setTopContainer:(UWTopContainer *)topContainer
+-(void)setInitialTOC:(UWTOC *)initialTOC
 {
     // Make matching arrays to know which is selected.
-    _topContainer = topContainer;
-    self.arrayLanguages = topContainer.sortedLanguages;
-
-    if (topContainer.isUSFM == YES) {
-        if (self.isSide == YES) {
-            self.currentTOC = [UFWSelectionTracker TOCforUSFMSide];
-        }
-        else {
-            self.currentTOC = [UFWSelectionTracker TOCforUSFM];
-        }
-    }
-    else {
-        if (self.isSide == YES) {
-            self.currentTOC = [UFWSelectionTracker TOCforJSONSide];
-        }
-        else {
-            self.currentTOC = [UFWSelectionTracker TOCforJSON];
-        }
-    }
+    _initialTOC  = initialTOC;
+    self.arrayLanguages = initialTOC.version.language.topContainer.sortedLanguages;
 
     self.dictionaryOfVersionExpandedStates = [NSMutableDictionary new];
 
-    UWLanguage *selectedLanguage = self.currentTOC.version.language;
+    UWLanguage *selectedLanguage = initialTOC.version.language;
     NSMutableArray *array = [NSMutableArray new];
 
     for (UWLanguage *language in self.arrayLanguages) {
@@ -181,7 +162,7 @@
         languageCell.labelButtonLanguageName.matchingObject = language;
         languageCell.labelButtonLanguageName.colorHover = [UIColor lightGrayColor];
         
-        if ([language isEqual:self.currentTOC.version.language]) {
+        if ([language isEqual:self.initialTOC.version.language]) {
             languageCell.labelButtonLanguageName.colorNormal = SELECTION_BLUE_COLOR;
         }
         else {
@@ -196,7 +177,7 @@
         versionCell.delegate = self;
         versionCell.version = version;
         versionCell.isExpanded = [self isVersionExpanded:version];
-        versionCell.isSelected = [version isEqual:self.currentTOC.version];
+        versionCell.isSelected = [version isEqual:self.initialTOC.version];
         return versionCell;
     }
     else {

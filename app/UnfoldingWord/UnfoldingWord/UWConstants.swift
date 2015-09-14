@@ -8,6 +8,16 @@
 
 import Foundation
 
+// From http://stackoverflow.com/questions/24034544/dispatch-after-gcd-in-swift/24318861#24318861
+func delay(delay:Double, closure: () -> Void ) {
+    dispatch_after(
+        dispatch_time(
+            DISPATCH_TIME_NOW,
+            Int64(delay * Double(NSEC_PER_SEC))
+        ),
+        dispatch_get_main_queue(), closure)
+}
+
 // Percent complete is an Int from 0 to 100. 100 indicates that the transfer is complete.
 typealias FileUpdateBlock = (percentComplete: Float, connected : Bool, complete : Bool) -> ()
 
@@ -49,6 +59,8 @@ struct Constants {
     static let SignatureFileAppend = ".sig" // duplicated in Constants.h
     
     static let FileExtensionUFW = "ufw" // duplicated in Constants.h
+    
+    static let USFM_VERSE_NUMBER = "USFMVerseNumber" // duplicated in Constants.h
     
     struct Bluetooth {
         static let SERVICE_UUID = "5440DDE8-3C15-4E96-A949-25F062A0142E"

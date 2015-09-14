@@ -15,3 +15,5 @@
 #import "ACTLabelButton.h"
 #import "USFMChapter.h"
 #import "UFWLanguageInfo.h"
+#import "UFWVersionPickerVC.h"
+#import "UFWBookPickerUSFMVC.h"

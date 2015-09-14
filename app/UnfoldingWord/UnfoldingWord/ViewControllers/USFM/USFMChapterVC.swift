@@ -15,6 +15,9 @@ enum TOCArea {
 
 class USFMChapterVC : UIViewController, UITextViewDelegate {
     
+    let CONSTANT_SHOWING_SIDE : CGFloat = 2
+    let CONSTANT_HIDDEN_SIDE : CGFloat = 1
+    
     var tocMain : UWTOC? = nil {
         didSet {
             arrayMainChapters = chaptersFromTOC(tocMain)
@@ -25,14 +28,22 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
             arrayMainChapters = chaptersFromTOC(tocSide)
         }
     }
-    var arrayMainChapters: [USFMChapter]? = nil
-    var arraySideChapters: [USFMChapter]? = nil
+    private var arrayMainChapters: [USFMChapter]? = nil
+    private var arraySideChapters: [USFMChapter]? = nil
     
     var chapterNumber : Int! { // It's a programming error if this isn't set before needed!
         didSet {
             assert(chapterNumber > 0, "The chapter number \(chapterNumber) must be greater than zero!")
         }
     }
+    
+    private var isSideShowing : Bool {
+        get {
+            return (constraintMainViewProportion.constant == CONSTANT_SHOWING_SIDE) ? true : false
+        }
+    }
+    
+    private var isSettingUp = true
     
     @IBOutlet weak var viewMain: UIView!
     @IBOutlet weak var viewSideDiglot: UIView!
@@ -47,6 +58,11 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     @IBOutlet weak var labelEmptySide: UILabel!
     
     @IBOutlet weak var constraintMainViewProportion: NSLayoutConstraint!
+    
+    // Managing State across scrollviews - Is there a better way to do this?
+    var lastMainOffset : CGPoint = CGPointZero
+    var lastSideOffset : CGPoint = CGPointZero
+    var countSetup : Int = 0
     
     override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
         super.init(nibName: nibNameOrNil, bundle: nil)
@@ -66,6 +82,16 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
         }
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        countSetup++
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        countSetup--
+    }
+    
     // Outside Methods
     func showDiglotWithToc(toc : UWTOC) {
         tocSide = toc
@@ -78,9 +104,150 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
         setSideViewToShowing(false, animated: true)
     }
     
+    // Scrollview Delegate
     
+    func scrollViewDidScroll(scrollView: UIScrollView)
+    {
+        if isSideShowing == false || countSetup > 0 {
+            return
+        }
+        
+        if scrollView.isEqual(textViewMain) {
+            let difference = textViewMain.contentOffset.y - lastMainOffset.y
+            lastMainOffset = textViewMain.contentOffset
+            adjustScrollView(textViewSideDiglot, byYPoints: difference)
+        }
+        else if scrollView.isEqual(textViewSideDiglot) {
+            let difference = textViewSideDiglot.contentOffset.y - lastSideOffset.y
+            lastSideOffset = textViewSideDiglot.contentOffset
+            adjustScrollView(textViewMain, byYPoints: difference)
+            
+        }
+        else {
+            assertionFailure("The scrollview could not be identified \(scrollView)")
+        }
+    }
     
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        if let textView = scrollView as? UITextView {
+            handleTextViewDoneDragging(textView)
+        }
+    }
     
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if let textView = scrollView as? UITextView where decelerate == false {
+            handleTextViewDoneDragging(textView)
+        }
+    }
+    
+    private func adjustScrollView(scrollView : UIScrollView, byYPoints difference : CGFloat) {
+        countSetup++
+        var changedOffset = scrollView.contentOffset
+        changedOffset.y += difference
+        changedOffset.y = fmax(changedOffset.y, 0)
+        changedOffset.y = fmin(changedOffset.y, scrollView.contentSize.height - scrollView.frame.size.height)
+        scrollView.contentOffset = changedOffset
+        countSetup--
+    }
+    
+    private func handleTextViewDoneDragging(textView : UITextView) {
+        
+        if isSideShowing == false || countSetup > 0 {
+            return
+        }
+        
+        guard let verseContainer = versesInTextView(textView) else {
+            assertionFailure("Could not find verses in view \(textView)")
+            return
+        }
+        
+        if textView.isEqual(textViewSideDiglot) {
+            adjustTextView(textViewMain, usingVerses: verseContainer, animated : true)
+        }
+        else if textView.isEqual(textViewMain) {
+            adjustTextView(textViewSideDiglot, usingVerses: verseContainer, animated : true)
+        }
+        else {
+            assertionFailure("The textview could not be identified \(textView)")
+        }
+    }
+    
+    private func adjustTextView(textView : UITextView, usingVerses verses : VerseContainer, animated: Bool) {
+        if isSideShowing == false || countSetup > 0 {
+            return
+        }
+        countSetup++
+        
+        let attribText = textView.attributedText
+        let verseToFind =  Bool(verses.maxIsAtEnd) ? verses.max : verses.min
+        guard let firstY =  minYForVerseNumber(verseToFind, inAttributedString: attribText, inTextView: textView) else {
+            assertionFailure("Could not find verse \(verseToFind) in \(textView)")
+            return
+        }
+        var minY = firstY
+        
+        var relativeOffset : CGFloat = 0
+        
+        let yOriginOffset : CGFloat = verses.minRectRelativeToScreenPosition.origin.y
+        let verseHeight : CGFloat = verses.minRectRelativeToScreenPosition.size.height
+        
+        let remoteVisiblePoints = verseHeight + yOriginOffset
+        let remotePercentAboveOrigin = remoteVisiblePoints / verseHeight
+        let percentBelowOrigin = 1 - remotePercentAboveOrigin
+        
+        guard let nextY = minYForVerseNumber(verseToFind+1, inAttributedString: attribText, inTextView: textView) else {
+            assertionFailure("Could not find verse \(verseToFind+1) in \(textView)")
+            return
+        }
+        let distanceBetweenVerses = nextY - minY
+        
+        // 90 points is approximately a line or two. If we only have a couple of lines, then just match with the next verse, balanced by the percent showing across verses
+        if remoteVisiblePoints < 90 && verseHeight > 90 {
+            minY = nextY
+            relativeOffset = remoteVisiblePoints * remotePercentAboveOrigin
+        }
+        else {
+            // Trying to show relatively the same amount of verse for both sides. This is important because some verses are more than twice as long as their matching verses in another language or bible version.
+            relativeOffset = -distanceBetweenVerses * percentBelowOrigin
+        }
+        
+        // Adjust so the first visible verse starts in the same place on both screens.
+        minY -= relativeOffset
+        
+        // Prevent the screen from scrolling past the end
+        minY = fmin(minY, textView.contentSize.height - textView.frame.size.height)
+        let offset = fabs( textView.contentOffset.y - minY)
+        
+        if offset > textView.frame.size.height {
+            assertionFailure("This should not happen")
+        }
+        
+        textView.userInteractionEnabled = false
+        textView.setContentOffset(CGPointMake(0, minY), animated: true)
+        
+        delay(0.5) { [weak self, weak textView] () -> Void in
+            if let strongself = self, strongText = textView {
+                strongself.countSetup--
+                strongText.userInteractionEnabled = true
+            }
+        }
+    }
+
+    private func minYForVerseNumber(verseNumToFind : Int, inAttributedString attribString : NSAttributedString, inTextView textView : UITextView) -> CGFloat? {
+        
+        var minY : CGFloat = CGFloat.max
+        textView.attributedText.enumerateAttributesInRange(NSMakeRange(0, textView.attributedText.length), options: []) { [weak self] (attributes : [String : AnyObject], rangeEnum, stop) -> Void in
+            if let
+                strongSelf = self,
+                verse = attributes[Constants.USFM_VERSE_NUMBER] as? NSString where verse.integerValue == verseNumToFind,
+                let locationRect = strongSelf.frameOfTextRange(rangeEnum, inTextView: textView)
+            {
+                minY = fmin(minY, locationRect.origin.y)
+            }
+        }
+        return minY < CGFloat.max ? minY : nil
+    }
+
     
     // Private
     
@@ -122,7 +289,7 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
             button.setTitle(buttonTitle, forState: .Normal)
         }
         else {
-            assertionFailure("Could not find a toc. No sense in having a next chapter button")
+            assertionFailure("Could not find a toc. No sense in having a next chapter button. Fix the count")
         }
         hideAllViewsExcept(button, inArea: area)
     }
@@ -136,7 +303,7 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     // View Control
     
     private func setSideViewToShowing(isShowing : Bool, animated isAnimated : Bool) {
-        constraintMainViewProportion.constant = isShowing ? 2 : 1
+        constraintMainViewProportion.constant = isShowing ? CONSTANT_SHOWING_SIDE : CONSTANT_HIDDEN_SIDE
         self.view.setNeedsUpdateConstraints()
         if isAnimated == false {
             self.view.layoutIfNeeded()
@@ -233,12 +400,10 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     
     // Matching Verses
 
-//    - (VerseContainer)versesVisible
-//    {
-//    USFMChapterCell *cell = [self visibleChapterCell];
-//    return  [self versesInTextView:cell.textView];
-//    }
-//    
+    private func versesVisibleInArea(area : TOCArea) -> VerseContainer? {
+        let textView = textViewForArea(area)
+        return versesInTextView(textView)
+    }
     
     private func visibleRangeOfTextView(textView : UITextView) -> NSRange? {
         
@@ -257,147 +422,134 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
         return nil
     }
     
-    
-    private func versesInTextView(textView: UITextView) -> VerseContainer {
-        var container = VerseContainer()
-        container.min = 1
-        container.max = 1
-        container.minIsAtStart = false
-        container.maxIsAtEnd = false
-        container.maxRectRelativeToScreenPosition = CGRectZero
-        container.minRectRelativeToScreenPosition = CGRectZero
-        container.rowHeight = 0
-        
-        guard let visibleRange = visibleRangeOfTextView(textView) else {
-            assertionFailure("Could not find a visible range in textview \(textView)")
-            return container
+    private func frameOfTextRange(range : NSRange, inTextView textView : UITextView) -> CGRect? {
+        let previousSelection = textView.selectedRange
+        defer {
+            textView.selectedRange = previousSelection
         }
-        let as = textView.attributedText.attributedSubstringFromRange(visibleRange)
         
-        
-        
+        textView.selectedRange = range
+        if let textRange = textView.selectedTextRange {
+            let frame = textView.firstRectForRange(textRange)
+            textView.selectedRange = previousSelection
+            return frame
+        }
+        else {
+            assertionFailure("Could not create the range \(range) in the textview \(textView)")
+            return nil
+        }
     }
     
-//    {
-//    NSRange visibleRange = [self visibleRangeOfTextView:textView];
-//    NSAttributedString *as = [textView.attributedText attributedSubstringFromRange:visibleRange];
-//    
-//    __block NSInteger minVerse = NSIntegerMax;
-//    __block NSInteger maxVerse = 0;
-//    
-//    __block CGRect minRelativeRect = CGRectZero;
-//    __block CGRect maxRelativeRect = CGRectZero;
-//    
-//    __block BOOL minIsAtStart = NO;
-//    __block BOOL maxIsAtEnd = NO;
-//    
-//    __block CGFloat rowHeight = 0;
-//    
-//    if (textView == nil) {
-//    minVerse = 1;
-//    maxVerse = 1;
-//    minIsAtStart = YES;
-//    rowHeight = 10;
-//    }
-//    
-//    // Go through and find the longest minimum verse and the longest maximum verse
-//    [as enumerateAttributesInRange:NSMakeRange(0, as.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
-//    NSString *verse = attrs[USFM_VERSE_NUMBER];
-//    if (verse) {
-//    CGRect textFrame = [self frameOfTextRange:range inTextView:textView];
-//    rowHeight = fmax(rowHeight, textFrame.size.height);
-//    
-//    NSInteger number = verse.integerValue;
-//    
-//    if ( minVerse >= number && textFrame.size.width > 10 && range.length > 5) { // Prevent return characters from causing an issue.
-//    CGRect fullRect = [self fullFrameOfVerse:number inTextView:textView];
-//    minRelativeRect = fullRect;
-//    if ( textView.contentOffset.y < 5.0 ) { // 5 = wiggle room
-//    minIsAtStart = YES;
-//    }
-//    minVerse = number;
-//    }
-//    if (maxVerse < number || maxVerse == number) {
-//    maxVerse = number;
-//    maxRelativeRect = [self fullFrameOfVerse:number inTextView:textView];
-//    if ( (textView.contentOffset.y + textView.frame.size.height) > (textView.contentSize.height - 10) ) { // 10 = wiggle room
-//    maxIsAtEnd = YES;
-//    }
-//    }
-//    }
-//    }];
+    func unadjustedFrameOfTextRange(range : NSRange, inTextView textView : UITextView) -> CGRect? {
+        let previousSelection = textView.selectedRange
+        defer {
+            textView.selectedRange = previousSelection
+        }
+        
+        textView.selectedRange = range
+        guard let textRange = textView.selectedTextRange else {
+            assertionFailure("Could not create the range \(range) in the textview \(textView)")
+            return nil
+        }
+        
+        var finalRect = CGRectZero
+        let selectedRects = textView.selectionRectsForRange(textRange) as! [UITextSelectionRect]
+        var isSetOnce = false
+        
+        for (_, textSelRect) in selectedRects.enumerate() {
+            let foundRect = textSelRect.rect
+            if isSetOnce == false {
+                finalRect = foundRect
+                isSetOnce = true
+            }
+            else {
+                finalRect.origin.x = fmin(finalRect.origin.x, foundRect.origin.x)
+                finalRect.origin.y = fmin(finalRect.origin.y, foundRect.origin.y)
+                let height = CGRectGetMaxY(foundRect) - finalRect.origin.y
+                finalRect.size.height = fmax(finalRect.size.height, height)
+                finalRect.size.width = fmax(finalRect.size.width, foundRect.size.width)
+            }
+        }
+        return finalRect
+    }
     
-//
-//    VerseContainer container;
-//    
-//    container.min = minVerse;
-//    container.minIsAtStart = minIsAtStart;
-//    container.minRectRelativeToScreenPosition = minRelativeRect;
-//    
-//    container.max = maxVerse;
-//    container.maxIsAtEnd = maxIsAtEnd;
-//    container.maxRectRelativeToScreenPosition = maxRelativeRect;
-//    
-//    container.rowHeight = rowHeight;
-//    
-//    return container;
-//    }
-//    
-//    - (CGRect)fullFrameOfVerse:(NSInteger)verseNumber inTextView:(UITextView *)textView
-//    {
-//    __block CGRect frame = CGRectZero;
-//    frame.origin.x = CGFLOAT_MAX;
-//    frame.origin.y = CGFLOAT_MAX;
-//    
-//    [textView.attributedText enumerateAttributesInRange:NSMakeRange(0, textView.attributedText.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
-//    NSString *verse = attrs[USFM_VERSE_NUMBER];
-//    if (verse) {
-//    NSInteger number = verse.integerValue;
-//    if ( verseNumber == number) {
-//    CGRect unadjustedFrame = [self unadjustedFrameOfTextRange:range inTextView:textView];
-//    unadjustedFrame.origin.y -= textView.contentOffset.y;
-//    
-//    frame.origin.x = fmin(frame.origin.x, unadjustedFrame.origin.x);
-//    frame.origin.y = fmin(frame.origin.y, unadjustedFrame.origin.y);
-//    CGFloat currentHeight = (unadjustedFrame.origin.y - frame.origin.y) + unadjustedFrame.size.height;
-//    frame.size.height = fmax(frame.size.height, currentHeight);
-//    frame.size.width = fmax(frame.size.width, unadjustedFrame.size.width);
-//    }
-//    }
-//    }];
-//    return frame;
-//    }
-//    
-//    - (CGRect)frameOfTextRange:(NSRange)range inTextView:(UITextView *)textView {
-//    textView.selectedRange = range;
-//    UITextRange *textRange = [textView selectedTextRange];
-//    CGRect rect = [textView firstRectForRange:textRange];
-//    textView.selectedTextRange = nil;
-//    return rect;
-//    }
-//    
-//    - (CGRect)unadjustedFrameOfTextRange:(NSRange)range inTextView:(UITextView *)textView {
-//    textView.selectedRange = range;
-//    UITextRange *textRange = [textView selectedTextRange];
-//    
-//    CGRect finalRect = CGRectZero;
-//    NSArray *selectRects = [textView selectionRectsForRange:textRange];
-//    
-//    BOOL isSetOnce = NO;
-//    for (UITextSelectionRect *textSelRect in selectRects) {
-//    CGRect foundRect = textSelRect.rect;
-//    if (isSetOnce == NO) {
-//    finalRect = foundRect;
-//    isSetOnce = YES;
-//    }
-//    else {
-//    finalRect.origin.x = fmin(finalRect.origin.x, foundRect.origin.x);
-//    finalRect.origin.y = fmin(finalRect.origin.y, finalRect.origin.y);
-//    CGFloat endY = foundRect.size.height + (foundRect.origin.y - finalRect.origin.y);
-//    finalRect.size.height = fmax(finalRect.size.height, endY);
-//    finalRect.size.width = fmax(finalRect.size.width, foundRect.size.width);
-//    }
-//    }
-//    return finalRect;
-//    }
+    private func fullFrameOfVerseNumber(verseNumber : Int, inTextView textView : UITextView) -> CGRect {
+        var frame = CGRectMake(CGFloat.max, CGFloat.max, 0, 0)
+        
+        textView.attributedText.enumerateAttributesInRange(NSMakeRange(0, textView.attributedText.length), options: []) { [weak self] (attributes : [String : AnyObject], rangeEnum, stop) -> Void in
+            if let
+                strongSelf = self,
+                verse = attributes[Constants.USFM_VERSE_NUMBER] as? NSString,
+                unadjustedFrame = strongSelf.unadjustedFrameOfTextRange(rangeEnum, inTextView: textView)
+                where verse.integerValue == verseNumber
+            {
+                frame.origin.x = fmin(frame.origin.x, unadjustedFrame.origin.x)
+                frame.origin.y = fmin(frame.origin.y, (unadjustedFrame.origin.y - textView.contentOffset.y) )
+                let currentHeight = (unadjustedFrame.origin.y - frame.origin.y) + unadjustedFrame.size.height
+                frame.size.height = fmax(frame.size.height, currentHeight)
+                frame.size.width = fmax(frame.size.width, unadjustedFrame.size.width)
+            }
+        }
+        
+        assert(frame.origin.x != CGFloat.max && frame.origin.y != CGFloat.max, "The frame was not set for verse \(verseNumber) in textview \(textView)")
+        
+        return frame
+    }
+    
+    private func versesInTextView(textView: UITextView) -> VerseContainer? {
+
+        guard let visibleRange = visibleRangeOfTextView(textView) else {
+            assertionFailure("Could not find a visible range in textview \(textView)")
+            return nil
+        }
+        let textInRange = textView.attributedText.attributedSubstringFromRange(visibleRange)
+        
+        var rowHeight : Float = 0
+        var minVerse : Int = NSInteger.max
+        var maxVerse : Int = 0
+        var minRelativeRect = CGRectZero
+        var maxRelativeRect = CGRectZero
+        var minIsAtStart = false
+        var maxIsAtEnd = false
+        
+        textInRange.enumerateAttributesInRange(NSMakeRange(0, textInRange.length), options: []) { [weak self] (attributes : [String : AnyObject], rangeEnum, stop) -> Void in
+            if let
+                strongself = self,
+                verse = attributes[Constants.USFM_VERSE_NUMBER] as? NSString,
+                frame = strongself.frameOfTextRange(rangeEnum, inTextView: textView)
+            {
+                rowHeight = fmaxf(rowHeight, Float(frame.size.height))
+                let number = verse.integerValue
+                if minVerse >= number && frame.size.width > 15 && rangeEnum.length > 5 { // the 5 is to catch newlines and other trailing characters
+                    minRelativeRect = strongself.fullFrameOfVerseNumber(number, inTextView: textView)
+                    if textView.contentOffset.y < 5 { // 5 = wiggle room
+                        minIsAtStart = true
+                    }
+                    minVerse = number
+                }
+                if maxVerse < number || maxVerse == number {
+                    maxVerse = number
+                    maxRelativeRect = strongself.fullFrameOfVerseNumber(number, inTextView: textView)
+                    if (textView.contentOffset.y + textView.frame.size.height) >= (textView.contentSize.height - 10) {
+                        maxIsAtEnd = true
+                    }
+                }
+            }
+        }
+        
+        if minVerse == NSInteger.max {
+            assertionFailure("No verses were found in textview \(textView)")
+            return nil
+        }
+        
+        var container = VerseContainer()
+        container.min = minVerse
+        container.max = maxVerse
+        container.minIsAtStart = ObjCBool.init(minIsAtStart)
+        container.maxIsAtEnd = ObjCBool.init( maxIsAtEnd)
+        container.minRectRelativeToScreenPosition = minRelativeRect
+        container.maxRectRelativeToScreenPosition = maxRelativeRect
+        container.rowHeight = CGFloat(rowHeight)
+        return container
+    }
 }

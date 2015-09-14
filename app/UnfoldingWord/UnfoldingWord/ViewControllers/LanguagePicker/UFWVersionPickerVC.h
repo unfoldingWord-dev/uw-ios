@@ -7,15 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-@class UWTopContainer;
+@class UWTOC;
 @class UWVersion;
 
-typedef void (^VersionPickerCompletion) (BOOL isCanceled, UWVersion *versionPicked);
+typedef void (^VersionPickerCompletion) (BOOL isCanceled, UWVersion * __nullable versionPicked);
 
 @interface UFWVersionPickerVC : UITableViewController
 
-@property (nonatomic, strong) UWTopContainer *topContainer;
-
-+ (UIViewController *)navigationLanguagePickerWithTopContainer:(UWTopContainer *)topContainer isSide:(BOOL)isSide completion:(VersionPickerCompletion)completion;
++ (UIViewController * __nonnull)navigationLanguagePickerWithTOC:(UWTOC * __nonnull)toc completion:(VersionPickerCompletion __nonnull)completion;
 
 @end

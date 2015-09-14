@@ -9,11 +9,10 @@
 #import <UIKit/UIKit.h>
 @class UWTOC, UWVersion;
 
-typedef void (^BookPickerCompletion) (BOOL isCanceled, UWTOC *tocPicked, NSInteger chapterPicked);
+typedef void (^BookPickerCompletion) (BOOL isCanceled, UWTOC* __nullable tocPicked, NSInteger chapterPicked);
 
 @interface UFWBookPickerUSFMVC : UITableViewController
 
-+ (UIViewController *)navigationBookPickerWithVersion:(UWVersion *)version completion:(BookPickerCompletion)completion;
-
++ (UIViewController * __nonnull)navigationBookPickerWithVersion:(UWVersion * __nonnull)version completion:(BookPickerCompletion __nonnull)completion;
 
 @end

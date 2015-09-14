@@ -265,48 +265,48 @@ static CGFloat kSideMargin = 10.f;
 
 - (void)userRequestedVersionPicker:(id)sender
 {
-    __weak typeof(self) weakself = self;
-
-    UIViewController *navVC = [UFWVersionPickerVC navigationLanguagePickerWithTopContainer:self.topContainer isSide:NO completion:^(BOOL isCanceled, UWVersion *versionPicked) {
-        [weakself dismissViewControllerAnimated:YES completion:^{}];
-        
-        if (isCanceled) {
-            return;
-        }
-        
-        NSArray *arrayTOCs = versionPicked.sortedTOCs;
-        if (arrayTOCs.count == 0) {
-            [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"There is no content for the selected version.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles: nil] show];
-            return;
-        }
-        
-        if (weakself.toc == nil) {
-            weakself.toc = arrayTOCs[0];
-        }
-        else {
-            BOOL success = NO;
-            for (UWTOC *toc in versionPicked.toc) {
-                if ([toc.slug isKindOfClass:[NSString class]] == NO) {
-                    NSAssert2(NO, @"%s: The toc did not have a slug. No way to track it: %@", __PRETTY_FUNCTION__, toc);
-                    continue;
-                }
-                if ([weakself.toc.slug isEqualToString:toc.slug]) {
-                    weakself.toc = toc;
-                    
-                    success = YES;
-                    break;
-                }
-            }
-            if (success == NO) { // No slug matches
-                weakself.toc = arrayTOCs[0];
-            }
-        }
-        [weakself updateSelectionTOC:weakself.toc];
-        [weakself.delegate userChangedTOCWithVc:self pickedTOC:weakself.toc];
-        [weakself addBarButtonItems];
-    }];
-    
-    [self presentViewController:navVC animated:YES completion:^{}];
+//    __weak typeof(self) weakself = self;
+//
+//    UIViewController *navVC = [UFWVersionPickerVC navigationLanguagePickerWithTopContainer:self.topContainer isSide:NO completion:^(BOOL isCanceled, UWVersion *versionPicked) {
+//        [weakself dismissViewControllerAnimated:YES completion:^{}];
+//        
+//        if (isCanceled) {
+//            return;
+//        }
+//        
+//        NSArray *arrayTOCs = versionPicked.sortedTOCs;
+//        if (arrayTOCs.count == 0) {
+//            [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"There is no content for the selected version.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles: nil] show];
+//            return;
+//        }
+//        
+//        if (weakself.toc == nil) {
+//            weakself.toc = arrayTOCs[0];
+//        }
+//        else {
+//            BOOL success = NO;
+//            for (UWTOC *toc in versionPicked.toc) {
+//                if ([toc.slug isKindOfClass:[NSString class]] == NO) {
+//                    NSAssert2(NO, @"%s: The toc did not have a slug. No way to track it: %@", __PRETTY_FUNCTION__, toc);
+//                    continue;
+//                }
+//                if ([weakself.toc.slug isEqualToString:toc.slug]) {
+//                    weakself.toc = toc;
+//                    
+//                    success = YES;
+//                    break;
+//                }
+//            }
+//            if (success == NO) { // No slug matches
+//                weakself.toc = arrayTOCs[0];
+//            }
+//        }
+//        [weakself updateSelectionTOC:weakself.toc];
+//        [weakself.delegate userChangedTOCWithVc:self pickedTOC:weakself.toc];
+//        [weakself addBarButtonItems];
+//    }];
+//    
+//    [self presentViewController:navVC animated:YES completion:^{}];
 }
 
 

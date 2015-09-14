@@ -12,6 +12,7 @@
 
 static NSString *const kBaseAPI = @"https://api.unfoldingword.org/uw/txt/2/catalog.json";
 
+static NSString *const kKeyIsShowingSide = @"isShowingSide";
 static NSString *const kKeyTOCUSFM = @"toc_USFM";
 static NSString *const kKeyTOCUSFMSide = @"toc_side_USFM";
 static NSString *const kKeyTOCJSON = @"toc_JSON";
@@ -26,6 +27,11 @@ static NSString *const kKeyTopContainer = @"top_container";
 @implementation UFWSelectionTracker
 
 #pragma mark - Setters
+
++ (void)setIsShowingSide:(BOOL)isShowingSide
+{
+    [self setObject:@(isShowingSide) forKey:kKeyIsShowingSide];
+}
 
 + (void)setUSFMTOC:(UWTOC *)toc
 {
@@ -73,6 +79,10 @@ static NSString *const kKeyTopContainer = @"top_container";
 }
 
 #pragma mark - Getters
+
++ (BOOL)isShowingSide {
+    return [self numberForKey:kKeyIsShowingSide] == 0 ? NO : YES;
+}
 
 + (UWTOC *)TOCforUSFM;
 {
