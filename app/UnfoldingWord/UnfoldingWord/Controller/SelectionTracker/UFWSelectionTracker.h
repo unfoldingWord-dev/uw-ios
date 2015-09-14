@@ -14,6 +14,8 @@
 /// Always call on the main thread. These are just convenience methods that write preferences to a file on disk. Not using NSUserDefaults because syncing behavior is harder to define and predict.
 
 // Setters: automatically saves to disk.
++ (void)setIsShowingSide:(BOOL)isShowingSide;
+
 + (void)setUSFMTOC:(UWTOC * __nullable)toc;
 + (void)setUSFMTOCSide:(UWTOC * __nullable)toc;
 + (void)setChapterUSFM:(NSInteger)chapter;
@@ -29,6 +31,8 @@
 + (void)setUrlString:(NSString * __nullable)url;
 
 // Getters
++ (BOOL)isShowingSide;
+
 + (UWTOC * __nullable)TOCforUSFM;
 + (UWTOC * __nullable)TOCforUSFMSide;
 + (NSInteger)chapterNumberUSFM;

@@ -289,7 +289,7 @@
         <!--Page View Controller-->
         <scene sceneID="tX6-3q-q5L">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="jDL-3V-5cp" sceneMemberID="viewController"/>
+                <pageViewController storyboardIdentifier="USFMPageViewController" autoresizesArchivedViewToFullSize="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="jDL-3V-5cp" customClass="USFMPageViewController" customModule="UnfoldingWord" customModuleProvider="target" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vao-B9-GGc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="98" y="1355"/>

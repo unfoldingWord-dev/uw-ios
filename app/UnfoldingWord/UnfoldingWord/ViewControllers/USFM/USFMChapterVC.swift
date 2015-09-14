@@ -8,34 +8,16 @@
 
 import Foundation
 
-enum TOCArea {
-    case Main
-    case Side
-}
-
 class USFMChapterVC : UIViewController, UITextViewDelegate {
     
     let CONSTANT_SHOWING_SIDE : CGFloat = 2
     let CONSTANT_HIDDEN_SIDE : CGFloat = 1
     
-    var tocMain : UWTOC? = nil {
-        didSet {
-            arrayMainChapters = chaptersFromTOC(tocMain)
-        }
-    }
-    var tocSide : UWTOC? = nil {
-        didSet {
-            arrayMainChapters = chaptersFromTOC(tocSide)
-        }
-    }
-    private var arrayMainChapters: [USFMChapter]? = nil
-    private var arraySideChapters: [USFMChapter]? = nil
-    
-    var chapterNumber : Int! { // It's a programming error if this isn't set before needed!
-        didSet {
-            assert(chapterNumber > 0, "The chapter number \(chapterNumber) must be greater than zero!")
-        }
-    }
+    var mainAttributes : AreaAttributes!
+    var sideAttributes : AreaAttributes!
+
+    var chapterNumber : Int! // It's a programming error if this isn't set before needed!
+
     
     private var isSideShowing : Bool {
         get {
@@ -76,7 +58,7 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
         super.viewDidLoad()
         
         loadContentForArea(.Main)
-        if tocSide != nil {
+        if sideAttributes.isEmpty == false {
             setSideViewToShowing(true, animated: false)
             loadContentForArea(.Side)
         }
@@ -93,22 +75,30 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     }
     
     // Outside Methods
-    func showDiglotWithToc(toc : UWTOC) {
-        tocSide = toc
+    func showDiglotAnimated(animated : Bool) {
         loadContentForArea(.Side)
-        setSideViewToShowing(true, animated: true)
+        setSideViewToShowing(true, animated: animated)
     }
     
-    func hideDiglot() {
-        tocSide = nil
-        setSideViewToShowing(false, animated: true)
+    func hideDiglotAnimated(animated : Bool) {
+        setSideViewToShowing(false, animated: animated)
     }
     
     // Scrollview Delegate
     
+    func isScrollMatchingNeeded() -> Bool {
+        
+        if isSideShowing == false || countSetup > 0 || sideAttributes.isNextChapter || sideAttributes.isEmpty {
+            return false
+        }
+        else {
+            return true
+        }
+    }
+    
     func scrollViewDidScroll(scrollView: UIScrollView)
     {
-        if isSideShowing == false || countSetup > 0 {
+        if isScrollMatchingNeeded() == false {
             return
         }
         
@@ -152,7 +142,7 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     
     private func handleTextViewDoneDragging(textView : UITextView) {
         
-        if isSideShowing == false || countSetup > 0 {
+        if isScrollMatchingNeeded() == false {
             return
         }
         
@@ -173,9 +163,7 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     }
     
     private func adjustTextView(textView : UITextView, usingVerses verses : VerseContainer, animated: Bool) {
-        if isSideShowing == false || countSetup > 0 {
-            return
-        }
+
         countSetup++
         
         let attribText = textView.attributedText
@@ -247,50 +235,37 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
         }
         return minY < CGFloat.max ? minY : nil
     }
-
     
     // Private
-    
     private func loadContentForArea(area : TOCArea) {
         
-        guard let chapters = chaptersForArea(area) else {
+        let attributes = attributesForArea(area)
+        
+        if let title = attributes.nextChapterText where attributes.isNextChapter {
+            showNextChapterViewInArea(area, withTitle: title)
+            return
+        }
+        else if attributes.isEmpty {
             showNothingLoadedViewInArea(area)
             return
         }
-        
-        guard chapterNumber >= chapters.count else {
-            showNextChapterViewInArea(area)
-            return
+        else if let chapter = attributes.chapter, alignment = attributes.textAlignment {
+            showChapter(chapter, withTextAlignment: alignment, inArea : area)
         }
-        
-        guard let toc = tocForArea(area) else {
-            assertionFailure("We have chapters for area \(area) but no TOC. That shouldn't be possible.")
-            showNothingLoadedViewInArea(area)
-            return
+        else {
+            assertionFailure("Could not find an appropriate result for area \(area)")
         }
-        
-        // Okay, everything's good, so show the chapter in the textview
-        let chapter : USFMChapter = chapters[chapterNumber]
-        showChapter(chapter, withTOC: toc, inArea: area)
     }
     
-    private func showChapter(chapter : USFMChapter, withTOC toc: UWTOC, inArea area : TOCArea) {
+    private func showChapter(chapter : USFMChapter, withTextAlignment alignment : NSTextAlignment, inArea area : TOCArea) {
         let textView = textViewForArea(area)
-        textView.textAlignment = LanguageInfoController.textAlignmentForLanguageCode(toc.version.language.lc)
-        textView.attributedText = chapter.attributedString;
+         textView.attributedText = chapter.attributedString;
         hideAllViewsExcept(textView, inArea: area)
     }
     
-    private func showNextChapterViewInArea(area : TOCArea) {
+    private func showNextChapterViewInArea(area : TOCArea, withTitle title : String) {
         let button = buttonForArea(area)
-        if let toc = tocForArea(area) {
-            let goto = NSLocalizedString("Go to", comment: "Name of bible chapter goes after this text")
-            let buttonTitle = "\(goto) \(toc.title)"
-            button.setTitle(buttonTitle, forState: .Normal)
-        }
-        else {
-            assertionFailure("Could not find a toc. No sense in having a next chapter button. Fix the count")
-        }
+        button.setTitle(title, forState: .Normal)
         hideAllViewsExcept(button, inArea: area)
     }
     
@@ -326,37 +301,17 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
         textView.layer.opacity = textView.isEqual(view) ? 1.0 : 0.0
         button.layer.opacity = button.isEqual(view) ? 1.0 : 0.0
     }
-    
-    // Helpers for TOC Items
-    private func tocAfterTOC(toc : UWTOC) -> UWTOC? {
-        
-        let sortedTocs = toc.version.sortedTOCs() as! [UWTOC]
-        for (i, aToc) in sortedTocs.enumerate() {
-            if toc.isEqual(aToc) && (i+1) < sortedTocs.count {
-                return sortedTocs[i+1]
-            }
-        }
-        
-        assertionFailure("Should never reach this point. Either there should not have been a next chapter button or else we failed to match the toc.")
-        return nil
-    }
+
     
     // Matching Areas in Diglot View
-    private func chaptersForArea(area : TOCArea) -> [USFMChapter]? {
-        switch area {
-        case .Main:
-            return arrayMainChapters
-        case .Side:
-            return arraySideChapters
-        }
-    }
     
-    private func tocForArea(area : TOCArea) -> UWTOC? {
+    private func attributesForArea(area : TOCArea) -> AreaAttributes
+    {
         switch area {
         case .Main:
-            return tocMain
+            return mainAttributes
         case .Side:
-            return tocSide
+            return sideAttributes
         }
     }
     
@@ -384,17 +339,6 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
             return labelEmptyMain
         case .Side:
             return labelEmptySide
-        }
-    }
-    
-    // Helpers
-    
-    private func chaptersFromTOC(toc : UWTOC?) -> [USFMChapter]? {
-        if let toc = toc, chapters = toc.usfmInfo.chapters() as? [USFMChapter] {
-            return chapters
-        }
-        else {
-            return nil
         }
     }
     

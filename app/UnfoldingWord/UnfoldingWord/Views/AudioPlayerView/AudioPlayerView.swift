@@ -221,7 +221,7 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
     }
     
     private func updateSliderLabels() {
-        if let player = self.player {
+        if let _ = self.player {
             labelTimeLeading.text = formattedTime(currentTime)
             labelTimeTrailing.text = formattedTime((duration-currentTime) * -1.0)
         }

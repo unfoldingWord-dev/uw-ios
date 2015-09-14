@@ -22,6 +22,8 @@
 
 /* Begin PBXBuildFile section */
 		5A0DD1D71BA0E50F00F351C7 /* String+Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0DD1D61BA0E50F00F351C7 /* String+Paths.swift */; settings = {ASSET_TAGS = (); }; };
+		5A147A8C1BA789AA009496EB /* FakeNavBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A147A8B1BA789AA009496EB /* FakeNavBarView.xib */; settings = {ASSET_TAGS = (); }; };
+		5A147A8E1BA78E30009496EB /* FakeNavBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A147A8D1BA78E30009496EB /* FakeNavBarView.swift */; settings = {ASSET_TAGS = (); }; };
 		5A2B79AE1B5EA22D00AD9993 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2B79AD1B5EA22D00AD9993 /* UIViewControllerExtension.swift */; };
 		5A323B1D1A3381FB00099C94 /* NSDictionary+DWSNull.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A323B1C1A3381FB00099C94 /* NSDictionary+DWSNull.m */; };
 		5A36D3B51B223F23001D6E04 /* UFWAppInformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A36D3B31B223F23001D6E04 /* UFWAppInformationView.m */; };
@@ -950,6 +952,8 @@
 
 /* Begin PBXFileReference section */
 		5A0DD1D61BA0E50F00F351C7 /* String+Paths.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Paths.swift"; sourceTree = "<group>"; };
+		5A147A8B1BA789AA009496EB /* FakeNavBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FakeNavBarView.xib; sourceTree = "<group>"; };
+		5A147A8D1BA78E30009496EB /* FakeNavBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FakeNavBarView.swift; sourceTree = "<group>"; };
 		5A2B79AD1B5EA22D00AD9993 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		5A323B1B1A3381FB00099C94 /* NSDictionary+DWSNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+DWSNull.h"; sourceTree = "<group>"; };
 		5A323B1C1A3381FB00099C94 /* NSDictionary+DWSNull.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+DWSNull.m"; sourceTree = "<group>"; };
@@ -2089,6 +2093,15 @@
 				5AEDC6F01B068B0200551D27 /* SystemConfiguration.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5A147A8A1BA7898D009496EB /* FakeNavBarView */ = {
+			isa = PBXGroup;
+			children = (
+				5A147A8D1BA78E30009496EB /* FakeNavBarView.swift */,
+				5A147A8B1BA789AA009496EB /* FakeNavBarView.xib */,
+			);
+			path = FakeNavBarView;
 			sourceTree = "<group>";
 		};
 		5A323B1A1A3381FB00099C94 /* Categories */ = {
@@ -3261,6 +3274,7 @@
 		5A9AC00D1B0A38B100753AAB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5A147A8A1BA7898D009496EB /* FakeNavBarView */,
 				5A9A1FC71B95140D00ED8225 /* AudioPlayerView */,
 				5A36D3B11B223F23001D6E04 /* AppInfoView */,
 				5A9AC00E1B0A38B100753AAB /* CollectionView */,
@@ -4293,6 +4307,7 @@
 				5A9ABEC91B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-27-10jpg in Resources */,
 				5A9ABDE91B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-09-13jpg in Resources */,
 				5A9ABF7D1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-44-09jpg in Resources */,
+				5A147A8C1BA789AA009496EB /* FakeNavBarView.xib in Resources */,
 				5A9ABF471B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-39-08jpg in Resources */,
 				5A9ABF761B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-44-02jpg in Resources */,
 				5A43EAD31B20F35E000EC306 /* 1ti-udb-en-79F960C0-9F99-48FE-AE1B-10189C34D3AA.usfm in Resources */,
@@ -4700,6 +4715,7 @@
 				5AFC9B671B41D1DC00D453D0 /* GZIP.m in Sources */,
 				5A9ABAE51B0A350A00753AAB /* USFMInfo.m in Sources */,
 				5A9AC03F1B0A38B100753AAB /* UFWNextChapterCell.m in Sources */,
+				5A147A8E1BA78E30009496EB /* FakeNavBarView.swift in Sources */,
 				5AF051DA1B756A8A003EA5A4 /* UWConstants.swift in Sources */,
 				5AC377CF1B38744500E3BB36 /* FileActivityController.swift in Sources */,
 				5A9AC04A1B0A38B100753AAB /* ChapterCell.m in Sources */,

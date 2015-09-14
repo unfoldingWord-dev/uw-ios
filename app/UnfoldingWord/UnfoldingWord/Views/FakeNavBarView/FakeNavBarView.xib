@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" restorationIdentifier="FakeNavBarView" id="o81-mH-kwX" customClass="FakeNavBarView" customModule="UnfoldingWord" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="597" height="67"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TfS-xi-3ov">
+                    <rect key="frame" x="12" y="23" width="22" height="22"/>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Book + Chapter" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c5O-BJ-0Os" customClass="ACTLabelButton">
+                    <rect key="frame" x="239" y="8" width="120" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oxe-ik-Zwb" customClass="ACTLabelButton">
+                    <rect key="frame" x="379" y="8" width="198" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CZN-lP-Gbw" userLabel="ViewSideBySideVersions">
+                    <rect key="frame" x="96" y="28" width="405" height="21"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="VersionSide" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4SH-hq-vtK" customClass="ACTLabelButton">
+                            <rect key="frame" x="314" y="0.0" width="91" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="VersionMain" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YGL-3v-lpN" customClass="ACTLabelButton">
+                            <rect key="frame" x="0.0" y="0.0" width="94" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="0.87405108890000005" blue="0.056655094070000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="4SH-hq-vtK" secondAttribute="trailing" id="Bda-jc-4Rq"/>
+                        <constraint firstAttribute="bottom" secondItem="4SH-hq-vtK" secondAttribute="bottom" id="TPV-1T-28g"/>
+                        <constraint firstItem="YGL-3v-lpN" firstAttribute="leading" secondItem="CZN-lP-Gbw" secondAttribute="leading" id="cmD-A3-Ilb"/>
+                        <constraint firstItem="4SH-hq-vtK" firstAttribute="top" secondItem="CZN-lP-Gbw" secondAttribute="top" id="fgh-dh-Uvw"/>
+                        <constraint firstItem="4SH-hq-vtK" firstAttribute="leading" secondItem="YGL-3v-lpN" secondAttribute="trailing" constant="220" id="gmf-tL-bhx"/>
+                        <constraint firstItem="YGL-3v-lpN" firstAttribute="top" secondItem="CZN-lP-Gbw" secondAttribute="top" id="y3E-nd-0fd"/>
+                        <constraint firstAttribute="bottom" secondItem="YGL-3v-lpN" secondAttribute="bottom" id="ztj-XK-Ksd"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="oxe-ik-Zwb" firstAttribute="leading" secondItem="c5O-BJ-0Os" secondAttribute="trailing" constant="20" id="9ED-B0-2cW"/>
+                <constraint firstItem="c5O-BJ-0Os" firstAttribute="centerX" secondItem="o81-mH-kwX" secondAttribute="centerX" id="EFZ-Jf-gMq"/>
+                <constraint firstItem="CZN-lP-Gbw" firstAttribute="baseline" secondItem="c5O-BJ-0Os" secondAttribute="baseline" id="JG3-hs-amu"/>
+                <constraint firstItem="oxe-ik-Zwb" firstAttribute="baseline" secondItem="c5O-BJ-0Os" secondAttribute="baseline" id="UE4-Fh-MOj"/>
+                <constraint firstItem="c5O-BJ-0Os" firstAttribute="centerY" secondItem="CZN-lP-Gbw" secondAttribute="centerY" constant="-20" id="Wax-yU-zU4"/>
+                <constraint firstAttribute="trailing" secondItem="oxe-ik-Zwb" secondAttribute="trailing" constant="20" symbolic="YES" id="Yad-8w-dhX"/>
+                <constraint firstItem="CZN-lP-Gbw" firstAttribute="centerX" secondItem="c5O-BJ-0Os" secondAttribute="centerX" id="ZK2-4i-VCh"/>
+                <constraint firstItem="TfS-xi-3ov" firstAttribute="leading" secondItem="o81-mH-kwX" secondAttribute="leading" constant="12" id="eMl-1X-7dT"/>
+                <constraint firstItem="CZN-lP-Gbw" firstAttribute="centerX" secondItem="o81-mH-kwX" secondAttribute="centerX" id="lP4-bp-oJR"/>
+                <constraint firstItem="c5O-BJ-0Os" firstAttribute="top" secondItem="o81-mH-kwX" secondAttribute="top" constant="8" id="nIl-iE-rkO"/>
+                <constraint firstItem="TfS-xi-3ov" firstAttribute="centerY" secondItem="o81-mH-kwX" secondAttribute="centerY" id="xe7-35-5HS"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="JG3-hs-amu"/>
+                    <exclude reference="ZK2-4i-VCh"/>
+                </mask>
+            </variation>
+            <connections>
+                <outlet property="buttonBackArrow" destination="TfS-xi-3ov" id="ANz-oM-wHy"/>
+                <outlet property="constaintDistanceSSContainerFromBook" destination="Wax-yU-zU4" id="Uo3-5b-7S7"/>
+                <outlet property="constraintDistanceBetweenSSVersions" destination="gmf-tL-bhx" id="MnJ-lS-1qJ"/>
+                <outlet property="labelButtonBookPlusChapter" destination="c5O-BJ-0Os" id="xpo-s2-k1g"/>
+                <outlet property="labelButtonSSVersionMain" destination="YGL-3v-lpN" id="DOF-G4-aOM"/>
+                <outlet property="labelButtonSSVersionSide" destination="4SH-hq-vtK" id="H8H-ce-hFF"/>
+                <outlet property="labelButtonVersionMainAlone" destination="oxe-ik-Zwb" id="LqK-bU-BhQ"/>
+                <outlet property="viewSSVersionContainer" destination="CZN-lP-Gbw" id="zeM-BA-sua"/>
+            </connections>
+            <point key="canvasLocation" x="411.5" y="242.5"/>
+        </view>
+    </objects>
+</document>
