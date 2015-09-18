@@ -10,8 +10,8 @@ import Foundation
 
 class USFMChapterVC : UIViewController, UITextViewDelegate {
     
-    let CONSTANT_SHOWING_SIDE : CGFloat = 2
-    let CONSTANT_HIDDEN_SIDE : CGFloat = 1
+    let MULTIPLIER_SHOWING_SIDE : CGFloat = 2
+    let MULTIPLIER_HIDDEN_SIDE : CGFloat = 1
     
     var mainAttributes : AreaAttributes!
     var sideAttributes : AreaAttributes!
@@ -21,7 +21,7 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     
     private var isSideShowing : Bool {
         get {
-            return (constraintMainViewProportion.constant == CONSTANT_SHOWING_SIDE) ? true : false
+            return constraintSideBySide.active
         }
     }
     
@@ -39,7 +39,8 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     @IBOutlet weak var labelEmptyMain: UILabel!
     @IBOutlet weak var labelEmptySide: UILabel!
     
-    @IBOutlet weak var constraintMainViewProportion: NSLayoutConstraint!
+    @IBOutlet weak var constraintSideBySide: NSLayoutConstraint!
+    @IBOutlet weak var constraintMainOnly : NSLayoutConstraint!
     
     // Managing State across scrollviews - Is there a better way to do this?
     var lastMainOffset : CGPoint = CGPointZero
@@ -57,11 +58,9 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadContentForArea(.Main)
-        if sideAttributes.isEmpty == false {
-            setSideViewToShowing(true, animated: false)
-            loadContentForArea(.Side)
-        }
+        loadContentForArea(.Main, setToTop:true)
+        loadContentForArea(.Side, setToTop:true)
+        setSideViewToShowing(UFWSelectionTracker.isShowingSide(), animated: false)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -75,8 +74,32 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     }
     
     // Outside Methods
+    func loadContentForArea(area : TOCArea, setToTop isAtTop: Bool) {
+        
+        let attributes = attributesForArea(area)
+        
+        if let title = attributes.nextChapterText where attributes.isNextChapter {
+            showNextChapterViewInArea(area, withTitle: title)
+            return
+        }
+        else if attributes.isEmpty {
+            showNothingLoadedViewInArea(area)
+            return
+        }
+        else if let chapter = attributes.chapter, alignment = attributes.textAlignment {
+            showChapter(chapter, withTextAlignment: alignment, inArea : area)
+            
+            if isAtTop {
+                textViewForArea(area).setContentOffset(CGPointZero, animated: false)
+            }
+        }
+        else {
+            assertionFailure("Could not find an appropriate result for area \(area)")
+        }
+    }
+    
     func showDiglotAnimated(animated : Bool) {
-        loadContentForArea(.Side)
+        loadContentForArea(.Side, setToTop:false)
         setSideViewToShowing(true, animated: animated)
     }
     
@@ -207,7 +230,8 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
         let offset = fabs( textView.contentOffset.y - minY)
         
         if offset > textView.frame.size.height {
-            assertionFailure("This should not happen")
+            print("\(offset)")
+//            assertionFailure("This should not happen")
         }
         
         textView.userInteractionEnabled = false
@@ -227,7 +251,7 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
         textView.attributedText.enumerateAttributesInRange(NSMakeRange(0, textView.attributedText.length), options: []) { [weak self] (attributes : [String : AnyObject], rangeEnum, stop) -> Void in
             if let
                 strongSelf = self,
-                verse = attributes[Constants.USFM_VERSE_NUMBER] as? NSString where verse.integerValue == verseNumToFind,
+                verse = attributes[Constants.USFM_VERSE_NUMBER] as? Int where verse == verseNumToFind,
                 let locationRect = strongSelf.frameOfTextRange(rangeEnum, inTextView: textView)
             {
                 minY = fmin(minY, locationRect.origin.y)
@@ -237,25 +261,7 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     }
     
     // Private
-    private func loadContentForArea(area : TOCArea) {
-        
-        let attributes = attributesForArea(area)
-        
-        if let title = attributes.nextChapterText where attributes.isNextChapter {
-            showNextChapterViewInArea(area, withTitle: title)
-            return
-        }
-        else if attributes.isEmpty {
-            showNothingLoadedViewInArea(area)
-            return
-        }
-        else if let chapter = attributes.chapter, alignment = attributes.textAlignment {
-            showChapter(chapter, withTextAlignment: alignment, inArea : area)
-        }
-        else {
-            assertionFailure("Could not find an appropriate result for area \(area)")
-        }
-    }
+
     
     private func showChapter(chapter : USFMChapter, withTextAlignment alignment : NSTextAlignment, inArea area : TOCArea) {
         let textView = textViewForArea(area)
@@ -278,7 +284,16 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     // View Control
     
     private func setSideViewToShowing(isShowing : Bool, animated isAnimated : Bool) {
-        constraintMainViewProportion.constant = isShowing ? CONSTANT_SHOWING_SIDE : CONSTANT_HIDDEN_SIDE
+        
+        if isShowing {
+            constraintSideBySide.active = true
+            constraintMainOnly.active = false
+        }
+        else {
+            constraintMainOnly.active = true
+            constraintSideBySide.active = true
+        }
+        
         self.view.setNeedsUpdateConstraints()
         if isAnimated == false {
             self.view.layoutIfNeeded()
@@ -353,11 +368,12 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
         
         var bounds = textView.frame
         bounds.origin = textView.contentOffset
+        bounds.origin.y = fmax(bounds.origin.y, 0)
         bounds.size.height -= 30 // ignore the bottom range
         
         if let
-            start : UITextPosition = textView.characterRangeAtPoint(bounds.origin)?.start,
-            end : UITextPosition = textView.characterRangeAtPoint(CGPointMake(CGRectGetMaxX(bounds), CGRectGetMaxY(bounds)))?.end {
+            start : UITextPosition = textView.closestPositionToPoint(bounds.origin),
+            end : UITextPosition = textView.closestPositionToPoint(CGPointMake(CGRectGetMaxX(bounds), CGRectGetMaxY(bounds))) {
                 
                 let location = textView.offsetFromPosition(textView.beginningOfDocument, toPosition: start)
                 let length = textView.offsetFromPosition(textView.beginningOfDocument, toPosition: end) - location
@@ -423,17 +439,19 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
         textView.attributedText.enumerateAttributesInRange(NSMakeRange(0, textView.attributedText.length), options: []) { [weak self] (attributes : [String : AnyObject], rangeEnum, stop) -> Void in
             if let
                 strongSelf = self,
-                verse = attributes[Constants.USFM_VERSE_NUMBER] as? NSString,
-                unadjustedFrame = strongSelf.unadjustedFrameOfTextRange(rangeEnum, inTextView: textView)
-                where verse.integerValue == verseNumber
+                verse = attributes[Constants.USFM_VERSE_NUMBER] as? Int where verse == verseNumber,
+                let unadjustedFrame = strongSelf.unadjustedFrameOfTextRange(rangeEnum, inTextView: textView)
             {
                 frame.origin.x = fmin(frame.origin.x, unadjustedFrame.origin.x)
-                frame.origin.y = fmin(frame.origin.y, (unadjustedFrame.origin.y - textView.contentOffset.y) )
-                let currentHeight = (unadjustedFrame.origin.y - frame.origin.y) + unadjustedFrame.size.height
+                frame.origin.y = fmin(frame.origin.y, unadjustedFrame.origin.y)
+                let currentHeight = CGRectGetMaxY(unadjustedFrame) - frame.origin.y
                 frame.size.height = fmax(frame.size.height, currentHeight)
                 frame.size.width = fmax(frame.size.width, unadjustedFrame.size.width)
             }
         }
+        
+        frame.origin.y -= textView.contentOffset.y
+        frame.origin.x -= textView.contentOffset.y
         
         assert(frame.origin.x != CGFloat.max && frame.origin.y != CGFloat.max, "The frame was not set for verse \(verseNumber) in textview \(textView)")
         
@@ -459,11 +477,10 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
         textInRange.enumerateAttributesInRange(NSMakeRange(0, textInRange.length), options: []) { [weak self] (attributes : [String : AnyObject], rangeEnum, stop) -> Void in
             if let
                 strongself = self,
-                verse = attributes[Constants.USFM_VERSE_NUMBER] as? NSString,
+                number = attributes[Constants.USFM_VERSE_NUMBER] as? Int,
                 frame = strongself.frameOfTextRange(rangeEnum, inTextView: textView)
             {
                 rowHeight = fmaxf(rowHeight, Float(frame.size.height))
-                let number = verse.integerValue
                 if minVerse >= number && frame.size.width > 15 && rangeEnum.length > 5 { // the 5 is to catch newlines and other trailing characters
                     minRelativeRect = strongself.fullFrameOfVerseNumber(number, inTextView: textView)
                     if textView.contentOffset.y < 5 { // 5 = wiggle room

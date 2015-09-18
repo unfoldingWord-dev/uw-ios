@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A282b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
@@ -19,16 +19,19 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pqc-pV-fjy" userLabel="ViewAccessories">
                                 <rect key="frame" x="0.0" y="503" width="600" height="53"/>
+                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="53" id="DhO-tK-o6H"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r2g-Cl-zUS" userLabel="ViewMainContent">
-                                <rect key="frame" x="0.0" y="20" width="600" height="483"/>
+                                <rect key="frame" x="0.0" y="70" width="600" height="433"/>
+                                <animations/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w7J-bD-6LT">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <animations/>
                                 <items>
                                     <barButtonItem image="audio" id="ah1-b6-7bs">
                                         <connections>
@@ -63,20 +66,38 @@
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="barTintColor" red="0.17243571999999999" green="0.6027659407" blue="0.40910381759999997" alpha="1" colorSpace="calibratedRGB"/>
                             </toolbar>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uoz-kV-b32">
+                                <rect key="frame" x="0.0" y="20" width="600" height="50"/>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="lJE-3d-0mZ"/>
+                                </constraints>
+                            </view>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="pqc-pV-fjy" firstAttribute="leading" secondItem="EZX-ox-VIQ" secondAttribute="leading" id="0mh-kZ-yj9"/>
                             <constraint firstItem="lKk-Yd-nBZ" firstAttribute="top" secondItem="w7J-bD-6LT" secondAttribute="bottom" id="1Jq-e5-FGs"/>
+                            <constraint firstAttribute="trailing" secondItem="Uoz-kV-b32" secondAttribute="trailing" id="45w-N2-G5F"/>
                             <constraint firstItem="pqc-pV-fjy" firstAttribute="top" secondItem="r2g-Cl-zUS" secondAttribute="bottom" id="4Gi-zm-KpF"/>
                             <constraint firstAttribute="trailing" secondItem="w7J-bD-6LT" secondAttribute="trailing" id="5bh-16-e1E"/>
                             <constraint firstItem="r2g-Cl-zUS" firstAttribute="leading" secondItem="EZX-ox-VIQ" secondAttribute="leading" id="8Ja-ff-hdn"/>
+                            <constraint firstItem="Uoz-kV-b32" firstAttribute="leading" secondItem="EZX-ox-VIQ" secondAttribute="leading" id="E66-sJ-2rZ"/>
                             <constraint firstAttribute="trailing" secondItem="r2g-Cl-zUS" secondAttribute="trailing" id="QTX-Fv-Qac"/>
+                            <constraint firstItem="Uoz-kV-b32" firstAttribute="top" secondItem="vRe-1B-OeP" secondAttribute="bottom" id="R4r-wl-rvc"/>
+                            <constraint firstItem="r2g-Cl-zUS" firstAttribute="top" secondItem="Uoz-kV-b32" secondAttribute="bottom" id="Z2S-I0-yoC"/>
                             <constraint firstItem="w7J-bD-6LT" firstAttribute="top" secondItem="pqc-pV-fjy" secondAttribute="bottom" id="bzs-X6-DuP"/>
                             <constraint firstItem="w7J-bD-6LT" firstAttribute="leading" secondItem="EZX-ox-VIQ" secondAttribute="leading" id="c38-Id-OCd"/>
                             <constraint firstItem="r2g-Cl-zUS" firstAttribute="top" secondItem="vRe-1B-OeP" secondAttribute="bottom" id="vIC-9M-gC1"/>
                             <constraint firstAttribute="trailing" secondItem="pqc-pV-fjy" secondAttribute="trailing" id="vYg-Jl-ExV"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="vIC-9M-gC1"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="barButtonDiglot" destination="e7f-5o-dq5" id="ygM-XL-t8d"/>
@@ -85,9 +106,11 @@
                         <outlet property="barButtonSpeaker" destination="ah1-b6-7bs" id="BDy-OU-640"/>
                         <outlet property="barButtonVideo" destination="0ax-m6-hkj" id="siO-IQ-B1C"/>
                         <outlet property="constraintAccessorySpaceToToolBar" destination="bzs-X6-DuP" id="WKI-nh-rpr"/>
+                        <outlet property="constraintFakeNavHeight" destination="lJE-3d-0mZ" id="qMR-Z8-g0a"/>
                         <outlet property="contraintToolbarSpaceToBottom" destination="c38-Id-OCd" id="QrR-6s-NHq"/>
                         <outlet property="toolbarBottom" destination="w7J-bD-6LT" id="Nzg-6z-pKf"/>
                         <outlet property="viewAccessories" destination="pqc-pV-fjy" id="GXY-t8-yrP"/>
+                        <outlet property="viewForFakeNavBar" destination="Uoz-kV-b32" id="H0S-Ci-rqA"/>
                         <outlet property="viewMainContent" destination="r2g-Cl-zUS" id="v1b-re-qCg"/>
                         <outletCollection property="userToolbarButtons" destination="0ax-m6-hkj" collectionClass="NSMutableArray" id="AmD-CD-pUQ"/>
                         <outletCollection property="userToolbarButtons" destination="ah1-b6-7bs" collectionClass="NSMutableArray" id="Ws8-DR-760"/>

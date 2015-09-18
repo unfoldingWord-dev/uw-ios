@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VXW-ec-y5Q">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A282b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VXW-ec-y5Q">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
@@ -20,6 +20,7 @@
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="fyv-gM-tl2">
                                 <rect key="frame" x="-10" y="0.0" width="620" height="600"/>
+                                <animations/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="GhN-pp-C2v">
                                     <size key="itemSize" width="50" height="50"/>
@@ -34,6 +35,7 @@
                                 </connections>
                             </collectionView>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="fyv-gM-tl2" firstAttribute="top" secondItem="o4a-Ve-CpC" secondAttribute="bottom" id="8e9-1b-vML"/>
@@ -60,6 +62,7 @@
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="bIO-x1-gTB">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <animations/>
                     <items>
                         <barButtonItem title="Item" id="Ji4-pL-hXD"/>
                     </items>
@@ -81,13 +84,16 @@
                         <subviews>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q2e-dA-xrq" userLabel="SideView">
                                 <rect key="frame" x="301" y="0.0" width="299" height="600"/>
+                                <animations/>
                                 <color key="backgroundColor" red="0.43925401730000002" green="1" blue="0.44185694419999999" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jD3-73-CVd" userLabel="MainView">
                                 <rect key="frame" x="0.0" y="0.0" width="299" height="600"/>
+                                <animations/>
                                 <color key="backgroundColor" red="1" green="0.090197819210000002" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="jD3-73-CVd" secondAttribute="bottom" id="27P-bC-F9n"/>
@@ -144,6 +150,7 @@
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FgR-BA-fkS">
                                         <rect key="frame" x="6" y="6" width="288" height="568"/>
+                                        <animations/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <attributedString key="attributedText">
                                             <fragment>
@@ -159,14 +166,16 @@
                                             <outlet property="delegate" destination="U7C-88-XJG" id="E99-aK-GAz"/>
                                         </connections>
                                     </textView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Empty Cell Instructions That Might Spill To Multiple LInes" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lV2-6a-s8k">
-                                        <rect key="frame" x="40" y="258" width="220" height="65"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Empty Cell Instructions That Might Spill To Multiple LInes" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lV2-6a-s8k">
+                                        <rect key="frame" x="40" y="280" width="520" height="22"/>
+                                        <animations/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" tag="111" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dtz-5Y-Vzz">
                                         <rect key="frame" x="40" y="266" width="220" height="48"/>
+                                        <animations/>
                                         <color key="backgroundColor" red="0.66666666669999997" green="0.81568627449999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="48" id="ZQG-i4-ldH"/>
@@ -177,6 +186,7 @@
                                         </state>
                                     </button>
                                 </subviews>
+                                <animations/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="FgR-BA-fkS" firstAttribute="top" secondItem="Zrd-D7-kS8" secondAttribute="top" constant="6" id="2uh-u9-yo8"/>
@@ -198,6 +208,7 @@
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aqQ-sZ-9gH">
                                         <rect key="frame" x="6" y="6" width="288" height="568"/>
+                                        <animations/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <attributedString key="attributedText">
                                             <fragment>
@@ -215,12 +226,14 @@
                                     </textView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Empty Cell Instructions That Might Spill To Multiple LInes" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oXl-do-vPt">
                                         <rect key="frame" x="40" y="258" width="220" height="65"/>
+                                        <animations/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" tag="111" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Gh-F4-4bY">
                                         <rect key="frame" x="40" y="266" width="220" height="48"/>
+                                        <animations/>
                                         <color key="backgroundColor" red="0.66666666669999997" green="0.81568627449999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="48" id="n11-5y-Pyq"/>
@@ -231,6 +244,7 @@
                                         </state>
                                     </button>
                                 </subviews>
+                                <animations/>
                                 <color key="backgroundColor" red="1" green="0.87405108890000005" blue="0.056655094070000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="oXl-do-vPt" firstAttribute="leading" secondItem="R2t-Ig-uaQ" secondAttribute="leading" constant="40" id="5Qz-5s-rOd"/>
@@ -248,32 +262,25 @@
                                 </constraints>
                             </view>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="uv5-a3-ezE" firstAttribute="top" secondItem="R2t-Ig-uaQ" secondAttribute="bottom" id="4pV-V8-exl"/>
                             <constraint firstItem="R2t-Ig-uaQ" firstAttribute="leading" secondItem="Zrd-D7-kS8" secondAttribute="trailing" id="B3W-eT-RbA"/>
                             <constraint firstItem="Zrd-D7-kS8" firstAttribute="top" secondItem="qrQ-1R-cpu" secondAttribute="bottom" id="CQb-q8-Rqw"/>
                             <constraint firstItem="Zrd-D7-kS8" firstAttribute="leading" secondItem="xNO-tF-MAs" secondAttribute="leading" id="IIh-4y-mn6"/>
-                            <constraint firstAttribute="trailing" secondItem="Zrd-D7-kS8" secondAttribute="trailing" constant="200" id="JC0-IR-66g"/>
+                            <constraint firstItem="Zrd-D7-kS8" firstAttribute="width" secondItem="xNO-tF-MAs" secondAttribute="width" id="Ji9-Zj-2GW"/>
                             <constraint firstItem="R2t-Ig-uaQ" firstAttribute="width" secondItem="xNO-tF-MAs" secondAttribute="width" multiplier="0.5" id="TNx-bM-TbD"/>
                             <constraint firstItem="R2t-Ig-uaQ" firstAttribute="top" secondItem="qrQ-1R-cpu" secondAttribute="bottom" id="TQV-tH-3ew"/>
-                            <constraint firstAttribute="width" secondItem="Zrd-D7-kS8" secondAttribute="width" multiplier="2" id="X1D-pQ-FSf"/>
                             <constraint firstAttribute="bottom" secondItem="Zrd-D7-kS8" secondAttribute="bottom" id="gl1-SD-3z2"/>
-                            <constraint firstAttribute="width" secondItem="Zrd-D7-kS8" secondAttribute="width" multiplier="0.5" id="pca-aB-M2c"/>
                             <constraint firstAttribute="width" secondItem="Zrd-D7-kS8" secondAttribute="width" multiplier="2" id="vCb-Eu-Xhu"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="JC0-IR-66g"/>
-                                <exclude reference="X1D-pQ-FSf"/>
-                                <exclude reference="pca-aB-M2c"/>
-                            </mask>
-                        </variation>
                     </view>
                     <connections>
                         <outlet property="buttonMain" destination="Dtz-5Y-Vzz" id="6pu-Ek-3ge"/>
                         <outlet property="buttonSideDiglot" destination="3Gh-F4-4bY" id="XtV-OC-M8X"/>
-                        <outlet property="constraintMainViewProportion" destination="vCb-Eu-Xhu" id="7dE-Rg-3FV"/>
+                        <outlet property="constraintMainOnly" destination="Ji9-Zj-2GW" id="5HH-fK-t6X"/>
+                        <outlet property="constraintSideBySide" destination="vCb-Eu-Xhu" id="jbk-Kv-qRI"/>
                         <outlet property="labelEmptyMain" destination="lV2-6a-s8k" id="taN-gu-Ieo"/>
                         <outlet property="labelEmptySide" destination="oXl-do-vPt" id="Pg9-az-SHy"/>
                         <outlet property="textViewMain" destination="FgR-BA-fkS" id="hVR-zP-VtR"/>

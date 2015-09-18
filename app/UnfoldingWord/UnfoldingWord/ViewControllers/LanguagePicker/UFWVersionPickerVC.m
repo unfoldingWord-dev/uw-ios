@@ -28,13 +28,15 @@
 
 @property (nonatomic, copy) VersionPickerCompletion completion;
 @property (nonatomic, strong) UWTOC *initialTOC;
+@property (nonatomic, strong) UWTopContainer *topContainer;
 @end
 
 @implementation UFWVersionPickerVC
 
-+ (UIViewController *)navigationLanguagePickerWithTOC:(UWTOC *)toc completion:(VersionPickerCompletion)completion
++ (UIViewController * __nonnull)navigationLanguagePickerWithTOC:(UWTOC * __nullable)toc topContainer:(UWTopContainer * __nonnull)topContainer completion:(VersionPickerCompletion __nonnull)completion
 {
     UFWVersionPickerVC *pickerVC = [[UFWVersionPickerVC alloc] init];
+    pickerVC.topContainer = topContainer;
     pickerVC.initialTOC = toc;
     pickerVC.completion = completion;
     return [UINavigationController navigationControllerWithUFWBaseViewController:pickerVC];
@@ -85,13 +87,29 @@
 {
     // Make matching arrays to know which is selected.
     _initialTOC  = initialTOC;
-    self.arrayLanguages = initialTOC.version.language.topContainer.sortedLanguages;
+    
+    if (self.topContainer != nil) {
+        [self refreshList];
+    }
+}
 
+- (void)setTopContainer:(UWTopContainer *)topContainer
+{
+    _topContainer = topContainer;
+    self.arrayLanguages = topContainer.sortedLanguages;
+    
+    if (self.initialTOC != nil) {
+        [self refreshList];
+    }
+}
+
+- (void)refreshList {
+    
     self.dictionaryOfVersionExpandedStates = [NSMutableDictionary new];
-
-    UWLanguage *selectedLanguage = initialTOC.version.language;
+    
+    UWLanguage *selectedLanguage = self.initialTOC.version.language;
     NSMutableArray *array = [NSMutableArray new];
-
+    
     for (UWLanguage *language in self.arrayLanguages) {
         [array addObject:@([language isEqual:selectedLanguage])];
     }

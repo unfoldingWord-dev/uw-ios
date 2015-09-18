@@ -18,6 +18,11 @@ static CGFloat const arrowSpace = 14.0f;
 
 @implementation ACTLabelButton
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    self.userInteractionEnabled = YES;
+}
+
 - (CGSize)sizeForText:(NSString *)text usingFont:(UIFont *)font
 {
     NSDictionary *attributes = @{NSFontAttributeName:font};
@@ -29,9 +34,14 @@ static CGFloat const arrowSpace = 14.0f;
 
 -(CGSize)intrinsicContentSize
 {
-    CGSize size = [self sizeForText:self.text usingFont:self.font];
-    size.width +=  arrowSpace + arrowOffset;
-    return size;
+    if (self.isHidingArrow == YES) {
+        return [super intrinsicContentSize];
+    }
+    else {
+        CGSize size = [self sizeForText:self.text usingFont:self.font];
+        size.width +=  arrowSpace + arrowOffset;
+        return size;
+    }
 }
 
 + (CGFloat)widthForArrow
@@ -58,7 +68,6 @@ static CGFloat const arrowSpace = 14.0f;
 {
     [super touchesBegan:touches withEvent:event];
     [self highlight];
-
 }
 
 - (void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -111,6 +120,11 @@ static CGFloat const arrowSpace = 14.0f;
 
 -(void)drawTextInRect:(CGRect)rect
 {
+    if (self.isHidingArrow == YES) {
+        [super drawTextInRect:rect];
+        return;
+    }
+    
     // Adjust the rect out of the way of the arrow.
     CGFloat actualWidth = self.frame.size.width;
     CGFloat drawWidth = actualWidth - arrowSpace - arrowOffset;

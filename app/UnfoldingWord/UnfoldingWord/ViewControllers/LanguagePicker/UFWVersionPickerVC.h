@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 @class UWTOC;
 @class UWVersion;
+@class UWTopContainer;
 
 typedef void (^VersionPickerCompletion) (BOOL isCanceled, UWVersion * __nullable versionPicked);
 
 @interface UFWVersionPickerVC : UITableViewController
 
-+ (UIViewController * __nonnull)navigationLanguagePickerWithTOC:(UWTOC * __nonnull)toc completion:(VersionPickerCompletion __nonnull)completion;
++ (UIViewController * __nonnull)navigationLanguagePickerWithTOC:(UWTOC * __nullable)toc topContainer:(UWTopContainer * __nonnull)topContainer completion:(VersionPickerCompletion __nonnull)completion;
 
 @end

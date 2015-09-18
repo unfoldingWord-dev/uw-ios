@@ -30,21 +30,25 @@ struct AreaAttributes {
     let toc : UWTOC?
 }
 
-class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate{
     
     private var arrayMainChapters: [USFMChapter]?
     private var arraySideChapters: [USFMChapter]?
     
-    var tocMain : UWTOC? = UFWSelectionTracker.TOCforUSFM() {
+    var fakeNavBar : FakeNavBarView! // Assign on creation of this VC. Otherwise, it should crash!
+    
+    var tocMain : UWTOC?  {
         didSet {
             arrayMainChapters = chaptersFromTOC(tocMain)
             UFWSelectionTracker.setUSFMTOC(tocMain)
+            updateTOCInArea(.Main)
         }
     }
-    var tocSide : UWTOC? = UFWSelectionTracker.TOCforUSFMSide() {
+    var tocSide : UWTOC? {
         didSet {
-            arrayMainChapters = chaptersFromTOC(tocSide)
+            arraySideChapters = chaptersFromTOC(tocSide)
             UFWSelectionTracker.setUSFMTOCSide(tocSide)
+            updateTOCInArea(.Side)
         }
     }
 
@@ -63,6 +67,7 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         }
         set {
             UFWSelectionTracker.setChapterUSFM(currentChapterNumber)
+            chapterDidChange(currentChapterNumber)
         }
     }
     
@@ -74,25 +79,81 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         super.viewDidLoad()
         self.dataSource = self
         self.delegate = self
+        tocMain = UFWSelectionTracker.TOCforUSFM()
+        tocSide = UFWSelectionTracker.TOCforUSFMSide()
+        self.loadCurrentContentAnimated(false)
+
+    }
+    
+    func chapterDidChange(chapterNum : Int) {
+        
+        let title : String
+        if let toc = UFWSelectionTracker.TOCforUSFM() {
+            title = "\(toc.title) \(UFWSelectionTracker.chapterNumberUSFM())"
+        }
+        else {
+            title = "Select Book"
+        }
+        fakeNavBar.labelButtonBookPlusChapter.text = title
+    }
+    
+    func updateTOCInArea(area : TOCArea) {
+        guard let toc = tocForArea(area) else {
+            return
+        }
+        
+        switch area {
+        case .Main:
+            fakeNavBar.labelButtonVersionMainAlone.text = toc.slug?.capitalizedString
+            fakeNavBar.labelButtonSSVersionMain.text = toc.slug?.capitalizedString
+        case .Side:
+            fakeNavBar.labelButtonSSVersionSide.text = toc.slug?.capitalizedString
+        }
+        
+        updateChapterVCForArea(area)
+
     }
     
     // Public
-    func changeDiglot() {
+    func changeDiglotToShowing(isShowing : Bool) {
         
-        if let controllers = self.viewControllers where controllers.count > 0 {
-            let currentController = controllers[0] as! USFMChapterVC
-            if isShowingSideView {
-                currentController.hideDiglotAnimated(true)
-            }
-            else {
-                currentController.showDiglotAnimated(true)
-            }
+        if isShowing == isShowingSideView {
+            return
         }
+        isShowingSideView = isShowing
         
-        let isShowing = isShowingSideView
-        isShowingSideView = !isShowing
+        guard let currentController = currentChapterVC() else { return }
+
+        if isShowing {
+            currentController.hideDiglotAnimated(true)
+        }
+        else {
+            currentController.showDiglotAnimated(true)
+        }
     }
     
+    func updateChapterVCForArea(area : TOCArea) {
+        guard let currentController = currentChapterVC() else { return }
+
+        switch area {
+        case .Main:
+            currentController.mainAttributes = attributesForArea(.Main)
+        case .Side:
+            currentController.sideAttributes = attributesForArea(.Side)
+        }
+        
+        currentController.loadContentForArea(area, setToTop:false)
+    }
+    
+    private func currentChapterVC() -> USFMChapterVC? {
+        if let controllers = self.viewControllers where controllers.count > 0,
+            let currentController = controllers[0] as? USFMChapterVC {
+                return currentController
+        }
+        else {
+            return nil
+        }
+    }
     
     // Private
     
@@ -125,7 +186,7 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         }
         
         if let chapters = chaptersForArea(area) {
-            if chapters.count >= currentChapterNumber {
+            if currentChapterNumber >= chapters.count {
                 chapter = nil
                 let gotoPrefix = NSLocalizedString("Go to", comment: "Name of bible chapter goes after this text")
                 nextChapterText = "\(gotoPrefix) \(title)"
@@ -143,64 +204,7 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         let attributes = AreaAttributes(nextChapterText: nextChapterText, textAlignment: textAlignment, chapter: chapter, toc: toc)
         return attributes
     }
-    
-    private func showVersionPickerForArea(area : TOCArea) -> Bool {
-        
-        guard let toc = tocForArea(area) else {
-            print("Requested toc, but was empty")
-            return false
-        }
-        
-        let navVC = UFWVersionPickerVC.navigationLanguagePickerWithTOC(toc) { [weak self] (isCanceled : Bool, versionPicked : UWVersion?) -> Void in
 
-            guard let strongself = self else { return }
-            strongself.dismissViewControllerAnimated(true, completion: { () -> Void in })
-            
-            guard let versionPicked = versionPicked, arrayTOCS = versionPicked.sortedTOCs() as? [UWTOC] where arrayTOCS.count > 0  && isCanceled == false else { return }
-            
-            if let initialSlug = toc.slug {
-                let results = arrayTOCS.filter {
-                    if let candidateSlug = $0.slug where candidateSlug.isEqual(initialSlug) {
-                        return true
-                    }
-                    return false
-                }
-                assert(results.count == 1, "There should be exactly one TOC that matches!! Instead there were \(results.count)")
-                if results.count >= 1 {
-                    strongself.selectTOC(results[0], forArea: area)
-                    strongself.loadCurrentContentAnimated(false)
-                    return
-                }
-            }
-        
-            // Fall through
-            strongself.selectTOC(arrayTOCS[0], forArea: area)
-            strongself.loadCurrentContentAnimated(false)
-        }
-        presentViewController(navVC, animated: true) { () -> Void in }
-        return true
-    }
-    
-    private func showBookPickerForArea(area : TOCArea) {
-        
-        guard let toc = tocForArea(area) else {
-            print("Requested toc, but was empty")
-            return
-        }
-        
-        let navVC = UFWBookPickerUSFMVC.navigationBookPickerWithVersion(toc.version) { [weak self] (isCanceled : Bool, toc : UWTOC?, chapterPicked : Int) -> Void in
-            guard let strongself = self else { return }
-            strongself.dismissViewControllerAnimated(true, completion: { () -> Void in })
-            
-            let chapter = chapterPicked > 0 ? chapterPicked : 1
-            if let toc = toc {
-                strongself.selectTOC(toc, forArea: area)
-                strongself.currentChapterNumber = chapter
-                strongself.loadCurrentContentAnimated(false)
-            }
-        }
-        presentViewController(navVC, animated: true) { () -> Void in  }
-    }
     
     // Page View Controller Delegate
     
@@ -230,7 +234,7 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
-        
+                
         let existingVC = viewController as! USFMChapterVC
         
         if existingVC.chapterNumber >= anyArray().count {
@@ -242,13 +246,13 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         }
     }
     
-    func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {
-        return anyArray().count
-    }
-    
-    func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int {
-        return currentChapterNumber
-    }
+//    func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {
+//        return anyArray().count
+//    }
+//    
+//    func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int {
+//        return currentChapterNumber
+//    }
     
     // Helpers
         

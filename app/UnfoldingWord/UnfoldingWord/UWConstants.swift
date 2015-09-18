@@ -38,9 +38,24 @@ enum FontSize : Float {
     case Smallest = 9, Small = 12, Regular = 15, Large = 18, Largest = 21
 }
 
+func FONT_LIGHT() -> UIFont { // duplicated in Constants.h
+    return UIFont(name: "HelveticaNeue-Light", size: 17)!
+}
+
+func FONT_NORMAL() -> UIFont { // duplicated in Constants.h
+    return UIFont(name: "HelveticaNeue", size: 17)!
+}
+
+func FONT_MEDIUM() -> UIFont { // duplicated in Constants.h
+    return UIFont(name: "HelveticaNeue-Medium", size: 17)!
+}
+
+func BACKGROUND_GREEN() -> UIColor { // duplicated in Constants.h
+    return UIColor(red: 0.4, green: 0.58, blue: 0.537, alpha: 1)
+}
+
 struct Constants {
 
-    
     struct URLSource {
         static let signature = "sig"
         static let open_chapter = "chapters"

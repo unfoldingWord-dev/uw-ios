@@ -79,6 +79,7 @@ class FileDownloader : NSObject, NSURLSessionDelegate {
     
     func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
         if let error = error {
+            print("Error \(error.userInfo)")
             completion(success: false, data: nil)
         }
     }

@@ -196,7 +196,9 @@
 - (void)showVersionSelector:(FrameCell *)cell view:(UIView *)view isSide:(BOOL)isSide;
 {
     __weak typeof(self) weakself = self;
-    UIViewController *navVC = [UFWVersionPickerVC navigationLanguagePickerWithTopContainer:self.topContainer isSide:isSide completion:^(BOOL isCanceled, UWVersion *versionPicked) {
+    UWTOC *toc = (isSide) ? self.chapterSide.container.toc : self.chapterMain.container.toc;
+    UIViewController *navVC = [UFWVersionPickerVC navigationLanguagePickerWithTOC:toc topContainer:toc.version.language.topContainer completion:^(BOOL isCanceled, UWVersion * _Nullable versionPicked) {
+
         [weakself dismissViewControllerAnimated:YES completion:^{}];
         
         if (isCanceled) {

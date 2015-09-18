@@ -9,13 +9,15 @@
 import Foundation
 import UIKit
 
-class ContainerVC: UIViewController {
+typealias AudioActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapterIndex : Int?, setToOn: Bool)
+typealias FontActionBlock = (size : FontSize, font : UIFont, brightness: Float) -> Void
+typealias VideoActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapterIndex : Int?, setToOn: Bool)
+typealias DiglotActionBlock =  (barButton : UIBarButtonItem, isOn: Bool) -> Void
+typealias ShareActionBlock = (barButton : UIBarButtonItem) -> (UWTOC?)
+
+class ContainerVC: UIViewController, FakeNavBarDelegate {
     
-    typealias AudioActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapterIndex : Int?, setToOn: Bool)
-    typealias FontActionBlock = (size : FontSize, font : UIFont, brightness: Float) -> Void
-    typealias VideoActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapterIndex : Int?, setToOn: Bool)
-    typealias DiglotActionBlock =  (barButton : UIBarButtonItem, isOn: Bool) -> Void
-    typealias ShareActionBlock = (barButton : UIBarButtonItem) -> (UWTOC?)
+    var topContainer : UWTopContainer! // Must set before loading the view!
     
     let colorOn = UIColor(red: 0.0, green: 0.769, blue: 0.98, alpha: 1)
     let colorOff = UIColor.whiteColor()
@@ -23,7 +25,7 @@ class ContainerVC: UIViewController {
     @IBOutlet weak var viewMainContent: UIView!
     @IBOutlet weak var viewAccessories: UIView!
     @IBOutlet weak var toolbarBottom: UIToolbar!
-
+    
     // Bar Buttons
     @IBOutlet var userToolbarButtons: [UIBarButtonItem]!
     @IBOutlet weak var barButtonSpeaker: UIBarButtonItem!
@@ -35,9 +37,6 @@ class ContainerVC: UIViewController {
     @IBOutlet weak var contraintToolbarSpaceToBottom: NSLayoutConstraint!
     @IBOutlet weak var constraintAccessorySpaceToToolBar: NSLayoutConstraint!
     
-    var topContainer : UWTopContainer? = nil
-    var containerVC : UFWContainerUSFMVC? = nil
-    
     var actionSpeaker : AudioActionBlock?
     var actionVideo : VideoActionBlock?
     var actionFont : FontActionBlock?
@@ -45,6 +44,26 @@ class ContainerVC: UIViewController {
     var actionShare: ShareActionBlock?
     
     var playerViewAudio : AudioPlayerView?
+
+    @IBOutlet weak var viewForFakeNavBar: UIView! {
+        didSet {
+            let nibViews = NSBundle.mainBundle().loadNibNamed("FakeNavBarView", owner: nil, options: nil)
+            fakeNavBar = nibViews[0] as! FakeNavBarView
+            fakeNavBar.translatesAutoresizingMaskIntoConstraints = false
+            let constraints = NSLayoutConstraint.constraintsForView(fakeNavBar, insideView: viewForFakeNavBar, topMargin: 0, bottomMargin: 0, leftMargin: 0, rightMargin: 0)!
+            viewForFakeNavBar.addSubview(fakeNavBar)
+            viewForFakeNavBar.addConstraints(constraints)
+            fakeNavBar.backgroundColor = BACKGROUND_GREEN()
+            fakeNavBar.delegate = self
+        }
+    }
+    
+    
+    var fakeNavBar: FakeNavBarView!
+    
+    @IBOutlet weak var constraintFakeNavHeight : NSLayoutConstraint!
+    
+    var usfmPageVC : USFMPageViewController? = nil
     
     override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
         super.init(nibName: nibNameOrNil, bundle: nil)
@@ -59,20 +78,16 @@ class ContainerVC: UIViewController {
         turnOffAllBarButtons()
         updateAccessoryUI(isShowing: false, duration: 0)
         
-        assert(topContainer != nil, "The top container must be present when the view loads")
-
-        if let topContainer = self.topContainer { // no reason to crash if we're not using asserts
-            let sb = UIStoryboard(name: "USFM", bundle: nil)
-            let theContainerVC: UFWContainerUSFMVC = sb.instantiateViewControllerWithIdentifier("UFWContainerUSFMVC") as! UFWContainerUSFMVC
-            theContainerVC.topContainer = topContainer
-            theContainerVC.masterContainer = self
-            theContainerVC.view.translatesAutoresizingMaskIntoConstraints = false
-            self.viewMainContent.addSubview(theContainerVC.view)
-            let constraints = NSLayoutConstraint.constraintsForView(theContainerVC.view, insideView: self.viewMainContent, topMargin: 0, bottomMargin: 0, leftMargin: 0, rightMargin: 0) as! [NSLayoutConstraint]
-            self.viewMainContent.addConstraints(constraints)
-            self.containerVC = theContainerVC
-        }
+        let sb = UIStoryboard(name: "USFM", bundle: nil)
+        let theContainerVC: USFMPageViewController = sb.instantiateViewControllerWithIdentifier("USFMPageViewController") as! USFMPageViewController
+        theContainerVC.fakeNavBar = fakeNavBar
+        theContainerVC.view.translatesAutoresizingMaskIntoConstraints = false
+        self.viewMainContent.addSubview(theContainerVC.view)
+        let constraints = NSLayoutConstraint.constraintsForView(theContainerVC.view, insideView: self.viewMainContent, topMargin: 0, bottomMargin: 0, leftMargin: 0, rightMargin: 0)!
+        self.viewMainContent.addConstraints(constraints)
+        self.usfmPageVC = theContainerVC
     }
+
     
     @IBAction func userPressSpeakerButton(barButton: UIBarButtonItem) {
         
@@ -122,10 +137,125 @@ class ContainerVC: UIViewController {
         
     }
     
+    // Nav Bar Delegate
+    
+    func tocForArea(area : TOCArea) -> UWTOC? {
+        if let pageVC = usfmPageVC {
+            switch area {
+            case .Main:
+                return pageVC.tocMain
+            case .Side:
+                return pageVC.tocSide
+            }
+        }
+        else {
+            // Add the Open Bible Stories Here
+            return nil
+        }
+    }
+    
+    func expandToFullSize() {
+        UIView.animateWithDuration(0.25) { () -> Void in
+            self.constraintFakeNavHeight.constant = self.fakeNavBar.maximumHeight
+        }
+    }
+    
+    func navBackButtonPressed() {
+        self.navigationController!.popViewControllerAnimated(true)
+    }
+    
+    func navButtonPressed(button : ACTLabelButton, type : NavButtonType) {
+        switch type {
+        case .VersionMain:
+            showVersionPickerForArea(.Main)
+        case .VersionSide:
+            showVersionPickerForArea(.Side)
+        case .BookChapter:
+            showBookPicker()
+        }
+    }
+    
+    
+    private func showVersionPickerForArea(area : TOCArea) -> Bool {
+        
+        let navVC = UFWVersionPickerVC.navigationLanguagePickerWithTOC(tocForArea(area), topContainer: topContainer) {
+            [weak self] (isCanceled : Bool, versionPicked : UWVersion?) -> Void in
+            
+            guard let strongself = self else { return }
+            strongself.dismissViewControllerAnimated(true, completion: { () -> Void in })
+            
+            guard let versionPicked = versionPicked, arrayTOCS = versionPicked.sortedTOCs() as? [UWTOC] where arrayTOCS.count > 0  && isCanceled == false
+                else { return }
+            
+            if let initialSlug = strongself.tocForArea(area)?.slug {
+                let results = arrayTOCS.filter {
+                    if let candidateSlug = $0.slug where candidateSlug.isEqual(initialSlug) {
+                        return true
+                    }
+                    return false
+                }
+                assert(results.count == 1, "There should be exactly one TOC that matches!! Instead there were \(results.count)")
+                if results.count >= 1 {
+                    strongself.selectTOC(results[0], forArea: area)
+                    return
+                }
+            }
+            
+            // Fall through
+            strongself.selectTOC(arrayTOCS[0], forArea: area)
+        }
+        presentViewController(navVC, animated: true) { () -> Void in }
+        return true
+    }
+    
+    private func selectTOC(toc : UWTOC?, forArea area : TOCArea) {
+        if let pageVC = usfmPageVC {
+            switch area {
+            case .Main:
+                pageVC.tocMain = toc
+            case .Side:
+                pageVC.tocSide = toc
+            }
+        }
+        else {
+            // Add the Open Bible Stories Here
+        }
+    }
+    
+    private func selectChapter(chapterNum : Int) {
+        if let _ = usfmPageVC {
+            usfmPageVC?.chapterDidChange(chapterNum)
+        }
+        else {
+            // Add the Open Bible Stories Here
+        }
+    }
+    
+    private func showBookPicker() {
+        
+        guard let toc = tocForArea(.Main) else {
+            print("Requested toc, but was empty")
+            return
+        }
+        
+        let navVC = UFWBookPickerUSFMVC.navigationBookPickerWithVersion(toc.version) { [weak self] (isCanceled : Bool, toc : UWTOC?, chapterPicked : Int) -> Void in
+            guard let strongself = self else { return }
+            strongself.dismissViewControllerAnimated(true, completion: { () -> Void in })
+            
+            let chapter = chapterPicked > 0 ? chapterPicked : 1
+            if let toc = toc {
+                strongself.selectTOC(toc, forArea: TOCArea.Main)
+                strongself.selectChapter(chapter)
+            }
+        }
+        presentViewController(navVC, animated: true) { () -> Void in  }
+    }
+    
+    
     // Helpers
     
     private func insertAudioPlayerIntoAccessoryViewWithUrl(url : NSURL) -> Bool {
-
+        
         if let existingPlayer = playerViewAudio, existingUrl = existingPlayer.url where existingUrl == url {
             return true
         }
@@ -144,7 +274,7 @@ class ContainerVC: UIViewController {
             view.removeFromSuperview()
         }
         viewAccessories.addSubview(view)
-        let constraints = NSLayoutConstraint.constraintsForView(view, insideView: viewAccessories, topMargin: 0, bottomMargin: 0, leftMargin: 0, rightMargin: 0) as! [NSLayoutConstraint]
+        let constraints = NSLayoutConstraint.constraintsForView(view, insideView: viewAccessories, topMargin: 0, bottomMargin: 0, leftMargin: 0, rightMargin: 0)!
         viewAccessories.addConstraints(constraints)
     }
     

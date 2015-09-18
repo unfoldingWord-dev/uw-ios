@@ -15,7 +15,7 @@ extension UIViewController {
         childVC.willMoveToParentViewController(self)
         childVC.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(childVC.view)
-        let constraints = NSLayoutConstraint.constraintsForView(childVC.view, insideView: view, topMargin: 0, bottomMargin: 0, leftMargin: 0, rightMargin: 0) as! [NSLayoutConstraint]
+        let constraints = NSLayoutConstraint.constraintsForView(childVC.view, insideView: view, topMargin: 0, bottomMargin: 0, leftMargin: 0, rightMargin: 0)!
         view.addConstraints(constraints)
         self.addChildViewController(childVC)
         childVC.didMoveToParentViewController(self)

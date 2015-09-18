@@ -14,7 +14,6 @@ import UIKit
     func userFinishedScrolling(vc vc : UFWTextChapterVC, verses : VerseContainer)
     func userFinishedScrollingCollectionView(vc vc : UFWTextChapterVC)
     
-    
     func userChangedTOC(vc vc : UFWTextChapterVC, pickedTOC : UWTOC)
     func matchingVCVerses(vc vc : UFWTextChapterVC) -> VerseContainer
 

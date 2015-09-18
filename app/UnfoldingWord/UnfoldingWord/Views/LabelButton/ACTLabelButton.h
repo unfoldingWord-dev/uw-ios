@@ -27,6 +27,8 @@ typedef NS_ENUM(NSInteger, ArrowDirection) {
 @property (nonatomic, strong) UIColor *colorHover;
 @property (nonatomic, assign) ArrowDirection direction;
 
+@property (nonatomic, assign) BOOL isHidingArrow;
+
 @property (nonatomic, strong) id matchingObject;
 
 + (CGFloat)widthForArrow;
