@@ -76,8 +76,8 @@ class FakeNavBarView : UIView, ACTLabelButtonDelegate {
         didSet {  setUpLabelButton(labelButtonVersionMainAlone) }
     }
     
-    @IBOutlet weak var constraintDistanceSSContainerFromBook: NSLayoutConstraint!
-    @IBOutlet weak var constraintDistanceBetweenSSVersions: NSLayoutConstraint!
+    @IBOutlet var constraintDistanceSSContainerFromBook: NSLayoutConstraint!
+    @IBOutlet var constraintDistanceBetweenSSVersions: NSLayoutConstraint!
     
     @IBAction func userPressedBackgroundButton(sender: AnyObject) {
         if let delegate = delegate where isAtMinHeight() {
@@ -86,6 +86,10 @@ class FakeNavBarView : UIView, ACTLabelButtonDelegate {
         else {
             buttonBackground.enabled = false
         }
+    }
+    
+    @IBAction func userPressedBackButton(sender : UIButton) {
+        delegate?.navBackButtonPressed()
     }
     
     override func awakeFromNib() {

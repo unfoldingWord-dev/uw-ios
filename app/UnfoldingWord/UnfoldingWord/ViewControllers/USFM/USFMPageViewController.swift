@@ -52,11 +52,8 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         }
     }
 
-    private var isShowingSideView : Bool  {
-        get {
-            return UFWSelectionTracker.isShowingSide()
-        }
-        set {
+    private var isShowingSideView : Bool!  {
+        didSet {
             UFWSelectionTracker.setIsShowingSide(isShowingSideView)
         }
     }
@@ -76,9 +73,11 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
     }
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         self.dataSource = self
         self.delegate = self
+        isShowingSideView = UFWSelectionTracker.isShowingSide()
         tocMain = UFWSelectionTracker.TOCforUSFM()
         tocSide = UFWSelectionTracker.TOCforUSFMSide()
         self.loadCurrentContentAnimated(false)
@@ -111,10 +110,34 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         }
         
         updateChapterVCForArea(area)
-
     }
     
     // Public
+    func addMasterContainerBlocksToContainer(masterContainer : ContainerVC) {
+        
+        //   typealias AudioActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapterIndex : Int?, setToOn: Bool)
+        masterContainer.actionSpeaker = { [weak self] (barButton : UIBarButtonItem, isOn: Bool) in
+            if isOn == false, let strongself = self {
+                if let toc = strongself.tocMain {
+                    return (toc, strongself.currentChapterNumber, true)
+                }
+                else if let toc = strongself.tocSide {
+                    return (toc, strongself.currentChapterNumber, true)
+                }
+            }
+            return (nil, nil, false)
+        }
+        
+        //    typealias DiglotActionBlock =  (barButton : UIBarButtonItem, isOn: Bool) -> Void
+        masterContainer.actionDiglot = { [weak self] (barButton : UIBarButtonItem, didChangeToOn: Bool) in
+            if let strongself = self {
+                strongself.changeDiglotToShowing(didChangeToOn)
+            }
+        }
+        
+    }
+    
+    
     func changeDiglotToShowing(isShowing : Bool) {
         
         if isShowing == isShowingSideView {
@@ -125,10 +148,10 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         guard let currentController = currentChapterVC() else { return }
 
         if isShowing {
-            currentController.hideDiglotAnimated(true)
+            currentController.showDiglotAnimated(true)
         }
         else {
-            currentController.showDiglotAnimated(true)
+            currentController.hideDiglotAnimated(true)
         }
     }
     

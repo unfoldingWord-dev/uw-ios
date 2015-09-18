@@ -39,8 +39,8 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     @IBOutlet weak var labelEmptyMain: UILabel!
     @IBOutlet weak var labelEmptySide: UILabel!
     
-    @IBOutlet weak var constraintSideBySide: NSLayoutConstraint!
-    @IBOutlet weak var constraintMainOnly : NSLayoutConstraint!
+    @IBOutlet var constraintSideBySide: NSLayoutConstraint!
+    @IBOutlet var constraintMainOnly : NSLayoutConstraint!
     
     // Managing State across scrollviews - Is there a better way to do this?
     var lastMainOffset : CGPoint = CGPointZero
@@ -286,12 +286,12 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     private func setSideViewToShowing(isShowing : Bool, animated isAnimated : Bool) {
         
         if isShowing {
-            constraintSideBySide.active = true
             constraintMainOnly.active = false
+            constraintSideBySide.active = true
         }
         else {
+            constraintSideBySide.active = false
             constraintMainOnly.active = true
-            constraintSideBySide.active = true
         }
         
         self.view.setNeedsUpdateConstraints()

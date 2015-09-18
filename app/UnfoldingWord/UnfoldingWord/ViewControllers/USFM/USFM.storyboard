@@ -279,7 +279,7 @@
                     <connections>
                         <outlet property="buttonMain" destination="Dtz-5Y-Vzz" id="6pu-Ek-3ge"/>
                         <outlet property="buttonSideDiglot" destination="3Gh-F4-4bY" id="XtV-OC-M8X"/>
-                        <outlet property="constraintMainOnly" destination="Ji9-Zj-2GW" id="5HH-fK-t6X"/>
+                        <outlet property="constraintMainOnly" destination="Ji9-Zj-2GW" id="RrV-ou-Blp"/>
                         <outlet property="constraintSideBySide" destination="vCb-Eu-Xhu" id="jbk-Kv-qRI"/>
                         <outlet property="labelEmptyMain" destination="lV2-6a-s8k" id="taN-gu-Ieo"/>
                         <outlet property="labelEmptySide" destination="oXl-do-vPt" id="Pg9-az-SHy"/>

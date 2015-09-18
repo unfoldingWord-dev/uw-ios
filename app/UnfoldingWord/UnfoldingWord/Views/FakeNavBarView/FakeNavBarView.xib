@@ -62,13 +62,21 @@
                         <action selector="userPressedBackgroundButton:" destination="o81-mH-kwX" eventType="touchUpInside" id="j2Z-YW-Geo"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TfS-xi-3ov">
-                    <rect key="frame" x="12" y="18" width="22" height="22"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TfS-xi-3ov">
+                    <rect key="frame" x="12" y="14" width="18" height="31"/>
                     <animations/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="18" id="Fkh-aR-bG2"/>
+                        <constraint firstAttribute="height" constant="31" id="nCC-mn-Cmn"/>
+                    </constraints>
+                    <state key="normal" backgroundImage="nav-back-arrow"/>
+                    <connections>
+                        <action selector="userPressedBackButton:" destination="o81-mH-kwX" eventType="touchUpInside" id="z4x-G9-WZR"/>
+                    </connections>
                 </button>
             </subviews>
             <animations/>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.43925401730000002" green="1" blue="0.44185694419999999" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="ZNn-wV-qPc" firstAttribute="leading" secondItem="o81-mH-kwX" secondAttribute="leading" id="6Ea-He-sVL"/>
                 <constraint firstItem="oxe-ik-Zwb" firstAttribute="leading" secondItem="c5O-BJ-0Os" secondAttribute="trailing" constant="30" id="9ED-B0-2cW"/>
@@ -116,4 +124,7 @@
             <point key="canvasLocation" x="554" y="475"/>
         </view>
     </objects>
+    <resources>
+        <image name="nav-back-arrow" width="24" height="42"/>
+    </resources>
 </document>

@@ -12,7 +12,7 @@ import UIKit
 typealias AudioActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapterIndex : Int?, setToOn: Bool)
 typealias FontActionBlock = (size : FontSize, font : UIFont, brightness: Float) -> Void
 typealias VideoActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapterIndex : Int?, setToOn: Bool)
-typealias DiglotActionBlock =  (barButton : UIBarButtonItem, isOn: Bool) -> Void
+typealias DiglotActionBlock =  (barButton : UIBarButtonItem, didChangeToOn: Bool) -> Void
 typealias ShareActionBlock = (barButton : UIBarButtonItem) -> (UWTOC?)
 
 class ContainerVC: UIViewController, FakeNavBarDelegate {
@@ -58,7 +58,6 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
         }
     }
     
-    
     var fakeNavBar: FakeNavBarView!
     
     @IBOutlet weak var constraintFakeNavHeight : NSLayoutConstraint!
@@ -75,20 +74,32 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = BACKGROUND_GREEN()
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
         turnOffAllBarButtons()
+        
         updateAccessoryUI(isShowing: false, duration: 0)
         
         let sb = UIStoryboard(name: "USFM", bundle: nil)
         let theContainerVC: USFMPageViewController = sb.instantiateViewControllerWithIdentifier("USFMPageViewController") as! USFMPageViewController
-        theContainerVC.fakeNavBar = fakeNavBar
-        theContainerVC.view.translatesAutoresizingMaskIntoConstraints = false
-        self.viewMainContent.addSubview(theContainerVC.view)
-        let constraints = NSLayoutConstraint.constraintsForView(theContainerVC.view, insideView: self.viewMainContent, topMargin: 0, bottomMargin: 0, leftMargin: 0, rightMargin: 0)!
-        self.viewMainContent.addConstraints(constraints)
         self.usfmPageVC = theContainerVC
+        theContainerVC.fakeNavBar = fakeNavBar
+        theContainerVC.addMasterContainerBlocksToContainer(self)
+        autoAddChildViewController(theContainerVC, toViewInSelf: viewMainContent)
+        
+        updateDiglotState(isOn: UFWSelectionTracker.isShowingSide())
+    }
+    
+    private func updateDiglotState(isOn isOn : Bool) {
+        setBarButton(barButtonDiglot, toOn: isOn)
+        fakeNavBar.sideBarState = isOn ? .MainPlusSide : .MainOnly
+        
+        if let pageVC = usfmPageVC {
+            pageVC.changeDiglotToShowing(isOn)
+        }
     }
 
-    
+
     @IBAction func userPressSpeakerButton(barButton: UIBarButtonItem) {
         
         if isBarButtonOn(barButton) {
@@ -128,8 +139,12 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
     }
     
     @IBAction func userPressedDiglotButton(barButton: UIBarButtonItem) {
-        print("Implement")
-        
+        let currentState = !isBarButtonOn(barButton)
+        updateDiglotState(isOn: currentState)
+
+        if let action = self.actionDiglot {
+            action(barButton: barButton, didChangeToOn: currentState)
+        }
     }
     
     @IBAction func userPressedShareButton(barButton: UIBarButtonItem) {
@@ -161,6 +176,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
     }
     
     func navBackButtonPressed() {
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationController!.popViewControllerAnimated(true)
     }
     
