@@ -294,16 +294,11 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
             constraintMainOnly.active = true
         }
         
-        self.view.setNeedsUpdateConstraints()
-        if isAnimated == false {
-            self.view.layoutIfNeeded()
+        if isAnimated {
+            animateConstraintChanges()
         }
         else {
-            UIView.animateWithDuration(0.25, delay: 0.0, usingSpringWithDamping: 0.85, initialSpringVelocity: 1.2, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                self.view.layoutIfNeeded()
-                }, completion: { (completed) -> Void in
-                    
-            })
+            self.view.layoutIfNeeded()
         }
     }
     

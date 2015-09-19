@@ -29,7 +29,7 @@ class FakeNavBarView : UIView, ACTLabelButtonDelegate {
     
     let minimumHeight : CGFloat = 20
     let maximumHeight : CGFloat = 50
-    let minSpaceBetweenVersion : CGFloat = 80
+    let minSpaceBetweenVersion : CGFloat = 100
     let titleInset : CGFloat = 40
     let titleBuffer : CGFloat = 60 // ÷ 2 points on either side
     let maxHeightTitleVersionOffset : CGFloat = -20
@@ -44,11 +44,11 @@ class FakeNavBarView : UIView, ACTLabelButtonDelegate {
                 case .MainOnly:
                     sself.viewSSVersionContainer.layer.opacity = 0.0
                     sself.labelButtonVersionMainAlone.layer.opacity = 1.0
-                    sself.constraintDistanceBetweenSSVersions.active = false
+                    sself.constraintDistanceBetweenSSVersions.constant = 0
                 case .MainPlusSide:
                     sself.viewSSVersionContainer.layer.opacity = 1.0
                     sself.labelButtonVersionMainAlone.layer.opacity = 0.0
-                    sself.constraintDistanceBetweenSSVersions.active = true
+                    sself.constraintDistanceBetweenSSVersions.constant = sself.maxHeightTitleVersionOffset
                 }
                 sself.setNeedsUpdateConstraints()
                 sself.layoutIfNeeded()
@@ -126,7 +126,12 @@ class FakeNavBarView : UIView, ACTLabelButtonDelegate {
         buttonBackArrow.layer.opacity = Float(fraction)
         constraintDistanceBetweenSSVersions.constant = distanceBetweenSSVersionsUsingFraction(fraction)
         // sqrt makes a quadratic curve to help avoid the edges of the title
-        constraintDistanceSSContainerFromBook.constant = sqrt(fraction)  * maxHeightTitleVersionOffset
+        if sideBarState == .MainOnly {
+            constraintDistanceSSContainerFromBook.constant = 0.0
+        }
+        else {
+            constraintDistanceSSContainerFromBook.constant = sqrt(fraction)  * maxHeightTitleVersionOffset
+        }
         super.updateConstraints()
         
         buttonBackground.enabled = isAtMinHeight()

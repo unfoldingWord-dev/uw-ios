@@ -34,9 +34,10 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
     @IBOutlet weak var barButtonDiglot: UIBarButtonItem!
     @IBOutlet weak var barButtonShare: UIBarButtonItem!
     
-    @IBOutlet weak var contraintToolbarSpaceToBottom: NSLayoutConstraint!
-    @IBOutlet weak var constraintAccessorySpaceToToolBar: NSLayoutConstraint!
-    
+    @IBOutlet var constraintToolbarSpaceToBottom: NSLayoutConstraint!
+    @IBOutlet var constraintAccessorySpaceToToolBar: NSLayoutConstraint!
+    @IBOutlet var constraintFakeNavHeight : NSLayoutConstraint!
+
     var actionSpeaker : AudioActionBlock?
     var actionVideo : VideoActionBlock?
     var actionFont : FontActionBlock?
@@ -60,7 +61,6 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
     
     var fakeNavBar: FakeNavBarView!
     
-    @IBOutlet weak var constraintFakeNavHeight : NSLayoutConstraint!
     
     var usfmPageVC : USFMPageViewController? = nil
     
@@ -97,6 +97,17 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
         if let pageVC = usfmPageVC {
             pageVC.changeDiglotToShowing(isOn)
         }
+        
+        if (isOn) {
+            constraintFakeNavHeight.constant = fakeNavBar.minimumHeight
+            constraintToolbarSpaceToBottom.constant = 0 // -toolbarBottom.frame.size.height
+        }
+        else {
+            constraintFakeNavHeight.constant = fakeNavBar.maximumHeight
+            constraintToolbarSpaceToBottom.constant = 0
+        }
+        
+        animateConstraintChanges()
     }
 
 
@@ -170,9 +181,8 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
     }
     
     func expandToFullSize() {
-        UIView.animateWithDuration(0.25) { () -> Void in
-            self.constraintFakeNavHeight.constant = self.fakeNavBar.maximumHeight
-        }
+        self.constraintFakeNavHeight.constant = self.fakeNavBar.maximumHeight
+        animateConstraintChanges()
     }
     
     func navBackButtonPressed() {
@@ -305,15 +315,6 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
         }
     }
     
-    private func animateContstraintChanges(duration duration : NSTimeInterval, completion : (Bool) -> Void ) {
-        self.view.setNeedsUpdateConstraints()
-        
-        UIView.animateWithDuration(duration, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
-            self.view.layoutIfNeeded()
-            }) { (didComplete) -> Void in
-                completion(didComplete)
-        }
-    }
     
     private func isAccessoryViewShowing() -> Bool {
         return constraintAccessorySpaceToToolBar.constant == 0 ? true : false
@@ -357,14 +358,14 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
         let hidden = viewAccessories.frame.size.height * -1.0
         let distance : CGFloat = (isShowing) ? 0.0 : hidden
         constraintAccessorySpaceToToolBar.constant = distance
-        animateContstraintChanges(duration: duration) { (didComplete) -> Void in }
+        animateConstraintChanges(duration)
     }
     
     private func updateToolbarUI(isShowing isShowing : Bool, duration: NSTimeInterval) {
         let hidden = toolbarBottom.frame.size.height * -1.0
         let distance : CGFloat = (isShowing) ? 0.0 : hidden
-        contraintToolbarSpaceToBottom.constant = distance
-        animateContstraintChanges(duration: duration) { (didComplete) -> Void in }
+        constraintToolbarSpaceToBottom.constant = distance
+        animateConstraintChanges(duration)
     }
     
 }

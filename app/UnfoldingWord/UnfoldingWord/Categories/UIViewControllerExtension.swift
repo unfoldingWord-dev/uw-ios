@@ -20,4 +20,22 @@ extension UIViewController {
         self.addChildViewController(childVC)
         childVC.didMoveToParentViewController(self)
     }
+    
+    func animateConstraintChanges() {
+        animateConstraintChanges(0.25)
+    }
+    
+    func animateConstraintChanges(time : NSTimeInterval) {
+        animateContstraintChanges(duration: time) { (complete) -> Void in }
+    }
+    
+    func animateContstraintChanges(duration duration : NSTimeInterval, completion : (Bool) -> Void ) {
+        self.view.setNeedsUpdateConstraints()
+        
+        UIView.animateWithDuration(duration, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+            }) { (didComplete) -> Void in
+                completion(didComplete)
+        }
+    }
 }

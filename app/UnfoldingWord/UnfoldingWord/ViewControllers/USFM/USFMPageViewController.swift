@@ -81,7 +81,19 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         tocMain = UFWSelectionTracker.TOCforUSFM()
         tocSide = UFWSelectionTracker.TOCforUSFMSide()
         self.loadCurrentContentAnimated(false)
-
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        
+        for (_, view) in self.view.subviews.enumerate() {
+            if view.isKindOfClass(UIScrollView) {
+                let scrollview = view as! UIScrollView
+                if scrollview.constraints.count == 0, let constraints = NSLayoutConstraint.constraintsForView(scrollview, insideView: self.view, topMargin: 0, bottomMargin: 0, leftMargin: 0, rightMargin: 0) {
+                        scrollview.translatesAutoresizingMaskIntoConstraints = false
+                        self.view.addConstraints(constraints)
+                }
+            }
+        }
     }
     
     func chapterDidChange(chapterNum : Int) {
