@@ -30,7 +30,11 @@ struct AreaAttributes {
     let toc : UWTOC?
 }
 
-class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate{
+protocol ChapterVCDelegate : class {
+    func showNextTOC()
+}
+
+class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, ChapterVCDelegate {
     
     private var arrayMainChapters: [USFMChapter]?
     private var arraySideChapters: [USFMChapter]?
@@ -41,14 +45,14 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         didSet {
             arrayMainChapters = chaptersFromTOC(tocMain)
             UFWSelectionTracker.setUSFMTOC(tocMain)
-            updateTOCInArea(.Main)
+            updateNavBarTOCForArea(.Main)
         }
     }
     var tocSide : UWTOC? {
         didSet {
             arraySideChapters = chaptersFromTOC(tocSide)
             UFWSelectionTracker.setUSFMTOCSide(tocSide)
-            updateTOCInArea(.Side)
+            updateNavBarTOCForArea(.Side)
         }
     }
 
@@ -58,23 +62,22 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         }
     }
     
-    private var currentChapterNumber : Int {
-        get {
-            return UFWSelectionTracker.chapterNumberUSFM()
-        }
-        set {
+    var currentChapterNumber : Int! {
+        didSet {
             UFWSelectionTracker.setChapterUSFM(currentChapterNumber)
-            chapterDidChange(currentChapterNumber)
+            updateNavBarChapterInfo()
         }
     }
     
     required init?(coder aDecoder: NSCoder) {
+        self.currentChapterNumber = UFWSelectionTracker.chapterNumberUSFM()
         super.init(coder: aDecoder)
     }
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        self.currentChapterNumber = UFWSelectionTracker.chapterNumberUSFM()
         self.dataSource = self
         self.delegate = self
         isShowingSideView = UFWSelectionTracker.isShowingSide()
@@ -96,7 +99,7 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         }
     }
     
-    func chapterDidChange(chapterNum : Int) {
+    func updateNavBarChapterInfo() {
         
         let title : String
         if let toc = UFWSelectionTracker.TOCforUSFM() {
@@ -108,20 +111,19 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         fakeNavBar.labelButtonBookPlusChapter.text = title
     }
     
-    func updateTOCInArea(area : TOCArea) {
+    func updateNavBarTOCForArea(area : TOCArea) {
         guard let toc = tocForArea(area) else {
             return
         }
         
         switch area {
         case .Main:
-            fakeNavBar.labelButtonVersionMainAlone.text = toc.slug?.capitalizedString
-            fakeNavBar.labelButtonSSVersionMain.text = toc.slug?.capitalizedString
+            fakeNavBar.labelButtonVersionMainAlone.text = toc.version.slug?.uppercaseString
+            fakeNavBar.labelButtonSSVersionMain.text = toc.version.slug?.uppercaseString
         case .Side:
-            fakeNavBar.labelButtonSSVersionSide.text = toc.slug?.capitalizedString
+            fakeNavBar.labelButtonSSVersionSide.text = toc.version.slug?.uppercaseString
         }
-        
-        updateChapterVCForArea(area)
+        updateNavBarChapterInfo()
     }
     
     // Public
@@ -146,9 +148,7 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
                 strongself.changeDiglotToShowing(didChangeToOn)
             }
         }
-        
     }
-    
     
     func changeDiglotToShowing(isShowing : Bool) {
         
@@ -167,6 +167,11 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         }
     }
     
+    func updateChapterVCs() {
+        updateChapterVCForArea(.Main)
+        updateChapterVCForArea(.Side)
+    }
+    
     func updateChapterVCForArea(area : TOCArea) {
         guard let currentController = currentChapterVC() else { return }
 
@@ -177,9 +182,23 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
             currentController.sideAttributes = attributesForArea(.Side)
         }
         
-        currentController.loadContentForArea(area, setToTop:false)
+        currentController.loadContentForArea(area, setToTop:true)
     }
     
+    
+    
+    // ChapterVCDelegate Methods
+    
+    func showNextTOC() {
+        tocMain = tocAfterTOC(tocMain)
+        tocSide = tocAfterTOC(tocSide)
+        currentChapterNumber  = 1
+        loadCurrentContentAnimated(true)
+        
+    }
+    
+
+    // Private
     private func currentChapterVC() -> USFMChapterVC? {
         if let controllers = self.viewControllers where controllers.count > 0,
             let currentController = controllers[0] as? USFMChapterVC {
@@ -190,8 +209,6 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         }
     }
     
-    // Private
-    
     private func loadCurrentContentAnimated(isAnimated : Bool) {
         setViewControllers([chapterVC(currentChapterNumber)], direction: UIPageViewControllerNavigationDirection.Forward, animated: isAnimated) { (didComplete : Bool) -> Void in }
     }
@@ -201,6 +218,7 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         chapterVC.mainAttributes = attributesForArea(.Main)
         chapterVC.sideAttributes = attributesForArea(.Side)
         chapterVC.chapterNumber = chapterNum
+        chapterVC.delegate = self
         return chapterVC
     }
     
@@ -222,9 +240,14 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         
         if let chapters = chaptersForArea(area) {
             if currentChapterNumber >= chapters.count {
+                if let toc = toc, let nextToc = tocAfterTOC(toc) {
+                    let gotoPrefix = NSLocalizedString("Go to", comment: "Name of bible chapter goes after this text")
+                    nextChapterText = "\(gotoPrefix) \(nextToc.title)"
+                }
+                else {
+                    nextChapterText = "Next Chapter"
+                }
                 chapter = nil
-                let gotoPrefix = NSLocalizedString("Go to", comment: "Name of bible chapter goes after this text")
-                nextChapterText = "\(gotoPrefix) \(title)"
             }
             else {
                 chapter = chapters[currentChapterNumber]
@@ -244,14 +267,16 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
     // Page View Controller Delegate
     
     func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [UIViewController]) {
-        if pendingViewControllers.count > 0 {
-            let existingVC = pendingViewControllers[0] as! USFMChapterVC
-            currentChapterNumber = existingVC.chapterNumber
-        }
+//        if pendingViewControllers.count > 0 {
+//            let existingVC = pendingViewControllers[0] as! USFMChapterVC
+//            currentChapterNumber = existingVC.chapterNumber
+//        }
     }
     
     func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        
+        if let currentVC = currentChapterVC() {
+            currentChapterNumber = currentVC.chapterNumber
+        }
     }
     
     // Page View Controller Data Sourche
@@ -263,8 +288,7 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
             return nil
         }
         else {
-            currentChapterNumber = existingVC.chapterNumber - 1
-            return chapterVC(currentChapterNumber)
+            return chapterVC(existingVC.chapterNumber - 1)
         }
     }
     
@@ -276,8 +300,7 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
             return nil
         }
         else {
-            currentChapterNumber = existingVC.chapterNumber + 1
-            return chapterVC(currentChapterNumber)
+            return chapterVC(existingVC.chapterNumber + 1)
         }
     }
     
@@ -310,6 +333,7 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         case .Side:
             tocSide = toc
         }
+        updateChapterVCForArea(area)
     }
     
     func tocForArea(area : TOCArea) -> UWTOC? {
@@ -339,7 +363,9 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         }
     }
     
-    private func tocAfterTOC(toc : UWTOC) -> UWTOC? {
+    private func tocAfterTOC(toc : UWTOC?) -> UWTOC? {
+        
+        guard let toc = toc else { return nil }
         
         let sortedTocs = toc.version.sortedTOCs() as! [UWTOC]
         for (i, aToc) in sortedTocs.enumerate() {

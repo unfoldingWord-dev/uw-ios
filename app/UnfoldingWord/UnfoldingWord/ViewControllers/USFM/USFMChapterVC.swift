@@ -41,11 +41,14 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     
     @IBOutlet var constraintSideBySide: NSLayoutConstraint!
     @IBOutlet var constraintMainOnly : NSLayoutConstraint!
+
     
     // Managing State across scrollviews - Is there a better way to do this?
     var lastMainOffset : CGPoint = CGPointZero
     var lastSideOffset : CGPoint = CGPointZero
     var countSetup : Int = 0
+    
+    weak var delegate : ChapterVCDelegate!
     
     override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
         super.init(nibName: nibNameOrNil, bundle: nil)
@@ -71,6 +74,9 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         countSetup--
+    }
+    @IBAction func userPressedNextChapterButton(sender: AnyObject) {
+        self.delegate.showNextTOC()
     }
     
     // Outside Methods
@@ -265,7 +271,7 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     
     private func showChapter(chapter : USFMChapter, withTextAlignment alignment : NSTextAlignment, inArea area : TOCArea) {
         let textView = textViewForArea(area)
-         textView.attributedText = chapter.attributedString;
+        textView.attributedText = chapter.attributedString;
         hideAllViewsExcept(textView, inArea: area)
     }
     

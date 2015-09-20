@@ -184,6 +184,9 @@
                                             <color key="titleColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="userPressedNextChapterButton:" destination="U7C-88-XJG" eventType="touchUpInside" id="uOW-un-IDE"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <animations/>
@@ -242,6 +245,9 @@
                                             <color key="titleColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="userPressedNextChapterButton:" destination="U7C-88-XJG" eventType="touchUpInside" id="sfO-Ns-uIJ"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <animations/>

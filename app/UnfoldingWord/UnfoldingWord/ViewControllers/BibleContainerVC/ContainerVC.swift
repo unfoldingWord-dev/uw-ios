@@ -97,17 +97,17 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
         if let pageVC = usfmPageVC {
             pageVC.changeDiglotToShowing(isOn)
         }
-        
-        if (isOn) {
-            constraintFakeNavHeight.constant = fakeNavBar.minimumHeight
-            constraintToolbarSpaceToBottom.constant = 0 // -toolbarBottom.frame.size.height
-        }
-        else {
-            constraintFakeNavHeight.constant = fakeNavBar.maximumHeight
-            constraintToolbarSpaceToBottom.constant = 0
-        }
-        
-        animateConstraintChanges()
+//        
+//        if (isOn) {
+//            constraintFakeNavHeight.constant = fakeNavBar.minimumHeight
+//            constraintToolbarSpaceToBottom.constant = 0 // -toolbarBottom.frame.size.height
+//        }
+//        else {
+//            constraintFakeNavHeight.constant = fakeNavBar.maximumHeight
+//            constraintToolbarSpaceToBottom.constant = 0
+//        }
+//        
+//        animateConstraintChanges()
     }
 
 
@@ -201,6 +201,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
         }
     }
     
+    // Pickers
     
     private func showVersionPickerForArea(area : TOCArea) -> Bool {
         
@@ -239,18 +240,44 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
             switch area {
             case .Main:
                 pageVC.tocMain = toc
+                pageVC.tocSide = matchingTOCFromTOC(toc, forNewArea: .Side)
             case .Side:
                 pageVC.tocSide = toc
+                pageVC.tocMain = matchingTOCFromTOC(toc, forNewArea: .Main)
             }
+            pageVC.updateChapterVCs()
         }
         else {
             // Add the Open Bible Stories Here
         }
     }
     
+    private func matchingTOCFromTOC(toc : UWTOC?, forNewArea area : TOCArea) -> UWTOC? {
+        guard let toc = toc else {return nil}
+        guard let _ = toc.slug else { return nil }
+        guard let existingTOC = tocForArea(area) else {return nil }
+        
+        var matchingTOC : UWTOC? = nil
+        
+        for (_, candidateTOC) in existingTOC.version.toc.enumerate() {
+            
+            guard let candidateTOC = candidateTOC as? UWTOC else { break }
+            guard let candSlug = candidateTOC.slug else { break }
+            
+            if toc.slug.isEqual(candSlug) {
+                matchingTOC = candidateTOC
+                break
+            }
+        }
+        return matchingTOC
+    }
+    
+    
     private func selectChapter(chapterNum : Int) {
         if let _ = usfmPageVC {
-            usfmPageVC?.chapterDidChange(chapterNum)
+            usfmPageVC?.currentChapterNumber = chapterNum
+            usfmPageVC?.updateChapterVCs()
+            
         }
         else {
             // Add the Open Bible Stories Here
