@@ -4,10 +4,19 @@
 
 #import "UWVideo.h"
 
-@interface UWVideo ()
 
-@end
 
 @implementation UWVideo
+
+- (void)updateWithDictionary:(NSDictionary *)dictionary
+{
+#warning Implement
+}
+
+- (NSDictionary *)jsonRepresention
+{
+    #warning Implement
+    return nil;
+}
 
 @end

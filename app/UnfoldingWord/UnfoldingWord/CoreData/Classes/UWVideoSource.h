@@ -6,4 +6,7 @@
 
 @interface UWVideoSource : _UWVideoSource {}
 
+- (void)updateWithDictionary:(NSDictionary *)dictionary;
+- (NSDictionary *)jsonRepresention;
+
 @end

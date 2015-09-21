@@ -6,4 +6,7 @@
 
 @interface UWAudio : _UWAudio {}
 
+- (void)updateWithDictionary:(NSDictionary *)dictionary;
+- (NSDictionary *)jsonRepresention;
+
 @end

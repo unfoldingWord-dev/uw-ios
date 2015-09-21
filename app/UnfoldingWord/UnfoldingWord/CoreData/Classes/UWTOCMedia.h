@@ -6,4 +6,7 @@
 
 @interface UWTOCMedia : _UWTOCMedia {}
 
+- (void)updateWithDictionary:(NSDictionary *)dictionary;
+- (NSDictionary *)jsonRepresention;
+
 @end

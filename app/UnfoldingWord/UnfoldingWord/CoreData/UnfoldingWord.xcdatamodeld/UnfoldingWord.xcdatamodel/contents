@@ -54,7 +54,7 @@
         <attribute name="bitrate" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="chapter" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="length" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="modified" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="mod" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="size" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="src" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="src_sig" optional="YES" attributeType="String" syncable="YES"/>

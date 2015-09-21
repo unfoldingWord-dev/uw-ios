@@ -6,4 +6,10 @@
 
 @interface UWAudioSource : _UWAudioSource {}
 
+- (void)updateWithDictionary:(NSDictionary *)dictionary;
+
+- (NSDictionary *)jsonRepresention;
+
++ (instancetype)sourceForDictionary:(NSDictionary *)dictionary withExistingObjects:(NSArray *)existingObjects;
+
 @end

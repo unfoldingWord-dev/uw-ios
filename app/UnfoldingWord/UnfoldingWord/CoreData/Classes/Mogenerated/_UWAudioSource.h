@@ -11,7 +11,7 @@ extern const struct UWAudioSourceAttributes {
 	__unsafe_unretained NSString *bitrate;
 	__unsafe_unretained NSString *chapter;
 	__unsafe_unretained NSString *length;
-	__unsafe_unretained NSString *modified;
+	__unsafe_unretained NSString *mod;
 	__unsafe_unretained NSString *size;
 	__unsafe_unretained NSString *src;
 	__unsafe_unretained NSString *src_sig;
@@ -51,13 +51,13 @@ extern const struct UWAudioSourceFetchedProperties {
 
 //- (BOOL)validateLength:(id*)value_ error:(NSError**)error_;
 
-@property (nonatomic, strong) NSNumber* modified;
+@property (nonatomic, strong) NSNumber* mod;
 
-@property double modifiedValue;
-- (double)modifiedValue;
-- (void)setModifiedValue:(double)value_;
+@property double modValue;
+- (double)modValue;
+- (void)setModValue:(double)value_;
 
-//- (BOOL)validateModified:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateMod:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSNumber* size;
 
@@ -102,11 +102,11 @@ extern const struct UWAudioSourceFetchedProperties {
 - (int64_t)primitiveLengthValue;
 - (void)setPrimitiveLengthValue:(int64_t)value_;
 
-- (NSNumber*)primitiveModified;
-- (void)setPrimitiveModified:(NSNumber*)value;
+- (NSNumber*)primitiveMod;
+- (void)setPrimitiveMod:(NSNumber*)value;
 
-- (double)primitiveModifiedValue;
-- (void)setPrimitiveModifiedValue:(double)value_;
+- (double)primitiveModValue;
+- (void)setPrimitiveModValue:(double)value_;
 
 - (NSNumber*)primitiveSize;
 - (void)setPrimitiveSize:(NSNumber*)value;

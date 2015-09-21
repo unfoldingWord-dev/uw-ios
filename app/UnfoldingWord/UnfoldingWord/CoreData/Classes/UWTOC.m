@@ -15,6 +15,7 @@ static NSString *const kSlug = @"slug";
 static NSString *const kUrlSource = @"src";
 static NSString *const kUrlSignature = @"src_sig";
 static NSString *const kTitle = @"title";
+static NSString *const kMedia = @"media";
 
 @implementation UWTOC
 
@@ -55,6 +56,16 @@ static NSString *const kTitle = @"title";
     return nil;
 }
 
+- (NSURL *)urlAudioForChapter:(NSInteger)chapter
+{
+    for (UWAudioSource *source in self.media.audio.sources) {
+        if (source.chapter != nil && source.chapter.integerValue == chapter && source.src.length > 0) {
+            return [NSURL URLWithString:source.src];
+        }
+    }
+    return nil;
+}
+
 - (void)updateWithDictionary:(NSDictionary *)dictionary
 {
     if (self.slug == nil) {
@@ -78,6 +89,15 @@ static NSString *const kTitle = @"title";
     }
     else {
         self.isUSFM = @(YES);
+    }
+    
+    NSDictionary *mediaDict = [dictionary valueForKey:kMedia];
+    if (mediaDict != nil && [mediaDict isKindOfClass:[NSDictionary class]]) {
+        UWTOCMedia *media = self.media;
+        if (media == nil) {
+            media = [UWTOCMedia insertInManagedObjectContext:[DWSCoreDataStack managedObjectContext]];
+        }
+        [media updateWithDictionary:mediaDict];
     }
 }
 
@@ -420,7 +440,9 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
     dictionary[kUrlSource] = self.src;
     dictionary[kUrlSignature] = self.src_sig;
     dictionary[kTitle] = self.title;
-    
+    if (self.media != nil) {
+        dictionary[kMedia] = [self.media jsonRepresention];
+    }
     return dictionary;
 }
 

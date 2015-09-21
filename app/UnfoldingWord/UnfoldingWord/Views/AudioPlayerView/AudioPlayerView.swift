@@ -32,8 +32,6 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
     @IBOutlet weak var buttonPlayPause: UIButton!
     @IBOutlet weak var labelDownloading: UILabel!
     
-    
-    
     var currentTime : NSTimeInterval {
         get {
             if let player = self.player {

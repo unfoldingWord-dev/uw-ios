@@ -26,4 +26,7 @@ typedef void (^TOCDownloadCompletion) (BOOL success);
 
 - (BOOL)importWithOpenBible:(NSString *)openBible signature:(NSString *)signature;
 
+// Returns the audio url for a given chapter in a TOC object. Does NOT validate that the source is correctly signed.
+- (NSURL *)urlAudioForChapter:(NSInteger)chapter;
+
 @end

@@ -11,7 +11,7 @@ const struct UWAudioSourceAttributes UWAudioSourceAttributes = {
 	.bitrate = @"bitrate",
 	.chapter = @"chapter",
 	.length = @"length",
-	.modified = @"modified",
+	.mod = @"mod",
 	.size = @"size",
 	.src = @"src",
 	.src_sig = @"src_sig",
@@ -51,8 +51,8 @@ const struct UWAudioSourceFetchedProperties UWAudioSourceFetchedProperties = {
 		NSSet *affectingKey = [NSSet setWithObject:@"length"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 	}
-	if ([key isEqualToString:@"modifiedValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"modified"];
+	if ([key isEqualToString:@"modValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"mod"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 	}
 	if ([key isEqualToString:@"sizeValue"]) {
@@ -105,24 +105,24 @@ const struct UWAudioSourceFetchedProperties UWAudioSourceFetchedProperties = {
 	[self setPrimitiveLength:[NSNumber numberWithLongLong:value_]];
 }
 
-@dynamic modified;
+@dynamic mod;
 
-- (double)modifiedValue {
-	NSNumber *result = [self modified];
+- (double)modValue {
+	NSNumber *result = [self mod];
 	return [result doubleValue];
 }
 
-- (void)setModifiedValue:(double)value_ {
-	[self setModified:[NSNumber numberWithDouble:value_]];
+- (void)setModValue:(double)value_ {
+	[self setMod:[NSNumber numberWithDouble:value_]];
 }
 
-- (double)primitiveModifiedValue {
-	NSNumber *result = [self primitiveModified];
+- (double)primitiveModValue {
+	NSNumber *result = [self primitiveMod];
 	return [result doubleValue];
 }
 
-- (void)setPrimitiveModifiedValue:(double)value_ {
-	[self setPrimitiveModified:[NSNumber numberWithDouble:value_]];
+- (void)setPrimitiveModValue:(double)value_ {
+	[self setPrimitiveMod:[NSNumber numberWithDouble:value_]];
 }
 
 @dynamic size;

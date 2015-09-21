@@ -10,4 +10,15 @@
 
 @implementation UWVideoSource
 
+- (void)updateWithDictionary:(NSDictionary *)dictionary
+{
+#warning Implement
+}
+
+- (NSDictionary *)jsonRepresention
+{
+#warning Implement
+    return nil;
+}
+
 @end

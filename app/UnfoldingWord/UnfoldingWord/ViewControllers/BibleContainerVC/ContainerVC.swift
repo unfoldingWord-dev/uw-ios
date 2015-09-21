@@ -9,9 +9,9 @@
 import Foundation
 import UIKit
 
-typealias AudioActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapterIndex : Int?, setToOn: Bool)
+typealias AudioActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapter : Int?, setToOn: Bool)
 typealias FontActionBlock = (size : FontSize, font : UIFont, brightness: Float) -> Void
-typealias VideoActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapterIndex : Int?, setToOn: Bool)
+typealias VideoActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapter : Int?, setToOn: Bool)
 typealias DiglotActionBlock =  (barButton : UIBarButtonItem, didChangeToOn: Bool) -> Void
 typealias ShareActionBlock = (barButton : UIBarButtonItem) -> (UWTOC?)
 
@@ -131,15 +131,17 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
             //////
             //WARNING: This is always the same. Remove when we have actual info
             //////
-            
-            if let _ = response.toc, url = NSURL(string: "https://api.unfoldingword.org/uw/audio/beta/01-GEN-br256.mp3") where response.setToOn == true {
-                insertAudioPlayerIntoAccessoryViewWithUrl(url)
-                setBarButton(barButton, toOn: true)
-                ensureAccessoryViewIsInState(showing: true)
+            if let toc = response.toc where response.setToOn == true,
+                let chapter = response.chapter,
+                let url = toc.urlAudioForChapter(chapter) {
+                    insertAudioPlayerIntoAccessoryViewWithUrl(url)
+                    setBarButton(barButton, toOn: true)
+                    ensureAccessoryViewIsInState(showing: true)
             }
             else {
                 setBarButton(barButton, toOn: false)
                 ensureAccessoryViewIsInState(showing: false)
+                UIAlertView(title: "Not Found", message: "This chapter does not have matching audio", delegate: nil, cancelButtonTitle: "Dismiss").show()
             }
         }
     }
