@@ -23,6 +23,7 @@ const struct UWTOCAttributes UWTOCAttributes = {
 };
 
 const struct UWTOCRelationships UWTOCRelationships = {
+	.media = @"media",
 	.openContainer = @"openContainer",
 	.usfmInfo = @"usfmInfo",
 	.version = @"version",
@@ -209,6 +210,8 @@ const struct UWTOCFetchedProperties UWTOCFetchedProperties = {
 @dynamic title;
 
 @dynamic uwDescription;
+
+@dynamic media;
 
 @dynamic openContainer;
 

@@ -72,6 +72,10 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
         super.init(coder: aDecoder)
     }
     
+    deinit {
+        playerViewAudio?.pause()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = BACKGROUND_GREEN()

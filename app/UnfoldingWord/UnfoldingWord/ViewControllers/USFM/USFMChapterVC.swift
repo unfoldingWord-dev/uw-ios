@@ -212,10 +212,14 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
         let remotePercentAboveOrigin = remoteVisiblePoints / verseHeight
         let percentBelowOrigin = 1 - remotePercentAboveOrigin
         
-        guard let nextY = minYForVerseNumber(verseToFind+1, inAttributedString: attribText, inTextView: textView) else {
-            assertionFailure("Could not find verse \(verseToFind+1) in \(textView)")
-            return
+        var nextY : CGFloat
+        if let candidate = minYForVerseNumber(verseToFind+1, inAttributedString: attribText, inTextView: textView) {
+            nextY = candidate
         }
+        else {
+            nextY = minY
+        }
+        
         let distanceBetweenVerses = nextY - minY
         
         // 90 points is approximately a line or two. If we only have a couple of lines, then just match with the next verse, balanced by the percent showing across verses
@@ -272,6 +276,7 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     private func showChapter(chapter : USFMChapter, withTextAlignment alignment : NSTextAlignment, inArea area : TOCArea) {
         let textView = textViewForArea(area)
         textView.attributedText = chapter.attributedString;
+        textView.textAlignment = alignment
         hideAllViewsExcept(textView, inArea: area)
     }
     

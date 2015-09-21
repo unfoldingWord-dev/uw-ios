@@ -23,6 +23,7 @@ extern const struct UWTOCAttributes {
 } UWTOCAttributes;
 
 extern const struct UWTOCRelationships {
+	__unsafe_unretained NSString *media;
 	__unsafe_unretained NSString *openContainer;
 	__unsafe_unretained NSString *usfmInfo;
 	__unsafe_unretained NSString *version;
@@ -31,6 +32,7 @@ extern const struct UWTOCRelationships {
 extern const struct UWTOCFetchedProperties {
 } UWTOCFetchedProperties;
 
+@class UWTOCMedia;
 @class OpenContainer;
 @class USFMInfo;
 @class UWVersion;
@@ -112,6 +114,10 @@ extern const struct UWTOCFetchedProperties {
 
 //- (BOOL)validateUwDescription:(id*)value_ error:(NSError**)error_;
 
+@property (nonatomic, strong) UWTOCMedia* media;
+
+//- (BOOL)validateMedia:(id*)value_ error:(NSError**)error_;
+
 @property (nonatomic, strong) OpenContainer* openContainer;
 
 //- (BOOL)validateOpenContainer:(id*)value_ error:(NSError**)error_;
@@ -185,6 +191,9 @@ extern const struct UWTOCFetchedProperties {
 
 - (NSString*)primitiveUwDescription;
 - (void)setPrimitiveUwDescription:(NSString*)value;
+
+- (UWTOCMedia*)primitiveMedia;
+- (void)setPrimitiveMedia:(UWTOCMedia*)value;
 
 - (OpenContainer*)primitiveOpenContainer;
 - (void)setPrimitiveOpenContainer:(OpenContainer*)value;

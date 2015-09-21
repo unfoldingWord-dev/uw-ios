@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7549" systemVersion="14D136" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="8195" systemVersion="15A282b" minimumToolsVersion="Automatic">
     <entity name="OpenAppWordsList" representedClassName="OpenAppWordsList" syncable="YES">
         <attribute name="cancel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="chapters" optional="YES" attributeType="String" syncable="YES"/>
@@ -43,6 +43,23 @@
         <attribute name="signature" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="toc" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UWTOC" inverseName="usfmInfo" inverseEntity="UWTOC" syncable="YES"/>
     </entity>
+    <entity name="UWAudio" representedClassName="UWAudio" syncable="YES">
+        <attribute name="contributors" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rev" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="txt_ver" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="media" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UWTOCMedia" inverseName="audio" inverseEntity="UWTOCMedia" syncable="YES"/>
+        <relationship name="sources" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UWAudioSource" inverseName="audio" inverseEntity="UWAudioSource" syncable="YES"/>
+    </entity>
+    <entity name="UWAudioSource" representedClassName="UWAudioSource" syncable="YES">
+        <attribute name="bitrate" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="chapter" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="length" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="modified" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="size" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="src" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="src_sig" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="audio" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UWAudio" inverseName="sources" inverseEntity="UWAudio" syncable="YES"/>
+    </entity>
     <entity name="UWLanguage" representedClassName="UWLanguage" syncable="YES">
         <attribute name="lc" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mod" optional="YES" attributeType="String" syncable="YES"/>
@@ -74,9 +91,15 @@
         <attribute name="src_sig" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uwDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="media" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UWTOCMedia" inverseName="toc" inverseEntity="UWTOCMedia" syncable="YES"/>
         <relationship name="openContainer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="OpenContainer" inverseName="toc" inverseEntity="OpenContainer" syncable="YES"/>
         <relationship name="usfmInfo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="USFMInfo" inverseName="toc" inverseEntity="USFMInfo" syncable="YES"/>
         <relationship name="version" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UWVersion" inverseName="toc" inverseEntity="UWVersion" syncable="YES"/>
+    </entity>
+    <entity name="UWTOCMedia" representedClassName="UWTOCMedia" syncable="YES">
+        <relationship name="audio" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UWAudio" inverseName="media" inverseEntity="UWAudio" syncable="YES"/>
+        <relationship name="toc" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UWTOC" inverseName="media" inverseEntity="UWTOC" syncable="YES"/>
+        <relationship name="video" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UWVideo" inverseName="media" inverseEntity="UWVideo" syncable="YES"/>
     </entity>
     <entity name="UWTopContainer" representedClassName="UWTopContainer" syncable="YES">
         <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
@@ -93,6 +116,16 @@
         <relationship name="status" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UWStatus" inverseName="uwversion" inverseEntity="UWStatus" syncable="YES"/>
         <relationship name="toc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UWTOC" inverseName="version" inverseEntity="UWTOC" syncable="YES"/>
     </entity>
+    <entity name="UWVideo" representedClassName="UWVideo" syncable="YES">
+        <relationship name="media" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UWTOCMedia" inverseName="video" inverseEntity="UWTOCMedia" syncable="YES"/>
+        <relationship name="sources" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UWVideoSource" inverseName="video" inverseEntity="UWVideoSource" syncable="YES"/>
+    </entity>
+    <entity name="UWVideoSource" representedClassName="UWVideoSource" syncable="YES">
+        <attribute name="mod" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="src" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="src_sig" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="video" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UWVideo" inverseName="sources" inverseEntity="UWVideo" syncable="YES"/>
+    </entity>
     <elements>
         <element name="OpenAppWordsList" positionX="142" positionY="-765" width="128" height="225"/>
         <element name="OpenChapter" positionX="133" positionY="-288" width="128" height="120"/>
@@ -101,8 +134,13 @@
         <element name="USFMInfo" positionX="-164" positionY="-195" width="128" height="103"/>
         <element name="UWLanguage" positionX="-632" positionY="-474" width="128" height="118"/>
         <element name="UWStatus" positionX="-380" positionY="-702" width="128" height="180"/>
-        <element name="UWTOC" positionX="-117" positionY="-495" width="128" height="268"/>
+        <element name="UWTOC" positionX="-117" positionY="-495" width="128" height="283"/>
         <element name="UWTopContainer" positionX="-623" positionY="-630" width="128" height="103"/>
         <element name="UWVersion" positionX="-378" positionY="-477" width="128" height="148"/>
+        <element name="UWAudio" positionX="-243" positionY="-801" width="128" height="118"/>
+        <element name="UWVideo" positionX="-72" positionY="-775" width="128" height="73"/>
+        <element name="UWTOCMedia" positionX="-182" positionY="-621" width="128" height="88"/>
+        <element name="UWAudioSource" positionX="-279" positionY="-1044" width="128" height="163"/>
+        <element name="UWVideoSource" positionX="-90" positionY="-990" width="128" height="103"/>
     </elements>
 </model>

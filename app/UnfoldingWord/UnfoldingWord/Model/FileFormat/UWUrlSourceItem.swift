@@ -36,7 +36,7 @@ struct UrlSourceItem {
             {
                 if let // If the top level is a dictionary with an object for the open bible stories, assign that open bible type
                     dictionary = json as? NSDictionary,
-                    book = dictionary[Constants.URLSource.open_chapter] as? NSArray
+                    _ = dictionary[Constants.URLSource.open_chapter] as? NSArray
                 {
                     return UrlContentType.OpenBibleStories(content)
                 }
@@ -44,7 +44,7 @@ struct UrlSourceItem {
                     if array.count > 0 {
                         if let // if top level is an array with a dictionary with an object for signature, assign signature type
                             dictionary = array.firstObject as? NSDictionary,
-                            signature = dictionary[Constants.URLSource.signature] as? NSString
+                            _ = dictionary[Constants.URLSource.signature] as? NSString
                         {
                             return UrlContentType.Signature(content)
                         }

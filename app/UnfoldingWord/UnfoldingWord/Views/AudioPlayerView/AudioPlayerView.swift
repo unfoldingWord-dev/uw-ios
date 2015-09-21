@@ -84,6 +84,7 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
     }
     
     deinit {
+        self.player?.stop()
         unscheduleCurrentTimer()
     }
     
