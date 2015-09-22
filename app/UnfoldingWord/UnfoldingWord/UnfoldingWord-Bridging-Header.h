@@ -18,3 +18,4 @@
 #import "UFWVersionPickerVC.h"
 #import "UFWBookPickerUSFMVC.h"
 #import "UIViewController+DWSExtensions.h"
+#import "UIViewController+FileTransfer.h"

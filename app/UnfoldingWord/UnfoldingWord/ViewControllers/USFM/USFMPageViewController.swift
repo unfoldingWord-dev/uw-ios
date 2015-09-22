@@ -148,6 +148,21 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
                 strongself.changeDiglotToShowing(didChangeToOn)
             }
         }
+        
+        // typealias ShareActionBlock = (barButton : UIBarButtonItem) -> (UWTOC?)
+        masterContainer.actionShare = { [weak self] (barButton : UIBarButtonItem) in
+            guard let strongself = self else { return nil }
+            if let toc = strongself.tocMain {
+                return (toc)
+            }
+            else if let toc = strongself.tocSide {
+                return (toc)
+            }
+            else {
+                 return nil
+            }
+        }
+        
     }
     
     func changeDiglotToShowing(isShowing : Bool) {

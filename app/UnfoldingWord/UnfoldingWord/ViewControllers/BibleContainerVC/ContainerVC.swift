@@ -165,8 +165,9 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
     }
     
     @IBAction func userPressedShareButton(barButton: UIBarButtonItem) {
-        print("Implement")
-        
+        if let action = self.actionShare, let toc = action(barButton: barButton) {
+            sendFileForVersion(toc.version, fromBarButtonOrView: barButton)
+        }
     }
     
     // Nav Bar Delegate
