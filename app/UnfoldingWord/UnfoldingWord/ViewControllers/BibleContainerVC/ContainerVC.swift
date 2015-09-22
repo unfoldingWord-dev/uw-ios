@@ -79,6 +79,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = BACKGROUND_GREEN()
+        self.toolbarBottom.barTintColor = BACKGROUND_GREEN()
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         turnOffAllBarButtons()
         
