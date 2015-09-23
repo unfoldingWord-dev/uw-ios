@@ -11,6 +11,15 @@ import Foundation
 enum TOCArea {
     case Main
     case Side
+    
+    func opposite(area : TOCArea) -> TOCArea {
+        if area == TOCArea.Main {
+            return TOCArea.Side
+        }
+        else {
+            return TOCArea.Main
+        }
+    }
 }
 
 struct AreaAttributes {
@@ -30,11 +39,11 @@ struct AreaAttributes {
     let toc : UWTOC?
 }
 
-protocol ChapterVCDelegate : class {
+protocol ChapterVCDelegate : ChromeHidingProtocol {
     func showNextTOC()
 }
 
-class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, ChapterVCDelegate {
+class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, ChapterVCDelegate, ChromeHidingProtocol {
     
     private var arrayMainChapters: [USFMChapter]?
     private var arraySideChapters: [USFMChapter]?
@@ -61,6 +70,8 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
             UFWSelectionTracker.setIsShowingSide(isShowingSideView)
         }
     }
+    
+    weak var delegateChromeProtocol : ChromeHidingProtocol?
     
     var currentChapterNumber : Int! {
         didSet {
@@ -96,6 +107,20 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
                         self.view.addConstraints(constraints)
                 }
             }
+        }
+    }
+    
+    func setTopBottomHiddenPercent(percent : CGFloat)
+    {
+        if let delegateChromeProtocol = delegateChromeProtocol {
+            delegateChromeProtocol.setTopBottomHiddenPercent(percent)
+        }
+    }
+    
+    func animateTopBottomToShowing(showing : Bool)
+    {
+        if let delegateChromeProtocol = delegateChromeProtocol {
+            delegateChromeProtocol.animateTopBottomToShowing(showing)
         }
     }
     
@@ -159,8 +184,13 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
                 return (toc)
             }
             else {
-                 return nil
+                return nil
             }
+        }
+        
+        masterContainer.blockTopBottomHidden = { [weak self] (percentHidden : CGFloat) in
+            guard let strongself = self else { return }
+            strongself.currentChapterVC()?.percentHidden = percentHidden
         }
         
     }

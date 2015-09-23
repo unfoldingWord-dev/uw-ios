@@ -30,12 +30,17 @@ extension UIViewController {
     }
     
     func animateContstraintChanges(duration duration : NSTimeInterval, completion : (Bool) -> Void ) {
-        self.view.setNeedsUpdateConstraints()
-        
+
         UIView.animateWithDuration(duration, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+            self.view.setNeedsUpdateConstraints()
             self.view.layoutIfNeeded()
+            for (_, subview) in self.view.subviews.enumerate() {
+                subview.setNeedsUpdateConstraints()
+                subview.layoutIfNeeded()
+            }
             }) { (didComplete) -> Void in
                 completion(didComplete)
         }
     }
+
 }

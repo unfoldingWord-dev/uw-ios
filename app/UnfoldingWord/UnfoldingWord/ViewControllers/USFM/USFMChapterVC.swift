@@ -67,6 +67,9 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     }
     
     override func viewWillAppear(animated: Bool) {
+        textViewForArea(.Main).setContentOffset(CGPointZero, animated: false)
+        textViewForArea(.Side).setContentOffset(CGPointZero, animated: false)
+
         super.viewWillAppear(animated)
         countSetup++
     }
@@ -114,6 +117,7 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     }
     
     // Scrollview Delegate
+
     
     func isScrollMatchingNeeded() -> Bool {
         
@@ -125,11 +129,64 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
         }
     }
     
+    var isScrollingContentDown = false
+    var lastYOffset : CGFloat = 0
+    var startingYOffset : CGFloat = 0
+    var percentHidden : CGFloat = 0
+    let scrollDistance : CGFloat  = 30
+    
+    func updateHiddenPercent(currentPercent : CGFloat) {
+        
+        var adjustedPercent = fmin(currentPercent, 1)
+        adjustedPercent = fmax(adjustedPercent, 0)
+        self.delegate.setTopBottomHiddenPercent(adjustedPercent)
+        percentHidden = adjustedPercent
+    }
+    
+    func updateVisibility(scrollView scrollView : UIScrollView) {
+        
+        let currentOffset = scrollView.contentOffset.y
+        let distanceDraggedContentDown = currentOffset - startingYOffset
+        isScrollingContentDown = (currentOffset - lastYOffset) > 0
+        lastYOffset = currentOffset
+        
+        if percentHidden > 0 && currentOffset < 0 { // at the top
+            let distanceAboveOrigin = -currentOffset
+            let percentMovedAboveOrigin = distanceAboveOrigin / scrollDistance
+            let changedPercentHidden = percentHidden - percentMovedAboveOrigin
+            updateHiddenPercent(changedPercentHidden)
+            scrollView.contentOffset.y = 0
+            return
+        }
+        
+        if abs(distanceDraggedContentDown) > scrollDistance && ( percentHidden <= 0 || percentHidden >= 1) {
+            // if we're outside of bounds and not scrolling, then just stop
+            return
+        }
+        
+        // If we're actively scrolling the percent area and scrolling up, then update the percent showing
+        else if distanceDraggedContentDown > 0 && percentHidden < 1 {
+            updateHiddenPercent(abs(distanceDraggedContentDown) / scrollDistance )
+            return
+        }
+
+    }
+    
     func scrollViewDidScroll(scrollView: UIScrollView)
     {
+        if countSetup == 0 {
+            updateVisibility(scrollView: scrollView)
+        }
+        
         if isScrollMatchingNeeded() == false {
             return
         }
+        
+        let scrollingYDifference = scrollView.contentOffset.y - startingYOffset
+        if scrollingYDifference < 50 && scrollingYDifference > 0 {
+            // Okay, we might
+        }
+        
         
         if scrollView.isEqual(textViewMain) {
             let difference = textViewMain.contentOffset.y - lastMainOffset.y
@@ -153,10 +210,19 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
         }
     }
     
+    
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if let textView = scrollView as? UITextView where decelerate == false {
             handleTextViewDoneDragging(textView)
         }
+        if decelerate == true && isScrollingContentDown == false {
+            self.delegate.animateTopBottomToShowing(true)
+            percentHidden = 0
+        }
+    }
+    
+    func resetScrollViewTracking(scrollView scrollView : UIScrollView) {
+        startingYOffset = scrollView.contentOffset.y
     }
     
     private func adjustScrollView(scrollView : UIScrollView, byYPoints difference : CGFloat) {
@@ -170,6 +236,8 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     }
     
     private func handleTextViewDoneDragging(textView : UITextView) {
+        
+        resetScrollViewTracking(scrollView: textView)
         
         if isScrollMatchingNeeded() == false {
             return

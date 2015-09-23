@@ -92,10 +92,6 @@ class FakeNavBarView : UIView, ACTLabelButtonDelegate {
         delegate?.navBackButtonPressed()
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-    
     func isAtMinHeight() -> Bool {
         return self.frame.height < (minimumHeight + 0.1)
     }
@@ -122,7 +118,7 @@ class FakeNavBarView : UIView, ACTLabelButtonDelegate {
     }
     
     override func updateConstraints() {
-        let fraction = fractionAboveMinHeight()
+        let fraction = fractionHidden()
         buttonBackArrow.layer.opacity = Float(fraction)
         constraintDistanceBetweenSSVersions.constant = distanceBetweenSSVersionsUsingFraction(fraction)
         // sqrt makes a quadratic curve to help avoid the edges of the title
@@ -130,8 +126,10 @@ class FakeNavBarView : UIView, ACTLabelButtonDelegate {
             constraintDistanceSSContainerFromBook.constant = 0.0
         }
         else {
-            constraintDistanceSSContainerFromBook.constant = sqrt(fraction)  * maxHeightTitleVersionOffset
+            constraintDistanceSSContainerFromBook.constant = pow(fraction, 2) * maxHeightTitleVersionOffset
+            print(" constraint \(constraintDistanceSSContainerFromBook.constant)")
         }
+
         super.updateConstraints()
         
         buttonBackground.enabled = isAtMinHeight()
@@ -139,7 +137,7 @@ class FakeNavBarView : UIView, ACTLabelButtonDelegate {
     
     // Helpers
     
-    private func fractionAboveMinHeight() -> CGFloat {
+    private func fractionHidden() -> CGFloat {
         let heightDiff = self.frame.height - minimumHeight
         return heightDiff / (maximumHeight - minimumHeight)
     }

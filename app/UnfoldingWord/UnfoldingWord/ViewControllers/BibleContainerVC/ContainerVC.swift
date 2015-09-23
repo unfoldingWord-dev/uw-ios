@@ -9,13 +9,20 @@
 import Foundation
 import UIKit
 
+protocol ChromeHidingProtocol : class {
+    func setTopBottomHiddenPercent(percent : CGFloat)
+    func animateTopBottomToShowing(showing : Bool)
+}
+
+
 typealias AudioActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapter : Int?, setToOn: Bool)
 typealias FontActionBlock = (size : FontSize, font : UIFont, brightness: Float) -> Void
 typealias VideoActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapter : Int?, setToOn: Bool)
 typealias DiglotActionBlock =  (barButton : UIBarButtonItem, didChangeToOn: Bool) -> Void
 typealias ShareActionBlock = (barButton : UIBarButtonItem) -> (UWTOC?)
+typealias ContainerDidSetTopBottomPercentHiddenBlock = (percent : CGFloat) -> Void
 
-class ContainerVC: UIViewController, FakeNavBarDelegate {
+class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol {
     
     var topContainer : UWTopContainer! // Must set before loading the view!
     
@@ -43,6 +50,8 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
     var actionFont : FontActionBlock?
     var actionDiglot : DiglotActionBlock?
     var actionShare: ShareActionBlock?
+    
+    var blockTopBottomHidden : ContainerDidSetTopBottomPercentHiddenBlock?
     
     var playerViewAudio : AudioPlayerView?
 
@@ -76,6 +85,23 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
         playerViewAudio?.pause()
     }
     
+    func animateTopBottomToShowing(showing : Bool)
+    {
+        updateToolbarUI(isShowing: showing, duration: 0.25)
+        updateNavUI(isShowing: showing, duration: 0.25)
+
+        dispatch_after(dispatch_time( DISPATCH_TIME_NOW, Int64(0.26 * Double(NSEC_PER_SEC))
+            ), dispatch_get_main_queue()) { [weak self] () -> Void in
+                self?.updateMainContentPercentHidden(showing ? 0.0 : 1.0)
+        }
+    }
+    
+    func updateMainContentPercentHidden(percent : CGFloat) {
+        if let percentBlock = blockTopBottomHidden {
+            percentBlock(percent: percent)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = BACKGROUND_GREEN()
@@ -89,6 +115,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
         let theContainerVC: USFMPageViewController = sb.instantiateViewControllerWithIdentifier("USFMPageViewController") as! USFMPageViewController
         self.usfmPageVC = theContainerVC
         theContainerVC.fakeNavBar = fakeNavBar
+        theContainerVC.delegateChromeProtocol = self
         theContainerVC.addMasterContainerBlocksToContainer(self)
         autoAddChildViewController(theContainerVC, toViewInSelf: viewMainContent)
         
@@ -102,17 +129,6 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
         if let pageVC = usfmPageVC {
             pageVC.changeDiglotToShowing(isOn)
         }
-//        
-//        if (isOn) {
-//            constraintFakeNavHeight.constant = fakeNavBar.minimumHeight
-//            constraintToolbarSpaceToBottom.constant = 0 // -toolbarBottom.frame.size.height
-//        }
-//        else {
-//            constraintFakeNavHeight.constant = fakeNavBar.maximumHeight
-//            constraintToolbarSpaceToBottom.constant = 0
-//        }
-//        
-//        animateConstraintChanges()
     }
 
 
@@ -189,8 +205,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
     }
     
     func expandToFullSize() {
-        self.constraintFakeNavHeight.constant = self.fakeNavBar.maximumHeight
-        animateConstraintChanges()
+        animateTopBottomToShowing(true)
     }
     
     func navBackButtonPressed() {
@@ -387,7 +402,42 @@ class ContainerVC: UIViewController, FakeNavBarDelegate {
         }
     }
     
-    // Showing and hiding bottom bars
+    // Showing and hiding stuff
+    
+    override func animateContstraintChanges(duration duration : NSTimeInterval, completion : (Bool) -> Void ) {
+
+        UIView.animateWithDuration(duration, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+            self.view.setNeedsUpdateConstraints()
+            self.view.layoutIfNeeded()
+            self.fakeNavBar.setNeedsUpdateConstraints()
+            self.view.layoutIfNeeded()
+            
+            }) { (didComplete) -> Void in
+                completion(didComplete)
+        }
+    }
+    
+    func setTopBottomHiddenPercent(percent : CGFloat)
+    {
+        let fakeNavBarHeight = ((fakeNavBar.maximumHeight - fakeNavBar.minimumHeight) * (1-percent) ) + fakeNavBar.minimumHeight
+        assert(fakeNavBarHeight >= fakeNavBar.minimumHeight, "fake nav bar wrong height")
+        constraintFakeNavHeight.constant = fakeNavBarHeight
+        
+        let distanceToolbar = -toolbarBottom.frame.height * percent
+        constraintToolbarSpaceToBottom.constant = distanceToolbar
+        
+        self.view.setNeedsUpdateConstraints()
+        self.view.layoutIfNeeded()
+        self.fakeNavBar.setNeedsUpdateConstraints()
+        self.view.layoutIfNeeded()
+    }
+    
+    private func updateNavUI(isShowing isShowing : Bool, duration: NSTimeInterval) {
+        
+        constraintFakeNavHeight.constant = isShowing ? fakeNavBar.maximumHeight : fakeNavBar.minimumHeight
+        animateConstraintChanges(duration)
+    }
+    
     private func updateAccessoryUI(isShowing isShowing : Bool, duration: NSTimeInterval) {
         
         let hidden = viewAccessories.frame.size.height * -1.0
