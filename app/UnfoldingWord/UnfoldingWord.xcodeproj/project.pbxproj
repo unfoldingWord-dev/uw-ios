@@ -195,6 +195,8 @@
 		5A5E0F521B5DB21C00390B4B /* UFWContainerUSFMVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5E0F511B5DB21C00390B4B /* UFWContainerUSFMVC.swift */; };
 		5A6997D41B2F859000BB0618 /* ufw_file_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A6997D31B2F859000BB0618 /* ufw_file_icon.png */; };
 		5A7A66EC1AEF06B500FF3EA1 /* NSString+Trim.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A7A66EB1AEF06B500FF3EA1 /* NSString+Trim.m */; };
+		5A7DDAD11BB3609900A5252C /* FontSizePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7DDAD01BB3609900A5252C /* FontSizePickerView.swift */; settings = {ASSET_TAGS = (); }; };
+		5A7DDAD31BB360A700A5252C /* FontSizePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A7DDAD21BB360A700A5252C /* FontSizePickerView.xib */; settings = {ASSET_TAGS = (); }; };
 		5A7ECE201AFD2C08002C94AD /* NSBundle+DWSExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A7ECE1F1AFD2C08002C94AD /* NSBundle+DWSExtensions.m */; };
 		5A82BA721AF928E100C5044E /* UFWImporterUSFMEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A82BA6D1AF928E100C5044E /* UFWImporterUSFMEncoding.m */; };
 		5A8DCB971B02601A0010DD27 /* UFWSelectionTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A8DCB961B02601A0010DD27 /* UFWSelectionTracker.m */; };
@@ -1155,6 +1157,8 @@
 		5A763CB71B97B982009F9460 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		5A7A66EA1AEF06B500FF3EA1 /* NSString+Trim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Trim.h"; sourceTree = "<group>"; };
 		5A7A66EB1AEF06B500FF3EA1 /* NSString+Trim.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Trim.m"; sourceTree = "<group>"; };
+		5A7DDAD01BB3609900A5252C /* FontSizePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontSizePickerView.swift; sourceTree = "<group>"; };
+		5A7DDAD21BB360A700A5252C /* FontSizePickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FontSizePickerView.xib; sourceTree = "<group>"; };
 		5A7ECE1D1AFD2270002C94AD /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		5A7ECE1E1AFD2C08002C94AD /* NSBundle+DWSExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+DWSExtensions.h"; sourceTree = "<group>"; };
 		5A7ECE1F1AFD2C08002C94AD /* NSBundle+DWSExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+DWSExtensions.m"; sourceTree = "<group>"; };
@@ -2441,6 +2445,15 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		5A7DDACF1BB3608900A5252C /* FontSizePicker */ = {
+			isa = PBXGroup;
+			children = (
+				5A7DDAD01BB3609900A5252C /* FontSizePickerView.swift */,
+				5A7DDAD21BB360A700A5252C /* FontSizePickerView.xib */,
+			);
+			path = FontSizePicker;
+			sourceTree = "<group>";
+		};
 		5A82BA6B1AF928E100C5044E /* USFM */ = {
 			isa = PBXGroup;
 			children = (
@@ -3236,6 +3249,7 @@
 		5A9AC00D1B0A38B100753AAB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5A7DDACF1BB3608900A5252C /* FontSizePicker */,
 				5A147A8A1BA7898D009496EB /* FakeNavBarView */,
 				5A9A1FC71B95140D00ED8225 /* AudioPlayerView */,
 				5A36D3B11B223F23001D6E04 /* AppInfoView */,
@@ -4287,6 +4301,7 @@
 				5A9ABF1D1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-35-12jpg in Resources */,
 				5A9ABF3E1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-38-14jpg in Resources */,
 				5A43EB0A1B20F35E000EC306 /* hos-avd-ar-65115E97-7947-4598-A2AC-EA7C615D5F3E.usfm in Resources */,
+				5A7DDAD31BB360A700A5252C /* FontSizePickerView.xib in Resources */,
 				5A43EB0D1B20F35E000EC306 /* jas-avd-ar-7FA48C96-C096-4BD0-A221-821FA5A8A733.usfm in Resources */,
 				5A9ABEE91B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-31-03jpg in Resources */,
 				5A9ABDB71B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-05-05jpg in Resources */,
@@ -4770,6 +4785,7 @@
 				5AEDC6321AFC20CA00C722B9 /* LanguageInfoController.m in Sources */,
 				5AFC9B671B41D1DC00D453D0 /* GZIP.m in Sources */,
 				5A9AC03F1B0A38B100753AAB /* UFWNextChapterCell.m in Sources */,
+				5A7DDAD11BB3609900A5252C /* FontSizePickerView.swift in Sources */,
 				5A147A8E1BA78E30009496EB /* FakeNavBarView.swift in Sources */,
 				5AF051DA1B756A8A003EA5A4 /* UWConstants.swift in Sources */,
 				5AC377CF1B38744500E3BB36 /* FileActivityController.swift in Sources */,

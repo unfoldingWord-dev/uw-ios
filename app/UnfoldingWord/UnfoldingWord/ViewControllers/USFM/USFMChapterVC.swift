@@ -210,7 +210,6 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
         }
     }
     
-    
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if let textView = scrollView as? UITextView where decelerate == false {
             handleTextViewDoneDragging(textView)
@@ -238,6 +237,15 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     private func handleTextViewDoneDragging(textView : UITextView) {
         
         resetScrollViewTracking(scrollView: textView)
+        
+        if percentHidden > 0 && percentHidden < 1 {
+            if percentHidden > 0.5 {
+                self.delegate.animateTopBottomToShowing(false)
+            }
+            else {
+                self.delegate.animateTopBottomToShowing(true)
+            }
+        }
         
         if isScrollMatchingNeeded() == false {
             return

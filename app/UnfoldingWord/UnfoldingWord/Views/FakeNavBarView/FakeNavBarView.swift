@@ -127,7 +127,6 @@ class FakeNavBarView : UIView, ACTLabelButtonDelegate {
         }
         else {
             constraintDistanceSSContainerFromBook.constant = pow(fraction, 2) * maxHeightTitleVersionOffset
-            print(" constraint \(constraintDistanceSSContainerFromBook.constant)")
         }
 
         super.updateConstraints()

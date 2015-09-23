@@ -22,7 +22,7 @@ typealias DiglotActionBlock =  (barButton : UIBarButtonItem, didChangeToOn: Bool
 typealias ShareActionBlock = (barButton : UIBarButtonItem) -> (UWTOC?)
 typealias ContainerDidSetTopBottomPercentHiddenBlock = (percent : CGFloat) -> Void
 
-class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol {
+class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, FontSizeProtocol {
     
     var topContainer : UWTopContainer! // Must set before loading the view!
     
@@ -168,7 +168,9 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol {
     }
     
     @IBAction func userPressedFontButton(barButton: UIBarButtonItem) {
-        print("Implement")
+        setBarButton(barButton, toOn: true)
+        insertFontPickersIntoAccessoryView()
+        ensureAccessoryViewIsInState(showing: true)
         
     }
     
@@ -329,6 +331,16 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol {
     
     
     // Helpers
+    
+    private func insertFontPickersIntoAccessoryView() {
+        let fontPicker = FontSizePickerView.pickerWithExistingSize(17)
+        fontPicker.delegate = self
+        insertAccessoryView(fontPicker)
+    }
+    
+    func userDidChangeFontToSize(pointSize : CGFloat) {
+        print("\(pointSize)")
+    }
     
     private func insertAudioPlayerIntoAccessoryViewWithUrl(url : NSURL) -> Bool {
         
