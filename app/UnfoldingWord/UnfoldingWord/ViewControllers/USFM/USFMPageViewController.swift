@@ -47,9 +47,7 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
     
     private var arrayMainChapters: [USFMChapter]?
     private var arraySideChapters: [USFMChapter]?
-    
-    private var pointSize : CGFloat? = 17
-    
+        
     var fakeNavBar : FakeNavBarView! // Assign on creation of this VC. Otherwise, it should crash!
     
     var tocMain : UWTOC?  {
@@ -203,7 +201,6 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
     }
     
     func adjustFontSize(fontSize : CGFloat) {
-        pointSize = fontSize
         currentChapterVC()?.changePointSize(fontSize)
     }
     
@@ -277,6 +274,7 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         chapterVC.sideAttributes = attributesForArea(.Side)
         chapterVC.chapterNumber = chapterNum
         chapterVC.delegate = self
+        chapterVC.pointSize = UFWSelectionTracker.fontPointSize()
         return chapterVC
     }
     

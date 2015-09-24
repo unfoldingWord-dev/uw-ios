@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreGraphics/CoreGraphics.h>
 @class UWTOC, UWTopContainer;
 
 @interface UFWSelectionTracker : NSObject
@@ -26,12 +27,16 @@
 + (void)setChapterJSON:(NSInteger)chapter;
 + (void)setFrameJSON:(NSInteger)frame;
 
++ (void)setFontPointSize:(CGFloat)pointSize;
+
 + (void)setTopContainer:(UWTopContainer * __nullable)topContainer;
 
 + (void)setUrlString:(NSString * __nullable)url;
 
 // Getters
 + (BOOL)isShowingSide;
+
++ (CGFloat)fontPointSize;
 
 + (UWTOC * __nullable)TOCforUSFM;
 + (UWTOC * __nullable)TOCforUSFMSide;

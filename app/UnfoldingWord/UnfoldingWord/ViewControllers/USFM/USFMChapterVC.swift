@@ -356,7 +356,6 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     }
     
     // Private
-
     
     private func showChapter(chapter : USFMChapter, withTextAlignment alignment : NSTextAlignment, inArea area : TOCArea) {
         let textView = textViewForArea(area)

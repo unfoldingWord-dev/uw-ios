@@ -23,6 +23,7 @@ static NSString *const kDictionaryName = @"selection_tracker_dictionary.plist"; 
 static NSString *const kKeyFrameJSON = @"frame_JSON";
 static NSString *const kKeyUrlString = @"url_string";
 static NSString *const kKeyTopContainer = @"top_container";
+static NSString *const kKeyFontPointSize = @"font_point_size";
 
 @implementation UFWSelectionTracker
 
@@ -31,6 +32,11 @@ static NSString *const kKeyTopContainer = @"top_container";
 + (void)setIsShowingSide:(BOOL)isShowingSide
 {
     [self setObject:@(isShowingSide) forKey:kKeyIsShowingSide];
+}
+
++ (void)setFontPointSize:(CGFloat)pointSize
+{
+    [self setObject:@(pointSize) forKey:kKeyFontPointSize];
 }
 
 + (void)setUSFMTOC:(UWTOC *)toc
@@ -146,6 +152,10 @@ static NSString *const kKeyTopContainer = @"top_container";
 + (NSInteger)frameNumberJSON
 {
     return [self numberForKey:kKeyFrameJSON];
+}
+
++ (CGFloat)fontPointSize {
+    return [self numberForKey:kKeyFontPointSize];
 }
 
 + (NSInteger)numberForKey:(NSString *)key

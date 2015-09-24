@@ -333,7 +333,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
     // Helpers
     
     private func insertFontPickersIntoAccessoryView() {
-        let fontPicker = FontSizePickerView.pickerWithExistingSize(17)
+        let fontPicker = FontSizePickerView.fontPicker()
         fontPicker.delegate = self
         insertAccessoryView(fontPicker)
     }
