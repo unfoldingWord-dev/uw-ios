@@ -51,7 +51,7 @@ class FontSizePickerView : UIView {
                 return
             }
         }
-        assertionFailure("Could not find the font size \(size) in array \(arrayFontSizes)")
+//        assertionFailure("Could not find the font size \(size) in array \(arrayFontSizes)")
         setSliderToIndex(2, animated: false)
     }
     

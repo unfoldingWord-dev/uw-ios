@@ -27,6 +27,10 @@ protocol FakeNavBarDelegate : class {
 
 class FakeNavBarView : UIView, ACTLabelButtonDelegate {
     
+    let fontSizeCondensed : CGFloat = 15.0
+    let fontSizeFull : CGFloat = 17.0
+    let opacityCondensed : CGFloat = 0.7
+    
     let minimumHeight : CGFloat = 20
     let maximumHeight : CGFloat = 50
     let minSpaceBetweenVersion : CGFloat = 100
@@ -131,7 +135,30 @@ class FakeNavBarView : UIView, ACTLabelButtonDelegate {
 
         super.updateConstraints()
         
+        let font = FONT_MEDIUM().fontWithSize(fontSizeForPercentHidden(fraction))
+        let opacity = opacityForPercentHidden(fraction)
+        for (_, labelButton) in labelButtons().enumerate() {
+            labelButton.font = font
+            if (labelButton.layer.opacity > 0.1) {
+                labelButton.layer.opacity = Float(opacity)
+            }
+        }
+        
         buttonBackground.enabled = isAtMinHeight()
+    }
+    
+    private func labelButtons() -> [ACTLabelButton!] {
+        return [labelButtonBookPlusChapter, labelButtonSSVersionMain, labelButtonSSVersionSide, labelButtonVersionMainAlone]
+    }
+    
+    private func fontSizeForPercentHidden(percent : CGFloat) -> CGFloat {
+        let difference = fontSizeFull - fontSizeCondensed
+        let addon = difference * percent
+        return fontSizeCondensed + addon
+    }
+    
+    private func opacityForPercentHidden(percent : CGFloat) -> CGFloat {
+        return opacityCondensed + ( (1 - opacityCondensed) * percent )
     }
     
     // Helpers
@@ -155,7 +182,7 @@ class FakeNavBarView : UIView, ACTLabelButtonDelegate {
         button.delegate = self
         button.colorHover = UIColor(red: 0.6, green: 0.87, blue: 0.81, alpha: 1.0)
         button.colorNormal = UIColor.whiteColor()
-        button.font = FONT_MEDIUM()
+        button.font = FONT_MEDIUM().fontWithSize(15)
     }
 }
 

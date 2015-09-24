@@ -14,7 +14,6 @@ protocol ChromeHidingProtocol : class {
     func animateTopBottomToShowing(showing : Bool)
 }
 
-
 typealias AudioActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapter : Int?, setToOn: Bool)
 typealias FontActionBlock = (size : CGFloat, font : UIFont, brightness: Float) -> Void
 typealias VideoActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapter : Int?, setToOn: Bool)
@@ -118,12 +117,14 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
         theContainerVC.delegateChromeProtocol = self
         theContainerVC.addMasterContainerBlocksToContainer(self)
         autoAddChildViewController(theContainerVC, toViewInSelf: viewMainContent)
-        
+
         updateDiglotState(isOn: UFWSelectionTracker.isShowingSide())
     }
+
     
     private func updateDiglotState(isOn isOn : Bool) {
         setBarButton(barButtonDiglot, toOn: isOn)
+
         fakeNavBar.sideBarState = isOn ? .MainPlusSide : .MainOnly
         
         if let pageVC = usfmPageVC {
@@ -131,8 +132,9 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
         }
     }
 
-
     @IBAction func userPressSpeakerButton(barButton: UIBarButtonItem) {
+        
+        setBarButton(barButtonFont, toOn: false)
         
         if isBarButtonOn(barButton) {
             if let player = playerViewAudio where player.isPlaying() {
@@ -144,13 +146,14 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
         }
         else if let action = self.actionSpeaker {
             let response = action(barButton: barButton, isOn: isBarButtonOn(barButton))
-            
             //////
             //WARNING: This is always the same. Remove when we have actual info
             //////
             if let toc = response.toc where response.setToOn == true,
                 let chapter = response.chapter,
-                let url = toc.urlAudioForChapter(chapter) {
+                let url = NSURL(string: "https://api.unfoldingword.org/uw/audio/beta/01-GEN-br256.mp3") where response.setToOn == true
+                // toc.urlAudioForChapter(chapter)
+            {
                     insertAudioPlayerIntoAccessoryViewWithUrl(url)
                     setBarButton(barButton, toOn: true)
                     ensureAccessoryViewIsInState(showing: true)
@@ -165,16 +168,37 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
     
     @IBAction func userPressedVideoButton(sender: AnyObject) {
         print("Implement")
+        animateHideFont()
     }
     
     @IBAction func userPressedFontButton(barButton: UIBarButtonItem) {
-        setBarButton(barButton, toOn: true)
-        insertFontPickersIntoAccessoryView()
-        ensureAccessoryViewIsInState(showing: true)
-        
+        if isBarButtonOn(barButton) {
+            animateHideFont()
+            return
+        }
+        else {
+            setBarButton(barButton, toOn: true)
+            insertFontPickersIntoAccessoryView()
+            ensureAccessoryViewIsInState(showing: true)
+        }
+    }
+    
+    private func animateHideFont() {
+        if isBarButtonOn(barButtonFont) == false {
+            return
+        }
+        setBarButton(barButtonFont, toOn: false)
+        if let player = playerViewAudio where player.isPlaying() {
+            insertAccessoryView(player)
+        }
+        else {
+            ensureAccessoryViewIsInState(showing: false)
+        }
     }
     
     @IBAction func userPressedDiglotButton(barButton: UIBarButtonItem) {
+        animateHideFont()
+
         let currentState = !isBarButtonOn(barButton)
         updateDiglotState(isOn: currentState)
 
@@ -184,6 +208,8 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
     }
     
     @IBAction func userPressedShareButton(barButton: UIBarButtonItem) {
+        animateHideFont()
+        
         if let action = self.actionShare, let toc = action(barButton: barButton) {
             sendFileForVersion(toc.version, fromBarButtonOrView: barButton)
         }
@@ -216,6 +242,8 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
     }
     
     func navButtonPressed(button : ACTLabelButton, type : NavButtonType) {
+        animateHideFont()
+
         switch type {
         case .VersionMain:
             showVersionPickerForArea(.Main)
@@ -371,15 +399,18 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
     
     
     private func ensureAccessoryViewIsInState(showing isShowing : Bool) {
-        let currentlyShowing = isAccessoryViewShowing()
-        if currentlyShowing == isShowing {
+
+        if isAccessoryViewShowing() == isShowing {
             return
         }
         else {
-            updateAccessoryUI(isShowing: isShowing, duration: 0.25)
+            delay(0.001, closure: { [weak self] () -> Void in
+                guard let sself = self else { return }
+                sself.updateAccessoryUI(isShowing: isShowing, duration: 0.25)
+            })
+            
         }
     }
-    
     
     private func isAccessoryViewShowing() -> Bool {
         return constraintAccessorySpaceToToolBar.constant == 0 ? true : false
@@ -394,21 +425,6 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
     private func setBarButton(barButton : UIBarButtonItem, toOn isOn: Bool) {
         
         barButton.tintColor = isOn ? colorOn : colorOff
-        if isOn == true {
-            turnOffAllButtonsExcept(barButton)
-        }
-    }
-    
-    func turnOffAllButtonsExcept(barButton : UIBarButtonItem) {
-        
-        for bbi in userToolbarButtons {
-            if bbi.isEqual(barButton) {
-                bbi.tintColor = colorOn
-            }
-            else {
-                bbi.tintColor = colorOff
-            }
-        }
     }
     
     func turnOffAllBarButtons() {
@@ -420,8 +436,8 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
     // Showing and hiding stuff
     
     override func animateContstraintChanges(duration duration : NSTimeInterval, completion : (Bool) -> Void ) {
-
-        UIView.animateWithDuration(duration, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+        
+        UIView.animateWithDuration(duration, delay: 0.00, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
             self.view.setNeedsUpdateConstraints()
             self.view.layoutIfNeeded()
             self.fakeNavBar.setNeedsUpdateConstraints()
@@ -434,6 +450,8 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
     
     func setTopBottomHiddenPercent(percent : CGFloat)
     {
+        animateHideFont()
+        
         let fakeNavBarHeight = ((fakeNavBar.maximumHeight - fakeNavBar.minimumHeight) * (1-percent) ) + fakeNavBar.minimumHeight
         assert(fakeNavBarHeight >= fakeNavBar.minimumHeight, "fake nav bar wrong height")
         constraintFakeNavHeight.constant = fakeNavBarHeight

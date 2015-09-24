@@ -154,6 +154,8 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     
     func updateVisibility(scrollView scrollView : UIScrollView) {
         
+        print("Update visibility")
+        
         let currentOffset = scrollView.contentOffset.y
         let distanceDraggedContentDown = currentOffset - startingYOffset
         isScrollingContentDown = (currentOffset - lastYOffset) > 0
@@ -183,11 +185,13 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     
     func scrollViewDidScroll(scrollView: UIScrollView)
     {
+        print("did scroll with offset: \(scrollView.contentOffset)")
         if countSetup == 0 {
             updateVisibility(scrollView: scrollView)
         }
         
         if isScrollMatchingNeeded() == false {
+            print("is side showing: \(isSideShowing) setup count: \(countSetup) is next chapter \(sideAttributes.isNextChapter) is empty: \(sideAttributes.isEmpty)")
             return
         }
         
