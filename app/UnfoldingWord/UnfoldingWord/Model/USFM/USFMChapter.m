@@ -31,10 +31,15 @@
     }
 }
 
+- (NSAttributedString *)attributedString {
+    return [self attributedStringWithSize:19];
+}
+
+
 /// Goes through all the USFMElements in a chapter and composes styled attributed text that is keyed to verses.
-- (NSAttributedString *)attributedString
+- (NSAttributedString *)attributedStringWithSize:(double)size
 {
-    UIFont *baseFont = [FONT_LIGHT fontWithSize:19];
+    UIFont *baseFont = [FONT_LIGHT fontWithSize:size];
     UIFont *superScriptFont = [baseFont fontWithSize:(baseFont.pointSize/1.35)];
     NSDictionary *superScript = @{NSBaselineOffsetAttributeName:@(-1),NSKernAttributeName:@(1), NSFontAttributeName:superScriptFont, (NSString *)kCTSuperscriptAttributeName : @1};
     NSDictionary *normal = @{NSBaselineOffsetAttributeName:@(0), NSFontAttributeName:baseFont};

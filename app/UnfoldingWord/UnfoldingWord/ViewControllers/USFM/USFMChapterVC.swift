@@ -18,6 +18,7 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
 
     var chapterNumber : Int! // It's a programming error if this isn't set before needed!
 
+    var pointSize : CGFloat = 19
     
     private var isSideShowing : Bool {
         get {
@@ -83,6 +84,14 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     }
     
     // Outside Methods
+    func changePointSize(fontSize : CGFloat) {
+        countSetup++
+        pointSize = fontSize
+        loadContentForArea(.Main, setToTop: false)
+        loadContentForArea(.Side, setToTop: false)
+        countSetup--
+    }
+    
     func loadContentForArea(area : TOCArea, setToTop isAtTop: Bool) {
         
         let attributes = attributesForArea(area)
@@ -351,7 +360,7 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     
     private func showChapter(chapter : USFMChapter, withTextAlignment alignment : NSTextAlignment, inArea area : TOCArea) {
         let textView = textViewForArea(area)
-        textView.attributedText = chapter.attributedString;
+        textView.attributedText = chapter.attributedStringWithSize(Double(pointSize));
         textView.textAlignment = alignment
         hideAllViewsExcept(textView, inArea: area)
     }

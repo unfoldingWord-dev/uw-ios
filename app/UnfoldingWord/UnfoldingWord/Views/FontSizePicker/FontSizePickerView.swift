@@ -12,7 +12,7 @@ protocol FontSizeProtocol : class {
     func userDidChangeFontToSize(pointSize : CGFloat)
 }
 
-let arrayFontSizes : [CGFloat] = [11, 14, 17, 20, 24]
+let arrayFontSizes : [CGFloat] = [13, 16, 19, 23, 27]
 
 class FontSizePickerView : UIView {
     

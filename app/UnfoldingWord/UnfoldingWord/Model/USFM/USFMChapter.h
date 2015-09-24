@@ -16,6 +16,9 @@
 /// Creates an attributed string of the chapter suitable for displaying in a textview.
 @property (nonatomic, strong, readonly) NSAttributedString *attributedString;
 
+
+- (NSAttributedString *)attributedStringWithSize:(double)size;
+
 /// Given an array of USFM elements, will divide the elements into chapters and return and array of USFMChapter objects in order. Used by the UFWImporterUSFMEncoding class to create chapters from a raw USFM string.
 + (NSArray *)createChaptersFromElements:(NSArray *)elements;
 

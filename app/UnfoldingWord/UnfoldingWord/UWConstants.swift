@@ -34,10 +34,6 @@ enum ActionType {
     case Share
 }
 
-enum FontSize : Float {
-    case Smallest = 9, Small = 12, Regular = 15, Large = 18, Largest = 21
-}
-
 func FONT_LIGHT() -> UIFont { // duplicated in Constants.h
     return UIFont(name: "HelveticaNeue-Light", size: 17)!
 }

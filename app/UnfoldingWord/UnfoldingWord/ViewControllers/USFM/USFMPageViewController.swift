@@ -48,6 +48,8 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
     private var arrayMainChapters: [USFMChapter]?
     private var arraySideChapters: [USFMChapter]?
     
+    private var pointSize : CGFloat? = 17
+    
     var fakeNavBar : FakeNavBarView! // Assign on creation of this VC. Otherwise, it should crash!
     
     var tocMain : UWTOC?  {
@@ -188,12 +190,23 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
             }
         }
         
+        //typealias FontActionBlock = (size : FontSize, font : UIFont, brightness: Float) -> Void
+        masterContainer.actionFont = { [weak self] (size : CGFloat, font : UIFont, brightness: Float) in
+            guard let strongself = self else { return }
+            strongself.adjustFontSize(size)
+        }
+        
         masterContainer.blockTopBottomHidden = { [weak self] (percentHidden : CGFloat) in
             guard let strongself = self else { return }
             strongself.currentChapterVC()?.percentHidden = percentHidden
         }
-        
     }
+    
+    func adjustFontSize(fontSize : CGFloat) {
+        pointSize = fontSize
+        currentChapterVC()?.changePointSize(fontSize)
+    }
+    
     
     func changeDiglotToShowing(isShowing : Bool) {
         

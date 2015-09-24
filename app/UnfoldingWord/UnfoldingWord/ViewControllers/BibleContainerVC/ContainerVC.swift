@@ -16,7 +16,7 @@ protocol ChromeHidingProtocol : class {
 
 
 typealias AudioActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapter : Int?, setToOn: Bool)
-typealias FontActionBlock = (size : FontSize, font : UIFont, brightness: Float) -> Void
+typealias FontActionBlock = (size : CGFloat, font : UIFont, brightness: Float) -> Void
 typealias VideoActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapter : Int?, setToOn: Bool)
 typealias DiglotActionBlock =  (barButton : UIBarButtonItem, didChangeToOn: Bool) -> Void
 typealias ShareActionBlock = (barButton : UIBarButtonItem) -> (UWTOC?)
@@ -337,9 +337,12 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
         fontPicker.delegate = self
         insertAccessoryView(fontPicker)
     }
-    
+    //typealias FontActionBlock = (size : CGFloat, font : UIFont, brightness: Float) -> Void
+
     func userDidChangeFontToSize(pointSize : CGFloat) {
-        print("\(pointSize)")
+        if let action = actionFont {
+            action(size: pointSize, font: UIFont.boldSystemFontOfSize(pointSize), brightness: 1)
+        }
     }
     
     private func insertAudioPlayerIntoAccessoryViewWithUrl(url : NSURL) -> Bool {
