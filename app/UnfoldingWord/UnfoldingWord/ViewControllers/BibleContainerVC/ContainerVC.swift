@@ -14,6 +14,18 @@ protocol ChromeHidingProtocol : class {
     func animateTopBottomToShowing(showing : Bool)
 }
 
+class TOCResponse : NSObject {
+    let toc : UWTOC?
+    let chapter : Int?
+    let isOn : Bool
+    
+    init(toc : UWTOC?, chapter : Int?, setToOn: Bool) {
+        self.toc = toc
+        self.chapter = chapter
+        self.isOn = setToOn
+    }
+}
+
 typealias AudioActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapter : Int?, setToOn: Bool)
 typealias FontActionBlock = (size : CGFloat, font : UIFont, brightness: Float) -> Void
 typealias VideoActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapter : Int?, setToOn: Bool)
@@ -71,6 +83,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
     
     
     var usfmPageVC : USFMPageViewController? = nil
+    var openBibleVC : FrameDetailsViewController? = nil
     
     override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
         super.init(nibName: nibNameOrNil, bundle: nil)
@@ -110,14 +123,35 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
         
         updateAccessoryUI(isShowing: false, duration: 0)
         
-        let sb = UIStoryboard(name: "USFM", bundle: nil)
-        let theContainerVC: USFMPageViewController = sb.instantiateViewControllerWithIdentifier("USFMPageViewController") as! USFMPageViewController
-        self.usfmPageVC = theContainerVC
-        theContainerVC.fakeNavBar = fakeNavBar
-        theContainerVC.delegateChromeProtocol = self
-        theContainerVC.addMasterContainerBlocksToContainer(self)
-        autoAddChildViewController(theContainerVC, toViewInSelf: viewMainContent)
-
+        guard
+            let language = topContainer.languages.first as? UWLanguage,
+            let version = language.versions.first as? UWVersion,
+            let toc = version.toc.first as? UWTOC
+        else { return }
+        
+        if toc.isUSFMValue { // Add USFM VC
+            let sb = UIStoryboard(name: "USFM", bundle: nil)
+            let theContainerVC: USFMPageViewController = sb.instantiateViewControllerWithIdentifier("USFMPageViewController") as! USFMPageViewController
+            self.usfmPageVC = theContainerVC
+            theContainerVC.fakeNavBar = fakeNavBar
+            theContainerVC.delegateChromeProtocol = self
+            theContainerVC.addMasterContainerBlocksToContainer(self)
+            autoAddChildViewController(theContainerVC, toViewInSelf: viewMainContent)
+        }
+        else { // Add Open Bible Stories Frame View Controller
+            let flow = UICollectionViewFlowLayout()
+            flow.scrollDirection = UICollectionViewScrollDirection.Horizontal
+            flow.minimumLineSpacing = 0
+            flow.minimumInteritemSpacing = 0
+            flow.sectionInset = UIEdgeInsetsZero
+            let frameDetail = FrameDetailsViewController(collectionViewLayout: flow)
+            frameDetail.topContainer = topContainer
+            frameDetail.fakeNavBar = fakeNavBar
+            frameDetail.addMasterContainerBlocksToContainer(self)
+            autoAddChildViewController(frameDetail, toViewInSelf: viewMainContent)
+            openBibleVC = frameDetail
+        }
+        
         updateDiglotState(isOn: UFWSelectionTracker.isShowingSide())
     }
 
@@ -226,10 +260,15 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
                 return pageVC.tocSide
             }
         }
-        else {
-            // Add the Open Bible Stories Here
-            return nil
+        else if let frameVC = openBibleVC {
+            switch area {
+            case .Main:
+                return frameVC.tocFromIsSide(false)
+            case .Side:
+                return frameVC.tocFromIsSide(true)
+            }
         }
+        return nil
     }
     
     func expandToFullSize() {
@@ -300,7 +339,13 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
             }
             pageVC.updateChapterVCs()
         }
-        else {
+        else if let openBibleVC = openBibleVC {
+            switch area {
+            case .Main:
+                openBibleVC.processTOCPicked(toc, isSide: false)
+            case .Side:
+                openBibleVC.processTOCPicked(toc, isSide: true)
+            }
             // Add the Open Bible Stories Here
         }
     }
@@ -337,6 +382,19 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
         }
     }
     
+//    - (void)userRequestedBookPicker:(id)sender
+//    {
+//    //    __weak typeof(self) weakself = self;
+//    //    UIViewController *navVC = [ChapterListTableViewController navigationChapterPickerWithTopContainer:self.chapterMain.container.toc.version.language.topContainer completion:^(BOOL isCanceled, OpenChapter *selectedChapter) {
+//    //        if (isCanceled == NO && selectedChapter != nil) {
+//    //            OpenChapter *sideChapter = [weakself.chapterSide.container matchingChapter:selectedChapter];
+//    //            [weakself resetMainChapter:selectedChapter sideChapter:sideChapter];
+//    //        }
+//    //        [weakself dismissViewControllerAnimated:YES completion:^{}];
+//    //    }];
+//    //    [self presentViewController:navVC animated:YES completion:^{}];
+//    }
+    
     private func showBookPicker() {
         
         guard let toc = tocForArea(.Main) else {
@@ -344,17 +402,31 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
             return
         }
         
-        let navVC = UFWBookPickerUSFMVC.navigationBookPickerWithVersion(toc.version) { [weak self] (isCanceled : Bool, toc : UWTOC?, chapterPicked : Int) -> Void in
-            guard let strongself = self else { return }
-            strongself.dismissViewControllerAnimated(true, completion: { () -> Void in })
-            
-            let chapter = chapterPicked > 0 ? chapterPicked : 1
-            if let toc = toc {
-                strongself.selectTOC(toc, forArea: TOCArea.Main)
-                strongself.selectChapter(chapter)
+        if let _ = usfmPageVC {
+            let navVC = UFWBookPickerUSFMVC.navigationBookPickerWithVersion(toc.version) { [weak self] (isCanceled : Bool, toc : UWTOC?, chapterPicked : Int) -> Void in
+                guard let strongself = self else { return }
+                strongself.dismissViewControllerAnimated(true, completion: { () -> Void in })
+                
+                let chapter = chapterPicked > 0 ? chapterPicked : 1
+                if let toc = toc {
+                    strongself.selectTOC(toc, forArea: TOCArea.Main)
+                    strongself.selectChapter(chapter)
+                }
             }
+            presentViewController(navVC, animated: true) { () -> Void in  }
         }
-        presentViewController(navVC, animated: true) { () -> Void in  }
+        else if let openBibleVC = openBibleVC {
+            let navVC = ChapterListTableViewController.navigationChapterPickerCompletion({ [weak self] (isCanceled : Bool, chapter : OpenChapter?) -> Void in
+                guard let strongself = self else { return }
+                strongself.dismissViewControllerAnimated(true, completion: { () -> Void in })
+                if let mainChapter = chapter where isCanceled == false,
+                    let sidetoc = strongself.tocForArea(.Side) {
+                    let sideChapter = sidetoc.openContainer.matchingChapter(mainChapter)
+                    openBibleVC.resetMainChapter(mainChapter, sideChapter: sideChapter)
+                }
+            })
+            presentViewController(navVC, animated: true) { () -> Void in  }
+        }
     }
     
     

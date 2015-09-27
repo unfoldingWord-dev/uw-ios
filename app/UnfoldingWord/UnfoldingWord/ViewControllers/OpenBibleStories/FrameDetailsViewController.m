@@ -6,6 +6,9 @@
 //  Copyright (c) 2014 Distant Shores Media All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
+#import <CoreGraphics/CoreGraphics.h>
+
 #import "FrameDetailsViewController.h"
 #import "FrameCell.h"
 #import "DWImageGetter.h"
@@ -47,9 +50,20 @@
 @property (nonatomic, assign) BOOL didShowPicker;
 @property (nonatomic, assign) BOOL isShowingSide;
 
+
 @end
 
 @implementation FrameDetailsViewController
+
+- (UWTOC *)tocFromIsSide:(BOOL)isSide {
+    if (isSide == true) {
+        return self.chapterSide.container.toc;
+    }
+    else {
+        return self.chapterMain.container.toc;
+    }
+
+}
 
 - (void)viewDidLoad
 {
@@ -63,12 +77,12 @@
     
     UWTOC *tocMain = [UFWSelectionTracker TOCforJSON];
     UWTOC *tocSide = [UFWSelectionTracker TOCforJSONSide];
+    
+    self.isShowingSide = [UFWSelectionTracker isShowingSideOBS];
 
     OpenChapter *chapterMain = [tocMain chapterForNumber:[UFWSelectionTracker chapterNumberJSON]];
     OpenChapter *chapterSide = [tocSide chapterForNumber:[UFWSelectionTracker chapterNumberJSON]];
     [self resetMainChapter:chapterMain sideChapter:chapterSide];
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:IMAGE_DIGLOT] style:UIBarButtonItemStylePlain target:self action:@selector(userPressedDiglotBBI:)];
 }
 
 - (void)loadNibsForCollectionView
@@ -87,19 +101,14 @@
 }
 
 
-- (void)updateNavChapterTitle
+- (void)updateFakeNavBar
 {
-    ACTLabelButton *labelButton = [[ACTLabelButton alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
-    labelButton.font = FONT_MEDIUM;
-    labelButton.text = self.chapterMain.title;
-    CGFloat width = [labelButton.text widthUsingFont:labelButton.font] + [ACTLabelButton widthForArrow];
-    labelButton.frame = CGRectMake(0, 0, width, 28);
-    labelButton.delegate = self;
-    labelButton.direction = ArrowDirectionDown;
-    labelButton.colorNormal = [UIColor whiteColor];
-    labelButton.colorHover = [UIColor lightGrayColor];
-    labelButton.userInteractionEnabled = YES;
-    self.navigationItem.titleView = labelButton;
+    self.fakeNavBar.labelButtonBookPlusChapter.text = self.chapterMain.title;
+    NSString *mainVersionText = self.chapterMain.container.toc.version.slug.uppercaseString;
+    NSString *sideVersionText = self.chapterSide.container.toc.version.slug.uppercaseString;
+    self.fakeNavBar.labelButtonSSVersionMain.text = mainVersionText;
+    self.fakeNavBar.labelButtonVersionMainAlone.text = mainVersionText;
+    self.fakeNavBar.labelButtonSSVersionSide.text = sideVersionText;
 }
 
 - (void)resetMainChapter:(OpenChapter *)mainChapter sideChapter:(OpenChapter *)sideChapter
@@ -107,7 +116,7 @@
     self.chapterMain = mainChapter;
     self.chapterSide = sideChapter;
     
-    [self updateNavChapterTitle];
+    [self updateFakeNavBar];
     [self.collectionView reloadData];
 }
 
@@ -123,6 +132,64 @@
     self.arrayOfFramesSide = [chapterSide sortedFrames];
 }
 
+- (void)addMasterContainerBlocksToContainer:(ContainerVC *)masterContainer {
+    
+    //   typealias AudioActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapterIndex : Int?, setToOn: Bool)
+    
+//    masterContainer.actionSpeaker = { [weak self] (barButton : UIBarButtonItem, isOn: Bool) in
+//        if isOn == false, let strongself = self {
+//            if let toc = strongself.tocMain {
+//                return (toc, strongself.currentChapterNumber, true)
+//            }
+//            else if let toc = strongself.tocSide {
+//                return (toc, strongself.currentChapterNumber, true)
+//            }
+//        }
+//        return (nil, nil, false)
+//    }
+    
+    //    typealias DiglotActionBlock =  (barButton : UIBarButtonItem, isOn: Bool) -> Void
+    __weak typeof(self) weakself = self;
+    masterContainer.actionDiglot = ^ void (UIBarButtonItem *bbi, BOOL isOn) {
+        weakself.isShowingSide = isOn;
+        [UFWSelectionTracker setIsShowingSideOBS:isOn];
+        FrameCell *visibleFrameCell = [weakself visibleFrameCell];
+        [visibleFrameCell setIsShowingSide:isOn animated:YES];
+    };
+    
+    // typealias ShareActionBlock = (barButton : UIBarButtonItem) -> (UWTOC?)
+    masterContainer.actionShare = ^ UWTOC* (UIBarButtonItem *bbi) {
+        UWTOC *toc = weakself.chapterMain.container.toc;
+        if (toc != nil) {
+            return toc;
+        }
+        
+        UWTOC *tocSide = weakself.chapterSide.container.toc;
+        if (tocSide != nil) {
+            return tocSide;
+        }
+        
+        return nil;
+    };
+    
+    //typealias FontActionBlock = (size : FontSize, font : UIFont, brightness: Float) -> Void
+    masterContainer.actionFont = ^ void (CGFloat size, UIFont *font, float brightness) {
+        FrameCell *cell = [weakself visibleFrameCell];
+        if (cell == nil) {
+            return;
+        }
+        cell.label_contentMain.font = [cell.label_contentMain.font fontWithSize:size];
+        cell.label_contentSide.font = [cell.label_contentSide.font fontWithSize:size];
+    };
+
+    
+//    masterContainer.blockTopBottomHidden = { [weak self] (percentHidden : CGFloat) in
+//        guard let strongself = self else { return }
+//        strongself.currentChapterVC()?.percentHidden = percentHidden
+//    }
+    
+}
+
 
 /// ACTLabelButton Delegate Method
 - (void)labelButtonPressed:(ACTLabelButton *)labelButton;
@@ -130,159 +197,116 @@
     [self userRequestedBookPicker:labelButton];
 }
 
-- (void)userPressedDiglotBBI:(UIBarButtonItem *)diglotBBI
-{
-    self.isShowingSide = ! self.isShowingSide;
-    FrameCell *visibleFrameCell = [self visibleFrameCell];
-    [visibleFrameCell setIsShowingSide:self.isShowingSide animated:YES];
-}
+//- (void)userPressedDiglotBBI:(UIBarButtonItem *)diglotBBI
+//{
+//    self.isShowingSide = ! self.isShowingSide;
+//    FrameCell *visibleFrameCell = [self visibleFrameCell];
+//    [visibleFrameCell setIsShowingSide:self.isShowingSide animated:YES];
+//}
 
 #pragma mark - Chapter Picker
 - (void)userRequestedBookPicker:(id)sender
 {
-    __weak typeof(self) weakself = self;
-    UIViewController *navVC = [ChapterListTableViewController navigationChapterPickerWithTopContainer:self.chapterMain.container.toc.version.language.topContainer completion:^(BOOL isCanceled, OpenChapter *selectedChapter) {
-        if (isCanceled == NO && selectedChapter != nil) {
-            OpenChapter *sideChapter = [weakself.chapterSide.container matchingChapter:selectedChapter];
-            [weakself resetMainChapter:selectedChapter sideChapter:sideChapter];
-        }
-        [weakself dismissViewControllerAnimated:YES completion:^{}];
-    }];
-    [self presentViewController:navVC animated:YES completion:^{}];
+//    __weak typeof(self) weakself = self;
+//    UIViewController *navVC = [ChapterListTableViewController navigationChapterPickerWithTopContainer:self.chapterMain.container.toc.version.language.topContainer completion:^(BOOL isCanceled, OpenChapter *selectedChapter) {
+//        if (isCanceled == NO && selectedChapter != nil) {
+//            OpenChapter *sideChapter = [weakself.chapterSide.container matchingChapter:selectedChapter];
+//            [weakself resetMainChapter:selectedChapter sideChapter:sideChapter];
+//        }
+//        [weakself dismissViewControllerAnimated:YES completion:^{}];
+//    }];
+//    [self presentViewController:navVC animated:YES completion:^{}];
 }
 
 #pragma mark - FrameCellDelegate Methods -
-
-#pragma mark Status Info Popover
-
-- (void)showPopOverStatusInfo:(FrameCell *)cell view:(UIView *)view isSide:(BOOL)isSide
-{
-    UFWStatusInfoViewController *statusVC = [[UFWStatusInfoViewController alloc] init];
-    if (isSide == YES) {
-        statusVC.status = self.chapterSide.container.toc.version.status;
-    }
-    else {
-        statusVC.status = self.chapterMain.container.toc.version.status;
-    }
-    CGFloat width = fmin((self.view.frame.size.width - 40), 530);
-    CGSize size = [UFWInfoView sizeForStatus:statusVC.status forWidth:width withDeleteButton:NO];
-    self.customPopoverController = [[FPPopoverController alloc] initWithViewController:statusVC delegate:nil maxSize:size];
-    self.customPopoverController.border = NO;
-    [self.customPopoverController setShadowsHidden:YES];
-    
-    if ([view isKindOfClass:[UIView class]]) {
-        self.customPopoverController.arrowDirection = FPPopoverArrowDirectionAny;
-        [self.customPopoverController presentPopoverFromView:view];
-    }
-    else {
-        self.customPopoverController.arrowDirection = FPPopoverNoArrow;
-        [self.customPopoverController presentPopoverFromView:self.view];
-    }
-}
-
-#pragma mark Sharing
-
-- (void)showSharing:(FrameCell *)cell view:(UIView *)view isSide:(BOOL)isSide
-{
-    OpenChapter *chapterSelected = (isSide == YES) ? self.chapterSide : self.chapterMain;
-    UWVersion *versionSelected = chapterSelected.container.toc.version;
-    if (versionSelected == nil) {
-        return;
-    }    
-    [self sendFileForVersion:versionSelected fromBarButtonOrView:view];
- }
+//
+//#pragma mark Status Info Popover
+//
+//- (void)showPopOverStatusInfo:(FrameCell *)cell view:(UIView *)view isSide:(BOOL)isSide
+//{
+//    UFWStatusInfoViewController *statusVC = [[UFWStatusInfoViewController alloc] init];
+//    if (isSide == YES) {
+//        statusVC.status = self.chapterSide.container.toc.version.status;
+//    }
+//    else {
+//        statusVC.status = self.chapterMain.container.toc.version.status;
+//    }
+//    CGFloat width = fmin((self.view.frame.size.width - 40), 530);
+//    CGSize size = [UFWInfoView sizeForStatus:statusVC.status forWidth:width withDeleteButton:NO];
+//    self.customPopoverController = [[FPPopoverController alloc] initWithViewController:statusVC delegate:nil maxSize:size];
+//    self.customPopoverController.border = NO;
+//    [self.customPopoverController setShadowsHidden:YES];
+//    
+//    if ([view isKindOfClass:[UIView class]]) {
+//        self.customPopoverController.arrowDirection = FPPopoverArrowDirectionAny;
+//        [self.customPopoverController presentPopoverFromView:view];
+//    }
+//    else {
+//        self.customPopoverController.arrowDirection = FPPopoverNoArrow;
+//        [self.customPopoverController presentPopoverFromView:self.view];
+//    }
+//}
+//
+//#pragma mark Sharing
+//
+//- (void)showSharing:(FrameCell *)cell view:(UIView *)view isSide:(BOOL)isSide
+//{
+//    OpenChapter *chapterSelected = (isSide == YES) ? self.chapterSide : self.chapterMain;
+//    UWVersion *versionSelected = chapterSelected.container.toc.version;
+//    if (versionSelected == nil) {
+//        return;
+//    }    
+//    [self sendFileForVersion:versionSelected fromBarButtonOrView:view];
+// }
 
 #pragma mark Version Picker
-- (void)showVersionSelector:(FrameCell *)cell view:(UIView *)view isSide:(BOOL)isSide;
-{
-    __weak typeof(self) weakself = self;
-    UWTOC *toc = (isSide) ? self.chapterSide.container.toc : self.chapterMain.container.toc;
-    UIViewController *navVC = [UFWVersionPickerVC navigationLanguagePickerWithTOC:toc topContainer:toc.version.language.topContainer completion:^(BOOL isCanceled, UWVersion * _Nullable versionPicked) {
 
-        [weakself dismissViewControllerAnimated:YES completion:^{}];
-        
-        if (isCanceled) {
-            return;
-        }
-        
-        if (versionPicked.toc.allObjects.count == 0) {
-            [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"There is no content for the selected version.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles: nil] show];
-            return;
-        }
-        
-        // Select the TOC
-        OpenChapter *currentChapter = (isSide == YES) ? weakself.chapterSide : weakself.chapterMain;
-        UWTOC *existingTOC = currentChapter.container.toc;
-        UWTOC *selectedTOC = nil;
-        if (existingTOC == nil) {
-            selectedTOC = [versionPicked sortedTOCs][0];
-        }
-        else {
-            BOOL success = NO;
-            for (UWTOC *toc in versionPicked.toc) {
-                if ([toc.slug isKindOfClass:[NSString class]] == NO) {
-                    NSAssert2(NO, @"%s: The toc did not have a slug. No way to track it: %@", __PRETTY_FUNCTION__, toc);
-                    continue;
-                }
-                if ([existingTOC.slug isEqualToString:toc.slug]) {
-                    selectedTOC = toc;
-                    break;
-                }
-            }
-            if (success == NO) { // No slug matches
-                selectedTOC = [versionPicked sortedTOCs][0];
-            }
-        }
-        // End select toc
-        
-        
-        // Select the chapter
-        if (selectedTOC.openContainer.chapters.count == 0) { // handle unexpected error.
-            [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:@"No chapters for your selection." delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles: nil] show];
-            return;
-        }
-        
-        OpenChapter *selectedChapter = [selectedTOC.openContainer sortedChapters][0];
-        // Override the selected chapter if we have open that matches an existing chapter
-        for (OpenChapter *aChapter in selectedTOC.openContainer.chapters.allObjects) {
-            if (aChapter.number.integerValue == [UFWSelectionTracker chapterNumberJSON]) {
-                selectedChapter = aChapter;
-                break;
-            }
-        }
-        // End select chapter
-        
-        // Select the frame
-        if (selectedChapter.frames.count == 0) { // handle unexpected error.
-            [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:@"No frames for your selection." delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles: nil] show];
-            return;
-        }
-        
-        NSInteger frameIndex = [UFWSelectionTracker frameNumberJSON];
-        NSArray *frames = [selectedChapter sortedFrames];
-        if (frameIndex >= frames.count) {
-            frameIndex = 0;
-        }
-        // End select frame
-        
-        [UFWSelectionTracker setChapterJSON:selectedChapter.number.integerValue];
-        [UFWSelectionTracker setFrameJSON:frameIndex];
-        
-        // Save the selections
-        if (isSide) {
-            [UFWSelectionTracker setJSONTOCSide:selectedTOC];
-            [weakself resetMainChapter:self.chapterMain sideChapter:selectedChapter];
-        }
-        else {
-            [UFWSelectionTracker setJSONTOC:selectedTOC];
-            [weakself resetMainChapter:selectedChapter sideChapter:self.chapterSide];
-        }
-        
-        [weakself jumpToCurrentFrameAnimated:NO];
+- (void)processTOCPicked:(UWTOC *)selectedTOC isSide:(BOOL)isSide;
+{
+    // Select the chapter
+    if (selectedTOC.openContainer.chapters.count == 0) { // handle unexpected error.
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:@"No chapters for your selection." delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles: nil] show];
+        return;
+    }
     
-    }];
+    OpenChapter *selectedChapter = [selectedTOC.openContainer sortedChapters][0];
+    // Override the selected chapter if we have open that matches an existing chapter
+    for (OpenChapter *aChapter in selectedTOC.openContainer.chapters.allObjects) {
+        if (aChapter.number.integerValue == [UFWSelectionTracker chapterNumberJSON]) {
+            selectedChapter = aChapter;
+            break;
+        }
+    }
+    // End select chapter
     
-    [self presentViewController:navVC animated:YES completion:^{}];
+    // Select the frame
+    if (selectedChapter.frames.count == 0) { // handle unexpected error.
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:@"No frames for your selection." delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles: nil] show];
+        return;
+    }
+    
+    NSInteger frameIndex = [UFWSelectionTracker frameNumberJSON];
+    NSArray *frames = [selectedChapter sortedFrames];
+    if (frameIndex >= frames.count) {
+        frameIndex = 0;
+    }
+    // End select frame
+    
+    [UFWSelectionTracker setChapterJSON:selectedChapter.number.integerValue];
+    [UFWSelectionTracker setFrameJSON:frameIndex];
+    
+    // Save the selections
+    if (isSide) {
+        [UFWSelectionTracker setJSONTOCSide:selectedTOC];
+        [self resetMainChapter:self.chapterMain sideChapter:selectedChapter];
+    }
+    else {
+        [UFWSelectionTracker setJSONTOC:selectedTOC];
+        [self resetMainChapter:selectedChapter sideChapter:self.chapterSide];
+    }
+    
+    [self jumpToCurrentFrameAnimated:NO];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -513,7 +537,7 @@
     CGPoint currentOffset = self.collectionView.contentOffset;
     NSInteger index = (int)currentOffset.x / (self.view.bounds.size.width);
     [UFWSelectionTracker setFrameJSON:index];
-    [self updateNavChapterTitle];
+    [self updateFakeNavBar];
 }
 
 #pragma mark - Methods to prevent the back gesture
@@ -527,11 +551,7 @@
         self.navigationController.interactivePopGestureRecognizer.enabled = NO;
         self.navigationController.interactivePopGestureRecognizer.delegate = self;
     }
-    
-    if (self.chapterMain.frames.count == 0 && self.didShowPicker == NO) {
-        self.didShowPicker = YES;
-        [self showVersionSelector:nil view:nil isSide:NO];
-    }
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -623,7 +643,7 @@
         [self.collectionView setFrame:cFrame];
     } completion:^(BOOL finished){
         [self.collectionView reloadData];
-        [self updateNavChapterTitle];
+        [self updateFakeNavBar];
         // do whatever post processing you want (such as resetting what is "current" and what is "next")
     }];
 }

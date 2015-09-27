@@ -46,7 +46,7 @@
 
 - (void)setAllContent
 {
-    self.backgroundColor = BACKGROUND_GRAY;
+    self.backgroundColor = BACKGROUND_GREEN;
     for (UILabel *label in self.arrayOfLabels) {
         label.font = [FONT_LIGHT fontWithSize:label.font.pointSize];
         label.textColor = [UIColor whiteColor];

@@ -19,3 +19,5 @@
 #import "UFWBookPickerUSFMVC.h"
 #import "UIViewController+DWSExtensions.h"
 #import "UIViewController+FileTransfer.h"
+#import "FrameDetailsViewController.h"
+#import "ChapterListTableViewController.h"

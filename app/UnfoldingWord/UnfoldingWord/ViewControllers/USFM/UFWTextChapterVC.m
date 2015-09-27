@@ -111,7 +111,7 @@ static CGFloat kSideMargin = 10.f;
 //    self.toolBar.tintColor = [UIColor whiteColor];
 //    self.toolBar.barTintColor = BACKGROUND_GRAY;
     self.edgesForExtendedLayout = UIRectEdgeNone;
-    self.collectionView.backgroundColor = BACKGROUND_GRAY;
+    self.collectionView.backgroundColor = BACKGROUND_GREEN;
     
     if (self.isSideTOC) {
         self.toc = [UFWSelectionTracker TOCforUSFMSide];

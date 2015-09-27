@@ -58,7 +58,7 @@ static NSInteger const kTagShareBBI = 1113;
 
 - (void)adjustColors
 {
-    self.backgroundColor = BACKGROUND_GRAY;
+    self.backgroundColor = BACKGROUND_GREEN;
     self.viewTextBackground.backgroundColor = TABBAR_COLOR_TRANSPARENT;
     self.viewTextBackgroundSide.backgroundColor = TABBAR_COLOR_TRANSPARENT;
 }

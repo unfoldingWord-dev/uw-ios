@@ -15,7 +15,7 @@
 {
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.tintColor = [UIColor whiteColor];
-    navController.navigationBar.barTintColor =BACKGROUND_GRAY;
+    navController.navigationBar.barTintColor = BACKGROUND_GREEN;
     navController.navigationBar.translucent = YES;
     navController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil];
     return navController;

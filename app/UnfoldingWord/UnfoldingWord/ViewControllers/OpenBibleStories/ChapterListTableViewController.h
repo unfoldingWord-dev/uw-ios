@@ -10,12 +10,10 @@
 @class UWTopContainer;
 @class OpenChapter;
 
-typedef void (^ChapterPickerCompletion) (BOOL isCanceled, OpenChapter *selectedChapter);
+typedef void (^ChapterPickerCompletion) (BOOL isCanceled, OpenChapter * __nullable  selectedChapter);
 
 @interface ChapterListTableViewController : UITableViewController
 
-@property (nonatomic, strong) UWTopContainer *topContainer;
-
-+ (UIViewController *)navigationChapterPickerWithTopContainer:(UWTopContainer *)topContainer completion:(ChapterPickerCompletion)completion;
++ (UIViewController * __nonnull)navigationChapterPickerCompletion:(ChapterPickerCompletion __nonnull)completion;
 
 @end

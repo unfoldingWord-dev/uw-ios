@@ -13,6 +13,7 @@
 static NSString *const kBaseAPI = @"https://api.unfoldingword.org/uw/txt/2/catalog.json";
 
 static NSString *const kKeyIsShowingSide = @"isShowingSide";
+static NSString *const kKeyShowingSideOBS = @"isShowingSide_OBS";
 static NSString *const kKeyTOCUSFM = @"toc_USFM";
 static NSString *const kKeyTOCUSFMSide = @"toc_side_USFM";
 static NSString *const kKeyTOCJSON = @"toc_JSON";
@@ -32,6 +33,11 @@ static NSString *const kKeyFontPointSize = @"font_point_size";
 + (void)setIsShowingSide:(BOOL)isShowingSide
 {
     [self setObject:@(isShowingSide) forKey:kKeyIsShowingSide];
+}
+
++ (void)setIsShowingSideOBS:(BOOL)isShowingSide
+{
+    [self setObject:@(isShowingSide) forKey:kKeyShowingSideOBS];
 }
 
 + (void)setFontPointSize:(CGFloat)pointSize
@@ -88,6 +94,10 @@ static NSString *const kKeyFontPointSize = @"font_point_size";
 
 + (BOOL)isShowingSide {
     return [self numberForKey:kKeyIsShowingSide] == 0 ? NO : YES;
+}
+
++ (BOOL)isShowingSideOBS {
+    return [self numberForKey:kKeyShowingSideOBS] == 0 ? NO : YES;
 }
 
 + (UWTOC *)TOCforUSFM;

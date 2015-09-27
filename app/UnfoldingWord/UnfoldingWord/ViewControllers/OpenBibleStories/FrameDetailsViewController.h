@@ -7,10 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
-@class UWTopContainer;
+@class UWTopContainer, FakeNavBarView, UWTOC, ContainerVC, OpenChapter;
 
 @interface FrameDetailsViewController : UICollectionViewController
 
 @property (nonatomic, strong) UWTopContainer *topContainer;
+@property (nonatomic, weak) FakeNavBarView *fakeNavBar;
+
+- (void)processTOCPicked:(UWTOC *)selectedTOC isSide:(BOOL)isSide;
+
+- (void)resetMainChapter:(OpenChapter *)mainChapter sideChapter:(OpenChapter *)sideChapter;
+
+- (void)addMasterContainerBlocksToContainer:(ContainerVC *)masterContainer;
+
+- (UWTOC *)tocFromIsSide:(BOOL)isSide;
 
 @end

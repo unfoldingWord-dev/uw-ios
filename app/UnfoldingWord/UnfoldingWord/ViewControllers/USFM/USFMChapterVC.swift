@@ -42,7 +42,6 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     
     @IBOutlet var constraintSideBySide: NSLayoutConstraint!
     @IBOutlet var constraintMainOnly : NSLayoutConstraint!
-
     
     // Managing State across scrollviews - Is there a better way to do this?
     var lastMainOffset : CGPoint = CGPointZero

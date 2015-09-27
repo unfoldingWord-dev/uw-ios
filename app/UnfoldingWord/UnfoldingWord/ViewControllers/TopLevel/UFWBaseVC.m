@@ -60,10 +60,10 @@
     self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil];
     
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.navigationController.navigationBar.barTintColor =BACKGROUND_GRAY;
+    self.navigationController.navigationBar.barTintColor =BACKGROUND_GREEN;
     self.navigationController.navigationBar.translucent = YES;
     
-    self.tableView.backgroundColor = BACKGROUND_GRAY;
+    self.tableView.backgroundColor = BACKGROUND_GREEN;
     self.viewTopBar.backgroundColor = BACKGROUND_GREEN;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
@@ -189,27 +189,12 @@
     }
     
     [UFWSelectionTracker setTopContainer:topContainer];
-    UWLanguage *language = [topContainer.languages anyObject];
-    UWVersion *version = [language.versions anyObject];
-    UWTOC *toc = [version.toc anyObject];
     
-    if (toc.isUSFMValue == YES) {
-        
-        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"MasterContainer" bundle:nil];
-        ContainerVC *containerVC = [sb instantiateViewControllerWithIdentifier:@"ContainerVC"];
-        containerVC.topContainer = topContainer;
-        [self.navigationController pushViewController:containerVC animated:YES];
-    }
-    else {
-        UICollectionViewFlowLayout *flow = [[UICollectionViewFlowLayout alloc] init];
-        flow.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-        flow.minimumInteritemSpacing = 0;
-        flow.minimumLineSpacing = 0;
-        flow.sectionInset = UIEdgeInsetsZero;
-        FrameDetailsViewController *frameDetails = [[FrameDetailsViewController alloc] initWithCollectionViewLayout:flow];
-        frameDetails.topContainer = topContainer;
-        [self.navigationController pushViewController:frameDetails animated:animated];
-    }
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"MasterContainer" bundle:nil];
+    ContainerVC *containerVC = [sb instantiateViewControllerWithIdentifier:@"ContainerVC"];
+    containerVC.topContainer = topContainer;
+    [self.navigationController pushViewController:containerVC animated:YES];
+    
     [self.tableView reloadData];
 }
 

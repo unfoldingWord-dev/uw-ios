@@ -24,9 +24,9 @@
 
 @implementation ChapterListTableViewController
 
-+ (UIViewController *)navigationChapterPickerWithTopContainer:(UWTopContainer *)topContainer completion:(ChapterPickerCompletion)completion;{
++ (UIViewController *)navigationChapterPickerCompletion:(ChapterPickerCompletion)completion;
+{
     ChapterListTableViewController *pickerVC = [[ChapterListTableViewController alloc] init];
-    pickerVC.topContainer = topContainer;
     pickerVC.completion = completion;
     return [UINavigationController navigationControllerWithUFWBaseViewController:pickerVC];
 }
@@ -67,7 +67,6 @@
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:selectedChapterIndex inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
     }
 }
-
 
 #pragma mark - Cancel
 - (void)cancel:(id)sender

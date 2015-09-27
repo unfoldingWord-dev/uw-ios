@@ -16,6 +16,8 @@
 
 // Setters: automatically saves to disk.
 + (void)setIsShowingSide:(BOOL)isShowingSide;
++ (void)setIsShowingSideOBS:(BOOL)isShowingSide;
+
 
 + (void)setUSFMTOC:(UWTOC * __nullable)toc;
 + (void)setUSFMTOCSide:(UWTOC * __nullable)toc;
@@ -35,6 +37,7 @@
 
 // Getters
 + (BOOL)isShowingSide;
++ (BOOL)isShowingSideOBS;
 
 + (CGFloat)fontPointSize;
 

@@ -14,7 +14,7 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    self.contentView.backgroundColor = BACKGROUND_GRAY;
+    self.contentView.backgroundColor = BACKGROUND_GREEN;
     self.label.textColor = [UIColor whiteColor];
     self.label.font = FONT_MEDIUM;
     self.label.text = NSLocalizedString(@"You can download and select a item by tapping \"Version\" in the lower left corner.", nil);
