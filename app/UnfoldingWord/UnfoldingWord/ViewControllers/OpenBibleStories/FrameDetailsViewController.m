@@ -50,6 +50,8 @@
 @property (nonatomic, assign) BOOL didShowPicker;
 @property (nonatomic, assign) BOOL isShowingSide;
 
+@property (nonatomic, assign) BOOL isHidingChrome;
+
 
 @end
 
@@ -105,7 +107,11 @@
 {
     self.fakeNavBar.labelButtonBookPlusChapter.text = self.chapterMain.title;
     NSString *mainVersionText = self.chapterMain.container.toc.version.slug.uppercaseString;
+    mainVersionText = [mainVersionText stringByReplacingOccurrencesOfString:@"OBS" withString:@""];
+    mainVersionText = [mainVersionText stringByReplacingOccurrencesOfString:@"-" withString:@""];
     NSString *sideVersionText = self.chapterSide.container.toc.version.slug.uppercaseString;
+    sideVersionText = [sideVersionText stringByReplacingOccurrencesOfString:@"OBS" withString:@""];
+    sideVersionText = [sideVersionText stringByReplacingOccurrencesOfString:@"-" withString:@""];
     self.fakeNavBar.labelButtonSSVersionMain.text = mainVersionText;
     self.fakeNavBar.labelButtonVersionMainAlone.text = mainVersionText;
     self.fakeNavBar.labelButtonSSVersionSide.text = sideVersionText;
@@ -331,12 +337,7 @@
 
 - (void)tapRecognized:(UITapGestureRecognizer *)tapRecognizer
 {
-    //    // If we're in portrait mode, then ignore.
-    //    if (self.view.bounds.size.width < self.view.bounds.size.height && ! self.navigationController.navigationBarHidden) {
-    //        return;
-    //    }
-    
-    [self showOrHideNavigationBarAnimated:YES];
+    [self.containerVC alternateTopBottomShowing];
     [self.collectionViewLayout invalidateLayout];
 }
 

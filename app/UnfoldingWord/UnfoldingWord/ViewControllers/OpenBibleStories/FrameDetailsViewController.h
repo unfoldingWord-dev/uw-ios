@@ -14,6 +14,8 @@
 @property (nonatomic, strong) UWTopContainer *topContainer;
 @property (nonatomic, weak) FakeNavBarView *fakeNavBar;
 
+@property (nonatomic, weak) ContainerVC *containerVC;
+
 - (void)processTOCPicked:(UWTOC *)selectedTOC isSide:(BOOL)isSide;
 
 - (void)resetMainChapter:(OpenChapter *)mainChapter sideChapter:(OpenChapter *)sideChapter;

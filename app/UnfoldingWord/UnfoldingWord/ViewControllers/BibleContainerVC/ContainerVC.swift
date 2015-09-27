@@ -108,6 +108,18 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
         }
     }
     
+    func alternateTopBottomShowing()
+    {
+        animateTopBottomToShowing(!isTopBottomBarShowing())
+    }
+    
+    func isTopBottomBarShowing() -> Bool {
+        let isToolBarShowing = constraintToolbarSpaceToBottom.constant == 0 ? true : false
+        let isNavBarMaxSize = constraintFakeNavHeight.constant == fakeNavBar.maximumHeight
+        
+        return isToolBarShowing && isNavBarMaxSize ? true : false
+    }
+    
     func updateMainContentPercentHidden(percent : CGFloat) {
         if let percentBlock = blockTopBottomHidden {
             percentBlock(percent: percent)
@@ -147,6 +159,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
             let frameDetail = FrameDetailsViewController(collectionViewLayout: flow)
             frameDetail.topContainer = topContainer
             frameDetail.fakeNavBar = fakeNavBar
+            frameDetail.containerVC = self
             frameDetail.addMasterContainerBlocksToContainer(self)
             autoAddChildViewController(frameDetail, toViewInSelf: viewMainContent)
             openBibleVC = frameDetail
