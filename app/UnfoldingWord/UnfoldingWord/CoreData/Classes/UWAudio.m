@@ -27,6 +27,7 @@ static NSString *const kSourcesAudio = @"src_list";
         UWAudioSource *source = [UWAudioSource sourceForDictionary:sourceDict withExistingObjects:self.sources.allObjects];
         if (source == nil) {
             source = [UWAudioSource insertInManagedObjectContext:[DWSCoreDataStack managedObjectContext]];
+            source.audio = self;
         }
         [source updateWithDictionary:sourceDict];
         source.audio = self;

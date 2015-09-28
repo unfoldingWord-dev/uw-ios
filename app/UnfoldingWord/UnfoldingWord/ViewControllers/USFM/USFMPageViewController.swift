@@ -152,19 +152,33 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
     }
     
     // Public
-    func addMasterContainerBlocksToContainer(masterContainer : ContainerVC) {
-        
-        //   typealias AudioActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapterIndex : Int?, setToOn: Bool)
-        masterContainer.actionSpeaker = { [weak self] (barButton : UIBarButtonItem, isOn: Bool) in
-            if isOn == false, let strongself = self {
-                if let toc = strongself.tocMain {
-                    return (toc, strongself.currentChapterNumber, true)
-                }
-                else if let toc = strongself.tocSide {
-                    return (toc, strongself.currentChapterNumber, true)
+    
+    func audioSourceWithChapter(chapter : Int, inAudio audio : UWAudio) -> UWAudioSource? {
+        for (_, source) in audio.sources.enumerate() {
+            let castSource = source as! UWAudioSource
+            if let chapterString = castSource.chapter {
+                let castString = chapterString as NSString
+                let currentChapter = castString.integerValue
+                if chapter == currentChapter {
+                    return castSource
                 }
             }
-            return (nil, nil, false)
+        }
+        return nil
+    }
+    
+    func addMasterContainerBlocksToContainer(masterContainer : ContainerVC) {
+        
+        //   typealias AudioActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> AudioSource
+        masterContainer.actionSpeaker = { [weak self] (barButton : UIBarButtonItem, isOn: Bool) in
+            if isOn == false, let strongself = self {
+                let toc = strongself.tocMain != nil ? strongself.tocMain : strongself.tocSide
+                if let audio = toc?.media?.audio {
+                    let source = strongself.audioSourceWithChapter(strongself.currentChapterNumber, inAudio: audio)
+                    return AudioInfo(audioSource: source, frameOrVerse: nil)
+                }
+            }
+            return AudioInfo(audioSource: nil, frameOrVerse: nil)
         }
         
         //    typealias DiglotActionBlock =  (barButton : UIBarButtonItem, isOn: Bool) -> Void

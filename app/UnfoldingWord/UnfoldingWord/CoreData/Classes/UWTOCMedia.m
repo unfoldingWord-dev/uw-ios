@@ -18,6 +18,7 @@ static NSString *const kVideo = @"video";
         UWAudio *audio = self.audio;
         if (audio == nil) {
             audio = [UWAudio insertInManagedObjectContext:[DWSCoreDataStack managedObjectContext]];
+            audio.media = self;
         }
         [audio updateWithDictionary:audioDic];
     }
@@ -27,6 +28,7 @@ static NSString *const kVideo = @"video";
         UWVideo *video = self.video;
         if (video == nil) {
             video = [UWVideo insertInManagedObjectContext:[DWSCoreDataStack managedObjectContext]];
+            video.media = self;
         }
         [video updateWithDictionary:videoDic];
     }

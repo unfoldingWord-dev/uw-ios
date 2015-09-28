@@ -14,19 +14,22 @@ protocol ChromeHidingProtocol : class {
     func animateTopBottomToShowing(showing : Bool)
 }
 
-class TOCResponse : NSObject {
-    let toc : UWTOC?
-    let chapter : Int?
-    let isOn : Bool
+@objc class AudioInfo : NSObject {
+    var audioSource : UWAudioSource?
+    var frameOrVerse : NSNumber?
     
-    init(toc : UWTOC?, chapter : Int?, setToOn: Bool) {
-        self.toc = toc
-        self.chapter = chapter
-        self.isOn = setToOn
+    override init() {
+        super.init()
+    }
+    
+    init(audioSource : UWAudioSource?, frameOrVerse : Int?) {
+        self.audioSource = audioSource
+        self.frameOrVerse = frameOrVerse
+        super.init()
     }
 }
 
-typealias AudioActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapter : Int?, setToOn: Bool)
+typealias AudioActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> AudioInfo
 typealias FontActionBlock = (size : CGFloat, font : UIFont, brightness: Float) -> Void
 typealias VideoActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapter : Int?, setToOn: Bool)
 typealias DiglotActionBlock =  (barButton : UIBarButtonItem, didChangeToOn: Bool) -> Void
@@ -192,15 +195,13 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
             return
         }
         else if let action = self.actionSpeaker {
-            let response = action(barButton: barButton, isOn: isBarButtonOn(barButton))
-            //////
-            //WARNING: This is always the same. Remove when we have actual info
-            //////
-            if let toc = response.toc where response.setToOn == true,
-                let chapter = response.chapter,
-                let url = NSURL(string: "https://api.unfoldingword.org/uw/audio/beta/01-GEN-br256.mp3") where response.setToOn == true
-                // toc.urlAudioForChapter(chapter)
+            let audioInfo = action(barButton: barButton, isOn: isBarButtonOn(barButton))
+            if let source = audioInfo.audioSource, let urlString = source.src,
+                let url = NSURL(string: urlString)
             {
+                // TODO:
+                // Still to do - get the verse or frame.
+                //
                     insertAudioPlayerIntoAccessoryViewWithUrl(url)
                     setBarButton(barButton, toOn: true)
                     ensureAccessoryViewIsInState(showing: true)

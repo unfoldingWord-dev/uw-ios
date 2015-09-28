@@ -151,21 +151,31 @@ static NSString *const kKeyFontPointSize = @"font_point_size";
 
 + (NSInteger)chapterNumberUSFM;
 {
-    return [self numberForKey:kKeyChapterUSFM];
+    return [self oneBoundedNumberForKey:kKeyChapterUSFM];
 }
 
 + (NSInteger)chapterNumberJSON;
 {
-    return [self numberForKey:kKeyChapterJSON];
+    return [self oneBoundedNumberForKey:kKeyChapterJSON];
 }
 
 + (NSInteger)frameNumberJSON
 {
-    return [self numberForKey:kKeyFrameJSON];
+    return [self oneBoundedNumberForKey:kKeyFrameJSON];
 }
 
 + (CGFloat)fontPointSize {
     return [self numberForKey:kKeyFontPointSize];
+}
+
++ (NSInteger)oneBoundedNumberForKey:(NSString *)key {
+    NSInteger number = [self numberForKey:key];
+    if (number > 0) {
+        return number;
+    }
+    else {
+        return 1;
+    }
 }
 
 + (NSInteger)numberForKey:(NSString *)key
@@ -175,7 +185,7 @@ static NSString *const kKeyFontPointSize = @"font_point_size";
         return number.integerValue;
     }
     else {
-        return 1;
+        return 0;
     }
 }
 

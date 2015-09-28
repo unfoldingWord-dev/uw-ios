@@ -96,6 +96,7 @@ static NSString *const kMedia = @"media";
         UWTOCMedia *media = self.media;
         if (media == nil) {
             media = [UWTOCMedia insertInManagedObjectContext:[DWSCoreDataStack managedObjectContext]];
+            media.toc = self;       
         }
         [media updateWithDictionary:mediaDict];
     }

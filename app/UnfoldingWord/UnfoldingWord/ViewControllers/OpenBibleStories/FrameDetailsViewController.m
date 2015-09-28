@@ -52,7 +52,6 @@
 
 @property (nonatomic, assign) BOOL isHidingChrome;
 
-
 @end
 
 @implementation FrameDetailsViewController
@@ -64,13 +63,13 @@
     else {
         return self.chapterMain.container.toc;
     }
-
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.collectionView.backgroundColor = BACKGROUND_GREEN;
     [self addTapGestureRecognizer];
     
     [self loadNibsForCollectionView];
@@ -105,16 +104,34 @@
 
 - (void)updateFakeNavBar
 {
+    if (self.chapterMain.title != nil) {
     self.fakeNavBar.labelButtonBookPlusChapter.text = self.chapterMain.title;
-    NSString *mainVersionText = self.chapterMain.container.toc.version.slug.uppercaseString;
-    mainVersionText = [mainVersionText stringByReplacingOccurrencesOfString:@"OBS" withString:@""];
-    mainVersionText = [mainVersionText stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    } else {
+        self.fakeNavBar.labelButtonBookPlusChapter.text = @"--------";
+    }
+    
+    if (self.chapterMain.container.toc.version.slug != nil) {
+        NSString *mainVersionText = self.chapterMain.container.toc.version.slug.uppercaseString;
+        mainVersionText = [mainVersionText stringByReplacingOccurrencesOfString:@"OBS" withString:@""];
+        mainVersionText = [mainVersionText stringByReplacingOccurrencesOfString:@"-" withString:@""];
+        self.fakeNavBar.labelButtonSSVersionMain.text = mainVersionText;
+        self.fakeNavBar.labelButtonVersionMainAlone.text = mainVersionText;
+    } else {
+        self.fakeNavBar.labelButtonSSVersionMain.text = @"Add";
+        self.fakeNavBar.labelButtonVersionMainAlone.text = @"Add";
+    }
+    
+    if (self.chapterSide.container.toc.version.slug != nil) {
     NSString *sideVersionText = self.chapterSide.container.toc.version.slug.uppercaseString;
     sideVersionText = [sideVersionText stringByReplacingOccurrencesOfString:@"OBS" withString:@""];
     sideVersionText = [sideVersionText stringByReplacingOccurrencesOfString:@"-" withString:@""];
-    self.fakeNavBar.labelButtonSSVersionMain.text = mainVersionText;
-    self.fakeNavBar.labelButtonVersionMainAlone.text = mainVersionText;
-    self.fakeNavBar.labelButtonSSVersionSide.text = sideVersionText;
+        self.fakeNavBar.labelButtonSSVersionSide.text = sideVersionText;
+
+    }
+    else {
+        self.fakeNavBar.labelButtonSSVersionSide.text = @"Add";
+
+    }
 }
 
 - (void)resetMainChapter:(OpenChapter *)mainChapter sideChapter:(OpenChapter *)sideChapter
@@ -138,24 +155,36 @@
     self.arrayOfFramesSide = [chapterSide sortedFrames];
 }
 
+- (UWAudioSource *)audioSourceInAudio:(UWAudio *)audio withChapter:(NSInteger)chapter {
+    
+    for (UWAudioSource *source in audio.sources) {
+        if (source.chapter.integerValue == chapter) {
+            return source;
+        }
+    }
+    return nil;
+}
+
 - (void)addMasterContainerBlocksToContainer:(ContainerVC *)masterContainer {
     
-    //   typealias AudioActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapterIndex : Int?, setToOn: Bool)
+    __weak typeof(self) weakself = self;
     
-//    masterContainer.actionSpeaker = { [weak self] (barButton : UIBarButtonItem, isOn: Bool) in
-//        if isOn == false, let strongself = self {
-//            if let toc = strongself.tocMain {
-//                return (toc, strongself.currentChapterNumber, true)
-//            }
-//            else if let toc = strongself.tocSide {
-//                return (toc, strongself.currentChapterNumber, true)
-//            }
-//        }
-//        return (nil, nil, false)
-//    }
+    masterContainer.actionSpeaker = ^ AudioInfo* (UIBarButtonItem *bbi, BOOL isOn) {
+        AudioInfo *info = [[AudioInfo alloc] init];
+        info.frameOrVerse = @([UFWSelectionTracker frameNumberJSON]);
+        
+        NSInteger chapter = weakself.chapterMain.number.integerValue;
+        UWTOC *toc = weakself.chapterMain.container.toc;
+        if (toc == nil) {
+            toc = weakself.chapterSide.container.toc;
+            chapter = weakself.chapterSide.number.integerValue;
+        }
+        
+        info.audioSource = [weakself audioSourceInAudio:toc.media.audio withChapter:chapter];
+        return info;
+    };
     
     //    typealias DiglotActionBlock =  (barButton : UIBarButtonItem, isOn: Bool) -> Void
-    __weak typeof(self) weakself = self;
     masterContainer.actionDiglot = ^ void (UIBarButtonItem *bbi, BOOL isOn) {
         weakself.isShowingSide = isOn;
         [UFWSelectionTracker setIsShowingSideOBS:isOn];
@@ -433,13 +462,16 @@
             frameSide = self.arrayOfFramesSide[row];
         }
         
+        CGFloat pointSize = [UFWSelectionTracker fontPointSize] > 1 ? [UFWSelectionTracker fontPointSize] : 17;
         cell.label_contentMain.text = frameMain.text;
+        cell.label_contentMain.font = [cell.label_contentMain.font fontWithSize:pointSize];
         cell.label_contentSide.textAlignment = [LanguageInfoController textAlignmentForLanguageCode:self.chapterMain.container.toc.version.language.lc];
         [cell setVersionName:self.chapterMain.container.toc.version.name isSide:NO];
         [cell setStatusImage:[UFWInfoView imageReverseForStatus:self.chapterMain.container.toc.version.status] isSide:NO];
         
         
         cell.label_contentSide.text = frameSide.text;
+        cell.label_contentSide.font = [cell.label_contentSide.font fontWithSize:pointSize];
         cell.label_contentSide.textAlignment = [LanguageInfoController textAlignmentForLanguageCode:self.chapterSide.container.toc.version.language.lc];
         [cell setVersionName:self.chapterSide.container.toc.version.name isSide:YES];
         [cell setStatusImage:[UFWInfoView imageReverseForStatus:self.chapterSide.container.toc.version.status] isSide:YES];
@@ -551,50 +583,6 @@
     [UFWSelectionTracker setFrameJSON:index];
     [self updateFakeNavBar];
 }
-
-
-
-
-
-#pragma mark - Updating View
-
-- (void) updateViewConstraints {
-    
-    [super updateViewConstraints];
-}
-
-//override func updateConstraints() {
-//    let fraction = fractionHidden()
-//    buttonBackArrow.layer.opacity = Float(fraction)
-//    constraintDistanceBetweenSSVersions.constant = distanceBetweenSSVersionsUsingFraction(fraction)
-//    // sqrt makes a quadratic curve to help avoid the edges of the title
-//    if sideBarState == .MainOnly {
-//        constraintDistanceSSContainerFromBook.constant = 0.0
-//    }
-//    else {
-//        constraintDistanceSSContainerFromBook.constant = pow(fraction, 2) * maxHeightTitleVersionOffset
-//    }
-//    
-//    super.updateConstraints()
-//    
-//    let font = FONT_MEDIUM().fontWithSize(fontSizeForPercentHidden(fraction))
-//    let opacity = opacityForPercentHidden(fraction)
-//    for (_, labelButton) in labelButtons().enumerate() {
-//        labelButton.font = font
-//        if (labelButton.layer.opacity > 0.1) {
-//            labelButton.layer.opacity = Float(opacity)
-//        }
-//    }
-//    
-//    buttonBackground.enabled = isAtMinHeight()
-//}
-
-
-
-
-
-
-
 
 #pragma mark - Methods to prevent the back gesture
 

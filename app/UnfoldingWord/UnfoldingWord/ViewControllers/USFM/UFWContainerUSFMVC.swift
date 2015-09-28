@@ -95,17 +95,7 @@ final class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelBut
     
     func addMasterContainerBlocks() {
         
-        //   typealias AudioActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapterIndex : Int?, setToOn: Bool)
-        if let master = self.masterContainer {
-            master.actionSpeaker = { (barButton : UIBarButtonItem, isOn: Bool) in
-                if isOn == false, let toc = self.vcMain.currentToc where self.vcMain.currentChapterIndex >= 0 {
-                    return (toc, self.vcMain.currentChapterIndex, true)
-                }
-                else {
-                    return (nil, nil, false)
-                }
-            }
-        }
+
     }
     
     // User Interaction - Open and Close 
