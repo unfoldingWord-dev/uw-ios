@@ -323,7 +323,19 @@
         [self.collectionView reloadData];
     }
     [self jumpToCurrentFrameAnimated:YES];
+}
+
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
     
+    FrameCell *cell = [self visibleFrameCell];
+    if (cell != nil && cell.frame.size.height != self.collectionView.frame.size.height ) {
+//        [UIView animateWithDuration:.25 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            [self.collectionView reloadData];
+//        } completion:^(BOOL finished) {
+//            
+//        }];
+    }
 }
 
 #pragma mark - Tap Gesture Hide Nav Bar
@@ -437,7 +449,6 @@
         
         [cell setFrameImage:nil];
     
-        
         __weak typeof(self) weakself = self;
         [[DWImageGetter sharedInstance] retrieveImageWithURLString:frameMain.imageUrl completionBlock:^(NSString *originalUrl, UIImage *image) {
             // Must double check that the image hasn't been recycled for a different chapter
@@ -540,6 +551,50 @@
     [UFWSelectionTracker setFrameJSON:index];
     [self updateFakeNavBar];
 }
+
+
+
+
+
+#pragma mark - Updating View
+
+- (void) updateViewConstraints {
+    
+    [super updateViewConstraints];
+}
+
+//override func updateConstraints() {
+//    let fraction = fractionHidden()
+//    buttonBackArrow.layer.opacity = Float(fraction)
+//    constraintDistanceBetweenSSVersions.constant = distanceBetweenSSVersionsUsingFraction(fraction)
+//    // sqrt makes a quadratic curve to help avoid the edges of the title
+//    if sideBarState == .MainOnly {
+//        constraintDistanceSSContainerFromBook.constant = 0.0
+//    }
+//    else {
+//        constraintDistanceSSContainerFromBook.constant = pow(fraction, 2) * maxHeightTitleVersionOffset
+//    }
+//    
+//    super.updateConstraints()
+//    
+//    let font = FONT_MEDIUM().fontWithSize(fontSizeForPercentHidden(fraction))
+//    let opacity = opacityForPercentHidden(fraction)
+//    for (_, labelButton) in labelButtons().enumerate() {
+//        labelButton.font = font
+//        if (labelButton.layer.opacity > 0.1) {
+//            labelButton.layer.opacity = Float(opacity)
+//        }
+//    }
+//    
+//    buttonBackground.enabled = isAtMinHeight()
+//}
+
+
+
+
+
+
+
 
 #pragma mark - Methods to prevent the back gesture
 
