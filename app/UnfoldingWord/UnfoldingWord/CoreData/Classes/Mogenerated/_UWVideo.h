@@ -8,6 +8,9 @@
 #import <CoreData/CoreData.h>
 
 extern const struct UWVideoAttributes {
+	__unsafe_unretained NSString *contributors;
+	__unsafe_unretained NSString *rev;
+	__unsafe_unretained NSString *txt_ver;
 } UWVideoAttributes;
 
 extern const struct UWVideoRelationships {
@@ -25,6 +28,18 @@ extern const struct UWVideoFetchedProperties {
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
+
+@property (nonatomic, strong) NSString* contributors;
+
+//- (BOOL)validateContributors:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSString* rev;
+
+//- (BOOL)validateRev:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSString* txt_ver;
+
+//- (BOOL)validateTxt_ver:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) UWTOCMedia* media;
 
@@ -46,6 +61,15 @@ extern const struct UWVideoFetchedProperties {
 @end
 
 @interface _UWVideo (CoreDataGeneratedPrimitiveAccessors)
+
+- (NSString*)primitiveContributors;
+- (void)setPrimitiveContributors:(NSString*)value;
+
+- (NSString*)primitiveRev;
+- (void)setPrimitiveRev:(NSString*)value;
+
+- (NSString*)primitiveTxt_ver;
+- (void)setPrimitiveTxt_ver:(NSString*)value;
 
 - (UWTOCMedia*)primitiveMedia;
 - (void)setPrimitiveMedia:(UWTOCMedia*)value;

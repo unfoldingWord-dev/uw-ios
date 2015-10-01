@@ -14,6 +14,10 @@
 + (NSTextAlignment)textAlignmentForLanguageCode:(NSString *)lc
 {
     UFWLanguageInfo *langInfo = [self languageInfoForCode:lc];
+    if (langInfo == nil) {
+        return NSTextAlignmentLeft;
+    }
+    
     if ([langInfo.directionReading isEqualToString:@"ltr"]) {
         return NSTextAlignmentLeft;
     }

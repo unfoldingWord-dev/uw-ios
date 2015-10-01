@@ -8,6 +8,7 @@
 #import <CoreData/CoreData.h>
 
 extern const struct UWVideoSourceAttributes {
+	__unsafe_unretained NSString *filename;
 	__unsafe_unretained NSString *mod;
 	__unsafe_unretained NSString *src;
 	__unsafe_unretained NSString *src_sig;
@@ -26,6 +27,10 @@ extern const struct UWVideoSourceFetchedProperties {
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
+
+@property (nonatomic, strong) NSString* filename;
+
+//- (BOOL)validateFilename:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSNumber* mod;
 
@@ -54,6 +59,9 @@ extern const struct UWVideoSourceFetchedProperties {
 @end
 
 @interface _UWVideoSource (CoreDataGeneratedPrimitiveAccessors)
+
+- (NSString*)primitiveFilename;
+- (void)setPrimitiveFilename:(NSString*)value;
 
 - (NSNumber*)primitiveMod;
 - (void)setPrimitiveMod:(NSNumber*)value;

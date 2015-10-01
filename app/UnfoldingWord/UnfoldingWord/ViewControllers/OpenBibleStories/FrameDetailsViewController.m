@@ -29,7 +29,7 @@
 #import "UIViewController+FileTransfer.h"
 #import "UnfoldingWord-Swift.h"
 
-@interface FrameDetailsViewController () <UIGestureRecognizerDelegate, ACTLabelButtonDelegate, FrameCellDelegate>
+@interface FrameDetailsViewController () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) OpenChapter *chapterMain;
 @property (nonatomic, strong) OpenChapter *chapterSide;
@@ -216,85 +216,9 @@
         cell.label_contentMain.font = [cell.label_contentMain.font fontWithSize:size];
         cell.label_contentSide.font = [cell.label_contentSide.font fontWithSize:size];
     };
-
-    
-//    masterContainer.blockTopBottomHidden = { [weak self] (percentHidden : CGFloat) in
-//        guard let strongself = self else { return }
-//        strongself.currentChapterVC()?.percentHidden = percentHidden
-//    }
     
 }
 
-
-/// ACTLabelButton Delegate Method
-- (void)labelButtonPressed:(ACTLabelButton *)labelButton;
-{
-    [self userRequestedBookPicker:labelButton];
-}
-
-//- (void)userPressedDiglotBBI:(UIBarButtonItem *)diglotBBI
-//{
-//    self.isShowingSide = ! self.isShowingSide;
-//    FrameCell *visibleFrameCell = [self visibleFrameCell];
-//    [visibleFrameCell setIsShowingSide:self.isShowingSide animated:YES];
-//}
-
-#pragma mark - Chapter Picker
-- (void)userRequestedBookPicker:(id)sender
-{
-//    __weak typeof(self) weakself = self;
-//    UIViewController *navVC = [ChapterListTableViewController navigationChapterPickerWithTopContainer:self.chapterMain.container.toc.version.language.topContainer completion:^(BOOL isCanceled, OpenChapter *selectedChapter) {
-//        if (isCanceled == NO && selectedChapter != nil) {
-//            OpenChapter *sideChapter = [weakself.chapterSide.container matchingChapter:selectedChapter];
-//            [weakself resetMainChapter:selectedChapter sideChapter:sideChapter];
-//        }
-//        [weakself dismissViewControllerAnimated:YES completion:^{}];
-//    }];
-//    [self presentViewController:navVC animated:YES completion:^{}];
-}
-
-#pragma mark - FrameCellDelegate Methods -
-//
-//#pragma mark Status Info Popover
-//
-//- (void)showPopOverStatusInfo:(FrameCell *)cell view:(UIView *)view isSide:(BOOL)isSide
-//{
-//    UFWStatusInfoViewController *statusVC = [[UFWStatusInfoViewController alloc] init];
-//    if (isSide == YES) {
-//        statusVC.status = self.chapterSide.container.toc.version.status;
-//    }
-//    else {
-//        statusVC.status = self.chapterMain.container.toc.version.status;
-//    }
-//    CGFloat width = fmin((self.view.frame.size.width - 40), 530);
-//    CGSize size = [UFWInfoView sizeForStatus:statusVC.status forWidth:width withDeleteButton:NO];
-//    self.customPopoverController = [[FPPopoverController alloc] initWithViewController:statusVC delegate:nil maxSize:size];
-//    self.customPopoverController.border = NO;
-//    [self.customPopoverController setShadowsHidden:YES];
-//    
-//    if ([view isKindOfClass:[UIView class]]) {
-//        self.customPopoverController.arrowDirection = FPPopoverArrowDirectionAny;
-//        [self.customPopoverController presentPopoverFromView:view];
-//    }
-//    else {
-//        self.customPopoverController.arrowDirection = FPPopoverNoArrow;
-//        [self.customPopoverController presentPopoverFromView:self.view];
-//    }
-//}
-//
-//#pragma mark Sharing
-//
-//- (void)showSharing:(FrameCell *)cell view:(UIView *)view isSide:(BOOL)isSide
-//{
-//    OpenChapter *chapterSelected = (isSide == YES) ? self.chapterSide : self.chapterMain;
-//    UWVersion *versionSelected = chapterSelected.container.toc.version;
-//    if (versionSelected == nil) {
-//        return;
-//    }    
-//    [self sendFileForVersion:versionSelected fromBarButtonOrView:view];
-// }
-
-#pragma mark Version Picker
 
 - (void)processTOCPicked:(UWTOC *)selectedTOC isSide:(BOOL)isSide;
 {
@@ -469,8 +393,13 @@
         [cell setVersionName:self.chapterMain.container.toc.version.name isSide:NO];
         [cell setStatusImage:[UFWInfoView imageReverseForStatus:self.chapterMain.container.toc.version.status] isSide:NO];
         
-        
-        cell.label_contentSide.text = frameSide.text;
+        if (frameSide.text.length > 0) {
+            cell.label_contentSide.text = frameSide.text;
+        }
+        else {
+            cell.label_contentSide.text = @"Click \"Add\" on the top bar to select a language.";
+        }
+       
         cell.label_contentSide.font = [cell.label_contentSide.font fontWithSize:pointSize];
         cell.label_contentSide.textAlignment = [LanguageInfoController textAlignmentForLanguageCode:self.chapterSide.container.toc.version.language.lc];
         [cell setVersionName:self.chapterSide.container.toc.version.name isSide:YES];

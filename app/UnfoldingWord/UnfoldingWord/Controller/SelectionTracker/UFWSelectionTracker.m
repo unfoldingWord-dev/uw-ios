@@ -26,6 +26,9 @@ static NSString *const kKeyUrlString = @"url_string";
 static NSString *const kKeyTopContainer = @"top_container";
 static NSString *const kKeyFontPointSize = @"font_point_size";
 
+static CGFloat const kMinimumFontSize = 5.0f;
+static CGFloat const kDefaultFontSize = 18.0f;
+
 @implementation UFWSelectionTracker
 
 #pragma mark - Setters
@@ -165,7 +168,9 @@ static NSString *const kKeyFontPointSize = @"font_point_size";
 }
 
 + (CGFloat)fontPointSize {
-    return [self numberForKey:kKeyFontPointSize];
+    CGFloat savedSize = [self numberForKey:kKeyFontPointSize];
+    CGFloat finalSize = (savedSize >= kMinimumFontSize) ? savedSize : kDefaultFontSize;
+    return finalSize;
 }
 
 + (NSInteger)oneBoundedNumberForKey:(NSString *)key {

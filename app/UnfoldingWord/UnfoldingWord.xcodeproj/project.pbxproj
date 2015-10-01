@@ -193,6 +193,7 @@
 		5A5996321B0A93980060668F /* AbyssinicaSIL-R.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5A5996251B0A93980060668F /* AbyssinicaSIL-R.ttf */; };
 		5A59974A1B0A9A3F0060668F /* UFWDataSeeder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5997491B0A9A3F0060668F /* UFWDataSeeder.m */; };
 		5A5E0F521B5DB21C00390B4B /* UFWContainerUSFMVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5E0F511B5DB21C00390B4B /* UFWContainerUSFMVC.swift */; };
+		5A6562501BBB1E4400578381 /* UWDownloaderPlusValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A65624F1BBB1E4400578381 /* UWDownloaderPlusValidator.m */; settings = {ASSET_TAGS = (); }; };
 		5A6997D41B2F859000BB0618 /* ufw_file_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A6997D31B2F859000BB0618 /* ufw_file_icon.png */; };
 		5A7A66EC1AEF06B500FF3EA1 /* NSString+Trim.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A7A66EB1AEF06B500FF3EA1 /* NSString+Trim.m */; };
 		5A7DDAD11BB3609900A5252C /* FontSizePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7DDAD01BB3609900A5252C /* FontSizePickerView.swift */; settings = {ASSET_TAGS = (); }; };
@@ -1153,6 +1154,8 @@
 		5A5997481B0A9A3F0060668F /* UFWDataSeeder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFWDataSeeder.h; sourceTree = "<group>"; };
 		5A5997491B0A9A3F0060668F /* UFWDataSeeder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UFWDataSeeder.m; sourceTree = "<group>"; };
 		5A5E0F511B5DB21C00390B4B /* UFWContainerUSFMVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UFWContainerUSFMVC.swift; sourceTree = "<group>"; };
+		5A65624E1BBB1E4400578381 /* UWDownloaderPlusValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UWDownloaderPlusValidator.h; sourceTree = "<group>"; };
+		5A65624F1BBB1E4400578381 /* UWDownloaderPlusValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UWDownloaderPlusValidator.m; sourceTree = "<group>"; };
 		5A6997D31B2F859000BB0618 /* ufw_file_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ufw_file_icon.png; sourceTree = "<group>"; };
 		5A763CB71B97B982009F9460 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		5A7A66EA1AEF06B500FF3EA1 /* NSString+Trim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Trim.h"; sourceTree = "<group>"; };
@@ -2429,9 +2432,19 @@
 			path = DataSeeder;
 			sourceTree = "<group>";
 		};
+		5A65624D1BBB1DFC00578381 /* DownloadAndValidator */ = {
+			isa = PBXGroup;
+			children = (
+				5A65624E1BBB1E4400578381 /* UWDownloaderPlusValidator.h */,
+				5A65624F1BBB1E4400578381 /* UWDownloaderPlusValidator.m */,
+			);
+			path = DownloadAndValidator;
+			sourceTree = "<group>";
+		};
 		5A749D481A965BD100FF5071 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				5A65624D1BBB1DFC00578381 /* DownloadAndValidator */,
 				5ABFFD391B34873D006FB166 /* FileFormat */,
 				5AC377CD1B3873F800E3BB36 /* FileSharing */,
 				5A5997471B0A9A3F0060668F /* DataSeeder */,
@@ -4780,6 +4793,7 @@
 				5AD953B71BB07B3400E3D654 /* _UWTopContainer.m in Sources */,
 				5AF051F11B756BD1003EA5A4 /* UFWLanguageInfo.m in Sources */,
 				5AA7F2A81A34EEED00F49D40 /* UFWNotifications.m in Sources */,
+				5A6562501BBB1E4400578381 /* UWDownloaderPlusValidator.m in Sources */,
 				5AC377D31B38C62C00E3BB36 /* BluetoothFileReceiver.swift in Sources */,
 				5AC3DCB71B1F751000703AA2 /* ACTSimpleChapterNumberCell.m in Sources */,
 				5AEDC6321AFC20CA00C722B9 /* LanguageInfoController.m in Sources */,

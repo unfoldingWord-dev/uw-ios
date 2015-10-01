@@ -152,6 +152,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
             theContainerVC.delegateChromeProtocol = self
             theContainerVC.addMasterContainerBlocksToContainer(self)
             autoAddChildViewController(theContainerVC, toViewInSelf: viewMainContent)
+            updateDiglotState(isOn: UFWSelectionTracker.isShowingSide())
         }
         else { // Add Open Bible Stories Frame View Controller
             let flow = UICollectionViewFlowLayout()
@@ -166,11 +167,10 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
             frameDetail.addMasterContainerBlocksToContainer(self)
             autoAddChildViewController(frameDetail, toViewInSelf: viewMainContent)
             openBibleVC = frameDetail
+            updateDiglotState(isOn: UFWSelectionTracker.isShowingSideOBS())
         }
         
-        updateDiglotState(isOn: UFWSelectionTracker.isShowingSide())
     }
-
     
     private func updateDiglotState(isOn isOn : Bool) {
         setBarButton(barButtonDiglot, toOn: isOn)
@@ -391,23 +391,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
             usfmPageVC?.updateChapterVCs()
             
         }
-        else {
-            // Add the Open Bible Stories Here
-        }
     }
-    
-//    - (void)userRequestedBookPicker:(id)sender
-//    {
-//    //    __weak typeof(self) weakself = self;
-//    //    UIViewController *navVC = [ChapterListTableViewController navigationChapterPickerWithTopContainer:self.chapterMain.container.toc.version.language.topContainer completion:^(BOOL isCanceled, OpenChapter *selectedChapter) {
-//    //        if (isCanceled == NO && selectedChapter != nil) {
-//    //            OpenChapter *sideChapter = [weakself.chapterSide.container matchingChapter:selectedChapter];
-//    //            [weakself resetMainChapter:selectedChapter sideChapter:sideChapter];
-//    //        }
-//    //        [weakself dismissViewControllerAnimated:YES completion:^{}];
-//    //    }];
-//    //    [self presentViewController:navVC animated:YES completion:^{}];
-//    }
     
     private func showBookPicker() {
         

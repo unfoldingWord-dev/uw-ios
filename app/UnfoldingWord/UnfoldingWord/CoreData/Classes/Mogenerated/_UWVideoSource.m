@@ -8,6 +8,7 @@
 #import "_UWVideoSource.h"
 
 const struct UWVideoSourceAttributes UWVideoSourceAttributes = {
+	.filename = @"filename",
 	.mod = @"mod",
 	.src = @"src",
 	.src_sig = @"src_sig",
@@ -46,6 +47,8 @@ const struct UWVideoSourceFetchedProperties UWVideoSourceFetchedProperties = {
 
 	return keyPaths;
 }
+
+@dynamic filename;
 
 @dynamic mod;
 

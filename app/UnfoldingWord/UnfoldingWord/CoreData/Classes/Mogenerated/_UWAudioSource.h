@@ -10,6 +10,7 @@
 extern const struct UWAudioSourceAttributes {
 	__unsafe_unretained NSString *bitrate;
 	__unsafe_unretained NSString *chapter;
+	__unsafe_unretained NSString *filename;
 	__unsafe_unretained NSString *length;
 	__unsafe_unretained NSString *mod;
 	__unsafe_unretained NSString *size;
@@ -42,6 +43,10 @@ extern const struct UWAudioSourceFetchedProperties {
 @property (nonatomic, strong) NSString* chapter;
 
 //- (BOOL)validateChapter:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSString* filename;
+
+//- (BOOL)validateFilename:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSNumber* length;
 
@@ -95,6 +100,9 @@ extern const struct UWAudioSourceFetchedProperties {
 
 - (NSString*)primitiveChapter;
 - (void)setPrimitiveChapter:(NSString*)value;
+
+- (NSString*)primitiveFilename;
+- (void)setPrimitiveFilename:(NSString*)value;
 
 - (NSNumber*)primitiveLength;
 - (void)setPrimitiveLength:(NSNumber*)value;

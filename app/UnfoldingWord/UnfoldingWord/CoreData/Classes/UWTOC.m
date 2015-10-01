@@ -8,6 +8,7 @@
 #import "USFMCoding.h"
 #import "Constants.h"
 #import "UnfoldingWord-Swift.h"
+#import "UWDownloaderPlusValidator.h"
 
 static NSString *const kDescription = @"desc";
 static NSString *const kModified = @"mod";
@@ -118,9 +119,9 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
 #pragma mark - Methods to import a file
 - (BOOL)importWithUSFM:(NSString *)usfm signature:(NSString *)signature
 {
+    NSData *sourceData = [usfm dataUsingEncoding:NSUTF8StringEncoding];
     if ([self processUSFMString:usfm]) {
-        NSData *sigData = [signature dataUsingEncoding:NSUTF8StringEncoding];
-        return [self validateWithSignature:sigData];
+        return [UWDownloaderPlusValidator validateData:sourceData withSignature:signature];
     }
     else {
         return NO;
@@ -131,25 +132,20 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
 {
     NSData *openData = [openBible dataUsingEncoding:NSUTF8StringEncoding];
     if ([self processOpenBibleStoriesJSONData:openData]) {
-        NSData *sigData = [signature dataUsingEncoding:NSUTF8StringEncoding];
-        return [self validateWithSignature:sigData];
+        return [UWDownloaderPlusValidator validateData:openData withSignature:signature];
     }
     else {
        return NO;
     }
 }
 
-#pragma mark - Methods to Download the content for a TOC item.
-
-- (void)downloadWithCompletion:(TOCDownloadCompletion)completion;
+- (BOOL)saveSignatureData:(NSData *)sigData withFilename:(NSString *)filename
 {
-    if (self.isUSFM.boolValue) {
-        [self downloadUSFMFormatWithCompletion:completion];
-    }
-    else {
-        [self downloadJSONFormatWithCompletion:completion];
-    }
+    return [sigData writeToFile:[NSString documentsPathWithFilename:filename] atomically:YES];
 }
+
+
+#pragma mark - Methods to Download the content for a TOC item.
 
 - (BOOL)deleteAllContent
 {
@@ -171,10 +167,82 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
     }
 }
 
+- (void)downloadWithCompletion:(TOCDownloadCompletion)completion;
+{
+    NSURL *sourceUrl = [NSURL URLWithString:self.src];
+    NSURL *sigUrl = [NSURL URLWithString:self.src_sig];
+    if ( ! sourceUrl || ! sigUrl) {
+        NSAssert3(NO, @"%s: Do not call for a usfm download without a valid url source (%@) and signature (%@)!", __PRETTY_FUNCTION__, self.src, self.src_sig);
+        completion(NO);
+        return;
+    }
+    __weak typeof(self) weakself = self; // technically not needed, but following the pattern anyway.
+    
+    [UWDownloaderPlusValidator downloadPlusValidateSourceUrl:sourceUrl signatureUrl:sigUrl withCompletion:^(NSString * _Nullable sourceDataPath, NSString * _Nullable signatureDataPath, BOOL fileValidated) {
+        
+        // Get source data
+        NSData *sourceData = nil;
+        if (sourceDataPath != nil) {
+            sourceData = [NSData dataWithContentsOfFile:sourceDataPath];
+        }
+        if (sourceData == nil ) {
+            weakself.isDownloadFailed = @(YES);
+            completion(NO);
+            return;
+        }
+        
+        // Get signature data
+        NSData *sigData = nil;
+        NSString *signature = nil;
+        if (signatureDataPath != nil) {
+            sigData = [NSData dataWithContentsOfFile:signatureDataPath];
+            signature = [UWDownloaderPlusValidator signatureFromServerRawData:sigData];
+        }
+        
+        BOOL importSuccessful = NO;
+        NSString *signatureFileName = nil;
+        
+        if (weakself.isUSFM.boolValue) {
+            NSString *usfm = [[NSString alloc] initWithData:sourceData encoding:NSUTF8StringEncoding];
+            importSuccessful = [weakself processUSFMString:usfm];
+            weakself.usfmInfo.signature = signature;
+            signatureFileName = [weakself.usfmInfo.filename stringByAppendingString:SignatureFileAppend];
+        }
+        else {
+            importSuccessful = [weakself processOpenBibleStoriesJSONData:sourceData];
+            weakself.openContainer.signature = signature;
+            signatureFileName = [weakself.openContainer.filename stringByAppendingString:SignatureFileAppend];
+        }
+        
+        if (importSuccessful) {
+            weakself.isDownloaded = @(YES);
+            weakself.isDownloadFailed = @(NO);
+            weakself.isContentChanged = @(NO);
+            weakself.isContentValidValue = fileValidated;
+        }
+        
+        if (signatureFileName != nil && sigData != nil) {
+            NSString *filepath = [[NSString documentsDirectory] stringByAppendingPathComponent:signatureFileName];
+                if ([sigData writeToFile:filepath atomically:YES] == NO) {
+                    NSAssert1(NO, @"Could not save file to %@", filepath);
+                }
+        }
+        
+        [[DWSCoreDataStack managedObjectContext] save:nil];
+        
+        BOOL success = (importSuccessful && fileValidated) ? YES : NO;
+        completion(success);
+    }];
+}
+
 #pragma mark - USFM
 
 - (BOOL)deleteUSFMContent
 {
+    if (self.usfmInfo.filename == nil) {
+        return YES;
+    }
+    
     BOOL success = NO;
     NSString *filePath = [[NSString documentsDirectory] stringByAppendingPathComponent:self.usfmInfo.filename];
     if ([[NSFileManager defaultManager] removeItemAtPath:filePath error:nil]) {
@@ -194,38 +262,11 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
     return success;
 }
 
-- (void)downloadUSFMFormatWithCompletion:(TOCDownloadCompletion)completion
-{
-    NSURL *url = [NSURL URLWithString:self.src];
-    if ( ! url) {
-        NSAssert2(NO, @"%s: Do not call for a usfm download without a valid url source (%@)!", __PRETTY_FUNCTION__, self.src);
-        completion(NO);
-        return;
-    }
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:35];
-    self.isDownloadFailed = @(NO);
-    
-    NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        
-        NSString *usfm = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if ([self processUSFMString:usfm]) {
-                [self validateWithcompletion:completion];
-            }
-            else {
-                completion(NO);
-            }
-        });
-    }];
-    [task resume];
-}
-
 - (BOOL) processUSFMString:(NSString *)usfm
 {
     NSArray *chapters = [UFWImporterUSFMEncoding chaptersFromString:usfm];
     if (chapters.count > 0) {
-        NSString *filename = [self uniqueFilenameWithSuffix:@"usfm"];
+        NSString *filename = (self.usfmInfo.filename.length == 0) ? [self uniqueFilename] : self.usfmInfo.filename;
         NSString *filepath = [[NSString documentsDirectory] stringByAppendingPathComponent:filename];
         if ([usfm writeToFile:filepath atomically:YES encoding:NSUTF8StringEncoding error:nil]) {
             USFMInfo *usfmInfo = self.usfmInfo;
@@ -235,7 +276,6 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
             usfmInfo.filename = filename;
             usfmInfo.numberOfChapters = @(chapters.count);
             usfmInfo.toc = self;
-            [self updateForDownloadSuccess];
             return YES;
         }
         else {
@@ -247,11 +287,6 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
         self.isDownloadFailed = @(YES);
         return NO;
     }
-}
-
-- (NSString *)uniqueFilenameWithSuffix:(NSString *)suffix
-{
-    return [NSString stringWithFormat:@"%@-%@-%@-%@.%@", self.slug, self.version.slug, self.version.language.lc, [NSString uniqueString], suffix];
 }
 
 #pragma mark - Open Bible Stories JSON
@@ -277,35 +312,6 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
     return success;
 }
 
-- (void)downloadJSONFormatWithCompletion:(TOCDownloadCompletion)completion
-{
-    // Create a request
-    NSURL *url = [NSURL URLWithString:self.src];
-    if ( ! url) {
-        NSAssert2(NO, @"%s: Do not call for a download with a valid url source (%@)!", __PRETTY_FUNCTION__, self.src);
-        completion(NO);
-        return;
-    }
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:35];
-    self.isDownloadFailed = @(NO);
-    
-    NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (error == nil && [self processOpenBibleStoriesJSONData:data]) {
-                    [self validateWithcompletion:completion];
-                }
-                else {
-                    completion(NO);
-                }
-            });
-        });
-    }];
-    [task resume];
-}
-
 - (BOOL)processOpenBibleStoriesJSONData:(NSData *)data
 {
     NSJSONSerialization *JSON = nil;
@@ -318,12 +324,11 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
     };
     
     if (dictionary.allKeys.count > 0) {
-        NSString *filename = [self uniqueFilenameWithSuffix:@"json"];
+        NSString *filename = (self.openContainer.filename.length == 0) ? [self uniqueFilename] : self.openContainer.filename;
         NSString *filepath = [[NSString documentsDirectory] stringByAppendingPathComponent:filename];
         if ([data writeToFile:filepath atomically:YES]) {
             OpenContainer *container = [OpenContainer createOpenContainerFromDictionary:dictionary forTOC:self];
             container.filename = filename;
-            [self updateForDownloadSuccess];
             return YES;
         }
     }
@@ -332,102 +337,11 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
     return NO;
 }
 
-#pragma mark - Signatures
 
-// The completion block is always YES because we have successfully downloaded the usfm.
-- (void)validateWithcompletion:(TOCDownloadCompletion)completion
+- (NSString *)uniqueFilename
 {
-    // Create a request
-    NSURL *url = [NSURL URLWithString:self.src_sig];
-    if ( ! url) {
-        NSAssert2(NO, @"%s: Do not call for a usfm download verification with a valid url source (%@)!", __PRETTY_FUNCTION__, self.src_sig);
-        completion(YES);
-    }
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:35];
-    
-    NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            // If we get a 404 error, then say the download failed, which will delete it.
-            if ([response isKindOfClass:[NSHTTPURLResponse class]] &&
-                ((NSHTTPURLResponse *)response).statusCode == 404) {
-                completion(NO);
-                return;
-            }
-            
-            BOOL success = [self validateWithSignature:data];
-            completion(success);
-        });
-    }];
-    [task resume];
-}
-
-- (BOOL)validateWithSignature:(NSData *)data
-{
-    NSDictionary *signatureJSON = nil;
-    self.isContentValid = @(NO);
-    
-    // Get the JSON dictionary if it exists
-    if (data.length > 0) {
-        id responseObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-        if([responseObject isKindOfClass:[NSArray class]]) {
-            NSArray *responseArray = (NSArray *)responseObject;
-            if (responseArray.count > 0) {
-                NSDictionary *baseDictionary = responseArray[0];
-                if ([baseDictionary isKindOfClass:[NSDictionary class]]) {
-                    signatureJSON = baseDictionary;
-                }
-            }
-        }
-    };
-    
-    self.isContentValid = @(NO);
-    
-    if (signatureJSON.allKeys.count > 0) {
-        
-        NSString *signature = [signatureJSON objectOrNilForKey:@"sig"];
-        
-        if ( ! signature || ! [signature isKindOfClass:[NSString class]] || signature.length == 0) {
-            NSAssert2(NO, @"%s: invalidate signature: %@", __PRETTY_FUNCTION__, signature);
-        }
-        else {
-            NSString *filename = nil;
-            
-            if (self.usfmInfo != nil) {
-                self.usfmInfo.signature = signature;
-                self.isContentValid = @([self.usfmInfo validateSignature]);
-                filename = [self.usfmInfo.filename stringByAppendingString:SignatureFileAppend];
-            }
-            else if (self.openContainer != nil) {
-                self.openContainer.signature = signature;
-                self.isContentValid = @([self.openContainer validateSignature]);
-                filename = [self.openContainer.filename stringByAppendingString:SignatureFileAppend];
-            }
-            
-            if (filename.length > 0) {
-                NSString *filepath = [[NSString documentsDirectory] stringByAppendingPathComponent:filename];
-                if ([data writeToFile:filepath atomically:YES] == NO) {
-                    NSAssert1(NO, @"Could not save file to %@", filepath);
-                }
-            }
-        }
-    }
-    else {
-        NSAssert2(NO, @"%s: Could not find a signature! %@", __PRETTY_FUNCTION__, data);
-    }
-    [[DWSCoreDataStack managedObjectContext] save:nil];
-    return self.isContentValidValue;
-}
-
-- (void)updateForDownloadSuccess
-{
-    self.isDownloaded = @(YES);
-    self.isContentValid = @(NO);
-    self.isDownloadFailed = @(NO);
-    self.isContentChanged = @(NO);
-    [[DWSCoreDataStack managedObjectContext] save:nil];
+    NSString *suffix = (self.isUSFM.boolValue) ? @"usfm" : @"json";
+    return [NSString stringWithFormat:@"%@-%@-%@-%@.%@", self.slug, self.version.slug, self.version.language.lc, [NSString uniqueString], suffix];
 }
 
 

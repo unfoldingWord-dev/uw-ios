@@ -15,6 +15,10 @@
 
 + (BOOL)verifyFile:(NSString *)filePath withSignature:(NSString *)signature
 {
+    if (filePath == nil || signature == nil) {
+        return NO;
+    }
+    
     NSData *data = [NSData dataWithContentsOfFile:filePath];
     NSData *fileHash = [self hashFromData:data];
     

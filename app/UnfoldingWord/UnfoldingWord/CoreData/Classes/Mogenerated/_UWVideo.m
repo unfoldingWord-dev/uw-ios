@@ -8,6 +8,9 @@
 #import "_UWVideo.h"
 
 const struct UWVideoAttributes UWVideoAttributes = {
+	.contributors = @"contributors",
+	.rev = @"rev",
+	.txt_ver = @"txt_ver",
 };
 
 const struct UWVideoRelationships UWVideoRelationships = {
@@ -39,6 +42,12 @@ const struct UWVideoFetchedProperties UWVideoFetchedProperties = {
 
 	return keyPaths;
 }
+
+@dynamic contributors;
+
+@dynamic rev;
+
+@dynamic txt_ver;
 
 @dynamic media;
 

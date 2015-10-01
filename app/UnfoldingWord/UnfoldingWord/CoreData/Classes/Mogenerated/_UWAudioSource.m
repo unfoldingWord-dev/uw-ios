@@ -10,6 +10,7 @@
 const struct UWAudioSourceAttributes UWAudioSourceAttributes = {
 	.bitrate = @"bitrate",
 	.chapter = @"chapter",
+	.filename = @"filename",
 	.length = @"length",
 	.mod = @"mod",
 	.size = @"size",
@@ -84,6 +85,8 @@ const struct UWAudioSourceFetchedProperties UWAudioSourceFetchedProperties = {
 }
 
 @dynamic chapter;
+
+@dynamic filename;
 
 @dynamic length;
 
