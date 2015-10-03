@@ -243,6 +243,8 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
     
     func updateChapterVCForArea(area : TOCArea) {
         guard let currentController = currentChapterVC() else { return }
+        
+        currentController.chapterNumber = currentChapterNumber;
 
         switch area {
         case .Main:
@@ -252,6 +254,14 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         }
         
         currentController.loadContentForArea(area, setToTop:true)
+        
+        // This resets the view controllers that appear before and after the current one, which is necessary because they will likely change
+        self.dataSource = nil;
+        self.delegate = nil;
+        delay(0.0) { () -> Void in
+            self.dataSource = self;
+            self.delegate = self;
+        }
     }
     
     
@@ -345,11 +355,13 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
     
     func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if let currentVC = currentChapterVC() {
-            currentChapterNumber = currentVC.chapterNumber
+            if (currentVC.chapterNumber <= anyArray().count) {
+                currentChapterNumber = currentVC.chapterNumber;
+            }
         }
     }
     
-    // Page View Controller Data Sourche
+    // Page View Controller Data Source
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
         
         let existingVC = viewController as! USFMChapterVC
@@ -366,7 +378,7 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
                 
         let existingVC = viewController as! USFMChapterVC
         
-        if existingVC.chapterNumber >= anyArray().count {
+        if existingVC.chapterNumber > anyArray().count {
             return nil
         }
         else {
