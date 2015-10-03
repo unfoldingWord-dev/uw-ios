@@ -231,9 +231,14 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
         [[DWSCoreDataStack managedObjectContext] save:nil];
         
         if (importSuccessful) {
+            if (self.media.audio != nil) {
             [self.media.audio downloadAllAudioWithQuality:AudioFileQualityLow completion:^(BOOL success) {
                 completion(YES);
             }];
+            }
+            else {
+                completion(YES);
+            }
         }
         else {
             completion(NO);
