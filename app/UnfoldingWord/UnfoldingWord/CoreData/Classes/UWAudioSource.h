@@ -3,13 +3,24 @@
 //
 
 #import "_UWAudioSource.h"
+#import "Constants.h"
 
 @interface UWAudioSource : _UWAudioSource {}
 
-- (void)updateWithDictionary:(NSDictionary *)dictionary;
+- (NSURL * __nullable)sourceFileUrl;
 
-- (NSDictionary *)jsonRepresention;
++ (instancetype __nullable)sourceForDictionary:(NSDictionary *__nonnull)dictionary withExistingObjects:(NSArray *__nonnull)existingObjects;
 
-+ (instancetype)sourceForDictionary:(NSDictionary *)dictionary withExistingObjects:(NSArray *)existingObjects;
+- (void)updateWithDictionary:(NSDictionary * __nonnull)dictionary;
+
+- (NSDictionary * __nonnull)jsonRepresention;
+
+- (void)downloadWithQuality:(AudioFileQuality)quality completion:(BitrateDownloadCompletion __nonnull)completion;
+
+- (BOOL)hasPlayableContent;
+
+- (UWAudioBitrate * __nullable)bestBitrateWithDownloadedAudio;
+
+- (UWAudioBitrate * __nullable)bitrateWithQuality:(AudioFileQuality)quality;
 
 @end

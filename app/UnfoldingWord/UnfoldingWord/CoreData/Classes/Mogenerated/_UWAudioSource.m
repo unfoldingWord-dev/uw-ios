@@ -8,18 +8,15 @@
 #import "_UWAudioSource.h"
 
 const struct UWAudioSourceAttributes UWAudioSourceAttributes = {
-	.bitrate = @"bitrate",
 	.chapter = @"chapter",
-	.filename = @"filename",
 	.length = @"length",
-	.mod = @"mod",
-	.size = @"size",
 	.src = @"src",
 	.src_sig = @"src_sig",
 };
 
 const struct UWAudioSourceRelationships UWAudioSourceRelationships = {
 	.audio = @"audio",
+	.bitrates = @"bitrates",
 };
 
 const struct UWAudioSourceFetchedProperties UWAudioSourceFetchedProperties = {
@@ -44,49 +41,15 @@ const struct UWAudioSourceFetchedProperties UWAudioSourceFetchedProperties = {
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 
-	if ([key isEqualToString:@"bitrateValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"bitrate"];
-		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-	}
 	if ([key isEqualToString:@"lengthValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"length"];
-		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-	}
-	if ([key isEqualToString:@"modValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"mod"];
-		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-	}
-	if ([key isEqualToString:@"sizeValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"size"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 	}
 
 	return keyPaths;
 }
 
-@dynamic bitrate;
-
-- (int64_t)bitrateValue {
-	NSNumber *result = [self bitrate];
-	return [result longLongValue];
-}
-
-- (void)setBitrateValue:(int64_t)value_ {
-	[self setBitrate:[NSNumber numberWithLongLong:value_]];
-}
-
-- (int64_t)primitiveBitrateValue {
-	NSNumber *result = [self primitiveBitrate];
-	return [result longLongValue];
-}
-
-- (void)setPrimitiveBitrateValue:(int64_t)value_ {
-	[self setPrimitiveBitrate:[NSNumber numberWithLongLong:value_]];
-}
-
 @dynamic chapter;
-
-@dynamic filename;
 
 @dynamic length;
 
@@ -108,50 +71,21 @@ const struct UWAudioSourceFetchedProperties UWAudioSourceFetchedProperties = {
 	[self setPrimitiveLength:[NSNumber numberWithLongLong:value_]];
 }
 
-@dynamic mod;
-
-- (double)modValue {
-	NSNumber *result = [self mod];
-	return [result doubleValue];
-}
-
-- (void)setModValue:(double)value_ {
-	[self setMod:[NSNumber numberWithDouble:value_]];
-}
-
-- (double)primitiveModValue {
-	NSNumber *result = [self primitiveMod];
-	return [result doubleValue];
-}
-
-- (void)setPrimitiveModValue:(double)value_ {
-	[self setPrimitiveMod:[NSNumber numberWithDouble:value_]];
-}
-
-@dynamic size;
-
-- (int64_t)sizeValue {
-	NSNumber *result = [self size];
-	return [result longLongValue];
-}
-
-- (void)setSizeValue:(int64_t)value_ {
-	[self setSize:[NSNumber numberWithLongLong:value_]];
-}
-
-- (int64_t)primitiveSizeValue {
-	NSNumber *result = [self primitiveSize];
-	return [result longLongValue];
-}
-
-- (void)setPrimitiveSizeValue:(int64_t)value_ {
-	[self setPrimitiveSize:[NSNumber numberWithLongLong:value_]];
-}
-
 @dynamic src;
 
 @dynamic src_sig;
 
 @dynamic audio;
+
+@dynamic bitrates;
+
+- (NSMutableSet*)bitratesSet {
+	[self willAccessValueForKey:@"bitrates"];
+
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"bitrates"];
+
+	[self didAccessValueForKey:@"bitrates"];
+	return result;
+}
 
 @end

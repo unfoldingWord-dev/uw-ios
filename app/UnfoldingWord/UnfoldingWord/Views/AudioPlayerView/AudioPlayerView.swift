@@ -70,7 +70,7 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
         let nibViews = NSBundle.mainBundle().loadNibNamed("AudioPlayerView", owner: nil, options: nil)
         let playerView = nibViews[0] as! AudioPlayerView
         playerView.url = url
-        playerView.downloadData()
+        playerView.retrieveData()
         playerView.updateTimeUI()
         playerView.translatesAutoresizingMaskIntoConstraints = false
         return playerView
@@ -88,9 +88,17 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
     
     // Outside Methods
     
-    func downloadData() {
+    func retrieveData() {
         
         if let url = self.url where self.player == nil {
+            
+            if url.fileURL {
+                createPlayerWithFileUrl(url)
+                showPlayerUI()
+                playAtTime(0)
+                return;
+            }
+            
             self.downloader = FileDownloader(url: url, progress: {[weak self] (percentDone) -> () in
                 if let strongself = self {
                     strongself.updateDownloadPercentDone(percentDone)
@@ -143,6 +151,18 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
         
         do {
             let createdPlayer = try AVAudioPlayer(data: data)
+            createdPlayer.prepareToPlay()
+            self.player = createdPlayer
+        } catch let error as NSError {
+            print("Error creating url \(url): \(error.userInfo)")
+            self.player = nil
+        }
+    }
+    
+    func createPlayerWithFileUrl(url : NSURL) {
+        
+        do {
+            let createdPlayer = try AVAudioPlayer(contentsOfURL: url)
             createdPlayer.prepareToPlay()
             self.player = createdPlayer
         } catch let error as NSError {

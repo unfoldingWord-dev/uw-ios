@@ -374,7 +374,6 @@
     else // we're on a regular frame
     {
         FrameCell *cell =[collectionView dequeueReusableCellWithReuseIdentifier:self.cellIDFrame forIndexPath:indexPath];
-        cell.delegate = self;
         
         NSInteger row = indexPath.row;
         OpenFrame *frameMain = nil;

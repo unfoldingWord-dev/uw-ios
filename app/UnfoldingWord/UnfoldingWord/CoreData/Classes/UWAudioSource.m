@@ -4,62 +4,54 @@
 
 #import "UWAudioSource.h"
 #import "UWCoreDataClasses.h"
+#import "UWDownloaderPlusValidator.h"
+#import "NSString+Trim.h"
 
+static NSString *const kChapter = @"chap";
 static NSString *const kBitrate = @"br";
 static NSString *const kLength = @"length";
-static NSString *const kModified = @"mod";
-static NSString *const kSize = @"size";
 static NSString *const kSource = @"src";
 static NSString *const kSignature = @"src_sig";
+
+static NSString *const KPLaceHolderForBitrate = @"{bitrate}";
 
 @implementation UWAudioSource
 
 - (void)updateWithDictionary:(NSDictionary *)dictionary
 {
-    if (dictionary.allKeys.count == 0) {
-        NSAssert2(NO, @"%s: Dictionary contained no keys: %@", __PRETTY_FUNCTION__, dictionary);
-        return;
-    }
-    NSString *key = [dictionary.allKeys firstObject];
-    self.chapter = key;
+    self.chapter = [dictionary objectOrNilForKey:kChapter];
+    self.length = [dictionary objectOrNilForKey:kLength];
+    self.src = [dictionary objectOrNilForKey:kSource];
+    self.src_sig = [dictionary objectOrNilForKey:kSignature];
     
-    NSDictionary *enclosedDictionary = dictionary[key];
-    
-    self.bitrate = [enclosedDictionary objectOrNilForKey:kBitrate];
-    self.length = [enclosedDictionary objectOrNilForKey:kLength];
-    self.mod = [enclosedDictionary objectOrNilForKey:kModified];
-    self.size = [enclosedDictionary objectOrNilForKey:kSize];
-    self.src = [enclosedDictionary objectOrNilForKey:kSource];
-    self.src_sig = [enclosedDictionary objectOrNilForKey:kSignature];
+    NSArray *bitrates = [dictionary objectOrNilForKey:kBitrate];
+    [UWAudioBitrate updateBitrateDictionaries:bitrates forSource:self];
 }
 
 - (NSDictionary *)jsonRepresention
 {
-    NSMutableDictionary *innerDict = [NSMutableDictionary new];
-    if (self.bitrate != nil) {
-        innerDict[kBitrate] = self.bitrate;
+    NSMutableDictionary *dictionary = [NSMutableDictionary new];
+
+    if (self.chapter != nil) {
+        dictionary[kChapter] = self.chapter;
     }
     if (self.length != nil) {
-        innerDict[kLength] = self.length;
-    }
-    if (self.mod != nil) {
-        innerDict[kModified] = self.mod;
-    }
-    if (self.size != nil) {
-        innerDict[kSize] = self.size;
+        dictionary[kLength] = self.length;
     }
     if (self.src != nil) {
-        innerDict[kSource] = self.src;
+        dictionary[kSource] = self.src;
     }
     if (self.src_sig != nil) {
-        innerDict[kSignature] = self.src_sig;
+        dictionary[kSignature] = self.src_sig;
     }
     
-    // This is an odd way to do things, but it copies what the original JSON from uW looks like.
-    NSMutableDictionary *outerDictionary = [NSMutableDictionary new];
-    outerDictionary[self.chapter] = innerDict;
+    NSMutableArray *bitrates = [NSMutableArray new];
+    for (UWAudioBitrate *bitrate in self.bitrates) {
+        [bitrates addObject:[bitrate jsonRepresention]];
+    }
+    dictionary[kBitrate] = bitrates;
     
-    return outerDictionary;
+    return dictionary;
 }
 
 + (instancetype)sourceForDictionary:(NSDictionary *)dictionary withExistingObjects:(NSArray *)existingObjects
@@ -76,5 +68,120 @@ static NSString *const kSignature = @"src_sig";
     }
     return nil;
 }
+
+- (NSURL *)sourceFileUrl
+{
+    UWAudioBitrate *bitrate = [self bestBitrateWithDownloadedAudio];
+    if (bitrate == nil) {
+        return nil;
+    }
+    NSString *filepath = [NSString documentsPathWithFilename:bitrate.filename];
+    if (filepath == nil) {
+        return nil;
+    }
+    return [NSURL fileURLWithPath:filepath];
+}
+
+- (void)downloadWithQuality:(AudioFileQuality)quality completion:(BitrateDownloadCompletion)completion
+{
+    UWAudioBitrate *bitrate = [self bitrateWithQuality:quality];
+    NSString *sourceString = [self stringBySubstitutingUrlString:self.src withBitrate:bitrate];
+    NSString *sigString = [self stringBySubstitutingUrlString:self.src_sig withBitrate:bitrate];
+    
+    if (bitrate == nil || sourceString == nil || sigString == nil) {
+        completion(NO);
+        return;
+    }
+    
+    NSURL *sourceUrl = [NSURL URLWithString:sourceString];
+    NSURL *signatureUrl = [NSURL URLWithString:sigString];
+    if (sourceUrl == nil || signatureUrl == nil) {
+        completion(NO);
+        return;
+    }
+    
+    [UWDownloaderPlusValidator downloadPlusValidateSourceUrl:sourceUrl signatureUrl:signatureUrl withCompletion:^(NSString * _Nullable sourceDataPath, NSString * _Nullable signatureDataPath, BOOL fileValidated) {
+        if (sourceDataPath == nil) {
+            completion(NO);
+            return;
+        }
+        else {
+            BOOL success = [bitrate saveAudioAtPath:sourceDataPath withSignatureAtPath:signatureDataPath isValid:fileValidated];
+            completion(success);
+        }
+    }];
+}
+
+- (BOOL)hasPlayableContent
+{
+    for (UWAudioBitrate *bitrate in self.bitrates) {
+        if (bitrate.filename != nil && bitrate.isDownloadedValue) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (UWAudioBitrate *)bitrateWithQuality:(AudioFileQuality)quality
+{
+    switch (quality) {
+        case AudioFileQualityHigh:
+            return [self bitrateWithHighestQuality];
+            break;
+        case AudioFileQualityLow:
+            return [self bitrateWithLowestQuality];
+    }
+    return nil;
+}
+
+- (UWAudioBitrate *)bestBitrateWithDownloadedAudio
+{
+    UWAudioBitrate *high = [self bitrateWithQuality:AudioFileQualityHigh];
+    if (high.isDownloadedValue && high.filename != nil) {
+        return high;
+    }
+    
+    UWAudioBitrate *low = [self bitrateWithQuality:AudioFileQualityLow];
+    if (low.isDownloadedValue && low.filename) {
+        return low;
+    }
+    return nil;
+}
+
+- (UWAudioBitrate *)bitrateWithLowestQuality
+{
+    UWAudioBitrate * lowest = nil;
+    
+    for (UWAudioBitrate *bitrate in self.bitrates) {
+        if (lowest == nil || bitrate.rate < lowest.rate) {
+            lowest = bitrate;
+        }
+    }
+    return lowest;
+}
+
+- (UWAudioBitrate *)bitrateWithHighestQuality
+{
+    UWAudioBitrate * lowest = nil;
+    
+    for (UWAudioBitrate *bitrate in self.bitrates) {
+        if (lowest == nil || bitrate.rate >  lowest.rate) {
+            lowest = bitrate;
+        }
+    }
+    return lowest;
+}
+
+
+- (NSString *)stringBySubstitutingUrlString:(NSString *)urlString withBitrate:(UWAudioBitrate *)bitrate
+{
+    if (urlString == nil || bitrate == nil) {
+        return nil;
+    }
+    NSString *rateString = bitrate.rate.stringValue;
+    return [urlString stringByReplacingOccurrencesOfString:KPLaceHolderForBitrate withString:rateString];
+}
+
+
 
 @end

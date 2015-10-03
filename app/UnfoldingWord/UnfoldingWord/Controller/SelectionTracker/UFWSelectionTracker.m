@@ -10,7 +10,7 @@
 #import "NSString+Trim.h"
 #import "UWCoreDataClasses.h"
 
-static NSString *const kBaseAPI = @"https://api.unfoldingword.org/uw/txt/2/catalog.json";
+static NSString *const kBaseAPI = @"https://api.unfoldingword.org/uw/txt/beta/catalog.json";
 
 static NSString *const kKeyIsShowingSide = @"isShowingSide";
 static NSString *const kKeyShowingSideOBS = @"isShowingSide_OBS";

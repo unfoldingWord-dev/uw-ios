@@ -196,9 +196,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
         }
         else if let action = self.actionSpeaker {
             let audioInfo = action(barButton: barButton, isOn: isBarButtonOn(barButton))
-            if let source = audioInfo.audioSource, let urlString = source.src,
-                let url = NSURL(string: urlString)
-            {
+            if let source = audioInfo.audioSource, let url = source.sourceFileUrl() {
                 // TODO:
                 // Still to do - get the verse or frame.
                 //
@@ -467,7 +465,6 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
         viewAccessories.addConstraints(constraints)
     }
     
-    
     private func ensureAccessoryViewIsInState(showing isShowing : Bool) {
 
         if isAccessoryViewShowing() == isShowing {
@@ -478,7 +475,6 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
                 guard let sself = self else { return }
                 sself.updateAccessoryUI(isShowing: isShowing, duration: 0.25)
             })
-            
         }
     }
     

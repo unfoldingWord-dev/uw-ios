@@ -4,6 +4,7 @@
 #import "OpenFrame.h"
 #import "USFMInfo.h"
 #import "UWAudio.h"
+#import "UWAudioBitrate.h"
 #import "UWAudioSource.h"
 #import "UWLanguage.h"
 #import "UWStatus.h"

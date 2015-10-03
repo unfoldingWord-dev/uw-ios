@@ -50,8 +50,9 @@
             // If we get a 404 error, then say the download failed, and delete it.
             if ([response isKindOfClass:[NSHTTPURLResponse class]] &&
                 ((NSHTTPURLResponse *)response).statusCode == 404) {
-                [[NSFileManager defaultManager] removeItemAtPath:sourceFilePath error:nil];
-                completion(nil, nil, NO);
+#pragma mark - Fix - if we get a 404, we should delete the file.
+//                [[NSFileManager defaultManager] removeItemAtPath:sourceFilePath error:nil];
+                completion(sourceFilePath, nil, NO);
                 return;
             }
             

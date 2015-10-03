@@ -12,6 +12,69 @@ static NSString *const kSourcesAudio = @"src_list";
 
 @implementation UWAudio
 
+- (void)downloadAllAudioWithQuality:(AudioFileQuality)quality completion:(BitrateDownloadCompletion)completion
+{
+    UWAudioSource *source = [self nextAudioSource:nil];
+    if (source) {
+        [self downloadAudioSource:source withQuality:quality completion:completion];
+    }
+    else { // Nothing to download
+        completion(YES);
+    }
+}
+
+- (void)downloadAudioSource:(UWAudioSource *)audioSource withQuality:(AudioFileQuality)quality completion:(BitrateDownloadCompletion)completion
+{
+    [audioSource downloadWithQuality:quality completion:^(BOOL success) {
+        if (success) {
+            UWAudioSource *nextSource = [self nextAudioSource:audioSource];
+            if (nextSource == nil) {
+                completion(YES);
+            }
+            else {
+                [self downloadAudioSource:nextSource withQuality:quality completion:completion];
+            }
+        }
+        else {
+            completion(NO);
+        }
+    }];
+}
+
+- (UWAudioSource *)nextAudioSource:(UWAudioSource *)audioSource
+{
+    NSArray *sources = [self sortedAudioSources];
+    if ([sources containsObject:audioSource]) {
+        BOOL found = NO;
+        for (UWAudioSource *aSource in sources) {
+            if (found) {
+                return aSource;
+            }
+            if ([aSource isEqual:audioSource]) {
+                found = YES;
+            }
+        }
+        // We must be on the last TOC.
+        return nil;
+    }
+    else if (sources.count > 0) {
+        return sources[0];
+    }
+    else {
+        return nil;
+    }
+}
+
+- (NSArray *)sortedAudioSources
+{
+    NSArray *tocArray = self.sources.allObjects;
+    return [tocArray sortedArrayUsingComparator:^NSComparisonResult(UWAudioSource *source1, UWAudioSource *source2) {
+        return [source1.chapter compare:source2.chapter];
+    }];
+}
+
+#pragma mark - Import Export
+
 - (void)updateWithDictionary:(NSDictionary *)dictionary
 {
     self.contributors = [dictionary objectOrNilForKey:kContributorsAudio];
@@ -55,5 +118,7 @@ static NSString *const kSourcesAudio = @"src_list";
     
     return dictionary;
 }
+
+
 
 @end

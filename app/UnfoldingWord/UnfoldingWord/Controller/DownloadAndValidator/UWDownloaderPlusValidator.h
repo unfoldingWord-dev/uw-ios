@@ -12,6 +12,7 @@ typedef void (^UWDownloadValidatorCompletion) (NSString * __nullable sourceDataP
 
 @interface UWDownloaderPlusValidator : NSObject
 
+/// Always returns on the main thread.
 + (void)downloadPlusValidateSourceUrl:(NSURL * __nonnull)url signatureUrl:(NSURL * __nullable)sigUrl withCompletion:(UWDownloadValidatorCompletion __nonnull)completion;
 
 + (BOOL)validateSourcePath:(NSString *__nonnull)sourcePath usingSignaturePath:(NSString *__nonnull)signaturePath;

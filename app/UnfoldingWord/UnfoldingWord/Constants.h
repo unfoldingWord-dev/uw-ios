@@ -3,6 +3,14 @@
 //
 //
 
+
+typedef void (^BitrateDownloadCompletion) (BOOL success);
+
+typedef NS_ENUM(NSInteger, AudioFileQuality) {
+    AudioFileQualityLow = 1,
+    AudioFileQualityHigh = 2,
+};
+
 #define LANGUAGES_API @"https://api.unfoldingword.org/obs/txt/1/obs-catalog.json"
 
 #define SELECTION_BLUE_COLOR    [UIColor colorWithRed:76.0/255.0 green:185.0/255.0 blue:224.0/255.0 alpha:1.0]
