@@ -203,6 +203,10 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
                     insertAudioPlayerIntoAccessoryViewWithUrl(url)
                     setBarButton(barButton, toOn: true)
                     ensureAccessoryViewIsInState(showing: true)
+                
+                if let segment = audioInfo.frameOrVerse, player = playerViewAudio {
+                    player.chapter = segment.integerValue
+                }
             }
             else {
                 setBarButton(barButton, toOn: false)

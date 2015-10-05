@@ -70,7 +70,9 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
     
     var chapter : Int = 1 {
         didSet {
-            updateChapter(chapter)
+            delay(0.2) { [weak self] () -> Void in
+                self?.updateChapter(chapter)
+            }
         }
     }
 
