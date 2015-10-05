@@ -74,6 +74,8 @@
     
     [self loadNibsForCollectionView];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationChapterChanged:) name:nil object:nil];
+    
     self.collectionView.pagingEnabled = YES;
     
     UWTOC *tocMain = [UFWSelectionTracker TOCforJSON];
@@ -84,6 +86,19 @@
     OpenChapter *chapterMain = [tocMain chapterForNumber:[UFWSelectionTracker chapterNumberJSON]];
     OpenChapter *chapterSide = [tocSide chapterForNumber:[UFWSelectionTracker chapterNumberJSON]];
     [self resetMainChapter:chapterMain sideChapter:chapterSide];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)notificationChapterChanged:(NSNotification *)notification
+{
+    NSNumber *segment = notification.userInfo[NotificationKeyAudioSegment];
+    if (segment != nil) {
+        [self scrollToFrame: segment.integerValue];
+    }
 }
 
 - (void)loadNibsForCollectionView
@@ -130,7 +145,6 @@
     }
     else {
         self.fakeNavBar.labelButtonSSVersionSide.text = @"Add";
-
     }
 }
 
@@ -510,6 +524,18 @@
     NSInteger index = (int)currentOffset.x / (self.view.bounds.size.width);
     [UFWSelectionTracker setFrameJSON:index];
     [self updateFakeNavBar];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationUserChangedAudioSegment object:nil userInfo:@{NotificationKeyAudioSegment:@(index+1)}];
+}
+
+- (void)scrollToFrame:(NSInteger)frame
+{
+    [UFWSelectionTracker setFrameJSON:frame];
+    [self updateFakeNavBar];
+    
+    CGPoint currentOffset = self.collectionView.contentOffset;
+    currentOffset.x = (float)frame * self.view.bounds.size.width;
+    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:frame-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
 }
 
 #pragma mark - Methods to prevent the back gesture

@@ -21,3 +21,4 @@
 #import "UIViewController+FileTransfer.h"
 #import "FrameDetailsViewController.h"
 #import "ChapterListTableViewController.h"
+#import "XMLConverter.h"

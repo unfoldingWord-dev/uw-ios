@@ -11,6 +11,11 @@ typedef NS_ENUM(NSInteger, AudioFileQuality) {
     AudioFileQualityHigh = 2,
 };
 
+static NSString *const NotificationUserChangedAudioSegment = @"__NotificationUserChangedAudioSegment";
+static NSString *const NotificationAudioSegmentDidChange = @"__NotificationAudioSegmentDidChange";
+static NSString *const NotificationKeyAudioSegment = @"__NotificationKeyAudioSegment";
+
+
 #define LANGUAGES_API @"https://api.unfoldingword.org/obs/txt/1/obs-catalog.json"
 
 #define SELECTION_BLUE_COLOR    [UIColor colorWithRed:76.0/255.0 green:185.0/255.0 blue:224.0/255.0 alpha:1.0]

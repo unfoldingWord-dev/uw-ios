@@ -16,6 +16,8 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
     var timer : NSTimer?
     var url : NSURL?
     
+    var chapterInfo : AudioFileInfo?
+    
     var downloader : FileDownloader?
     
     var audioData : NSData?
@@ -31,6 +33,7 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
     @IBOutlet weak var labelTimeTrailing: UILabel!
     @IBOutlet weak var buttonPlayPause: UIButton!
     @IBOutlet weak var labelDownloading: UILabel!
+
     
     var currentTime : NSTimeInterval {
         get {
@@ -65,6 +68,12 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
         }
     }
     
+    var chapter : Int = 1 {
+        didSet {
+            updateChapter(chapter)
+        }
+    }
+
     @objc class func playerWithUrl(url : NSURL) -> AudioPlayerView? {
         
         let nibViews = NSBundle.mainBundle().loadNibNamed("AudioPlayerView", owner: nil, options: nil)
@@ -73,6 +82,7 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
         playerView.retrieveData()
         playerView.updateTimeUI()
         playerView.translatesAutoresizingMaskIntoConstraints = false
+        NSNotificationCenter.defaultCenter().addObserver(playerView, selector: "userScrolledToChapterNotification:", name: nil, object: nil)
         return playerView
     }
     
@@ -84,38 +94,50 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
     deinit {
         self.player?.stop()
         unscheduleCurrentTimer()
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
-    // Outside Methods
-    
-    func retrieveData() {
+    func userScrolledToChapterNotification(notification : NSNotification)  {
+        if let userDictionary = notification.userInfo as? [NSString : NSNumber],
+            let segment = userDictionary[NotificationKeyAudioSegment] as? Int {
+            updateChapter(segment)
+        }
+    }
+
+    private func retrieveData() {
         
         if let url = self.url where self.player == nil {
             
             if url.fileURL {
+                AuditionFileReader.parseFileUrl(url, completion: { [weak self] (audioFileInfo) -> Void in
+                    guard let strongself = self else { return }
+                    strongself.chapterInfo = audioFileInfo
+                })
                 createPlayerWithFileUrl(url)
                 showPlayerUI()
-                playAtTime(0)
                 return;
             }
             
             self.downloader = FileDownloader(url: url, progress: {[weak self] (percentDone) -> () in
                 if let strongself = self {
-                    strongself.updateDownloadPercentDone(percentDone)
+                    strongself.updateDownloadPercentDownloaded(percentDone)
                 }
                 }, completion: {[weak self] (success, data) -> () in
                     if let strongself = self, audioData = data where success {
+                        AuditionFileReader.parseFileData(audioData, completion: { (audioFileInfo) -> Void in
+                            guard let strongself = self else { return }
+                            strongself.chapterInfo = audioFileInfo
+                        })
                         strongself.createPlayerWithData(audioData)
                         strongself.showPlayerUI()
-                        if strongself.superview != nil {
-                            strongself.playAtTime(0)
-                        }
                     }
                 })
             self.downloader?.download()
             showDownloadingUI()
         }
     }
+    
+    // Outside Methods
     
     func showDownloadingUI() {
         updateDownloadingUI(isDownloading: true)
@@ -141,7 +163,7 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
         }
     }
     
-    private func updateDownloadPercentDone(percent : Float) {
+    private func updateDownloadPercentDownloaded(percent : Float) {
         let percentWhole = percent * 100.0
         let percentString = String(format: "%.0f%%", arguments: [percentWhole])
         self.labelDownloading.text = "\(percentString) downloaded"
@@ -173,6 +195,8 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
     
     func playAtTime(time : NSTimeInterval) {
 
+        updateChapterIfNecessary()
+        setSliderValuesForChapter(chapter)
         if let player = self.player where time <= player.duration && time >= 0 {
             player.currentTime = time
             player.play()
@@ -208,7 +232,7 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
                 pause()
             }
             else {
-                playAtTime(duration * Double(sliderTime.value) )
+                playAtTime(Double(sliderTime.value) )
             }
         }
         updateTimeUI()
@@ -216,7 +240,8 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
     
     @IBAction func userChangedSliderValue(slider: UISlider) {
         if let player = self.player {
-            let time = duration * Double(slider.value)
+            
+            let time = Double(slider.value)
 
             if player.playing {
                 playAtTime(time)
@@ -233,6 +258,48 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
     
     // Internal Methods
     
+    private func updateChapter(aChapter : Int)
+    {
+        if let player = player, let chapterInfo = self.chapterInfo where chapterInfo.numberOfChapters >= aChapter {
+            setSliderValuesForChapter(aChapter)
+            let startTime = NSTimeInterval( chapterInfo.startTimeForChapter(aChapter) )
+            player.currentTime = startTime
+            updateTimeUI()
+        }
+    }
+    
+    private func startTimeForChapter(aChapter : Int) -> Float
+    {
+        if let chapterInfo = chapterInfo where aChapter <= chapterInfo.numberOfChapters {
+            return chapterInfo.startTimeForChapter(aChapter)
+        }
+        return 0.0
+    }
+    
+    private func endTimeForChapter(aChapter : Int) -> Float
+    {
+        if let chapterInfo = chapterInfo where aChapter < chapterInfo.numberOfChapters {
+            return chapterInfo.startTimeForChapter(aChapter + 1)
+        }
+        else if let player = player {
+            return Float(player.duration)
+        }
+        else {
+            return 0.0
+        }
+    }
+    
+    private func notifyChangedChapter()
+    {
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationAudioSegmentDidChange, object: nil, userInfo: [NotificationKeyAudioSegment : Int(chapter)])
+    }
+    
+    private func setSliderValuesForChapter(aChapter : Int)
+    {
+        sliderTime.minimumValue = startTimeForChapter(aChapter)
+        sliderTime.maximumValue = endTimeForChapter(aChapter)
+    }
+    
     private func updateTimeUI() {
         updateSliderLabels()
         updateSliderLocation()
@@ -241,8 +308,11 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
     
     private func updateSliderLabels() {
         if let _ = self.player {
-            labelTimeLeading.text = formattedTime(currentTime)
-            labelTimeTrailing.text = formattedTime((duration-currentTime) * -1.0)
+            let adjustedTime = self.currentTime - NSTimeInterval( startTimeForChapter(chapter) )
+            labelTimeLeading.text = formattedTime(adjustedTime)
+            
+            let timeRemaining = NSTimeInterval(endTimeForChapter(chapter)) - self.currentTime
+            labelTimeTrailing.text = formattedTime(timeRemaining * -1.0)
         }
         else {
             labelTimeTrailing.text = "-:--"
@@ -251,13 +321,40 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
     }
     
     private func updateSliderLocation() {
-        sliderTime.value = Float( currentTime / duration )
+        sliderTime.value = Float( currentTime )
     }
     
     func timerFired() {
+        updateChapterIfNecessary()
         updateTimeUI()
         if (currentTime + 0.01) >= duration { // play time is over
             unscheduleCurrentTimer()
+        }
+    }
+    
+    func updateChapterIfNecessary() -> Bool {
+        guard let audioChapterInfo = chapterInfo else { return false }
+        
+        let time = Float(self.currentTime)
+        
+        var changedChapter : Int? = nil
+        for (_, chapInt) in (1...(audioChapterInfo.numberOfChapters)).enumerate() {
+            let chapterEndTime = endTimeForChapter(chapInt)
+            if ( time < chapterEndTime) {
+                if self.chapter != chapInt {
+                    changedChapter = chapInt
+                }
+                break;
+            }
+        }
+        
+        if let changedChapter = changedChapter {
+            self.chapter = changedChapter
+            notifyChangedChapter()
+            return true
+        }
+        else {
+            return false
         }
     }
     

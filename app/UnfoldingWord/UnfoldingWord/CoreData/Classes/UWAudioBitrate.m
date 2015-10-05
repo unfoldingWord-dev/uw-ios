@@ -7,6 +7,7 @@
 #import "NSString+Trim.h"
 #import "UWDownloaderPlusValidator.h"
 #import "Constants.h"
+#import "UnfoldingWord-Swift.h"
 
 static NSString *const kRate = @"bitrate";
 static NSString *const kModified = @"mod";

@@ -51,6 +51,10 @@ func BACKGROUND_GREEN() -> UIColor { // duplicated in Constants.h
 }
 
 struct Constants {
+    
+    struct Audio {
+        static let framerateDefault : Float64 = 44100
+    }
 
     struct URLSource {
         static let signature = "sig"

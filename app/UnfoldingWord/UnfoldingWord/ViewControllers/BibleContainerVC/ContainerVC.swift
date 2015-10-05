@@ -415,9 +415,14 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
             let navVC = ChapterListTableViewController.navigationChapterPickerCompletion({ [weak self] (isCanceled : Bool, chapter : OpenChapter?) -> Void in
                 guard let strongself = self else { return }
                 strongself.dismissViewControllerAnimated(true, completion: { () -> Void in })
-                if let mainChapter = chapter where isCanceled == false,
-                    let sidetoc = strongself.tocForArea(.Side) {
-                    let sideChapter = sidetoc.openContainer.matchingChapter(mainChapter)
+                if let mainChapter = chapter where isCanceled == false {
+                    let sideChapter : OpenChapter?
+                    if let sidetoc = strongself.tocForArea(.Side) {
+                        sideChapter = sidetoc.openContainer.matchingChapter(mainChapter)
+                    }
+                    else {
+                        sideChapter = nil
+                    }
                     openBibleVC.resetMainChapter(mainChapter, sideChapter: sideChapter)
                 }
             })

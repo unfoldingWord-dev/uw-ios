@@ -264,8 +264,6 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         }
     }
     
-    
-    
     // ChapterVCDelegate Methods
     
     func showNextTOC() {
