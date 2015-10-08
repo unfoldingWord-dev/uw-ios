@@ -74,7 +74,7 @@
     
     [self loadNibsForCollectionView];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationChapterChanged:) name:nil object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationChapterChanged:) name:NotificationAudioSegmentDidChange object:nil];
     
     self.collectionView.pagingEnabled = YES;
     
@@ -185,7 +185,7 @@
     
     masterContainer.actionSpeaker = ^ AudioInfo* (UIBarButtonItem *bbi, BOOL isOn) {
         AudioInfo *info = [[AudioInfo alloc] init];
-        info.frameOrVerse = @([UFWSelectionTracker frameNumberJSON]);
+        info.frameOrVerse = @([UFWSelectionTracker frameNumberJSON]+1);
         
         NSInteger chapter = weakself.chapterMain.number.integerValue;
         UWTOC *toc = weakself.chapterMain.container.toc;
@@ -299,6 +299,7 @@
     if (cell != nil && cell.frame.size.height != self.collectionView.frame.size.height ) {
 //        [UIView animateWithDuration:.25 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             [self.collectionView reloadData];
+        [self jumpToCurrentFrameAnimated:NO];
 //        } completion:^(BOOL finished) {
 //            
 //        }];
@@ -543,13 +544,11 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
     // Disable iOS 7 back gesture
     if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.enabled = NO;
         self.navigationController.interactivePopGestureRecognizer.delegate = self;
     }
-
 }
 
 - (void)viewWillDisappear:(BOOL)animated
