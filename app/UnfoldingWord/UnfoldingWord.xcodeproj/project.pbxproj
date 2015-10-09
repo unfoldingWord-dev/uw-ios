@@ -61,6 +61,8 @@
 		5A36D3B51B223F23001D6E04 /* UFWAppInformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A36D3B31B223F23001D6E04 /* UFWAppInformationView.m */; };
 		5A36D3B61B223F23001D6E04 /* UFWAppInformationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A36D3B41B223F23001D6E04 /* UFWAppInformationView.xib */; };
 		5A36D3BB1B223FD8001D6E04 /* UFWFirstLaunchInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A36D3BA1B223FD8001D6E04 /* UFWFirstLaunchInfoVC.m */; };
+		5A3B1A091BC82A2C00845990 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A3B1A071BC82A2C00845990 /* Fabric.framework */; settings = {ASSET_TAGS = (); }; };
+		5A3B1A0A1BC82A2C00845990 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A3B1A081BC82A2C00845990 /* Crashlytics.framework */; settings = {ASSET_TAGS = (); }; };
 		5A3E553C1A9D4CB700D1D920 /* DWImageFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3E55371A9D4CB700D1D920 /* DWImageFileManager.m */; };
 		5A3E553D1A9D4CB700D1D920 /* DWImageGetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3E55391A9D4CB700D1D920 /* DWImageGetter.m */; };
 		5A3E553E1A9D4CB700D1D920 /* UFWModelImageSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3E553B1A9D4CB700D1D920 /* UFWModelImageSync.m */; };
@@ -1045,6 +1047,8 @@
 		5A36D3B41B223F23001D6E04 /* UFWAppInformationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UFWAppInformationView.xib; sourceTree = "<group>"; };
 		5A36D3B91B223FD8001D6E04 /* UFWFirstLaunchInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFWFirstLaunchInfoVC.h; sourceTree = "<group>"; };
 		5A36D3BA1B223FD8001D6E04 /* UFWFirstLaunchInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UFWFirstLaunchInfoVC.m; sourceTree = "<group>"; };
+		5A3B1A071BC82A2C00845990 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		5A3B1A081BC82A2C00845990 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		5A3E55361A9D4CB700D1D920 /* DWImageFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWImageFileManager.h; sourceTree = "<group>"; };
 		5A3E55371A9D4CB700D1D920 /* DWImageFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWImageFileManager.m; sourceTree = "<group>"; };
 		5A3E55381A9D4CB700D1D920 /* DWImageGetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWImageGetter.h; sourceTree = "<group>"; };
@@ -2115,7 +2119,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A3B1A091BC82A2C00845990 /* Fabric.framework in Frameworks */,
 				5A9A1FC61B950FC100ED8225 /* MediaPlayer.framework in Frameworks */,
+				5A3B1A0A1BC82A2C00845990 /* Crashlytics.framework in Frameworks */,
 				5A9A1FC41B950FA700ED8225 /* AVFoundation.framework in Frameworks */,
 				5AFC9B6B1B41D2FB00D453D0 /* libz.dylib in Frameworks */,
 				5AEDC6F11B068B0200551D27 /* SystemConfiguration.framework in Frameworks */,
@@ -3493,6 +3499,8 @@
 		5AAC5C551A97B46C001AFA3D /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				5A3B1A071BC82A2C00845990 /* Fabric.framework */,
+				5A3B1A081BC82A2C00845990 /* Crashlytics.framework */,
 				5AE06E491BC193CB0072EB27 /* XMLConverter */,
 				5AFC9B611B41D1DC00D453D0 /* GZIP-Nicklockwood */,
 				5A59961A1B0A893F0060668F /* Fonts */,
@@ -3852,6 +3860,7 @@
 				639258551A24506500B5B8D2 /* Sources */,
 				639258561A24506500B5B8D2 /* Frameworks */,
 				639258571A24506500B5B8D2 /* Resources */,
+				5A3B1A061BC829F100845990 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -4768,6 +4777,19 @@
 			shellPath = /bin/sh;
 			shellScript = "PROJECT_DIR_APP=\"$PROJECT_DIR/UnfoldingWord\"\n\nmogenerator \\\n--template-path \"$PROJECT_DIR/mogenerator-templates\" \\\n--model \"$PROJECT_DIR_APP/CoreData/UnfoldingWord.xcdatamodeld/UnfoldingWord.xcdatamodel\" \\\n--machine-dir \"$PROJECT_DIR_APP/CoreData/Classes/Mogenerated\" \\\n--human-dir \"$PROJECT_DIR_APP/CoreData/Classes\" \\\n--includeh \"$PROJECT_DIR_APP/CoreData/CoreDataClasses.h\" \\\n--template-var arc=true";
 		};
+		5A3B1A061BC829F100845990 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Fabric.framework/run 3d9f8bcbd07d5828efd3805cc7904984735d5e8e dd7713a75f668ada5627c48fc114626d89eaa411edea2fc3c0969e5e96ab2504";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -5006,6 +5028,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/UnfoldingWord/Vendor",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/UnfoldingWord/openssl/**",
@@ -5161,6 +5187,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/UnfoldingWord/Vendor",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/UnfoldingWord/openssl/**",
@@ -5191,6 +5221,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/UnfoldingWord/Vendor",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/UnfoldingWord/openssl/**",
