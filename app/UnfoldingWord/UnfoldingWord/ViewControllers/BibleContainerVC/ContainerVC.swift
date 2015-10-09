@@ -396,13 +396,13 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
     
     private func showBookPicker() {
         
-        guard let toc = tocForArea(.Main) else {
+        guard let currentToc = tocForArea(.Main) else {
             print("Requested toc, but was empty")
             return
         }
         
         if let _ = usfmPageVC {
-            let navVC = UFWBookPickerUSFMVC.navigationBookPickerWithVersion(toc.version) { [weak self] (isCanceled : Bool, toc : UWTOC?, chapterPicked : Int) -> Void in
+            let navVC = UFWBookPickerUSFMVC.navigationBookPickerWithVersion(currentToc.version) { [weak self] (isCanceled : Bool, toc : UWTOC?, chapterPicked : Int) -> Void in
                 guard let strongself = self else { return }
                 strongself.dismissViewControllerAnimated(true, completion: { () -> Void in })
                 
@@ -419,6 +419,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
                 guard let strongself = self else { return }
                 strongself.dismissViewControllerAnimated(true, completion: { () -> Void in })
                 if let mainChapter = chapter where isCanceled == false {
+                    UFWSelectionTracker.setFrameJSON(0)
                     let sideChapter : OpenChapter?
                     if let sidetoc = strongself.tocForArea(.Side) {
                         sideChapter = sidetoc.openContainer.matchingChapter(mainChapter)
@@ -426,13 +427,26 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
                     else {
                         sideChapter = nil
                     }
+                    strongself.stopAndResetAudioPlayerIfNecessary(duration: 0)
+
                     openBibleVC.resetMainChapter(mainChapter, sideChapter: sideChapter)
+                    openBibleVC.jumpToCurrentFrameAnimated(false)
                 }
             })
             presentViewController(navVC, animated: true) { () -> Void in  }
         }
     }
     
+    private func stopAndResetAudioPlayerIfNecessary(duration duration : NSTimeInterval) {
+        if let player = self.playerViewAudio {
+            player.pause()
+            
+            if player.superview == self.viewAccessories {
+                self.updateAccessoryUI(isShowing: false, duration: duration)
+            }
+            setBarButton(barButtonSpeaker, toOn: false)
+        }
+    }
     
     // Helpers
     

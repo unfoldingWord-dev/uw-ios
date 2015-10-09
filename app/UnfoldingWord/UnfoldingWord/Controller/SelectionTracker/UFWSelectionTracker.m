@@ -164,7 +164,7 @@ static CGFloat const kDefaultFontSize = 18.0f;
 
 + (NSInteger)frameNumberJSON
 {
-    return [self oneBoundedNumberForKey:kKeyFrameJSON];
+    return [self numberForKey:kKeyFrameJSON];
 }
 
 + (CGFloat)fontPointSize {

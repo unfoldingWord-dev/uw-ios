@@ -24,4 +24,6 @@
 
 - (UWTOC *)tocFromIsSide:(BOOL)isSide;
 
+- (void)jumpToCurrentFrameAnimated:(BOOL)animated;
+
 @end
