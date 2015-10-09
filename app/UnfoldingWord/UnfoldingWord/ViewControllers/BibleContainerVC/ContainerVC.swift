@@ -184,9 +184,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
 
     @IBAction func userPressSpeakerButton(barButton: UIBarButtonItem) {
         
-        setBarButton(barButtonFont, toOn: false)
-        
-        if isBarButtonOn(barButton) {
+        if isBarButtonOn(barButton) && isBarButtonOn(barButtonFont) == false {
             if let player = playerViewAudio where player.isPlaying() {
                 player.pause()
             }
@@ -197,15 +195,14 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
         else if let action = self.actionSpeaker {
             let audioInfo = action(barButton: barButton, isOn: isBarButtonOn(barButton))
             if let source = audioInfo.audioSource, let url = source.sourceFileUrl() {
-                // TODO:
-                // Still to do - get the verse or frame.
-                //
                     insertAudioPlayerIntoAccessoryViewWithUrl(url)
                     setBarButton(barButton, toOn: true)
                     ensureAccessoryViewIsInState(showing: true)
                 
                 if let segment = audioInfo.frameOrVerse, player = playerViewAudio {
-                    player.chapter = segment.integerValue
+                    if player.chapter != segment.integerValue {
+                        player.updateChapter(segment.integerValue)
+                    }
                 }
             }
             else {
@@ -214,6 +211,8 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
                 UIAlertView(title: "Not Found", message: "This chapter does not have matching audio", delegate: nil, cancelButtonTitle: "Dismiss").show()
             }
         }
+        
+        setBarButton(barButtonFont, toOn: false)
     }
     
     @IBAction func userPressedVideoButton(sender: AnyObject) {
@@ -453,6 +452,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
     private func insertAudioPlayerIntoAccessoryViewWithUrl(url : NSURL) -> Bool {
         
         if let existingPlayer = playerViewAudio, existingUrl = existingPlayer.url where existingUrl == url {
+            insertAccessoryView(existingPlayer)
             return true
         }
         else if let player = AudioPlayerView.playerWithUrl(url) {
@@ -466,12 +466,32 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
     }
     
     private func insertAccessoryView(view : UIView) {
-        for view in viewAccessories.subviews {
-            view.removeFromSuperview()
+        
+        var existingViews = [UIView]()
+        for (_,  existingView) in existingViews.enumerate() {
+            if existingView.isEqual(view) == false {
+                existingViews.append(existingView)
+            }
         }
-        viewAccessories.addSubview(view)
-        let constraints = NSLayoutConstraint.constraintsForView(view, insideView: viewAccessories, topMargin: 0, bottomMargin: 0, leftMargin: 0, rightMargin: 0)!
-        viewAccessories.addConstraints(constraints)
+        
+        view.layer.opacity = 0.0
+        self.viewAccessories.addSubview(view)
+        let constraints = NSLayoutConstraint.constraintsForView(view, insideView: self.viewAccessories, topMargin: 0, bottomMargin: 0, leftMargin: 0, rightMargin: 0)!
+        self.viewAccessories.addConstraints(constraints)
+        
+        UIView.animateWithDuration(0.25, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+            for view in existingViews {
+                view.layer.opacity = 0.0;
+            }
+            view.layer.opacity = 1.0
+            }) { (completed : Bool) -> Void in
+                for view in existingViews {
+                    view.removeFromSuperview()
+                }
+        }
+
+//        self.view.setNeedsUpdateConstraints()
+//        self.view.layoutIfNeeded()
     }
     
     private func ensureAccessoryViewIsInState(showing isShowing : Bool) {

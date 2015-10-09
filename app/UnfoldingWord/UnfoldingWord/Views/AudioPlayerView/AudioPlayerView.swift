@@ -68,13 +68,7 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
         }
     }
     
-    var chapter : Int = 1 {
-        didSet {
-            delay(0.2) { [weak self] () -> Void in
-                self?.updateChapter(chapter)
-            }
-        }
-    }
+    var chapter : Int = 1
 
     @objc class func playerWithUrl(url : NSURL) -> AudioPlayerView? {
         
@@ -102,7 +96,7 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
     func userScrolledToChapterNotification(notification : NSNotification)  {
         if let userDictionary = notification.userInfo as? [NSString : NSNumber],
             let segment = userDictionary[NotificationKeyAudioSegment] as? Int {
-            updateChapter(segment)
+            updateChapterImmediately(segment)
         }
     }
 
@@ -260,9 +254,16 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
     
     // Internal Methods
     
-    private func updateChapter(aChapter : Int)
+    func updateChapter(aChapter : Int)
     {
+        delay(0.1) { [weak self] () -> Void in
+            self?.updateChapterImmediately(aChapter)
+        }
+    }
+    
+    private func updateChapterImmediately(aChapter : Int) {
         if let player = player, let chapterInfo = self.chapterInfo where chapterInfo.numberOfChapters >= aChapter {
+            chapter = aChapter
             setSliderValuesForChapter(aChapter)
             let startTime = NSTimeInterval( chapterInfo.startTimeForChapter(aChapter) )
             player.currentTime = startTime
@@ -351,7 +352,7 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
         }
         
         if let changedChapter = changedChapter {
-            self.chapter = changedChapter
+            updateChapterImmediately(changedChapter)
             notifyChangedChapter()
             return true
         }
