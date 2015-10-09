@@ -568,10 +568,13 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
         let distanceToolbar = -toolbarBottom.frame.height * percent
         constraintToolbarSpaceToBottom.constant = distanceToolbar
         
-        self.view.setNeedsUpdateConstraints()
-        self.view.layoutIfNeeded()
-        self.fakeNavBar.setNeedsUpdateConstraints()
-        self.view.layoutIfNeeded()
+        // If I force the layout pass here, when the user first starts to scroll, the page view controller tries to re-add everything to the view hierarchy, which interupts the scrolling. This is because of the method "addConstaintsToInternalScrolling" in USFMChapterVC that adjusts for a bug where views are not properly resized with constraints. (It's the interplay between the bug fix and the user scrolling.)
+        // Therefore, I use a delay to the next run cycle to let the layout engine figure it out first.
+        delay(0.0) { () -> Void in
+            self.fakeNavBar.setNeedsUpdateConstraints()
+            self.fakeNavBar.layoutIfNeeded()
+        }
+
     }
     
     private func updateNavUI(isShowing isShowing : Bool, duration: NSTimeInterval) {

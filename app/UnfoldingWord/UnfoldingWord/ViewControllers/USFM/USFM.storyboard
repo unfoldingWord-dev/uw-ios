@@ -148,7 +148,7 @@
                             <view contentMode="scaleToFill" restorationIdentifier="ViewMain" translatesAutoresizingMaskIntoConstraints="NO" id="Zrd-D7-kS8" userLabel="ViewMain">
                                 <rect key="frame" x="0.0" y="20" width="300" height="580"/>
                                 <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FgR-BA-fkS">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FgR-BA-fkS">
                                         <rect key="frame" x="6" y="3" width="288" height="574"/>
                                         <animations/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
