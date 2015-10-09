@@ -394,10 +394,14 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
         
         if isAnimated {
             animateConstraintChanges()
+            self.viewSideDiglot.setNeedsUpdateConstraints()
         }
         else {
             self.view.layoutIfNeeded()
         }
+        self.labelEmptySide.setNeedsUpdateConstraints()
+        self.labelEmptySide.layoutIfNeeded()
+
     }
     
     private func hideAllViewsExcept(view : UIView, inArea area : TOCArea) {
