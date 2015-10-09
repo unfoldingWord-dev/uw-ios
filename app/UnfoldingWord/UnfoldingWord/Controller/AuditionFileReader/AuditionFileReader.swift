@@ -29,7 +29,7 @@ typealias FileInfoCompletion = (audioFileInfo : AudioFileInfo?) -> Void
     func startTimeForChapter(number : Int) -> Float {
         if number > numberOfChapters || number < 1 {
             assertionFailure("There is no chapter \(number)")
-            return -1.0
+            return 0
         }
         let time = arrayTimes[number-1]
         return Float(time)
@@ -96,23 +96,29 @@ typealias FileInfoCompletion = (audioFileInfo : AudioFileInfo?) -> Void
         
         let frameRate = frameRateFromAuditionDictionary(dictionary)
         
-        let tracks = dictionary["xmpDM:Tracks"] as! NSDictionary
-        let bag = tracks["rdf:Bag"] as! NSDictionary
-        let lines = bag["rdf:li"] as! NSArray
-        let markerLine = lines.firstObject as! NSDictionary
-        let markerDescrip = markerLine["rdf:Description"] as! NSDictionary
-
-        let markersDic = markerDescrip["xmpDM:markers"] as! NSDictionary
-        let sequenceDic = markersDic["rdf:Seq"] as! NSDictionary
-        let markerArray = sequenceDic["rdf:li"] as! NSArray
-        
         var times = [Float64]()
         
+        guard
+            let tracks = dictionary["xmpDM:Tracks"] as? NSDictionary,
+            let bag = tracks["rdf:Bag"] as? NSDictionary,
+            let lines = bag["rdf:li"] as? NSArray,
+            let markerLine = lines.firstObject as? NSDictionary,
+            let markerDescrip = markerLine["rdf:Description"] as? NSDictionary,
+            let markersDic = markerDescrip["xmpDM:markers"] as? NSDictionary,
+            let sequenceDic = markersDic["rdf:Seq"] as? NSDictionary,
+            let markerArray = sequenceDic["rdf:li"] as? NSArray
+            else
+        { return times }
+        
+        
+        
         for (_, markerItem) in markerArray.enumerate() {
-            let marker = markerItem as! NSDictionary
-            let description = marker["rdf:Description"] as! NSDictionary
-            let startTime = description["-xmpDM:startTime"] as! NSString
-            
+            guard
+                let marker = markerItem as? NSDictionary,
+                let description = marker["rdf:Description"] as? NSDictionary,
+                let startTime = description["-xmpDM:startTime"] as? NSString
+                else { continue }
+             
             let frameMarkerRange = startTime.rangeOfString("f")
             if frameMarkerRange.location == NSNotFound {
                 if (startTime.length == 1) {
@@ -135,20 +141,24 @@ typealias FileInfoCompletion = (audioFileInfo : AudioFileInfo?) -> Void
     
     static func frameRateFromAuditionDictionary(dictionary : NSDictionary) -> Float64 {
         
-        let tracks = dictionary["xmpDM:Tracks"] as! NSDictionary
-        let bag = tracks["rdf:Bag"] as! NSDictionary
-        let lines = bag["rdf:li"] as! NSArray
-        let markerLine = lines.firstObject as! NSDictionary
-        let markerDescrip = markerLine["rdf:Description"] as! NSDictionary
+        guard
+            let tracks = dictionary["xmpDM:Tracks"] as? NSDictionary,
+            let bag = tracks["rdf:Bag"] as? NSDictionary,
+            let lines = bag["rdf:li"] as? NSArray,
+            let markerLine = lines.firstObject as? NSDictionary,
+            let markerDescrip = markerLine["rdf:Description"] as? NSDictionary,
+            let frameRateString = markerDescrip["-xmpDM:frameRate"] as? NSString
+            else
+        { return Constants.Audio.framerateDefault }
         
-        // get frame rate
-        let frameRateString = markerDescrip["-xmpDM:frameRate"] as! NSString
         let frame = frameRateString.stringByTrimmingCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet) as NSString
         
-        var frameRate = Float64(frame.integerValue)
+        let frameRate = Float64(frame.integerValue)
         if frameRate <= 0 {
-            frameRate = Constants.Audio.framerateDefault
+            return Constants.Audio.framerateDefault
         }
-        return frameRate
+        else {
+            return frameRate
+        }
     }
 }
