@@ -133,7 +133,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
         super.viewDidLoad()
         self.view.backgroundColor = BACKGROUND_GREEN()
         self.toolbarBottom.barTintColor = BACKGROUND_GREEN()
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
         turnOffAllBarButtons()
         
         updateAccessoryUI(isShowing: false, duration: 0)
@@ -291,7 +291,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
     }
     
     func navBackButtonPressed() {
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.navigationController!.popViewControllerAnimated(true)
     }
     

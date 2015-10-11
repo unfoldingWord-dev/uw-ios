@@ -46,6 +46,8 @@
 {
     [super viewDidLoad];
     
+    self.view.backgroundColor = BACKGROUND_GREEN;
+    
     UIImageView *titleImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 160, 32)];
     titleImageView.image = [UIImage imageNamed:@"unfoldingWordLogoWithWords.png"];
     titleImageView.contentMode = UIViewContentModeScaleAspectFit;
