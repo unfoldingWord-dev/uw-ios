@@ -250,13 +250,12 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
         
         resetScrollViewTracking(scrollView: textView)
         
-        if percentHidden > 0 && percentHidden < 1 {
-            if percentHidden > 0.5 {
-                self.delegate.animateTopBottomToShowing(false)
-            }
-            else {
-                self.delegate.animateTopBottomToShowing(true)
-            }
+        // Make sure we're either fully showing or fully hidden.
+        if percentHidden > 0.5 {
+            self.delegate.animateTopBottomToShowing(false)
+        }
+        else {
+            self.delegate.animateTopBottomToShowing(true)
         }
         
         if isScrollMatchingNeeded() == false {
