@@ -437,7 +437,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
         }
     }
     
-    private func stopAndResetAudioPlayerIfNecessary(duration duration : NSTimeInterval) {
+    func stopAndResetAudioPlayerIfNecessary(duration duration : NSTimeInterval) {
         if let player = self.playerViewAudio {
             player.pause()
             

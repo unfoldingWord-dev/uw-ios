@@ -641,7 +641,7 @@
     } completion:^(BOOL finished){
         [self.collectionView reloadData];
         [self updateFakeNavBar];
-        // do whatever post processing you want (such as resetting what is "current" and what is "next")
+        [self.containerVC stopAndResetAudioPlayerIfNecessaryWithDuration:0.25];
     }];
 }
 
