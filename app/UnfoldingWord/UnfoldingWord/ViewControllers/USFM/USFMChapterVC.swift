@@ -20,6 +20,8 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
 
     var pointSize : CGFloat = 19
     
+    var viewDidLoadOnce = false
+    
     private var isSideShowing : Bool {
         get {
             return constraintSideBySide.active
@@ -61,23 +63,59 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupDiglot()
+        
         loadContentForArea(.Main, setToTop:true)
         loadContentForArea(.Side, setToTop:true)
-        setSideViewToShowing(UFWSelectionTracker.isShowingSide(), animated: false)
+    }
+    
+    func setupDiglot() {
+        if UFWSelectionTracker.isShowingSide() {
+            constraintMainOnly.active = false
+            constraintSideBySide.active = true
+        }
+        else {
+            constraintSideBySide.active = false
+            constraintMainOnly.active = true
+        }
+        self.labelEmptySide.setNeedsUpdateConstraints()
+        self.labelEmptySide.layoutIfNeeded()
     }
     
     override func viewWillAppear(animated: Bool) {
-        textViewForArea(.Main).setContentOffset(CGPointZero, animated: false)
-        textViewForArea(.Side).setContentOffset(CGPointZero, animated: false)
-
+        
         super.viewWillAppear(animated)
         countSetup++
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        
+        if viewDidLoadOnce == false {
+            viewDidLoadOnce = true
+            disableTextViewScrollingDuringLoad()
+        }
+        
         countSetup--
     }
+    
+    func disableTextViewScrollingDuringLoad() {
+        
+        textViewForArea(.Main).setContentOffset(CGPointZero, animated: false)
+        textViewForArea(.Side).setContentOffset(CGPointZero, animated: false)
+        
+        textViewMain.scrollEnabled = false
+        textViewSideDiglot.scrollEnabled = false
+        delay(0.25) {  () -> Void in
+            self.textViewMain.scrollEnabled = true
+            self.textViewSideDiglot.scrollEnabled = true
+            
+            self.textViewForArea(.Main).setContentOffset(CGPointMake(0, -1), animated: true)
+            self.textViewForArea(.Side).setContentOffset(CGPointMake(0, -1), animated: true)
+            
+        }
+    }
+    
     @IBAction func userPressedNextChapterButton(sender: AnyObject) {
         self.delegate.showNextTOC()
     }
@@ -382,6 +420,8 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     
     private func setSideViewToShowing(isShowing : Bool, animated isAnimated : Bool) {
         
+        readjustTextViewAfterDelay(0.25)
+        
         if isShowing {
             constraintMainOnly.active = false
             constraintSideBySide.active = true
@@ -400,7 +440,29 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
         }
         self.labelEmptySide.setNeedsUpdateConstraints()
         self.labelEmptySide.layoutIfNeeded()
+        
 
+    }
+
+    private func readjustTextViewAfterDelay(timeDelay : Double) {
+        
+        let verses  : VerseContainer
+        if let foundVerses = versesInTextView(self.textViewForArea(.Main)) {
+            verses = foundVerses
+        }
+        else if let foundVerses = versesInTextView(self.textViewForArea(.Side)) {
+            verses = foundVerses
+        }
+        else {
+            return
+        }
+        
+        delay(timeDelay) { [weak self] () -> Void in
+            guard let strongself = self else { return }
+            
+            strongself.adjustTextView(strongself.textViewMain, usingVerses: verses, animated: true)
+            strongself.adjustTextView(strongself.textViewSideDiglot, usingVerses: verses, animated: true)
+        }
     }
     
     private func hideAllViewsExcept(view : UIView, inArea area : TOCArea) {
@@ -587,6 +649,11 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
                 if maxVerse < number || maxVerse == number {
                     maxVerse = number
                     maxRelativeRect = strongself.fullFrameOfVerseNumber(number, inTextView: textView)
+                    
+                    let testOffset = textView.contentOffset
+                    let textFrame = textView.frame
+                    let textContentSize = textView.contentSize
+                    
                     if (textView.contentOffset.y + textView.frame.size.height) >= (textView.contentSize.height - 10) {
                         maxIsAtEnd = true
                     }
