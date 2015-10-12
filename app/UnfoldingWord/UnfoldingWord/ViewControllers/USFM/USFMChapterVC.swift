@@ -317,15 +317,14 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     }
     
     private func adjustTextView(textView : UITextView, usingVerses verses : VerseContainer, animated: Bool) {
-
-        countSetup++
-        
         let attribText = textView.attributedText
         let verseToFind =  Bool(verses.maxIsAtEnd) ? verses.max : verses.min
         guard let firstY =  minYForVerseNumber(verseToFind, inAttributedString: attribText, inTextView: textView) else {
-            assertionFailure("Could not find verse \(verseToFind) in \(textView)")
+//            assertionFailure("Could not find verse \(verseToFind) in \(textView)")
             return
         }
+        countSetup++
+
         var minY = firstY
         
         var relativeOffset : CGFloat = 0
