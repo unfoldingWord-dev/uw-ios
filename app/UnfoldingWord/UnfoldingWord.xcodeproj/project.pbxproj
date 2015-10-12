@@ -228,6 +228,9 @@
 		5A6562501BBB1E4400578381 /* UWDownloaderPlusValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A65624F1BBB1E4400578381 /* UWDownloaderPlusValidator.m */; settings = {ASSET_TAGS = (); }; };
 		5A6997D41B2F859000BB0618 /* ufw_file_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A6997D31B2F859000BB0618 /* ufw_file_icon.png */; };
 		5A7A66EC1AEF06B500FF3EA1 /* NSString+Trim.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A7A66EB1AEF06B500FF3EA1 /* NSString+Trim.m */; };
+		5A7AF7621BCC0B2500B651D4 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 5A7AF75E1BCC0B2500B651D4 /* LICENSE */; settings = {ASSET_TAGS = (); }; };
+		5A7AF7631BCC0B2500B651D4 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 5A7AF75F1BCC0B2500B651D4 /* README.md */; settings = {ASSET_TAGS = (); }; };
+		5A7AF7641BCC0B2500B651D4 /* XMLConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A7AF7611BCC0B2500B651D4 /* XMLConverter.m */; settings = {ASSET_TAGS = (); }; };
 		5A7DDAD11BB3609900A5252C /* FontSizePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7DDAD01BB3609900A5252C /* FontSizePickerView.swift */; settings = {ASSET_TAGS = (); }; };
 		5A7DDAD31BB360A700A5252C /* FontSizePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A7DDAD21BB360A700A5252C /* FontSizePickerView.xib */; settings = {ASSET_TAGS = (); }; };
 		5A7ECE201AFD2C08002C94AD /* NSBundle+DWSExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A7ECE1F1AFD2C08002C94AD /* NSBundle+DWSExtensions.m */; };
@@ -926,9 +929,6 @@
 		5AD953CA1BB07B3400E3D654 /* DWSCoreDataStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AD953A81BB07B3400E3D654 /* DWSCoreDataStack.m */; settings = {ASSET_TAGS = (); }; };
 		5AD953CB1BB07B3400E3D654 /* UnfoldingWord.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5AD953A91BB07B3400E3D654 /* UnfoldingWord.xcdatamodeld */; settings = {ASSET_TAGS = (); }; };
 		5AE06E481BC18CB80072EB27 /* AuditionFileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE06E471BC18CB80072EB27 /* AuditionFileReader.swift */; settings = {ASSET_TAGS = (); }; };
-		5AE06E501BC193CB0072EB27 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 5AE06E4B1BC193CB0072EB27 /* LICENSE */; settings = {ASSET_TAGS = (); }; };
-		5AE06E511BC193CB0072EB27 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 5AE06E4C1BC193CB0072EB27 /* README.md */; settings = {ASSET_TAGS = (); }; };
-		5AE06E521BC193CB0072EB27 /* XMLConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AE06E4E1BC193CB0072EB27 /* XMLConverter.m */; settings = {ASSET_TAGS = (); }; };
 		5AEDC6321AFC20CA00C722B9 /* LanguageInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AEDC6311AFC20CA00C722B9 /* LanguageInfoController.m */; };
 		5AEDC6F11B068B0200551D27 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AEDC6F01B068B0200551D27 /* SystemConfiguration.framework */; };
 		5AEECBFD1A994C7400BC7E40 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5AEECBFF1A994C7400BC7E40 /* Localizable.strings */; };
@@ -1230,6 +1230,10 @@
 		5A763CB71B97B982009F9460 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		5A7A66EA1AEF06B500FF3EA1 /* NSString+Trim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Trim.h"; sourceTree = "<group>"; };
 		5A7A66EB1AEF06B500FF3EA1 /* NSString+Trim.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Trim.m"; sourceTree = "<group>"; };
+		5A7AF75E1BCC0B2500B651D4 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		5A7AF75F1BCC0B2500B651D4 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		5A7AF7601BCC0B2500B651D4 /* XMLConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLConverter.h; sourceTree = "<group>"; };
+		5A7AF7611BCC0B2500B651D4 /* XMLConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLConverter.m; sourceTree = "<group>"; };
 		5A7DDAD01BB3609900A5252C /* FontSizePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontSizePickerView.swift; sourceTree = "<group>"; };
 		5A7DDAD21BB360A700A5252C /* FontSizePickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FontSizePickerView.xib; sourceTree = "<group>"; };
 		5A7ECE1D1AFD2270002C94AD /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
@@ -1970,10 +1974,6 @@
 		5AD953AA1BB07B3400E3D654 /* UnfoldingWord.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UnfoldingWord.xcdatamodel; sourceTree = "<group>"; };
 		5AD953AB1BB07B3400E3D654 /* UWCoreDataClasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UWCoreDataClasses.h; sourceTree = "<group>"; };
 		5AE06E471BC18CB80072EB27 /* AuditionFileReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuditionFileReader.swift; sourceTree = "<group>"; };
-		5AE06E4B1BC193CB0072EB27 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		5AE06E4C1BC193CB0072EB27 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		5AE06E4D1BC193CB0072EB27 /* XMLConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLConverter.h; sourceTree = "<group>"; };
-		5AE06E4E1BC193CB0072EB27 /* XMLConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLConverter.m; sourceTree = "<group>"; };
 		5AEDC6301AFC20CA00C722B9 /* LanguageInfoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageInfoController.h; sourceTree = "<group>"; };
 		5AEDC6311AFC20CA00C722B9 /* LanguageInfoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguageInfoController.m; sourceTree = "<group>"; };
 		5AEDC6F01B068B0200551D27 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -2551,6 +2551,17 @@
 				5A8DCB941B02601A0010DD27 /* SelectionTracker */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		5A7AF75D1BCC0B2500B651D4 /* XMLConverter */ = {
+			isa = PBXGroup;
+			children = (
+				5A7AF75E1BCC0B2500B651D4 /* LICENSE */,
+				5A7AF75F1BCC0B2500B651D4 /* README.md */,
+				5A7AF7601BCC0B2500B651D4 /* XMLConverter.h */,
+				5A7AF7611BCC0B2500B651D4 /* XMLConverter.m */,
+			);
+			path = XMLConverter;
 			sourceTree = "<group>";
 		};
 		5A7DDACF1BB3608900A5252C /* FontSizePicker */ = {
@@ -3493,7 +3504,7 @@
 		5AAC5C551A97B46C001AFA3D /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
-				5AE06E491BC193CB0072EB27 /* XMLConverter */,
+				5A7AF75D1BCC0B2500B651D4 /* XMLConverter */,
 				5AFC9B611B41D1DC00D453D0 /* GZIP-Nicklockwood */,
 				5A59961A1B0A893F0060668F /* Fonts */,
 				5AAC5C561A97B46C001AFA3D /* FPPopover */,
@@ -3567,17 +3578,6 @@
 				5AE06E471BC18CB80072EB27 /* AuditionFileReader.swift */,
 			);
 			path = AuditionFileReader;
-			sourceTree = "<group>";
-		};
-		5AE06E491BC193CB0072EB27 /* XMLConverter */ = {
-			isa = PBXGroup;
-			children = (
-				5AE06E4B1BC193CB0072EB27 /* LICENSE */,
-				5AE06E4C1BC193CB0072EB27 /* README.md */,
-				5AE06E4D1BC193CB0072EB27 /* XMLConverter.h */,
-				5AE06E4E1BC193CB0072EB27 /* XMLConverter.m */,
-			);
-			path = XMLConverter;
 			sourceTree = "<group>";
 		};
 		5AEDC6261AFC017300C722B9 /* LanguageInfo */ = {
@@ -4108,7 +4108,6 @@
 				5A9ABF481B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-39-09jpg in Resources */,
 				5A43EB521B20F35E000EC306 /* zep-avd-ar-67397108-6D9C-4E9D-9140-0CF3D924E02C.usfm in Resources */,
 				5A9ABF1F1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-36-01jpg in Resources */,
-				5AE06E501BC193CB0072EB27 /* LICENSE in Resources */,
 				5A9ABEAF1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-25-02jpg in Resources */,
 				5A9ABF991B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-47-05jpg in Resources */,
 				5A9ABF6D1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-43-06jpg in Resources */,
@@ -4693,6 +4692,7 @@
 				5A9ABF641B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-42-08jpg in Resources */,
 				5A9AC0421B0A38B100753AAB /* USFMChapterCell.xib in Resources */,
 				5A43EB171B20F35E000EC306 /* job-avd-ar-C96292E1-9ED5-4241-8463-4746ACDA44E4.usfm in Resources */,
+				5A7AF7621BCC0B2500B651D4 /* LICENSE in Resources */,
 				5A9ABF531B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-40-08jpg in Resources */,
 				5A9ABD9C1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-03-03jpg in Resources */,
 				5A9ABFC01B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-49-16jpg in Resources */,
@@ -4803,7 +4803,7 @@
 				5AAC5C5F1A97B46C001AFA3D /* FPPopoverView.m in Sources */,
 				5A8DCB9D1B03B1A10010DD27 /* UINavigationController+UFWNavigationController.m in Sources */,
 				5A26CC6F1BBDD509006DFFD3 /* _OpenFrame.m in Sources */,
-				5AE06E521BC193CB0072EB27 /* XMLConverter.m in Sources */,
+				5A7AF7641BCC0B2500B651D4 /* XMLConverter.m in Sources */,
 				5A9AC03D1B0A38B100753AAB /* FrameCell.m in Sources */,
 				5A26CC751BBDD509006DFFD3 /* _UWStatus.m in Sources */,
 				5A9AC04C1B0A38B100753AAB /* UFWBaseSettingsCell.m in Sources */,
@@ -4818,7 +4818,7 @@
 				5AD3CBE41B4A182D003F5F33 /* ITunesSharingReceiver.swift in Sources */,
 				5AFC9B601B41950500D453D0 /* UIViewController+FileTransfer.m in Sources */,
 				5A9AC0041B0A370000753AAB /* FrameDetailsViewController.m in Sources */,
-				5AE06E511BC193CB0072EB27 /* README.md in Sources */,
+				5A7AF7631BCC0B2500B651D4 /* README.md in Sources */,
 				5A26CC7E1BBDD509006DFFD3 /* OpenContainer.m in Sources */,
 				5AD0B4A11B45CB68006ABD21 /* MultiConnectReceiver.swift in Sources */,
 				5AAC5C631A97C5DB001AFA3D /* NSLayoutConstraint+DWSExtensions.m in Sources */,
