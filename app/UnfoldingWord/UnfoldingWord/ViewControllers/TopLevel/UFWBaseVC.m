@@ -12,7 +12,6 @@
 #import "UFWMasterUpdater.h"
 #import "UWCoreDataClasses.h"
 #import "UFWTopLevelItemCell.h"
-#import "UFWTextChapterVC.h"
 #import "FrameDetailsViewController.h"
 #import "UFWBaseSettingsCell.h"
 #import "UFWBaseURLTableVC.h"

@@ -226,7 +226,7 @@
 {
   ///Handle parse error
   //Output in the console error.
-  NSLog(@"Line:%i Column:%i - Parse Error Occurred: %@", [parser lineNumber], [parser columnNumber], [parseError description]);
+  NSLog(@"Line:%li Column:%li - Parse Error Occurred: %@", (long)[parser lineNumber], (long)[parser columnNumber], [parseError description]);
   //Set error prorerty pointer to parse error.
   _error = parseError;
 }
@@ -235,7 +235,7 @@
 {
   ///Handle validation error
   //Output in the console error.
-  NSLog(@"Line:%i Column:%i - Validation Error Occurred: %@", [parser lineNumber], [parser columnNumber], [validationError description]);
+  NSLog(@"Line:%li Column:%li - Validation Error Occurred: %@", (long)[parser lineNumber], (long)[parser columnNumber], [validationError description]);
   //Set error prorerty pointer to validation error.
   _error = validationError;
 }

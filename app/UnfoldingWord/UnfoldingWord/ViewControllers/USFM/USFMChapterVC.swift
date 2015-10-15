@@ -649,9 +649,9 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
                     maxVerse = number
                     maxRelativeRect = strongself.fullFrameOfVerseNumber(number, inTextView: textView)
                     
-                    let testOffset = textView.contentOffset
-                    let textFrame = textView.frame
-                    let textContentSize = textView.contentSize
+//                    let testOffset = textView.contentOffset
+//                    let textFrame = textView.frame
+//                    let textContentSize = textView.contentSize
                     
                     if (textView.contentOffset.y + textView.frame.size.height) >= (textView.contentSize.height - 10) {
                         maxIsAtEnd = true

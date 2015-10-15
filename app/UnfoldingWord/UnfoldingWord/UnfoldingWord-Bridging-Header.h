@@ -7,7 +7,6 @@
 #import "NSString+Trim.h"
 #import "LanguageInfoController.h"
 #import "UFWTopLevelItemCell.h"
-#import "UFWTextChapterVC.h"
 #import "UFWSelectionTracker.h"
 #import "GZIP.h"
 #import "NSLayoutConstraint+DWSExtensions.h"
