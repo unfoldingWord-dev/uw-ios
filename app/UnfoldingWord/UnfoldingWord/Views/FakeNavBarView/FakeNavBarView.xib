@@ -127,7 +127,7 @@
                 <outlet property="labelButtonVersionMainAlone" destination="oxe-ik-Zwb" id="LqK-bU-BhQ"/>
                 <outlet property="viewSSVersionContainer" destination="CZN-lP-Gbw" id="zeM-BA-sua"/>
             </connections>
-            <point key="canvasLocation" x="554" y="475"/>
+            <point key="canvasLocation" x="594" y="556"/>
         </view>
     </objects>
     <resources>

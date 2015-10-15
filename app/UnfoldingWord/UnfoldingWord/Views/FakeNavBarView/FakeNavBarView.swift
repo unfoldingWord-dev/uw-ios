@@ -122,21 +122,18 @@ class FakeNavBarView : UIView, ACTLabelButtonDelegate {
     }
     
     override func updateConstraints() {
-        let fraction = fractionHidden()
-        buttonBackArrow.layer.opacity = Float(fraction)
-        constraintDistanceBetweenSSVersions.constant = distanceBetweenSSVersionsUsingFraction(fraction)
-        // sqrt makes a quadratic curve to help avoid the edges of the title
+        let fractionalAmtHidden = fractionHidden()
+        buttonBackArrow.layer.opacity = Float(fractionalAmtHidden)
+        constraintDistanceBetweenSSVersions.constant = distanceBetweenSSVersionsUsingFraction(fractionalAmtHidden)
         if sideBarState == .MainOnly {
             constraintDistanceSSContainerFromBook.constant = 0.0
         }
         else {
-            constraintDistanceSSContainerFromBook.constant = pow(fraction, 2) * maxHeightTitleVersionOffset
+            constraintDistanceSSContainerFromBook.constant = fractionalAmtHidden * maxHeightTitleVersionOffset
         }
-
-        super.updateConstraints()
         
-        let font = FONT_MEDIUM().fontWithSize(fontSizeForPercentHidden(fraction))
-        let opacity = opacityForPercentHidden(fraction)
+        let font = FONT_MEDIUM().fontWithSize(fontSizeForPercentHidden(fractionalAmtHidden))
+        let opacity = opacityForPercentHidden(fractionalAmtHidden)
         for (_, labelButton) in labelButtons().enumerate() {
             labelButton.font = font
             if (labelButton.layer.opacity > 0.1) {
@@ -145,6 +142,9 @@ class FakeNavBarView : UIView, ACTLabelButtonDelegate {
         }
         
         buttonBackground.enabled = isAtMinHeight()
+        
+        super.updateConstraints()
+
     }
     
     private func labelButtons() -> [ACTLabelButton!] {
@@ -173,7 +173,8 @@ class FakeNavBarView : UIView, ACTLabelButtonDelegate {
         let distanceAtMinHeight = titleWidth + titleBuffer
         let distanceAtMaxHeight = fmax(titleWidth - titleInset, minSpaceBetweenVersion)
         let distanceDiff = fmax(0, distanceAtMinHeight-distanceAtMaxHeight)
-        let addOnDifference = distanceDiff * (1-fractionAboveMinHeight)
+        let adjustedFraction = pow(fractionAboveMinHeight, 2) // weights the value to be farther apart
+        let addOnDifference = distanceDiff * (1-adjustedFraction)
         return distanceAtMaxHeight + addOnDifference
     }
     
