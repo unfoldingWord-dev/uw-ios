@@ -176,16 +176,15 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
     
     func addMasterContainerBlocksToContainer(masterContainer : ContainerVC) {
         
-        //   typealias AudioActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> AudioSource
-        masterContainer.actionSpeaker = { [weak self] (barButton : UIBarButtonItem, isOn: Bool) in
-            if isOn == false, let strongself = self {
+        masterContainer.actionSpeaker = { [weak self] () in
+            if let strongself = self {
                 let toc = strongself.tocMain != nil ? strongself.tocMain : strongself.tocSide
                 if let audio = toc?.media?.audio {
                     let source = strongself.audioSourceWithChapter(strongself.currentChapterNumber, inAudio: audio)
-                    return AudioInfo(audioSource: source, frameOrVerse: nil)
+                    return AudioInfo(source: source, frameOrVerse: nil)
                 }
             }
-            return AudioInfo(audioSource: nil, frameOrVerse: nil)
+            return AudioInfo(source: nil, frameOrVerse: nil)
         }
         
         //    typealias DiglotActionBlock =  (barButton : UIBarButtonItem, isOn: Bool) -> Void
@@ -193,6 +192,10 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
             if let strongself = self {
                 strongself.changeDiglotToShowing(didChangeToOn)
             }
+        }
+        
+        masterContainer.actionVideo = { () in
+            return VideoInfo(source: nil)
         }
         
         // typealias ShareActionBlock = (barButton : UIBarButtonItem) -> (UWTOC?)

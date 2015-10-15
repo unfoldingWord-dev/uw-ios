@@ -183,7 +183,7 @@
     
     __weak typeof(self) weakself = self;
     
-    masterContainer.actionSpeaker = ^ AudioInfo* (UIBarButtonItem *bbi, BOOL isOn) {
+    masterContainer.actionSpeaker = ^ AudioInfo* () {
         AudioInfo *info = [[AudioInfo alloc] init];
         info.frameOrVerse = @([UFWSelectionTracker frameNumberJSON]+1);
         
@@ -195,6 +195,11 @@
         }
         
         info.audioSource = [weakself audioSourceInAudio:toc.media.audio withChapter:chapter];
+        return info;
+    };
+    
+    masterContainer.actionVideo = ^ VideoInfo* () {
+        VideoInfo *info = [[VideoInfo alloc] initWithSource:nil];
         return info;
     };
     

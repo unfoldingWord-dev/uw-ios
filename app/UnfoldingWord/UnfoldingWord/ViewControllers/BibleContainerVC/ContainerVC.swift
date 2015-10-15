@@ -22,16 +22,25 @@ protocol ChromeHidingProtocol : class {
         super.init()
     }
     
-    init(audioSource : UWAudioSource?, frameOrVerse : Int?) {
-        self.audioSource = audioSource
+    init(source : UWAudioSource?, frameOrVerse : Int?) {
+        self.audioSource = source
         self.frameOrVerse = frameOrVerse
         super.init()
     }
 }
 
-typealias AudioActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> AudioInfo
+@objc class VideoInfo : NSObject {
+    var videoSource : UWVideoSource?
+    
+    init(source : UWVideoSource?) {
+        self.videoSource = source
+        super.init()
+    }
+}
+
+typealias AudioActionBlock = () -> AudioInfo
 typealias FontActionBlock = (size : CGFloat, font : UIFont, brightness: Float) -> Void
-typealias VideoActionBlock = (barButton : UIBarButtonItem, isOn: Bool) -> (toc : UWTOC?, chapter : Int?, setToOn: Bool)
+typealias VideoActionBlock = () -> VideoInfo
 typealias DiglotActionBlock =  (barButton : UIBarButtonItem, didChangeToOn: Bool) -> Void
 typealias ShareActionBlock = (barButton : UIBarButtonItem) -> (UWTOC?)
 typealias ContainerDidSetTopBottomPercentHiddenBlock = (percent : CGFloat) -> Void
@@ -169,7 +178,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
             openBibleVC = frameDetail
             updateDiglotState(isOn: UFWSelectionTracker.isShowingSideOBS())
         }
-        
+        updateAllBarButtons()
     }
     
     private func updateDiglotState(isOn isOn : Bool) {
@@ -193,7 +202,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
             return
         }
         else if let action = self.actionSpeaker {
-            let audioInfo = action(barButton: barButton, isOn: isBarButtonOn(barButton))
+            let audioInfo = action()
             if let source = audioInfo.audioSource, let url = source.sourceFileUrl() {
                     insertAudioPlayerIntoAccessoryViewWithUrl(url)
                     setBarButton(barButton, toOn: true)
@@ -361,8 +370,38 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
             case .Side:
                 openBibleVC.processTOCPicked(toc, isSide: true)
             }
-            // Add the Open Bible Stories Here
         }
+        stopAndResetAudioPlayerIfNecessary(duration: 0)
+        updateAllBarButtons()
+    }
+    
+    private func updateAllBarButtons() {
+        resetAudioButton()
+        resetVideoButton()
+    }
+    
+    private func resetAudioButton()
+    {
+        if let action = self.actionSpeaker {
+            let audioInfo = action()
+            if audioInfo.audioSource != nil {
+                barButtonSpeaker.enabled = true
+                return
+            }
+        }
+        barButtonSpeaker.enabled = false
+    }
+    
+    private func resetVideoButton()
+    {
+        if let action = self.actionVideo {
+            let videoInfo = action()
+            if videoInfo.videoSource != nil {
+                barButtonVideo.enabled = true
+                return
+            }
+        }
+        barButtonVideo.enabled = false
     }
     
     private func matchingTOCFromTOC(toc : UWTOC?, forNewArea area : TOCArea) -> UWTOC? {
@@ -390,7 +429,6 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
         if let _ = usfmPageVC {
             usfmPageVC?.currentChapterNumber = chapterNum
             usfmPageVC?.updateChapterVCs()
-            
         }
     }
     
