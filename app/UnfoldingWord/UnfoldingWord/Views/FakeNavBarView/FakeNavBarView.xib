@@ -11,32 +11,32 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="58"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Empty" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c5O-BJ-0Os" customClass="ACTLabelButton">
-                    <rect key="frame" x="92" y="13" width="136" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Empty" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c5O-BJ-0Os" customClass="ACTLabelButton">
+                    <rect key="frame" x="136" y="13" width="49" height="21"/>
                     <animations/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Add" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oxe-ik-Zwb" userLabel="VersionMainAlone" customClass="ACTLabelButton">
-                    <rect key="frame" x="258" y="13" width="37" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oxe-ik-Zwb" userLabel="VersionMainAlone" customClass="ACTLabelButton">
+                    <rect key="frame" x="215" y="13" width="31" height="21"/>
                     <animations/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <view contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CZN-lP-Gbw" userLabel="ViewSideBySideVersions">
-                    <rect key="frame" x="25" y="33" width="270" height="21"/>
+                <view contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="CZN-lP-Gbw" userLabel="ViewSideBySideVersions">
+                    <rect key="frame" x="31" y="33" width="258" height="21"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" misplaced="YES" text="Add" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4SH-hq-vtK" customClass="ACTLabelButton">
-                            <rect key="frame" x="233" y="0.0" width="37" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Add" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4SH-hq-vtK" customClass="ACTLabelButton">
+                            <rect key="frame" x="227" y="0.0" width="31" height="21"/>
                             <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" misplaced="YES" text="Add" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YGL-3v-lpN" customClass="ACTLabelButton">
-                            <rect key="frame" x="0.0" y="0.0" width="37" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Add" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YGL-3v-lpN" customClass="ACTLabelButton">
+                            <rect key="frame" x="0.0" y="0.0" width="31" height="21"/>
                             <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -63,13 +63,19 @@
                     </connections>
                 </button>
                 <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TfS-xi-3ov">
-                    <rect key="frame" x="12" y="14" width="18" height="31"/>
+                    <rect key="frame" x="12" y="18" width="12" height="22"/>
                     <animations/>
                     <constraints>
                         <constraint firstAttribute="width" constant="18" id="Fkh-aR-bG2"/>
                         <constraint firstAttribute="height" constant="31" id="nCC-mn-Cmn"/>
                     </constraints>
                     <state key="normal" backgroundImage="nav-back-arrow"/>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="Fkh-aR-bG2"/>
+                            <exclude reference="nCC-mn-Cmn"/>
+                        </mask>
+                    </variation>
                     <connections>
                         <action selector="userPressedBackButton:" destination="o81-mH-kwX" eventType="touchUpInside" id="z4x-G9-WZR"/>
                     </connections>
@@ -125,6 +131,6 @@
         </view>
     </objects>
     <resources>
-        <image name="nav-back-arrow" width="24" height="42"/>
+        <image name="nav-back-arrow" width="12" height="22"/>
     </resources>
 </document>
