@@ -47,7 +47,7 @@ func FONT_MEDIUM() -> UIFont { // duplicated in Constants.h
 }
 
 func BACKGROUND_GREEN() -> UIColor { // duplicated in Constants.h
-    return UIColor(red: 0.4, green: 0.58, blue: 0.537, alpha: 1)
+    return UIColor(red: 0.0, green: 0.588, blue: 0.533, alpha: 1)
 }
 
 struct Constants {

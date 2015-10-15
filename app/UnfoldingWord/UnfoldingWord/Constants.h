@@ -21,8 +21,7 @@ static NSString *const NotificationKeyAudioSegment = @"__NotificationKeyAudioSeg
 #define SELECTION_BLUE_COLOR    [UIColor colorWithRed:76.0/255.0 green:185.0/255.0 blue:224.0/255.0 alpha:1.0]
 #define TEXT_COLOR_NORMAL       [UIColor colorWithRed:32.0/255.0 green:27.0/255.0 blue:22.0/255.0 alpha:1.0]
 //#define BACKGROUND_GRAY               [UIColor colorWithRed:42.0/255.0 green:34.0/255.0 blue:26.0/255.0 alpha:1.0]
-#define BACKGROUND_GREEN          [UIColor colorWithRed:0.4 green:0.58 blue:0.537 alpha:1.0]
-
+#define BACKGROUND_GREEN          [UIColor colorWithRed:0.0 green:0.588 blue:0.533 alpha:1.0]
 
 #define TABBAR_COLOR_TRANSPARENT [UIColor colorWithRed:42.0/255.0 green:34.0/255.0 blue:26.0/255.0 alpha:0.7]
 
