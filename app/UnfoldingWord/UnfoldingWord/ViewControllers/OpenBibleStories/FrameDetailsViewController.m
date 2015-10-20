@@ -69,7 +69,7 @@
 {
     [super viewDidLoad];
     self.edgesForExtendedLayout = UIRectEdgeNone;
-    self.collectionView.backgroundColor = BACKGROUND_GREEN;
+    self.collectionView.backgroundColor = BACKGROUND_GRAY;
     [self addTapGestureRecognizer];
     
     [self loadNibsForCollectionView];
@@ -232,10 +232,9 @@
         if (cell == nil) {
             return;
         }
-        cell.label_contentMain.font = [cell.label_contentMain.font fontWithSize:size];
-        cell.label_contentSide.font = [cell.label_contentSide.font fontWithSize:size];
+        cell.textView_contentMain.font = [cell.textView_contentMain.font fontWithSize:size];
+        cell.textView_contentSide.font = [cell.textView_contentSide.font fontWithSize:size];
     };
-    
 }
 
 
@@ -329,8 +328,8 @@
 - (void)showOrHideNavigationBarAnimated:(BOOL)animated
 {
     BOOL hide = (self.navigationController.navigationBarHidden) ? NO : YES;
-    FrameCell *frameCell = [self visibleFrameCell];
-    [frameCell setIsShowingFullScreen:hide animated:animated];
+//    FrameCell *frameCell = [self visibleFrameCell];
+//    [frameCell setIsShowingFullScreen:hide animated:animated];
     [self.navigationController setNavigationBarHidden:hide animated:animated];
 }
 
@@ -406,26 +405,21 @@
         }
         
         CGFloat pointSize = [UFWSelectionTracker fontPointSize] > 1 ? [UFWSelectionTracker fontPointSize] : 17;
-        cell.label_contentMain.text = frameMain.text;
-        cell.label_contentMain.font = [cell.label_contentMain.font fontWithSize:pointSize];
-        cell.label_contentSide.textAlignment = [LanguageInfoController textAlignmentForLanguageCode:self.chapterMain.container.toc.version.language.lc];
-        [cell setVersionName:self.chapterMain.container.toc.version.name isSide:NO];
-        [cell setStatusImage:[UFWInfoView imageReverseForStatus:self.chapterMain.container.toc.version.status] isSide:NO];
+        cell.textView_contentMain.text = frameMain.text;
+        cell.textView_contentMain.font = [cell.textView_contentMain.font fontWithSize:pointSize];
+        cell.textView_contentMain.textAlignment = [LanguageInfoController textAlignmentForLanguageCode:self.chapterMain.container.toc.version.language.lc];
         
         if (frameSide.text.length > 0) {
-            cell.label_contentSide.text = frameSide.text;
+            cell.textView_contentSide.text = frameSide.text;
         }
         else {
-            cell.label_contentSide.text = @"Click \"Add\" on the top bar to select a language.";
+            cell.textView_contentSide.text = @"Click \"Add\" on the top bar to select a language.";
         }
-       
-        cell.label_contentSide.font = [cell.label_contentSide.font fontWithSize:pointSize];
-        cell.label_contentSide.textAlignment = [LanguageInfoController textAlignmentForLanguageCode:self.chapterSide.container.toc.version.language.lc];
-        [cell setVersionName:self.chapterSide.container.toc.version.name isSide:YES];
-        [cell setStatusImage:[UFWInfoView imageReverseForStatus:self.chapterSide.container.toc.version.status] isSide:YES];
+        cell.textView_contentSide.font = [cell.textView_contentSide.font fontWithSize:pointSize];
+        cell.textView_contentSide.textAlignment = [LanguageInfoController textAlignmentForLanguageCode:self.chapterSide.container.toc.version.language.lc];
+
         
         [cell setIsShowingSide:self.isShowingSide animated:NO];
-        [cell setIsShowingFullScreen:self.navigationController.navigationBarHidden animated:NO];
         
         [cell setFrameImage:nil];
     

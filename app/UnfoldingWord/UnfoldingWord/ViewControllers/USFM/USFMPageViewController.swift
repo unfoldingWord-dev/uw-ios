@@ -50,14 +50,14 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         
     var fakeNavBar : FakeNavBarView! // Assign on creation of this VC. Otherwise, it should crash!
     
-    var tocMain : UWTOC?  {
+    var tocMain : UWTOC? = nil {
         didSet {
             arrayMainChapters = chaptersFromTOC(tocMain)
             UFWSelectionTracker.setUSFMTOC(tocMain)
             updateNavBarTOCForArea(.Main)
         }
     }
-    var tocSide : UWTOC? {
+    var tocSide : UWTOC? = nil {
         didSet {
             arraySideChapters = chaptersFromTOC(tocSide)
             UFWSelectionTracker.setUSFMTOCSide(tocSide)
@@ -73,22 +73,20 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
     
     weak var delegateChromeProtocol : ChromeHidingProtocol?
     
-    var currentChapterNumber : Int! {
-        didSet {
-            UFWSelectionTracker.setChapterUSFM(currentChapterNumber)
-            updateNavBarChapterInfo()
-        }
-    }
+//    var currentChapterNumber : Int = UFWSelectionTracker.chapterNumberUSFM() {
+//        didSet {
+//            UFWSelectionTracker.setChapterUSFM(currentChapterNumber)
+//            updateNavBarChapterInfo()
+//        }
+//    }
     
     required init?(coder aDecoder: NSCoder) {
-        self.currentChapterNumber = UFWSelectionTracker.chapterNumberUSFM()
         super.init(coder: aDecoder)
     }
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        self.currentChapterNumber = UFWSelectionTracker.chapterNumberUSFM()
         self.dataSource = self
         self.delegate = self
         isShowingSideView = UFWSelectionTracker.isShowingSide()
@@ -180,7 +178,7 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
             if let strongself = self {
                 let toc = strongself.tocMain != nil ? strongself.tocMain : strongself.tocSide
                 if let audio = toc?.media?.audio {
-                    let source = strongself.audioSourceWithChapter(strongself.currentChapterNumber, inAudio: audio)
+                    let source = strongself.audioSourceWithChapter(UFWSelectionTracker.chapterNumberUSFM(), inAudio: audio)
                     return AudioInfo(source: source, frameOrVerse: nil)
                 }
             }
@@ -254,13 +252,13 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
     func updateChapterVCForArea(area : TOCArea) {
         guard let currentController = currentChapterVC() else { return }
         
-        currentController.chapterNumber = currentChapterNumber;
+        currentController.chapterNumber = UFWSelectionTracker.chapterNumberUSFM();
 
         switch area {
         case .Main:
-            currentController.mainAttributes = attributesForArea(.Main)
+            currentController.mainAttributes = attributesForArea(.Main, forChapterInt: UFWSelectionTracker.chapterNumberUSFM())
         case .Side:
-            currentController.sideAttributes = attributesForArea(.Side)
+            currentController.sideAttributes = attributesForArea(.Side, forChapterInt: UFWSelectionTracker.chapterNumberUSFM())
         }
         
         currentController.loadContentForArea(area, setToTop:true)
@@ -279,7 +277,8 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
     func showNextTOC() {
         tocMain = tocAfterTOC(tocMain)
         tocSide = tocAfterTOC(tocSide)
-        currentChapterNumber  = 1
+        UFWSelectionTracker.setChapterUSFM(1)
+        updateNavBarChapterInfo()
         loadCurrentContentAnimated(true)
         
     }
@@ -297,20 +296,20 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
     }
     
     private func loadCurrentContentAnimated(isAnimated : Bool) {
-        setViewControllers([chapterVC(currentChapterNumber)], direction: UIPageViewControllerNavigationDirection.Forward, animated: isAnimated) { (didComplete : Bool) -> Void in }
+        setViewControllers([chapterVC(UFWSelectionTracker.chapterNumberUSFM())], direction: UIPageViewControllerNavigationDirection.Forward, animated: isAnimated) { (didComplete : Bool) -> Void in }
     }
     
     private func chapterVC(chapterNum : Int) -> USFMChapterVC {
         let chapterVC : USFMChapterVC = self.storyboard!.instantiateViewControllerWithIdentifier("USFMChapterVC") as! USFMChapterVC
-        chapterVC.mainAttributes = attributesForArea(.Main)
-        chapterVC.sideAttributes = attributesForArea(.Side)
+        chapterVC.mainAttributes = attributesForArea(.Main, forChapterInt: chapterNum)
+        chapterVC.sideAttributes = attributesForArea(.Side, forChapterInt: chapterNum)
         chapterVC.chapterNumber = chapterNum
         chapterVC.delegate = self
         chapterVC.pointSize = UFWSelectionTracker.fontPointSize()
         return chapterVC
     }
     
-    private func attributesForArea(area : TOCArea) -> AreaAttributes {
+    private func attributesForArea(area : TOCArea, forChapterInt chapterInt : Int) -> AreaAttributes {
         
         let toc : UWTOC?
         let nextChapterText : String?
@@ -327,7 +326,7 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         }
         
         if let chapters = chaptersForArea(area) {
-            if currentChapterNumber >= chapters.count {
+            if chapterInt > chapters.count {
                 if let toc = toc, let nextToc = tocAfterTOC(toc) {
                     let gotoPrefix = NSLocalizedString("Go to", comment: "Name of bible chapter goes after this text")
                     nextChapterText = "\(gotoPrefix) \(nextToc.title)"
@@ -338,7 +337,7 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
                 chapter = nil
             }
             else {
-                chapter = chapters[currentChapterNumber]
+                chapter = chapters[chapterInt-1]
                 nextChapterText = nil
             }
         }
@@ -364,7 +363,8 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
     func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if let currentVC = currentChapterVC() {
             if (currentVC.chapterNumber <= anyArray().count) {
-                currentChapterNumber = currentVC.chapterNumber;
+                UFWSelectionTracker.setChapterUSFM(currentVC.chapterNumber)
+                updateNavBarChapterInfo()
             }
         }
     }

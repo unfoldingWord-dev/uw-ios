@@ -427,8 +427,9 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
     
     private func selectChapter(chapterNum : Int) {
         if let _ = usfmPageVC {
-            usfmPageVC?.currentChapterNumber = chapterNum
+            UFWSelectionTracker.setChapterUSFM(chapterNum)
             usfmPageVC?.updateChapterVCs()
+            usfmPageVC?.updateNavBarChapterInfo()
         }
     }
     
