@@ -445,7 +445,7 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
     }
     
     private func chaptersFromTOC(toc : UWTOC?) -> [USFMChapter]? {
-        if let toc = toc, chapters = toc.usfmInfo.chapters() as? [USFMChapter] {
+        if let toc = toc, info = toc.usfmInfo, chapters = info.chapters() as? [USFMChapter] {
             return chapters
         }
         else {
