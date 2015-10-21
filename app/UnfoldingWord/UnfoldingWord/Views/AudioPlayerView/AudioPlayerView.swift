@@ -78,7 +78,7 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
         playerView.retrieveData()
         playerView.updateTimeUI()
         playerView.translatesAutoresizingMaskIntoConstraints = false
-        NSNotificationCenter.defaultCenter().addObserver(playerView, selector: "userScrolledToChapterNotification:", name: nil, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(playerView, selector: "userScrolledToChapterNotification:", name: NotificationUserChangedAudioSegment, object: nil)
         return playerView
     }
     

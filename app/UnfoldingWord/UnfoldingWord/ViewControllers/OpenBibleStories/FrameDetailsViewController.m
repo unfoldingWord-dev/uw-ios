@@ -203,7 +203,6 @@
         return info;
     };
     
-    //    typealias DiglotActionBlock =  (barButton : UIBarButtonItem, isOn: Bool) -> Void
     masterContainer.actionDiglot = ^ void (UIBarButtonItem *bbi, BOOL isOn) {
         [weakself changeDiglotToShowing:isOn];
     };
