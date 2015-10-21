@@ -26,4 +26,6 @@
 
 - (void)jumpToCurrentFrameAnimated:(BOOL)animated;
 
+- (void)changeDiglotToShowing:(BOOL)isShowing;
+
 @end

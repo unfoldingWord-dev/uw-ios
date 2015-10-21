@@ -189,6 +189,9 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
         if let pageVC = usfmPageVC {
             pageVC.changeDiglotToShowing(isOn)
         }
+        if let obsVC = openBibleVC {
+            obsVC.changeDiglotToShowing(isOn)
+        }
     }
 
     @IBAction func userPressSpeakerButton(barButton: UIBarButtonItem) {

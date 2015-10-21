@@ -205,10 +205,7 @@
     
     //    typealias DiglotActionBlock =  (barButton : UIBarButtonItem, isOn: Bool) -> Void
     masterContainer.actionDiglot = ^ void (UIBarButtonItem *bbi, BOOL isOn) {
-        weakself.isShowingSide = isOn;
-        [UFWSelectionTracker setIsShowingSideOBS:isOn];
-        FrameCell *visibleFrameCell = [weakself visibleFrameCell];
-        [visibleFrameCell setIsShowingSide:isOn animated:YES];
+        [weakself changeDiglotToShowing:isOn];
     };
     
     // typealias ShareActionBlock = (barButton : UIBarButtonItem) -> (UWTOC?)
@@ -237,6 +234,16 @@
     };
 }
 
+- (void)changeDiglotToShowing:(BOOL)isShowing {
+    self.isShowingSide = isShowing;
+    [UFWSelectionTracker setIsShowingSideOBS:isShowing];
+    
+    for (FrameCell *frameCell in self.collectionView.visibleCells) {
+        if ([frameCell isKindOfClass:[FrameCell class]]) {
+            [frameCell setIsShowingSide:isShowing animated:YES];
+        }
+    }
+}
 
 - (void)processTOCPicked:(UWTOC *)selectedTOC isSide:(BOOL)isSide;
 {
@@ -328,8 +335,6 @@
 - (void)showOrHideNavigationBarAnimated:(BOOL)animated
 {
     BOOL hide = (self.navigationController.navigationBarHidden) ? NO : YES;
-//    FrameCell *frameCell = [self visibleFrameCell];
-//    [frameCell setIsShowingFullScreen:hide animated:animated];
     [self.navigationController setNavigationBarHidden:hide animated:animated];
 }
 
