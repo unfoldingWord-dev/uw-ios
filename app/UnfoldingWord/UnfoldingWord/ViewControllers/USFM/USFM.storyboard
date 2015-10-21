@@ -1,138 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A282b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VXW-ec-y5Q">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A282b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--UFWTextChapterVC-->
-        <scene sceneID="bXQ-nO-yiv">
-            <objects>
-                <viewController storyboardIdentifier="UFWTextChapterVC" title="UFWTextChapterVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VXW-ec-y5Q" customClass="UFWTextChapterVC" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="o4a-Ve-CpC"/>
-                        <viewControllerLayoutGuide type="bottom" id="qsf-bz-aZ6"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="mmW-UC-1gy">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="fyv-gM-tl2">
-                                <rect key="frame" x="-10" y="0.0" width="620" height="600"/>
-                                <animations/>
-                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="GhN-pp-C2v">
-                                    <size key="itemSize" width="50" height="50"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells/>
-                                <connections>
-                                    <outlet property="dataSource" destination="VXW-ec-y5Q" id="b1G-To-75V"/>
-                                    <outlet property="delegate" destination="VXW-ec-y5Q" id="aNP-UJ-DWD"/>
-                                </connections>
-                            </collectionView>
-                        </subviews>
-                        <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="fyv-gM-tl2" firstAttribute="top" secondItem="o4a-Ve-CpC" secondAttribute="bottom" id="8e9-1b-vML"/>
-                            <constraint firstItem="qsf-bz-aZ6" firstAttribute="top" secondItem="fyv-gM-tl2" secondAttribute="bottom" id="OYV-7L-TLM"/>
-                            <constraint firstAttribute="trailing" secondItem="fyv-gM-tl2" secondAttribute="trailing" constant="-10" id="SJg-IG-ee9"/>
-                            <constraint firstItem="fyv-gM-tl2" firstAttribute="top" secondItem="mmW-UC-1gy" secondAttribute="top" id="aDf-s1-uoO"/>
-                            <constraint firstItem="qsf-bz-aZ6" firstAttribute="top" secondItem="fyv-gM-tl2" secondAttribute="bottom" id="nvD-zf-KHx"/>
-                            <constraint firstItem="fyv-gM-tl2" firstAttribute="leading" secondItem="mmW-UC-1gy" secondAttribute="leading" constant="-10" id="u4w-vX-7bb"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="aDf-s1-uoO"/>
-                                <exclude reference="OYV-7L-TLM"/>
-                            </mask>
-                        </variation>
-                    </view>
-                    <nil key="simulatedStatusBarMetrics"/>
-                    <nil key="simulatedTopBarMetrics"/>
-                    <connections>
-                        <outlet property="collectionView" destination="fyv-gM-tl2" id="eoS-0S-Qcv"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="cYS-1z-uIc" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="bIO-x1-gTB">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <animations/>
-                    <items>
-                        <barButtonItem title="Item" id="Ji4-pL-hXD"/>
-                    </items>
-                </toolbar>
-            </objects>
-            <point key="canvasLocation" x="231" y="26"/>
-        </scene>
-        <!--ContainerUSFMVC-->
-        <scene sceneID="Q78-aH-Hps">
-            <objects>
-                <viewController storyboardIdentifier="UFWContainerUSFMVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="HJP-mG-Lly" customClass="UFWContainerUSFMVC" customModule="UnfoldingWord" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Me5-wc-m5H"/>
-                        <viewControllerLayoutGuide type="bottom" id="pKx-sk-nHT"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="TKf-t6-rlm">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q2e-dA-xrq" userLabel="SideView">
-                                <rect key="frame" x="301" y="0.0" width="299" height="600"/>
-                                <animations/>
-                                <color key="backgroundColor" red="0.43925401730000002" green="1" blue="0.44185694419999999" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jD3-73-CVd" userLabel="MainView">
-                                <rect key="frame" x="0.0" y="0.0" width="299" height="600"/>
-                                <animations/>
-                                <color key="backgroundColor" red="1" green="0.090197819210000002" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
-                        </subviews>
-                        <animations/>
-                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="bottom" secondItem="jD3-73-CVd" secondAttribute="bottom" id="27P-bC-F9n"/>
-                            <constraint firstItem="jD3-73-CVd" firstAttribute="width" secondItem="q2e-dA-xrq" secondAttribute="width" id="C3f-FQ-kEO"/>
-                            <constraint firstItem="q2e-dA-xrq" firstAttribute="top" secondItem="Me5-wc-m5H" secondAttribute="bottom" id="CXI-ZT-cKs"/>
-                            <constraint firstAttribute="trailing" secondItem="q2e-dA-xrq" secondAttribute="trailing" priority="999" id="Hhu-zN-Khx"/>
-                            <constraint firstItem="q2e-dA-xrq" firstAttribute="leading" secondItem="jD3-73-CVd" secondAttribute="trailing" constant="2" id="I5R-dT-gms"/>
-                            <constraint firstItem="jD3-73-CVd" firstAttribute="leading" secondItem="TKf-t6-rlm" secondAttribute="leading" id="QEM-Gw-4gt"/>
-                            <constraint firstItem="pKx-sk-nHT" firstAttribute="top" secondItem="jD3-73-CVd" secondAttribute="bottom" id="U8A-cE-LDr"/>
-                            <constraint firstAttribute="trailing" secondItem="jD3-73-CVd" secondAttribute="trailing" priority="998" id="arw-KQ-4vg"/>
-                            <constraint firstAttribute="trailing" secondItem="q2e-dA-xrq" secondAttribute="trailing" id="eF3-X6-oZP"/>
-                            <constraint firstItem="jD3-73-CVd" firstAttribute="top" secondItem="Me5-wc-m5H" secondAttribute="bottom" id="f6r-Xo-ep0"/>
-                            <constraint firstItem="pKx-sk-nHT" firstAttribute="top" secondItem="q2e-dA-xrq" secondAttribute="bottom" id="jrg-7A-7lP"/>
-                            <constraint firstItem="pKx-sk-nHT" firstAttribute="top" secondItem="q2e-dA-xrq" secondAttribute="bottom" id="odo-V0-nqU"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="27P-bC-F9n"/>
-                                <exclude reference="eF3-X6-oZP"/>
-                                <exclude reference="jrg-7A-7lP"/>
-                            </mask>
-                        </variation>
-                    </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
-                    <nil key="simulatedStatusBarMetrics"/>
-                    <nil key="simulatedTopBarMetrics"/>
-                    <nil key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="constraintMainViewToRightEdge" destination="arw-KQ-4vg" id="KGL-MW-hkn"/>
-                        <outlet property="constraintSideViewToRightEdge" destination="Hhu-zN-Khx" id="PG6-49-3Tl"/>
-                        <outlet property="constraintSpacerWidth" destination="I5R-dT-gms" id="tLh-4L-J9h"/>
-                        <outlet property="viewMain" destination="jD3-73-CVd" id="Alk-0J-f7d"/>
-                        <outlet property="viewSide" destination="q2e-dA-xrq" id="yy9-xw-EbZ"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="wIe-H7-yMS" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="229" y="680"/>
-        </scene>
         <!--ChapterVC-->
         <scene sceneID="eFM-DM-NNW">
             <objects>
@@ -295,7 +168,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lvt-0J-Loc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="846" y="681"/>
+            <point key="canvasLocation" x="242" y="1090"/>
         </scene>
         <!--Page View Controller-->
         <scene sceneID="tX6-3q-q5L">
@@ -303,7 +176,7 @@
                 <pageViewController storyboardIdentifier="USFMPageViewController" autoresizesArchivedViewToFullSize="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="jDL-3V-5cp" customClass="USFMPageViewController" customModule="UnfoldingWord" customModuleProvider="target" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vao-B9-GGc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="98" y="1355"/>
+            <point key="canvasLocation" x="242" y="447"/>
         </scene>
     </scenes>
 </document>

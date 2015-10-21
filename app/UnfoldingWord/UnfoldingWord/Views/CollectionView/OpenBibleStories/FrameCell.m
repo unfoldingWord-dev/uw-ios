@@ -29,14 +29,14 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    [self setup];
+    [self setupCellView];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        [self setup];
+        [self setupCellView];
     }
     return self;
 }
@@ -48,7 +48,7 @@
     self.viewTextBackgroundSide.backgroundColor = TABBAR_COLOR_TRANSPARENT;
 }
 
-- (void)setup
+- (void)setupCellView
 {
     [self adjustColors];
     [self setIsShowingSide:YES animated:NO];

@@ -18,7 +18,6 @@
 @property (nonatomic, copy) BookPickerCompletion completion;
 @property (nonatomic, strong) UWVersion *version;
 @property (nonatomic, strong) NSArray *arrayOfTOCs;
-
 @end
 
 @implementation UFWBookPickerUSFMVC
@@ -28,8 +27,6 @@
     UFWBookPickerUSFMVC *pickerVC = [[UFWBookPickerUSFMVC alloc] init];
     pickerVC.version = version;
     pickerVC.completion = completion;
-    
-    
     return [UINavigationController navigationControllerWithUFWBaseViewController:pickerVC];
 }
 
@@ -39,8 +36,6 @@
     
     UIBarButtonItem *bbi = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
     self.navigationItem.rightBarButtonItem = bbi;
-    
-    
     self.navigationItem.title = [LanguageInfoController nameForLanguageCode:self.version.language.lc];
 }
 
