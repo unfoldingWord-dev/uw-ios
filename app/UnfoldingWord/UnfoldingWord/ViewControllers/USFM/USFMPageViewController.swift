@@ -11,15 +11,6 @@ import Foundation
 enum TOCArea {
     case Main
     case Side
-    
-    func opposite(area : TOCArea) -> TOCArea {
-        if area == TOCArea.Main {
-            return TOCArea.Side
-        }
-        else {
-            return TOCArea.Main
-        }
-    }
 }
 
 struct AreaAttributes {
@@ -73,13 +64,6 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
     
     weak var delegateChromeProtocol : ChromeHidingProtocol?
     
-//    var currentChapterNumber : Int = UFWSelectionTracker.chapterNumberUSFM() {
-//        didSet {
-//            UFWSelectionTracker.setChapterUSFM(currentChapterNumber)
-//            updateNavBarChapterInfo()
-//        }
-//    }
-    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -100,14 +84,15 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         addConstaintsToInternalScrolling()
     }
     
+    // The page view controller has an internal scrollview that does not update with constraint changes to its parent view. We're finding that scrollview, then adding constraints so that it follows its parent view. This does cause some issues with other things, but it's the only way I could figure out to make autolayout work when changing view sizes dynamically.
     private func addConstaintsToInternalScrolling() {
         
         for (_, view) in self.view.subviews.enumerate() {
             if view.isKindOfClass(UIScrollView) {
                 let scrollview = view as! UIScrollView
                 if scrollview.constraints.count == 0, let constraints = NSLayoutConstraint.constraintsForView(scrollview, insideView: self.view, topMargin: 0, bottomMargin: 0, leftMargin: 0, rightMargin: 0) {
-                        scrollview.translatesAutoresizingMaskIntoConstraints = false
-                        self.view.addConstraints(constraints)
+                    scrollview.translatesAutoresizingMaskIntoConstraints = false
+                    self.view.addConstraints(constraints)
                     self.view.setNeedsUpdateConstraints()
                     self.view.layoutIfNeeded()
                 }
@@ -185,7 +170,6 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
             return AudioInfo(source: nil, frameOrVerse: nil)
         }
         
-        //    typealias DiglotActionBlock =  (barButton : UIBarButtonItem, isOn: Bool) -> Void
         masterContainer.actionDiglot = { [weak self] (barButton : UIBarButtonItem, didChangeToOn: Bool) in
             if let strongself = self {
                 strongself.changeDiglotToShowing(didChangeToOn)
@@ -196,7 +180,6 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
             return VideoInfo(source: nil)
         }
         
-        // typealias ShareActionBlock = (barButton : UIBarButtonItem) -> (UWTOC?)
         masterContainer.actionShare = { [weak self] (barButton : UIBarButtonItem) in
             guard let strongself = self else { return nil }
             if let toc = strongself.tocMain {
@@ -210,7 +193,6 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
             }
         }
         
-        //typealias FontActionBlock = (size : FontSize, font : UIFont, brightness: Float) -> Void
         masterContainer.actionFont = { [weak self] (size : CGFloat, font : UIFont, brightness: Float) in
             guard let strongself = self else { return }
             strongself.adjustFontSize(size)
@@ -353,12 +335,7 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
     
     // Page View Controller Delegate
     
-    func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [UIViewController]) {
-//        if pendingViewControllers.count > 0 {
-//            let existingVC = pendingViewControllers[0] as! USFMChapterVC
-//            currentChapterNumber = existingVC.chapterNumber
-//        }
-    }
+    func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [UIViewController]) {}
     
     func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if let currentVC = currentChapterVC() {
@@ -393,14 +370,6 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
             return chapterVC(existingVC.chapterNumber + 1)
         }
     }
-    
-//    func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {
-//        return anyArray().count
-//    }
-//    
-//    func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int {
-//        return currentChapterNumber
-//    }
     
     // Helpers
         

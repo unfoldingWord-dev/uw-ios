@@ -33,8 +33,6 @@
 @property (nonatomic, strong) NSArray *arrayTopLevelObjects;
 @property (nonatomic, assign) BOOL isLoadedOnce;
 
-@property (nonatomic, strong) AudioPlayerView *playerView;
-
 @property (nonatomic, strong) FPPopoverController *customPopoverController;
 
 @end
@@ -129,17 +127,6 @@
 }
 
 #pragma mark - Table view data source
-
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-//    return  53.0f;
-//}
-//
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-//    if (self.playerView == nil) {
-//        self.playerView = [AudioPlayerView playerWithUrl:[NSURL URLWithString:@"https://api.unfoldingword.org/uw/audio/beta/01-GEN-br256.mp3"]];
-//    }
-//    return self.playerView;
-//}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;

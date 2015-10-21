@@ -408,16 +408,20 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
     }
     
     private func matchingTOCFromTOC(toc : UWTOC?, forNewArea area : TOCArea) -> UWTOC? {
-        guard let toc = toc else {return nil}
-        guard let _ = toc.slug else { return nil }
-        guard let existingTOC = tocForArea(area) else {return nil }
+        guard let
+            toc = toc,
+            _ = toc.slug,
+            existingTOC = tocForArea(area)
+            else { return nil }
         
         var matchingTOC : UWTOC? = nil
         
         for (_, candidateTOC) in existingTOC.version.toc.enumerate() {
             
-            guard let candidateTOC = candidateTOC as? UWTOC else { break }
-            guard let candSlug = candidateTOC.slug else { break }
+            guard let
+                candidateTOC = candidateTOC as? UWTOC,
+                candSlug = candidateTOC.slug
+                else { break }
             
             if toc.slug.isEqual(candSlug) {
                 matchingTOC = candidateTOC
@@ -497,8 +501,8 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
         fontPicker.delegate = self
         insertAccessoryView(fontPicker)
     }
+    
     //typealias FontActionBlock = (size : CGFloat, font : UIFont, brightness: Float) -> Void
-
     func userDidChangeFontToSize(pointSize : CGFloat) {
         if let action = actionFont {
             action(size: pointSize, font: UIFont.boldSystemFontOfSize(pointSize), brightness: 1)
@@ -545,9 +549,6 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
                     view.removeFromSuperview()
                 }
         }
-
-//        self.view.setNeedsUpdateConstraints()
-//        self.view.layoutIfNeeded()
     }
     
     private func ensureAccessoryViewIsInState(showing isShowing : Bool) {
@@ -651,6 +652,4 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
         constraintToolbarSpaceToBottom.constant = distance
         animateConstraintChanges(duration)
     }
-    
 }
-
