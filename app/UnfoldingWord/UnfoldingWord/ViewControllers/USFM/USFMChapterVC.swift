@@ -191,7 +191,7 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     
     func updateVisibility(scrollView scrollView : UIScrollView) {
         
-        print("Update visibility")
+//        print("Update visibility")
         
         let currentOffset = scrollView.contentOffset.y
         let distanceDraggedContentDown = currentOffset - startingYOffset
@@ -222,36 +222,37 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     
     func scrollViewDidScroll(scrollView: UIScrollView)
     {
-        print("did scroll with offset: \(scrollView.contentOffset)")
         if countSetup == 0 {
             updateVisibility(scrollView: scrollView)
         }
         
         if isScrollMatchingNeeded() == false {
-            print("is side showing: \(isSideShowing) setup count: \(countSetup) is next chapter \(sideAttributes.isNextChapter) is empty: \(sideAttributes.isEmpty)")
             return
         }
-        
-        let scrollingYDifference = scrollView.contentOffset.y - startingYOffset
-        if scrollingYDifference < 50 && scrollingYDifference > 0 {
-            // Okay, we might
-        }
-        
+    
+//        let scrollingYDifference = scrollView.contentOffset.y - startingYOffset
+//        if scrollingYDifference < 50 && scrollingYDifference > 0 {
+//            // Okay, we might
+//        }
         
         if scrollView.isEqual(textViewMain) {
             let difference = textViewMain.contentOffset.y - lastMainOffset.y
-            lastMainOffset = textViewMain.contentOffset
             adjustScrollView(textViewSideDiglot, byYPoints: difference)
         }
         else if scrollView.isEqual(textViewSideDiglot) {
             let difference = textViewSideDiglot.contentOffset.y - lastSideOffset.y
-            lastSideOffset = textViewSideDiglot.contentOffset
             adjustScrollView(textViewMain, byYPoints: difference)
             
         }
         else {
             assertionFailure("The scrollview could not be identified \(scrollView)")
         }
+        resetContentOffsets()
+    }
+    
+    func resetContentOffsets() {
+        lastMainOffset = textViewMain.contentOffset
+        lastSideOffset = textViewSideDiglot.contentOffset
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
@@ -373,6 +374,7 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
         
         delay(0.5) { [weak self, weak textView] () -> Void in
             if let strongself = self, strongText = textView {
+                strongself.resetContentOffsets()
                 strongself.countSetup--
                 strongText.userInteractionEnabled = true
             }
