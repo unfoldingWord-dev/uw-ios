@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A282b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -19,7 +19,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oxe-ik-Zwb" userLabel="VersionMainAlone" customClass="ACTLabelButton">
-                    <rect key="frame" x="215" y="13" width="31" height="21"/>
+                    <rect key="frame" x="277" y="13" width="31" height="21"/>
                     <animations/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -96,6 +96,7 @@
                 <constraint firstAttribute="trailing" secondItem="oxe-ik-Zwb" secondAttribute="trailing" constant="20" symbolic="YES" id="Yad-8w-dhX"/>
                 <constraint firstItem="CZN-lP-Gbw" firstAttribute="centerX" secondItem="c5O-BJ-0Os" secondAttribute="centerX" id="ZK2-4i-VCh"/>
                 <constraint firstAttribute="trailing" secondItem="ZNn-wV-qPc" secondAttribute="trailing" id="bLd-da-Osr"/>
+                <constraint firstAttribute="trailing" secondItem="oxe-ik-Zwb" secondAttribute="trailing" constant="12" id="ckD-kv-Rcz"/>
                 <constraint firstItem="TfS-xi-3ov" firstAttribute="leading" secondItem="o81-mH-kwX" secondAttribute="leading" constant="12" id="eMl-1X-7dT"/>
                 <constraint firstItem="ZNn-wV-qPc" firstAttribute="top" secondItem="o81-mH-kwX" secondAttribute="top" id="jya-gI-Cn2"/>
                 <constraint firstItem="CZN-lP-Gbw" firstAttribute="centerX" secondItem="o81-mH-kwX" secondAttribute="centerX" id="lP4-bp-oJR"/>
@@ -113,6 +114,7 @@
                     <exclude reference="JG3-hs-amu"/>
                     <exclude reference="ZK2-4i-VCh"/>
                     <exclude reference="nIl-iE-rkO"/>
+                    <exclude reference="9ED-B0-2cW"/>
                     <exclude reference="Yad-8w-dhX"/>
                 </mask>
             </variation>

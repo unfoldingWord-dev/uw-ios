@@ -191,8 +191,6 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     
     func updateVisibility(scrollView scrollView : UIScrollView) {
         
-//        print("Update visibility")
-        
         let currentOffset = scrollView.contentOffset.y
         let distanceDraggedContentDown = currentOffset - startingYOffset
         isScrollingContentDown = (currentOffset - lastYOffset) > 0
@@ -217,7 +215,6 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
             updateHiddenPercent(abs(distanceDraggedContentDown) / scrollDistance )
             return
         }
-
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView)
