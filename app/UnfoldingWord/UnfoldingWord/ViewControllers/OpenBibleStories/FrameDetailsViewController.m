@@ -137,9 +137,9 @@
     }
     
     if (self.chapterSide.container.toc.version.slug != nil) {
-    NSString *sideVersionText = self.chapterSide.container.toc.version.slug.uppercaseString;
-    sideVersionText = [sideVersionText stringByReplacingOccurrencesOfString:@"OBS" withString:@""];
-    sideVersionText = [sideVersionText stringByReplacingOccurrencesOfString:@"-" withString:@""];
+        NSString *sideVersionText = self.chapterSide.container.toc.version.slug.uppercaseString;
+        sideVersionText = [sideVersionText stringByReplacingOccurrencesOfString:@"OBS" withString:@""];
+        sideVersionText = [sideVersionText stringByReplacingOccurrencesOfString:@"-" withString:@""];
         self.fakeNavBar.labelButtonSSVersionSide.text = sideVersionText;
 
     }
@@ -389,6 +389,7 @@
     {
         UFWNextChapterCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:self.cellIDNextChapter forIndexPath:indexPath];
         [cell.buttonNextChapter setTitle:NSLocalizedString(@"nextChapter", nil) forState:UIControlStateNormal];
+        [cell.buttonNextChapter setBackgroundColor:BACKGROUND_GREEN];
         if (cell.buttonNextChapter.allTargets.count == 0) {
             [cell.buttonNextChapter addTarget:self action:@selector(onNextChapterTouched:) forControlEvents:UIControlEventTouchUpInside];
         }

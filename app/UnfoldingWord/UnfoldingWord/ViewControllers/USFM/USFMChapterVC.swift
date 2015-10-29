@@ -36,8 +36,16 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     @IBOutlet weak var textViewMain: UITextView!
     @IBOutlet weak var textViewSideDiglot: UITextView!
     
-    @IBOutlet weak var buttonMain: UIButton!
-    @IBOutlet weak var buttonSideDiglot: UIButton!
+    @IBOutlet weak var buttonMain: UIButton! {
+        didSet {
+            buttonMain.backgroundColor = BACKGROUND_GREEN()
+        }
+    }
+    @IBOutlet weak var buttonSideDiglot: UIButton! {
+        didSet {
+            buttonSideDiglot.backgroundColor = BACKGROUND_GREEN()
+        }
+    }
     
     @IBOutlet weak var labelEmptyMain: UILabel!
     @IBOutlet weak var labelEmptySide: UILabel!
