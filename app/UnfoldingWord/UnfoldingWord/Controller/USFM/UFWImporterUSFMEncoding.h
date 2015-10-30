@@ -11,6 +11,6 @@
 @interface UFWImporterUSFMEncoding : NSObject
 
 /// Returns an array of USFMChapter objects from a raw usfm string from the server.
-+ (NSArray *)chaptersFromString:(NSString *)usfmString;
++ (NSArray *)chaptersFromString:(NSString *)usfmString languageCode:(NSString *)languageCode;
 
 @end

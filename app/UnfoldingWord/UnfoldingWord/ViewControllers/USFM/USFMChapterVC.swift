@@ -149,8 +149,8 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
             showNothingLoadedViewInArea(area)
             return
         }
-        else if let chapter = attributes.chapter, alignment = attributes.textAlignment {
-            showChapter(chapter, withTextAlignment: alignment, inArea : area)
+        else if let chapter = attributes.chapter {
+            showChapter(chapter, inArea : area)
             
             if isAtTop {
                 textViewForArea(area).setContentOffset(CGPointZero, animated: false)
@@ -403,10 +403,9 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
     
     // Private
     
-    private func showChapter(chapter : USFMChapter, withTextAlignment alignment : NSTextAlignment, inArea area : TOCArea) {
+    private func showChapter(chapter : USFMChapter, inArea area : TOCArea) {
         let textView = textViewForArea(area)
         textView.attributedText = chapter.attributedStringWithSize(Double(pointSize));
-        textView.textAlignment = alignment
         hideAllViewsExcept(textView, inArea: area)
     }
     
@@ -655,10 +654,6 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
                 if maxVerse < number || maxVerse == number {
                     maxVerse = number
                     maxRelativeRect = strongself.fullFrameOfVerseNumber(number, inTextView: textView)
-                    
-//                    let testOffset = textView.contentOffset
-//                    let textFrame = textView.frame
-//                    let textContentSize = textView.contentSize
                     
                     if (textView.contentOffset.y + textView.frame.size.height) >= (textView.contentSize.height - 10) {
                         maxIsAtEnd = true

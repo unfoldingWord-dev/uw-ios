@@ -25,6 +25,7 @@ static NSString *const NotificationKeyAudioSegment = @"__NotificationKeyAudioSeg
 
 #define TABBAR_COLOR_TRANSPARENT [UIColor colorWithRed:32.0/255.0 green:34.0/255.0 blue:36.0/255.0 alpha:0.75]
 
+#define FONT_LIGHT_ITALIC [UIFont fontWithName:@"HelveticaNeue-LightItalic" size:17]
 #define FONT_LIGHT [UIFont fontWithName:@"HelveticaNeue-Light" size:17]
 #define FONT_NORMAL [UIFont fontWithName:@"HelveticaNeue" size:17]
 #define FONT_MEDIUM [UIFont fontWithName:@"HelveticaNeue-Medium" size:17]

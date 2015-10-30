@@ -276,7 +276,7 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
 
 - (BOOL) processUSFMString:(NSString *)usfm
 {
-    NSArray *chapters = [UFWImporterUSFMEncoding chaptersFromString:usfm];
+    NSArray *chapters = [UFWImporterUSFMEncoding chaptersFromString:usfm languageCode:self.version.language.lc];
     if (chapters.count > 0) {
         NSString *filename = (self.usfmInfo.filename.length == 0) ? [self uniqueFilename] : self.usfmInfo.filename;
         NSString *filepath = [[NSString documentsDirectory] stringByAppendingPathComponent:filename];

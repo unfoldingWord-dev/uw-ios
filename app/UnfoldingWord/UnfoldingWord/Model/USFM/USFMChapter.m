@@ -9,12 +9,14 @@
 #import "USFMChapter.h"
 #import "USFMElement.h"
 #import "Constants.h"
+#import "LanguageInfoController.h"
 
 #import <UIKit/UIKit.h>
 #import <CoreText/CoreText.h>
 
 @interface USFMChapter ()
 @property (nonatomic, strong) NSArray *elements;
+@property (nonatomic, strong) NSString *languageCode;
 @end
 
 @implementation USFMChapter
@@ -40,10 +42,12 @@
 - (NSAttributedString *)attributedStringWithSize:(double)size
 {
     UIFont *baseFont = [FONT_LIGHT fontWithSize:size];
+    UIFont *italicFont = [FONT_LIGHT_ITALIC fontWithSize:size];
     UIFont *superScriptFont = [baseFont fontWithSize:(baseFont.pointSize/1.35)];
     NSDictionary *superScript = @{NSBaselineOffsetAttributeName:@(-1),NSKernAttributeName:@(1), NSFontAttributeName:superScriptFont, (NSString *)kCTSuperscriptAttributeName : @1};
     NSDictionary *normal = @{NSBaselineOffsetAttributeName:@(0), NSFontAttributeName:baseFont};
-    
+    NSDictionary *normalItalic = @{NSBaselineOffsetAttributeName:@(0), NSFontAttributeName:italicFont};
+
     NSMutableAttributedString *string = [NSMutableAttributedString new];
     USFMElement *previousElement = nil;
     NSNumber *verseNumber = nil;
@@ -54,7 +58,31 @@
         BOOL isLastCharacterReturn = ([lastStringCharacter rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]].location != NSNotFound);
         
         // Handle verses - can also contain embedded quotes
-        if (element.isVerse) {
+        if (element.isSelah) {
+//            NSAttributedString *para = [[NSAttributedString alloc] initWithString:@"\n" attributes:normal];
+//            [string appendAttributedString:para];
+//            
+            NSParagraphStyle *paraStyle = [self paragraphSelahStyle];
+            NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", element.text] attributes:normalItalic];
+            [text addAttribute:NSParagraphStyleAttributeName value:paraStyle range:NSMakeRange(0, text.length)];
+            [string appendAttributedString:text];
+            
+//            NSAttributedString *para2 = [[NSAttributedString alloc] initWithString:@"\n" attributes:normal];
+//            [string appendAttributedString:para2];
+            
+        }
+        else if (element.isDescriptiveTitle) {
+//            NSAttributedString *para = [[NSAttributedString alloc] initWithString:@"\n" attributes:normal];
+//            [string appendAttributedString:para];
+            NSParagraphStyle *paraStyle = [self paragraphDescriptiveTitleStyle];
+            NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", element.text] attributes:normalItalic];
+            [text addAttribute:NSParagraphStyleAttributeName value:paraStyle range:NSMakeRange(0, text.length)];
+            [string appendAttributedString:text];
+            
+//            NSAttributedString *para2 = [[NSAttributedString alloc] initWithString:@"\n" attributes:normal];
+//            [string appendAttributedString:para2];
+        }
+        else if (element.isVerse) {
             
             if (element.text.length > 0) {
                 BOOL isShowQuote = (element.isQuote || (previousElement.isQuote && previousElement.text.length == 0));
@@ -127,9 +155,7 @@
 {
     CGFloat multiplier = 15.0f;
     CGFloat indent = (level + 2.0f) * multiplier;
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.lineHeightMultiple = 1.25f;
-    paragraphStyle.paragraphSpacing = 0.0f;
+    NSMutableParagraphStyle *paragraphStyle = [self baseParagraphStyle];
     paragraphStyle.firstLineHeadIndent = indent - multiplier;
     paragraphStyle.headIndent = indent;
     return paragraphStyle;
@@ -137,25 +163,80 @@
 
 - (NSParagraphStyle *)paragraphRegularStyle
 {
+    return [self baseParagraphStyle];
+}
+
+- (NSParagraphStyle *)paragraphSelahStyle
+{
+    // Create the formatting dictionaries we need
+    NSMutableParagraphStyle *paragraphStyle = [self baseParagraphStyle];
+    paragraphStyle.firstLineHeadIndent = 0.0f;
+    paragraphStyle.paragraphSpacing = 10.0f;
+    paragraphStyle.alignment = [self oppositeTextAlignment];
+    return paragraphStyle;
+}
+
+- (NSParagraphStyle *)paragraphDescriptiveTitleStyle
+{
+    // Create the formatting dictionaries we need
+    NSMutableParagraphStyle *paragraphStyle = [self baseParagraphStyle];
+    paragraphStyle.firstLineHeadIndent = 0.0f;
+    paragraphStyle.alignment = NSTextAlignmentCenter;
+    return paragraphStyle;
+}
+
+// Make any changes to the standard paragraph here.
+- (NSMutableParagraphStyle *)baseParagraphStyle
+{
     // Create the formatting dictionaries we need
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.lineHeightMultiple = 1.25f;
     paragraphStyle.paragraphSpacing = 0.0f;
     paragraphStyle.firstLineHeadIndent = 15.0f;
     paragraphStyle.headIndent = 0.0f;
+    paragraphStyle.alignment = [self regularTextAlignment];
     return paragraphStyle;
 }
 
+/// Returns the standard text alignment for the current language (if language code is set; otherwise returns the natural text alignment for the current font/script)
+- (NSTextAlignment)regularTextAlignment
+{
+    if (self.languageCode != nil) {
+        return [LanguageInfoController textAlignmentForLanguageCode:self.languageCode];
+    }
+    else {
+        return NSTextAlignmentNatural;
+    }
+}
+
+/// Returns the standard text alignment for the current language (if language code is set; otherwise returns right)
+- (NSTextAlignment)oppositeTextAlignment
+{
+    if (self.languageCode != nil) {
+        NSTextAlignment naturalAlignment = [LanguageInfoController textAlignmentForLanguageCode:self.languageCode];
+        if (naturalAlignment == NSTextAlignmentRight) {
+            return NSTextAlignmentLeft;
+        }
+        else {
+            return NSTextAlignmentRight;
+        }
+    }
+    else {
+        return NSTextAlignmentRight;
+    }
+}
+
+
 #pragma mark - Create Chapters
 
-+ (NSArray *)createChaptersFromElements:(NSArray *)elements
++ (NSArray *)createChaptersFromElements:(NSArray *)elements languageCode:(NSString *)languageCode;
 {
     NSMutableArray *chapters = [NSMutableArray new];
     NSMutableArray *chapterElements = nil;
     for (USFMElement *anElement in elements) {
         if (anElement.isChapter) {
             if (chapterElements.count > 0) { // Close out the previous chapter
-                [chapters addObject:[self chapterWithElements:chapterElements]];
+                [chapters addObject:[self chapterWithElements:chapterElements languageCode:languageCode]];
             }
             chapterElements = [NSMutableArray new];
         }
@@ -165,7 +246,7 @@
     
     // Take care of the last chapter
     if (chapterElements.count > 0) {
-        [chapters addObject:[self chapterWithElements:chapterElements]];
+        [chapters addObject:[self chapterWithElements:chapterElements languageCode:languageCode]];
     }
     
     return chapters;
@@ -173,10 +254,11 @@
 
 #pragma mark - Internal
 
-+ (USFMChapter *)chapterWithElements:(NSArray *)elements
++ (USFMChapter *)chapterWithElements:(NSArray *)elements languageCode:(NSString *)languageCode;
 {
     USFMChapter *chapter = [USFMChapter new];
     chapter.elements = elements;
+    chapter.languageCode = languageCode;
     return chapter;
 }
 

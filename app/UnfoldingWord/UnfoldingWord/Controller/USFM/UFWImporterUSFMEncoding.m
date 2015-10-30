@@ -13,11 +13,11 @@
 
 @implementation UFWImporterUSFMEncoding
 
-+ (NSArray *)chaptersFromString:(NSString *)usfmString
++ (NSArray *)chaptersFromString:(NSString *)usfmString languageCode:(NSString *)languageCode
 {
     if ([usfmString isKindOfClass:[NSString class]] && usfmString.length > 0) {
         NSArray *elements = [self parseStringIntoElements:usfmString];
-        return [USFMChapter createChaptersFromElements:elements];
+        return [USFMChapter createChaptersFromElements:elements languageCode:languageCode];
     }
     else {
         return nil;
@@ -53,12 +53,7 @@
             // Scan the code
             [scanner scanString:@"\\" intoString:NULL];
             code = nil;
-            if (firstCode == YES) { // the first code is the only one we're using.
-                [scanner scanUpToCharactersFromSet:[self usfmBreakCharacterSet] intoString:&code];
-            }
-            else { // If there are multiple codes on the same line, we're just going to ignore them right now.
-                [scanner scanUpToCharactersFromSet:[self usfmBreakCharacterSet] intoString:&code];
-            }
+            [scanner scanUpToCharactersFromSet:[self usfmBreakCharacterSet] intoString:&code];
             
             if (code != nil) {
                 [codes addObject:code];

@@ -25,7 +25,6 @@ struct AreaAttributes {
         }
     }
     let nextChapterText : String?
-    let textAlignment : NSTextAlignment?
     let chapter : USFMChapter?
     let toc : UWTOC?
 }
@@ -293,19 +292,9 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
     
     private func attributesForArea(area : TOCArea, forChapterInt chapterInt : Int) -> AreaAttributes {
         
-        let toc : UWTOC?
+        let toc : UWTOC? = tocForArea(area)
         let nextChapterText : String?
-        let textAlignment : NSTextAlignment?
         let chapter : USFMChapter?
-        
-        if let foundToc = tocForArea(area) {
-            toc = foundToc
-            textAlignment = LanguageInfoController.textAlignmentForLanguageCode(foundToc.version.language.lc)
-        }
-        else {
-            toc = nil
-            textAlignment = nil
-        }
         
         if let chapters = chaptersForArea(area) {
             if chapterInt > chapters.count {
@@ -328,7 +317,7 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
             nextChapterText = nil
         }
         
-        let attributes = AreaAttributes(nextChapterText: nextChapterText, textAlignment: textAlignment, chapter: chapter, toc: toc)
+        let attributes = AreaAttributes(nextChapterText: nextChapterText, chapter: chapter, toc: toc)
         return attributes
     }
 
