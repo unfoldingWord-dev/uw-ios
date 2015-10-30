@@ -6,6 +6,8 @@
 
 @interface USFMInfo : _USFMInfo {}
 
+@property (nonatomic, strong, readonly) NSString * __nullable title;
+
 - (BOOL)validateSignature;
 
 - (NSArray * __nullable)chapters;

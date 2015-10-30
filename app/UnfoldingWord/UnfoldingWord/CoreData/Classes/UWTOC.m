@@ -19,6 +19,25 @@ static NSString *const kTitle = @"title";
 static NSString *const kMedia = @"media";
 
 @implementation UWTOC
+{
+    NSString *_internalChapterTitle;
+}
+
+- (NSString *)chapterTitle
+{
+    if (_internalChapterTitle != nil) {
+        return _internalChapterTitle;
+    }
+    
+    NSString *title = self.usfmInfo.title;
+    if (title == nil) {
+        _internalChapterTitle = self.title;
+    }
+    else {
+        _internalChapterTitle = title;
+    }
+    return _internalChapterTitle;
+}
 
 - (OpenChapter *)chapterForNumber:(NSInteger)number
 {

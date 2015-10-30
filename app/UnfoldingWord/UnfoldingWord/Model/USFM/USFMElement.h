@@ -20,8 +20,9 @@
 @property (nonatomic, readonly) BOOL isParagraph;
 @property (nonatomic, readonly) BOOL isQuote;
 @property (nonatomic, readonly) BOOL isLineBreak;
-@property (nonatomic, readonly) BOOL isSelah; // code is /qs
-@property (nonatomic, readonly) BOOL isDescriptiveTitle; // code is /d
+@property (nonatomic, readonly) BOOL isSelah; // code is \qs
+@property (nonatomic, readonly) BOOL isDescriptiveTitle; // code is \d
+@property (nonatomic, readonly) BOOL isChapterTitle; // code is \cl
 
 /// Elements are individual parsed objects from the raw USFM. It's readonly properties individuals what it does and how to format it.
 + (USFMElement *)newElementWithCodeInfo:(NSArray *)codeInfo textInfo:(NSString *)textInfo;

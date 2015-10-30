@@ -13,4 +13,7 @@
 /// Returns an array of USFMChapter objects from a raw usfm string from the server.
 + (NSArray *)chaptersFromString:(NSString *)usfmString languageCode:(NSString *)languageCode;
 
+/// Returns the title to be used for
++ (NSString *)chapterIndividualTitleFromString:(NSString *)usfmString;
+
 @end

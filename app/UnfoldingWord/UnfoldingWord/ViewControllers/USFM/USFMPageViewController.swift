@@ -117,7 +117,7 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
         
         let title : String
         if let toc = UFWSelectionTracker.TOCforUSFM() {
-            title = "\(toc.title) \(UFWSelectionTracker.chapterNumberUSFM())"
+            title = "\(toc.chapterTitle) \(UFWSelectionTracker.chapterNumberUSFM())"
         }
         else {
             title = "Select Book"
@@ -300,7 +300,7 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
             if chapterInt > chapters.count {
                 if let toc = toc, let nextToc = tocAfterTOC(toc) {
                     let gotoPrefix = NSLocalizedString("Go to", comment: "Name of bible chapter goes after this text")
-                    nextChapterText = "\(gotoPrefix) \(nextToc.title)"
+                    nextChapterText = "\(gotoPrefix) \(nextToc.chapterTitle)"
                 }
                 else {
                     nextChapterText = "Next Chapter"

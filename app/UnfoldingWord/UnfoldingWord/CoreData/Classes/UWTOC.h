@@ -10,6 +10,8 @@ typedef void (^TOCDownloadCompletion) (BOOL success);
 
 @interface UWTOC : _UWTOC {}
 
+@property (nonatomic, strong, readonly) NSString *chapterTitle;
+
 + (void)updateTOCitems:(NSArray *)tocItems forVersion:(UWVersion *)version;
 
 - (void)downloadWithCompletion:(TOCDownloadCompletion)completion;

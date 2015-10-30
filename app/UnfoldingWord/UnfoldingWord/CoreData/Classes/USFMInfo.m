@@ -8,6 +8,10 @@
 #import "NSString+Trim.h"
 #import "UFWVerifier.h"
 
+@interface USFMInfo ()
+
+@end
+
 @implementation USFMInfo
 
 - (BOOL)validateSignature;
@@ -24,6 +28,17 @@
     }
     else { 
         return [UFWImporterUSFMEncoding chaptersFromString:usfmText languageCode:self.toc.version.language.lc];
+    }
+}
+
+- (NSString *)title
+{
+    NSString *usfmText = [self usfmString];
+    if ((usfmText = [self usfmString]).length == 0) {
+        return nil;
+    }
+    else {
+        return [UFWImporterUSFMEncoding chapterIndividualTitleFromString:usfmText];
     }
 }
 

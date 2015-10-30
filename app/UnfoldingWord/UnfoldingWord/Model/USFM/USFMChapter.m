@@ -37,7 +37,6 @@
     return [self attributedStringWithSize:19];
 }
 
-
 /// Goes through all the USFMElements in a chapter and composes styled attributed text that is keyed to verses.
 - (NSAttributedString *)attributedStringWithSize:(double)size
 {
@@ -58,29 +57,20 @@
         BOOL isLastCharacterReturn = ([lastStringCharacter rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]].location != NSNotFound);
         
         // Handle verses - can also contain embedded quotes
+        if (element.isChapterTitle) { // Not used within the text.
+            continue;
+        }
         if (element.isSelah) {
-//            NSAttributedString *para = [[NSAttributedString alloc] initWithString:@"\n" attributes:normal];
-//            [string appendAttributedString:para];
-//            
             NSParagraphStyle *paraStyle = [self paragraphSelahStyle];
             NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", element.text] attributes:normalItalic];
             [text addAttribute:NSParagraphStyleAttributeName value:paraStyle range:NSMakeRange(0, text.length)];
             [string appendAttributedString:text];
-            
-//            NSAttributedString *para2 = [[NSAttributedString alloc] initWithString:@"\n" attributes:normal];
-//            [string appendAttributedString:para2];
-            
         }
         else if (element.isDescriptiveTitle) {
-//            NSAttributedString *para = [[NSAttributedString alloc] initWithString:@"\n" attributes:normal];
-//            [string appendAttributedString:para];
             NSParagraphStyle *paraStyle = [self paragraphDescriptiveTitleStyle];
             NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", element.text] attributes:normalItalic];
             [text addAttribute:NSParagraphStyleAttributeName value:paraStyle range:NSMakeRange(0, text.length)];
             [string appendAttributedString:text];
-            
-//            NSAttributedString *para2 = [[NSAttributedString alloc] initWithString:@"\n" attributes:normal];
-//            [string appendAttributedString:para2];
         }
         else if (element.isVerse) {
             
@@ -225,7 +215,6 @@
         return NSTextAlignmentRight;
     }
 }
-
 
 #pragma mark - Create Chapters
 

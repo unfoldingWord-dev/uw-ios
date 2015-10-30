@@ -16,6 +16,7 @@ static NSString *const codeQuote = @"q";
 static NSString *const codeLineBreak = @"b";
 static NSString *const codeSelah = @"qs";
 static NSString *const codeDescriptiveTitle = @"d";
+static NSString *const codeIndividualChapterTitle = @"cl";
 
 @interface USFMElement ()
 @property (nonatomic, strong) NSArray *codes;
@@ -87,6 +88,10 @@ static NSString *const codeDescriptiveTitle = @"d";
 - (BOOL)isQuote
 {
     return [self hasCode:codeQuote];
+}
+
+- (BOOL)isChapterTitle {
+    return [self hasCode:codeIndividualChapterTitle];
 }
 
 - (BOOL)hasCode:(NSString *)code
@@ -185,7 +190,7 @@ static NSString *const codeDescriptiveTitle = @"d";
 
 - (NSArray *)validCodes
 {
-    return @[codeParagraph, codeVerse, codeChapter, codeQuote, codeLineBreak, codeSelah, codeDescriptiveTitle];
+    return @[codeParagraph, codeVerse, codeChapter, codeQuote, codeLineBreak, codeSelah, codeDescriptiveTitle, codeIndividualChapterTitle];
 }
 
 @end

@@ -24,6 +24,19 @@
     }
 }
 
++ (NSString *)chapterIndividualTitleFromString:(NSString *)usfmString
+{
+    if ([usfmString isKindOfClass:[NSString class]] && usfmString.length > 0) {
+        NSArray *elements = [self parseStringIntoElements:usfmString];
+        for (USFMElement *element in elements) {
+            if (element.isChapterTitle) {
+                return element.text;
+            }
+        }
+    }
+    return nil;
+}
+
 + (NSArray *)parseStringIntoElements:(NSString *)usfmString
 {
     // Separating into lines because sometimes codes appear mid-line. Ignore mid-line codes for now and just concatenate the text.
