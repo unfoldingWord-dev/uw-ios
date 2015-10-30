@@ -25,13 +25,15 @@
 @interface UFWBaseVC () <UITableViewDataSource, UITableViewDelegate, LaunchInfoDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
-@property (nonatomic, weak) IBOutlet UIView *viewTopBar;
-@property (nonatomic, weak) IBOutlet UIButton *buttonRefresh;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, strong) NSString *topCellID;
 @property (nonatomic, strong) NSString *settingsCellID;
 @property (nonatomic, strong) NSArray *arrayTopLevelObjects;
 @property (nonatomic, assign) BOOL isLoadedOnce;
+
+@property (weak, nonatomic) IBOutlet UIToolbar *toolBarBottom;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *barButtonSettings;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *barButtonRefresh;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *barButtonSharing;
 
 @property (nonatomic, strong) FPPopoverController *customPopoverController;
 
@@ -51,21 +53,20 @@
     self.navigationItem.titleView = titleImageView;
     self.navigationItem.title = @"";
     
-    UIBarButtonItem *bbiShare = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userRequestedSharing:)];
-    self.navigationItem.rightBarButtonItem = bbiShare;
+//    UIBarButtonItem *bbiShare = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userRequestedSharing:)];
+//    self.navigationItem.rightBarButtonItem = bbiShare;
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
     self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil];
-    
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.barTintColor =BACKGROUND_GREEN;
     self.navigationController.navigationBar.translucent = YES;
     
     self.tableView.backgroundColor = BACKGROUND_GREEN;
-    self.viewTopBar.backgroundColor = BACKGROUND_GREEN;
+    self.toolBarBottom.barTintColor = BACKGROUND_GREEN;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-
+    
     [self loadTopLevelObjects];
     [self registerForNotifications];
     
@@ -103,11 +104,17 @@
 
 #pragma mark - Sharing
 
-- (void)userRequestedSharing:(UIBarButtonItem *)activityBarButtonItem
+- (IBAction)userRequestedSharing:(UIBarButtonItem *)activityBarButtonItem
 {
     [self receiveFileFromBarButtonOrView:activityBarButtonItem];
 }
 
+#pragma mark - Settings
+- (IBAction)userRequestedSettings:(UIBarButtonItem *)settingsBarButtonItem
+{
+    UFWBaseURLTableVC *urlVC = [[UFWBaseURLTableVC alloc] init];
+    [self.navigationController pushViewController:urlVC animated:YES];
+}
 
 - (void)loadTopLevelObjects
 {
@@ -133,41 +140,49 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.arrayTopLevelObjects.count + 1;
+    return self.arrayTopLevelObjects.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row < self.arrayTopLevelObjects.count) {
-        UFWTopLevelItemCell *cell = [tableView dequeueReusableCellWithIdentifier:self.topCellID forIndexPath:indexPath];
-        UWTopContainer *topContainer = self.arrayTopLevelObjects[indexPath.row];
-        cell.labelName.text = topContainer.title;
-        if ([[UFWSelectionTracker topContainer] isEqual:topContainer]) {
-            cell.labelName.textColor = SELECTION_BLUE_COLOR;
-        }
-        else {
-            cell.labelName.textColor = TEXT_COLOR_NORMAL;
-        }
-        return cell;
+    UFWTopLevelItemCell *cell = [tableView dequeueReusableCellWithIdentifier:self.topCellID forIndexPath:indexPath];
+    UWTopContainer *topContainer = self.arrayTopLevelObjects[indexPath.row];
+    cell.labelName.text = topContainer.title;
+    if ([[UFWSelectionTracker topContainer] isEqual:topContainer]) {
+        cell.labelName.textColor = SELECTION_BLUE_COLOR;
     }
     else {
-        UFWBaseSettingsCell *settingsCell = [tableView dequeueReusableCellWithIdentifier:self.settingsCellID forIndexPath:indexPath];
-        return settingsCell;
+        cell.labelName.textColor = TEXT_COLOR_NORMAL;
     }
+    return cell;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    static UIView *_header = nil;
+    if (_header == nil) {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 30)];
+        view.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+        label.text = @"Projects";
+        NSArray *constraints = [NSLayoutConstraint constraintsForView:label insideView:view topMargin:0 bottomMargin:0 leftMargin:10 rightMargin:10];
+        label.translatesAutoresizingMaskIntoConstraints = NO;
+        [view addSubview:label];
+        [view addConstraints:constraints];
+        _header = view;
+    }
+    return _header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 30;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    if (indexPath.row == self.arrayTopLevelObjects.count) { // Settings Controller
-        UFWBaseURLTableVC *urlVC = [[UFWBaseURLTableVC alloc] init];
-        [self.navigationController pushViewController:urlVC animated:YES];
-    }
-    else { // Top level object
-        UWTopContainer *topContainer = self.arrayTopLevelObjects[indexPath.row];
-        [self selectTopContainer:topContainer animated:YES];
-    }
+    UWTopContainer *topContainer = self.arrayTopLevelObjects[indexPath.row];
+    [self selectTopContainer:topContainer animated:YES];
 }
 
 - (void)selectTopContainer:(UWTopContainer *)topContainer animated:(BOOL)animated
@@ -214,16 +229,36 @@
 
 - (void)startAnimating
 {
-    self.buttonRefresh.hidden = YES;
-    [self.activityIndicator startAnimating];
+    UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    self.barButtonRefresh = [[UIBarButtonItem alloc] initWithCustomView:activity];
+    [activity startAnimating];
+
+    NSMutableArray *items = [self.toolBarBottom.items mutableCopy];
+    [items replaceObjectAtIndex:[self indexOfRefreshButton] withObject:self.barButtonRefresh];
+    self.toolBarBottom.items = items;
 }
 
 - (void)stopAnimating
 {
-    self.buttonRefresh.hidden = NO;
-    [self.activityIndicator stopAnimating];
+    self.barButtonRefresh = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"update-normal"] style:UIBarButtonItemStylePlain target:self action:@selector(userPressedRefreshButton:)];
+    self.barButtonRefresh.tintColor = [UIColor whiteColor];
+    NSMutableArray *items = [self.toolBarBottom.items mutableCopy];
+    [items replaceObjectAtIndex:[self indexOfRefreshButton] withObject:self.barButtonRefresh];
+    self.toolBarBottom.items = items;
 }
 
+- (NSInteger)indexOfRefreshButton {
+    return 2;
+//    __block NSInteger index = -1;
+//    [self.toolBarBottom.items enumerateObjectsUsingBlock:^(UIBarButtonItem *  _Nonnull bbi, NSUInteger idx, BOOL * _Nonnull stop) {
+//        if ([bbi isEqual:self.barButtonRefresh]) {
+//            index = idx;
+//            *stop = YES;
+//        }
+//    }];
+//    NSAssert1(index >= 0, @"%s: Could not find index of activity bar button item!", __PRETTY_FUNCTION__);
+//    return index;
+}
 
 #pragma mark - Version Info Popover
 

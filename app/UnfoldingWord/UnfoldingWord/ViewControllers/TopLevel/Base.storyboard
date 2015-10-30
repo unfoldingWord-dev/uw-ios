@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -34,40 +35,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IET-4u-vGS" userLabel="Top Bar View">
-                                <rect key="frame" x="0.0" y="64" width="600" height="44"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M9s-1R-oQh" userLabel="Refresh Button">
-                                        <rect key="frame" x="278" y="0.0" width="44" height="44"/>
-                                        <animations/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="44" id="55s-Vg-nFI"/>
-                                            <constraint firstAttribute="height" constant="44" id="wBl-hc-FmM"/>
-                                        </constraints>
-                                        <state key="normal" backgroundImage="RefreshButton">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="userPressedRefreshButton:" destination="0Nz-6D-G0X" eventType="touchUpInside" id="hdf-Wq-AYv"/>
-                                        </connections>
-                                    </button>
-                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="Ylq-bQ-lgR">
-                                        <rect key="frame" x="290" y="13" width="20" height="20"/>
-                                        <animations/>
-                                    </activityIndicatorView>
-                                </subviews>
-                                <animations/>
-                                <color key="backgroundColor" red="0.43925401728084623" green="1" blue="0.44185694418466215" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="centerY" secondItem="Ylq-bQ-lgR" secondAttribute="centerY" id="4KI-FE-LQ2"/>
-                                    <constraint firstAttribute="centerY" secondItem="M9s-1R-oQh" secondAttribute="centerY" id="Iln-Mu-QHC"/>
-                                    <constraint firstAttribute="centerX" secondItem="M9s-1R-oQh" secondAttribute="centerX" id="UAL-TZ-6Si"/>
-                                    <constraint firstAttribute="height" constant="44" id="de3-Eq-BsR"/>
-                                    <constraint firstAttribute="centerX" secondItem="Ylq-bQ-lgR" secondAttribute="centerX" id="jt6-4s-feb"/>
-                                </constraints>
-                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Fsu-3Y-dvI">
-                                <rect key="frame" x="0.0" y="108" width="600" height="492"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -75,25 +44,66 @@
                                     <outlet property="delegate" destination="0Nz-6D-G0X" id="1so-Cy-bBc"/>
                                 </connections>
                             </tableView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OPa-e2-xZu">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <animations/>
+                                <items>
+                                    <barButtonItem image="settings-normal" id="3rv-8y-TZz">
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <action selector="userRequestedSettings:" destination="0Nz-6D-G0X" id="CZU-FB-4on"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="u7H-B6-Yep"/>
+                                    <barButtonItem image="update-normal" id="hEx-UO-9rV">
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <action selector="userPressedRefreshButton:" destination="0Nz-6D-G0X" id="kYa-4v-xC5"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="K0C-Za-O7t"/>
+                                    <barButtonItem title="Item" systemItem="action" id="8Fd-bM-bbn">
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <action selector="userRequestedSharing:" destination="0Nz-6D-G0X" id="1xV-5o-rUa"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                                <color key="barTintColor" red="1" green="0.98519853180000005" blue="0.38300019289999998" alpha="1" colorSpace="calibratedRGB"/>
+                            </toolbar>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Fsu-3Y-dvI" secondAttribute="trailing" id="3w8-Be-ac8"/>
-                            <constraint firstItem="IET-4u-vGS" firstAttribute="leading" secondItem="Dhb-UC-TTu" secondAttribute="leading" id="6g1-Ha-icD"/>
-                            <constraint firstItem="Fsu-3Y-dvI" firstAttribute="top" secondItem="IET-4u-vGS" secondAttribute="bottom" id="VQM-hx-u8Z"/>
-                            <constraint firstItem="IET-4u-vGS" firstAttribute="top" secondItem="hvh-gi-map" secondAttribute="bottom" id="aN3-lj-V2r"/>
+                            <constraint firstItem="Fsu-3Y-dvI" firstAttribute="top" secondItem="Dhb-UC-TTu" secondAttribute="topMargin" id="7fJ-Tz-Gax"/>
+                            <constraint firstItem="OPa-e2-xZu" firstAttribute="leading" secondItem="Dhb-UC-TTu" secondAttribute="leading" id="Gx6-bq-M9Y"/>
+                            <constraint firstItem="OPa-e2-xZu" firstAttribute="top" secondItem="Fsu-3Y-dvI" secondAttribute="bottom" id="OUv-a5-LaG"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="OPa-e2-xZu" secondAttribute="trailing" id="PDX-ZB-fEr"/>
+                            <constraint firstItem="Fsu-3Y-dvI" firstAttribute="top" secondItem="hvh-gi-map" secondAttribute="bottom" id="bTg-aD-jxU"/>
+                            <constraint firstAttribute="trailing" secondItem="OPa-e2-xZu" secondAttribute="trailing" id="dQ1-no-qFm"/>
                             <constraint firstItem="Fsu-3Y-dvI" firstAttribute="leading" secondItem="Dhb-UC-TTu" secondAttribute="leading" id="gXe-gS-IDn"/>
                             <constraint firstItem="WE7-ZC-krw" firstAttribute="top" secondItem="Fsu-3Y-dvI" secondAttribute="bottom" id="hyt-A7-TJU"/>
-                            <constraint firstAttribute="trailing" secondItem="IET-4u-vGS" secondAttribute="trailing" id="qlK-nq-prN"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="OPa-e2-xZu" secondAttribute="bottom" id="q3X-Rc-Cqd"/>
+                            <constraint firstItem="OPa-e2-xZu" firstAttribute="leading" secondItem="Dhb-UC-TTu" secondAttribute="leadingMargin" id="wNd-DX-iBP"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="bTg-aD-jxU"/>
+                                <exclude reference="PDX-ZB-fEr"/>
+                                <exclude reference="wNd-DX-iBP"/>
+                                <exclude reference="hyt-A7-TJU"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="zNz-fo-ZdU"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="Ylq-bQ-lgR" id="T5O-Kq-lKw"/>
-                        <outlet property="buttonRefresh" destination="M9s-1R-oQh" id="nVH-rt-kXc"/>
+                        <outlet property="barButtonRefresh" destination="hEx-UO-9rV" id="b50-LB-k4H"/>
+                        <outlet property="barButtonSettings" destination="3rv-8y-TZz" id="dWz-IX-uiy"/>
+                        <outlet property="barButtonSharing" destination="8Fd-bM-bbn" id="b4G-Cl-VIm"/>
                         <outlet property="tableView" destination="Fsu-3Y-dvI" id="rVU-Y9-Qd6"/>
-                        <outlet property="viewTopBar" destination="IET-4u-vGS" id="Xfx-jz-212"/>
+                        <outlet property="toolBarBottom" destination="OPa-e2-xZu" id="XCX-Ao-i9N"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DQN-xc-Wpi" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -102,6 +112,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="RefreshButton" width="44" height="44"/>
+        <image name="settings-normal" width="44" height="44"/>
+        <image name="update-normal" width="44" height="44"/>
     </resources>
 </document>
