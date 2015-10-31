@@ -94,16 +94,16 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
         
         super.viewWillAppear(animated)
         countSetup++
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
         
         if viewDidLoadOnce == false {
             viewDidLoadOnce = true
             disableTextViewScrollingDuringLoad()
         }
-        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
         countSetup--
     }
     
@@ -120,7 +120,6 @@ class USFMChapterVC : UIViewController, UITextViewDelegate {
             
             self.textViewForArea(.Main).setContentOffset(CGPointMake(0, -1), animated: true)
             self.textViewForArea(.Side).setContentOffset(CGPointMake(0, -1), animated: true)
-            
         }
     }
     
