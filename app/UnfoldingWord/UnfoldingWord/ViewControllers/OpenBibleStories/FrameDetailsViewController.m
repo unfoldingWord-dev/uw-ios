@@ -126,26 +126,30 @@
     }
     
     if (self.chapterMain.container.toc.version.slug != nil) {
-        NSString *mainVersionText = self.chapterMain.container.toc.version.slug.uppercaseString;
-        mainVersionText = [mainVersionText stringByReplacingOccurrencesOfString:@"OBS" withString:@""];
-        mainVersionText = [mainVersionText stringByReplacingOccurrencesOfString:@"-" withString:@""];
-        self.fakeNavBar.labelButtonSSVersionMain.text = mainVersionText;
-        self.fakeNavBar.labelButtonVersionMainAlone.text = mainVersionText;
+        NSString *labelText = [self stringForOpenChapter:self.chapterMain];
+        self.fakeNavBar.labelButtonSSVersionMain.text = labelText;
+        self.fakeNavBar.labelButtonVersionMainAlone.text = labelText;
     } else {
         self.fakeNavBar.labelButtonSSVersionMain.text = @"Add";
         self.fakeNavBar.labelButtonVersionMainAlone.text = @"Add";
     }
     
     if (self.chapterSide.container.toc.version.slug != nil) {
-        NSString *sideVersionText = self.chapterSide.container.toc.version.slug.uppercaseString;
-        sideVersionText = [sideVersionText stringByReplacingOccurrencesOfString:@"OBS" withString:@""];
-        sideVersionText = [sideVersionText stringByReplacingOccurrencesOfString:@"-" withString:@""];
-        self.fakeNavBar.labelButtonSSVersionSide.text = sideVersionText;
+        self.fakeNavBar.labelButtonSSVersionSide.text = [self stringForOpenChapter:self.chapterSide];
 
     }
     else {
         self.fakeNavBar.labelButtonSSVersionSide.text = @"Add";
     }
+}
+
+- (NSString *)stringForOpenChapter:(OpenChapter *)openChapter
+{
+    NSString *languageString = openChapter.container.toc.version.slug.lowercaseString;
+    languageString = [languageString stringByReplacingOccurrencesOfString:@"obs" withString:@""];
+    languageString = [languageString stringByReplacingOccurrencesOfString:@"OBS" withString:@""];
+    languageString = [languageString stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    return [NSString stringWithFormat:@"OBS (%@)", languageString];
 }
 
 - (void)resetMainChapter:(OpenChapter *)mainChapter sideChapter:(OpenChapter *)sideChapter
