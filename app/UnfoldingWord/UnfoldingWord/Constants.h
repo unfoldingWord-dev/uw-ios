@@ -16,8 +16,6 @@ static NSString *const NotificationAudioSegmentDidChange = @"__NotificationAudio
 static NSString *const NotificationKeyAudioSegment = @"__NotificationKeyAudioSegment";
 
 
-#define LANGUAGES_API @"https://api.unfoldingword.org/obs/txt/1/obs-catalog.json"
-
 #define SELECTION_BLUE_COLOR    [UIColor colorWithRed:76.0/255.0 green:185.0/255.0 blue:224.0/255.0 alpha:1.0]
 #define TEXT_COLOR_NORMAL       [UIColor colorWithRed:32.0/255.0 green:27.0/255.0 blue:22.0/255.0 alpha:1.0]
 #define BACKGROUND_GRAY               [UIColor colorWithRed:32.0/255.0 green:34.0/255.0 blue:36.0/255.0 alpha:1.0]

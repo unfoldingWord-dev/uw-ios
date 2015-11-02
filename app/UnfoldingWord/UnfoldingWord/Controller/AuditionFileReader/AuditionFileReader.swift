@@ -109,9 +109,7 @@ typealias FileInfoCompletion = (audioFileInfo : AudioFileInfo?) -> Void
             let markerArray = sequenceDic["rdf:li"] as? NSArray
             else
         { return times }
-        
-        
-        
+                
         for (_, markerItem) in markerArray.enumerate() {
             guard
                 let marker = markerItem as? NSDictionary,

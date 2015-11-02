@@ -76,8 +76,11 @@ import UIKit
     
     class func validateSource(source : NSDictionary?) -> Bool {
         
-        guard let source = source, _ = source[Constants.FileFormat.TopLevel] as? NSDictionary,
-            _ = source[Constants.FileFormat.SourcesArray] as? NSDictionary else
+        guard let
+            source = source,
+            _ = source[Constants.FileFormat.TopLevel] as? NSDictionary,
+            _ = source[Constants.FileFormat.SourcesArray] as? NSDictionary
+            else
         {
             assertionFailure("At least one object was missing from the source.")
             return false
