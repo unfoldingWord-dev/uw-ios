@@ -6,6 +6,7 @@
 #import "UWCoreDataClasses.h"
 #import "UWDownloaderPlusValidator.h"
 #import "NSString+Trim.h"
+#import "UnfoldingWord-Swift.h"
 
 static NSString *const kChapter = @"chap";
 static NSString *const kBitrate = @"br";
@@ -99,6 +100,8 @@ static NSString *const KPLaceHolderForBitrate = @"{bitrate}";
         completion(NO);
         return;
     }
+    
+    NSLog(@"Filename: %@", [FileNamer nameForAudioBitrate:bitrate]);
     
     [UWDownloaderPlusValidator downloadPlusValidateSourceUrl:sourceUrl signatureUrl:signatureUrl withCompletion:^(NSString * _Nullable sourceDataPath, NSString * _Nullable signatureDataPath, BOOL fileValidated) {
         if (sourceDataPath == nil) {

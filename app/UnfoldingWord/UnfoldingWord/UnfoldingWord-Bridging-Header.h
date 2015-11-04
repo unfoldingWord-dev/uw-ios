@@ -8,7 +8,7 @@
 #import "LanguageInfoController.h"
 #import "UFWTopLevelItemCell.h"
 #import "UFWSelectionTracker.h"
-#import "GZIP.h"
+#import "SSZipArchive.h"
 #import "NSLayoutConstraint+DWSExtensions.h"
 #import "VerseContainer.h"
 #import "ACTLabelButton.h"

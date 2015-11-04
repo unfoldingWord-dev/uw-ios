@@ -23,10 +23,10 @@
             </objects>
             <point key="canvasLocation" x="332" y="505"/>
         </scene>
-        <!--unfoldingWord-->
+        <!--BaseVC-->
         <scene sceneID="g2m-Ej-kLY">
             <objects>
-                <viewController storyboardIdentifier="UFWBaseVC" title="unfoldingWord" useStoryboardIdentifierAsRestorationIdentifier="YES" id="0Nz-6D-G0X" customClass="UFWBaseVC" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="UFWBaseVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="0Nz-6D-G0X" customClass="UFWBaseVC" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="hvh-gi-map"/>
                         <viewControllerLayoutGuide type="bottom" id="WE7-ZC-krw"/>
@@ -62,7 +62,7 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="K0C-Za-O7t"/>
-                                    <barButtonItem title="Item" systemItem="action" id="8Fd-bM-bbn">
+                                    <barButtonItem systemItem="action" id="8Fd-bM-bbn">
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <action selector="userRequestedSharing:" destination="0Nz-6D-G0X" id="1xV-5o-rUa"/>

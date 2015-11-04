@@ -23,7 +23,7 @@ import Foundation
     
     func filesToDisplayForImport() -> Array<NSString> {
         let filesInFolder = arrayOfFilePathsInDocumentsFolder()
-        return filesInFolder.filter(isIncluded)
+        return filesInFolder //.filter(isIncluded)
     }
     
     func isIncluded(filepath : NSString) -> Bool {

@@ -36,6 +36,12 @@ import CoreData
                     assertionFailure("Could not import toc: \(toc)")
                 }
             }
+            do {
+                try DWSCoreDataStack.managedObjectContext().save()
+            }
+            catch {
+                assertionFailure("Could save data!")
+            }
         }
         else {
             assertionFailure("Did not successfully create version from dictionary \(topDictionary)")

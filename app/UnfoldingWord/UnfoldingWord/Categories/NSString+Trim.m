@@ -58,6 +58,14 @@
     return documentsDirectory;
 }
 
++ (NSString *)cacheTempDirectory
+{
+    NSString *libraryDir = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
+    NSString *tempDirectory = [libraryDir stringByAppendingPathComponent:@"Temp"];
+    [[NSFileManager defaultManager] createDirectoryAtPath:tempDirectory withIntermediateDirectories:YES attributes:nil error:nil];
+    return tempDirectory;
+}
+
 + (NSString *)appDocumentsDirectory
 {
    return  NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];

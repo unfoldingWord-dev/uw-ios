@@ -140,7 +140,10 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
 {
     NSData *sourceData = [usfm dataUsingEncoding:NSUTF8StringEncoding];
     if ([self processUSFMString:usfm]) {
-        return [UWDownloaderPlusValidator validateData:sourceData withSignature:signature];
+        [self setImportSuccessTrue];
+        BOOL validated = [UWDownloaderPlusValidator validateData:sourceData withSignature:signature];
+        self.isContentValidValue = validated;
+        return validated;
     }
     else {
         return NO;
@@ -234,10 +237,8 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
         }
         
         if (importSuccessful) {
-            weakself.isDownloaded = @(YES);
-            weakself.isDownloadFailed = @(NO);
-            weakself.isContentChanged = @(NO);
-            weakself.isContentValidValue = fileValidated;
+            [self setImportSuccessTrue];
+            self.isContentValidValue = fileValidated;
         }
         
         if (signatureFileName != nil && sigData != nil) {
@@ -263,6 +264,13 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
             completion(NO);
         }
     }];
+}
+
+- (void)setImportSuccessTrue
+{
+    self.isDownloaded = @(YES);
+    self.isDownloadFailed = @(NO);
+    self.isContentChanged = @(NO);
 }
 
 

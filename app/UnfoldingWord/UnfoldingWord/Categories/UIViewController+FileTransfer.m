@@ -94,9 +94,8 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
     }
 }
 
-- (void)initiateActivityPresentationWithVersion:(UWVersion *) version isSend:(BOOL)isSend fromItem:(id)item {
-    NSLog(@"start present");
-
+- (void)initiateActivityPresentationWithVersion:(UWVersion *) version isSend:(BOOL)isSend fromItem:(id)item
+{
     self.fileActivityController = [[FileActivityController alloc] initWithVersion:version shouldSend:isSend];
     UIActivityViewController *activityController = self.fileActivityController.activityViewController;
     __weak typeof(self) weakself = self;
@@ -210,8 +209,9 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
 
 - (void)receiveITunes
 {
+    __weak typeof(self) weakself = self;
     UINavigationController *navController = [ITunesFilePickerTableVC pickerInsideNavController:^(BOOL canceled, NSString *filepath ) {
-        [self dismissViewControllerAnimated:YES completion:^{
+        [weakself dismissViewControllerAnimated:YES completion:^{
             if ( canceled == NO && filepath != nil) {
                 ITunesSharingReceiver *receiver = [[ITunesSharingReceiver alloc] init];
                 [receiver importFileAtPath:filepath];

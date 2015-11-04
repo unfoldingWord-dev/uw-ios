@@ -24,6 +24,12 @@
 		5A0DD1D71BA0E50F00F351C7 /* String+Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0DD1D61BA0E50F00F351C7 /* String+Paths.swift */; };
 		5A147A8C1BA789AA009496EB /* FakeNavBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A147A8B1BA789AA009496EB /* FakeNavBarView.xib */; };
 		5A147A8E1BA78E30009496EB /* FakeNavBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A147A8D1BA78E30009496EB /* FakeNavBarView.swift */; };
+		5A223FC61BE7F35A00A16421 /* FileNamer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A223FC51BE7F35A00A16421 /* FileNamer.swift */; };
+		5A22403B1BE85D0700A16421 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 5A223FF91BE85D0700A16421 /* ioapi.c */; };
+		5A22403C1BE85D0700A16421 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 5A223FFB1BE85D0700A16421 /* mztools.c */; };
+		5A22403D1BE85D0700A16421 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 5A223FFD1BE85D0700A16421 /* unzip.c */; };
+		5A22403E1BE85D0700A16421 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 5A223FFF1BE85D0700A16421 /* zip.c */; };
+		5A22403F1BE85D0700A16421 /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A2240021BE85D0700A16421 /* SSZipArchive.m */; };
 		5A26CC6C1BBDD509006DFFD3 /* _OpenAppWordsList.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A26CC2D1BBDD509006DFFD3 /* _OpenAppWordsList.m */; };
 		5A26CC6D1BBDD509006DFFD3 /* _OpenChapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A26CC2F1BBDD509006DFFD3 /* _OpenChapter.m */; };
 		5A26CC6E1BBDD509006DFFD3 /* _OpenContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A26CC311BBDD509006DFFD3 /* _OpenContainer.m */; };
@@ -57,6 +63,7 @@
 		5A26CC8A1BBDD509006DFFD3 /* UWVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A26CC691BBDD509006DFFD3 /* UWVideo.m */; };
 		5A26CC8B1BBDD509006DFFD3 /* UWVideoSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A26CC6B1BBDD509006DFFD3 /* UWVideoSource.m */; };
 		5A2B79AE1B5EA22D00AD9993 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2B79AD1B5EA22D00AD9993 /* UIViewControllerExtension.swift */; };
+		5A30C3951BEA6F4200B1A1C3 /* SignatureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A30C3941BEA6F4200B1A1C3 /* SignatureHandler.swift */; };
 		5A323B1D1A3381FB00099C94 /* NSDictionary+DWSNull.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A323B1C1A3381FB00099C94 /* NSDictionary+DWSNull.m */; };
 		5A36D3B51B223F23001D6E04 /* UFWAppInformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A36D3B31B223F23001D6E04 /* UFWAppInformationView.m */; };
 		5A36D3B61B223F23001D6E04 /* UFWAppInformationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A36D3B41B223F23001D6E04 /* UFWAppInformationView.xib */; };
@@ -74,9 +81,9 @@
 		5A59974A1B0A9A3F0060668F /* UFWDataSeeder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5997491B0A9A3F0060668F /* UFWDataSeeder.m */; };
 		5A6562501BBB1E4400578381 /* UWDownloaderPlusValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A65624F1BBB1E4400578381 /* UWDownloaderPlusValidator.m */; };
 		5A6997D41B2F859000BB0618 /* ufw_file_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A6997D31B2F859000BB0618 /* ufw_file_icon.png */; };
+		5A7752A71BE92EAC00695CB5 /* NSData+ZipHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7752A61BE92EAC00695CB5 /* NSData+ZipHelper.swift */; };
 		5A7A66EC1AEF06B500FF3EA1 /* NSString+Trim.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A7A66EB1AEF06B500FF3EA1 /* NSString+Trim.m */; };
 		5A7AF7621BCC0B2500B651D4 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 5A7AF75E1BCC0B2500B651D4 /* LICENSE */; };
-		5A7AF7631BCC0B2500B651D4 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 5A7AF75F1BCC0B2500B651D4 /* README.md */; };
 		5A7AF7641BCC0B2500B651D4 /* XMLConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A7AF7611BCC0B2500B651D4 /* XMLConverter.m */; };
 		5A7DDAD11BB3609900A5252C /* FontSizePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7DDAD01BB3609900A5252C /* FontSizePickerView.swift */; };
 		5A7DDAD31BB360A700A5252C /* FontSizePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A7DDAD21BB360A700A5252C /* FontSizePickerView.xib */; };
@@ -795,7 +802,6 @@
 		5AF0B6B61BA080C300987463 /* USFMChapterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0B6B51BA080C300987463 /* USFMChapterVC.swift */; };
 		5AFC90421AFACAE20012D177 /* UIView+ACTQuickLook.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFC90411AFACAE20012D177 /* UIView+ACTQuickLook.m */; };
 		5AFC9B601B41950500D453D0 /* UIViewController+FileTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFC9B5F1B41950500D453D0 /* UIViewController+FileTransfer.m */; };
-		5AFC9B671B41D1DC00D453D0 /* GZIP.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFC9B641B41D1DC00D453D0 /* GZIP.m */; };
 		5AFC9B6B1B41D2FB00D453D0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AFC9B6A1B41D2FB00D453D0 /* libz.dylib */; };
 		5AFDC3391AF1366C002F58A0 /* NSManagedObject+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFDC3381AF1366C002F58A0 /* NSManagedObject+Convenience.m */; };
 		6392585F1A24506500B5B8D2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6392585E1A24506500B5B8D2 /* main.m */; };
@@ -819,6 +825,21 @@
 		5A0DD1D61BA0E50F00F351C7 /* String+Paths.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Paths.swift"; sourceTree = "<group>"; };
 		5A147A8B1BA789AA009496EB /* FakeNavBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FakeNavBarView.xib; sourceTree = "<group>"; };
 		5A147A8D1BA78E30009496EB /* FakeNavBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FakeNavBarView.swift; sourceTree = "<group>"; };
+		5A223FC51BE7F35A00A16421 /* FileNamer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileNamer.swift; sourceTree = "<group>"; };
+		5A223FC91BE85D0700A16421 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		5A223FF41BE85D0700A16421 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		5A223FF61BE85D0700A16421 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		5A223FF81BE85D0700A16421 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		5A223FF91BE85D0700A16421 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		5A223FFA1BE85D0700A16421 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		5A223FFB1BE85D0700A16421 /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
+		5A223FFC1BE85D0700A16421 /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
+		5A223FFD1BE85D0700A16421 /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		5A223FFE1BE85D0700A16421 /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		5A223FFF1BE85D0700A16421 /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		5A2240001BE85D0700A16421 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		5A2240011BE85D0700A16421 /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipArchive.h; sourceTree = "<group>"; };
+		5A2240021BE85D0700A16421 /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSZipArchive.m; sourceTree = "<group>"; };
 		5A26CC2C1BBDD509006DFFD3 /* _OpenAppWordsList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _OpenAppWordsList.h; sourceTree = "<group>"; };
 		5A26CC2D1BBDD509006DFFD3 /* _OpenAppWordsList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _OpenAppWordsList.m; sourceTree = "<group>"; };
 		5A26CC2E1BBDD509006DFFD3 /* _OpenChapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _OpenChapter.h; sourceTree = "<group>"; };
@@ -884,6 +905,7 @@
 		5A26CC6A1BBDD509006DFFD3 /* UWVideoSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UWVideoSource.h; sourceTree = "<group>"; };
 		5A26CC6B1BBDD509006DFFD3 /* UWVideoSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UWVideoSource.m; sourceTree = "<group>"; };
 		5A2B79AD1B5EA22D00AD9993 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
+		5A30C3941BEA6F4200B1A1C3 /* SignatureHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignatureHandler.swift; sourceTree = "<group>"; };
 		5A323B1B1A3381FB00099C94 /* NSDictionary+DWSNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+DWSNull.h"; sourceTree = "<group>"; };
 		5A323B1C1A3381FB00099C94 /* NSDictionary+DWSNull.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+DWSNull.m"; sourceTree = "<group>"; };
 		5A36D3B21B223F23001D6E04 /* UFWAppInformationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFWAppInformationView.h; sourceTree = "<group>"; };
@@ -921,6 +943,7 @@
 		5A65624F1BBB1E4400578381 /* UWDownloaderPlusValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UWDownloaderPlusValidator.m; sourceTree = "<group>"; };
 		5A6997D31B2F859000BB0618 /* ufw_file_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ufw_file_icon.png; sourceTree = "<group>"; };
 		5A763CB71B97B982009F9460 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		5A7752A61BE92EAC00695CB5 /* NSData+ZipHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSData+ZipHelper.swift"; sourceTree = "<group>"; };
 		5A7A66EA1AEF06B500FF3EA1 /* NSString+Trim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Trim.h"; sourceTree = "<group>"; };
 		5A7A66EB1AEF06B500FF3EA1 /* NSString+Trim.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Trim.m"; sourceTree = "<group>"; };
 		5A7AF75E1BCC0B2500B651D4 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -1782,10 +1805,6 @@
 		5AFC90411AFACAE20012D177 /* UIView+ACTQuickLook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ACTQuickLook.m"; sourceTree = "<group>"; };
 		5AFC9B5E1B41950500D453D0 /* UIViewController+FileTransfer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+FileTransfer.h"; sourceTree = "<group>"; };
 		5AFC9B5F1B41950500D453D0 /* UIViewController+FileTransfer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+FileTransfer.m"; sourceTree = "<group>"; };
-		5AFC9B631B41D1DC00D453D0 /* GZIP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GZIP.h; sourceTree = "<group>"; };
-		5AFC9B641B41D1DC00D453D0 /* GZIP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GZIP.m; sourceTree = "<group>"; };
-		5AFC9B651B41D1DC00D453D0 /* LICENCE.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = LICENCE.md; sourceTree = "<group>"; };
-		5AFC9B661B41D1DC00D453D0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		5AFC9B6A1B41D2FB00D453D0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		5AFDC3371AF1366C002F58A0 /* NSManagedObject+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Convenience.h"; sourceTree = "<group>"; };
 		5AFDC3381AF1366C002F58A0 /* NSManagedObject+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Convenience.m"; sourceTree = "<group>"; };
@@ -1845,6 +1864,43 @@
 				5A147A8B1BA789AA009496EB /* FakeNavBarView.xib */,
 			);
 			path = FakeNavBarView;
+			sourceTree = "<group>";
+		};
+		5A223FC71BE85D0700A16421 /* ZipArchive */ = {
+			isa = PBXGroup;
+			children = (
+				5A223FC91BE85D0700A16421 /* LICENSE.txt */,
+				5A223FF41BE85D0700A16421 /* README.md */,
+				5A223FF51BE85D0700A16421 /* SSZipArchive */,
+			);
+			path = ZipArchive;
+			sourceTree = "<group>";
+		};
+		5A223FF51BE85D0700A16421 /* SSZipArchive */ = {
+			isa = PBXGroup;
+			children = (
+				5A223FF61BE85D0700A16421 /* Common.h */,
+				5A223FF71BE85D0700A16421 /* minizip */,
+				5A2240011BE85D0700A16421 /* SSZipArchive.h */,
+				5A2240021BE85D0700A16421 /* SSZipArchive.m */,
+			);
+			path = SSZipArchive;
+			sourceTree = "<group>";
+		};
+		5A223FF71BE85D0700A16421 /* minizip */ = {
+			isa = PBXGroup;
+			children = (
+				5A223FF81BE85D0700A16421 /* crypt.h */,
+				5A223FF91BE85D0700A16421 /* ioapi.c */,
+				5A223FFA1BE85D0700A16421 /* ioapi.h */,
+				5A223FFB1BE85D0700A16421 /* mztools.c */,
+				5A223FFC1BE85D0700A16421 /* mztools.h */,
+				5A223FFD1BE85D0700A16421 /* unzip.c */,
+				5A223FFE1BE85D0700A16421 /* unzip.h */,
+				5A223FFF1BE85D0700A16421 /* zip.c */,
+				5A2240001BE85D0700A16421 /* zip.h */,
+			);
+			path = minizip;
 			sourceTree = "<group>";
 		};
 		5A26CC2A1BBDD509006DFFD3 /* Classes */ = {
@@ -1951,6 +2007,7 @@
 				5A8DCB9C1B03B1A10010DD27 /* UINavigationController+UFWNavigationController.m */,
 				5A2B79AD1B5EA22D00AD9993 /* UIViewControllerExtension.swift */,
 				5A0DD1D61BA0E50F00F351C7 /* String+Paths.swift */,
+				5A7752A61BE92EAC00695CB5 /* NSData+ZipHelper.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -2070,6 +2127,7 @@
 			children = (
 				5A65624E1BBB1E4400578381 /* UWDownloaderPlusValidator.h */,
 				5A65624F1BBB1E4400578381 /* UWDownloaderPlusValidator.m */,
+				5A30C3941BEA6F4200B1A1C3 /* SignatureHandler.swift */,
 			);
 			path = DownloadAndValidator;
 			sourceTree = "<group>";
@@ -3040,8 +3098,8 @@
 		5AAC5C551A97B46C001AFA3D /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				5A223FC71BE85D0700A16421 /* ZipArchive */,
 				5A7AF75D1BCC0B2500B651D4 /* XMLConverter */,
-				5AFC9B611B41D1DC00D453D0 /* GZIP-Nicklockwood */,
 				5A59961A1B0A893F0060668F /* Fonts */,
 				5AAC5C561A97B46C001AFA3D /* FPPopover */,
 			);
@@ -3141,6 +3199,7 @@
 			children = (
 				5AF051DD1B756BD1003EA5A4 /* UWFile.swift */,
 				5AF051DE1B756BD1003EA5A4 /* UWUrlSourceItem.swift */,
+				5A223FC51BE7F35A00A16421 /* FileNamer.swift */,
 			);
 			path = FileFormat;
 			sourceTree = "<group>";
@@ -3276,25 +3335,6 @@
 				5AF052961B756D31003EA5A4 /* x509v3.h */,
 			);
 			path = openssl;
-			sourceTree = "<group>";
-		};
-		5AFC9B611B41D1DC00D453D0 /* GZIP-Nicklockwood */ = {
-			isa = PBXGroup;
-			children = (
-				5AFC9B621B41D1DC00D453D0 /* GZIP */,
-				5AFC9B651B41D1DC00D453D0 /* LICENCE.md */,
-				5AFC9B661B41D1DC00D453D0 /* README.md */,
-			);
-			path = "GZIP-Nicklockwood";
-			sourceTree = "<group>";
-		};
-		5AFC9B621B41D1DC00D453D0 /* GZIP */ = {
-			isa = PBXGroup;
-			children = (
-				5AFC9B631B41D1DC00D453D0 /* GZIP.h */,
-				5AFC9B641B41D1DC00D453D0 /* GZIP.m */,
-			);
-			path = GZIP;
 			sourceTree = "<group>";
 		};
 		639258501A24506500B5B8D2 = {
@@ -4165,6 +4205,7 @@
 				5A26CC6C1BBDD509006DFFD3 /* _OpenAppWordsList.m in Sources */,
 				5A26CC861BBDD509006DFFD3 /* UWTOC.m in Sources */,
 				5A26CC721BBDD509006DFFD3 /* _UWAudioBitrate.m in Sources */,
+				5A30C3951BEA6F4200B1A1C3 /* SignatureHandler.swift in Sources */,
 				5A323B1D1A3381FB00099C94 /* NSDictionary+DWSNull.m in Sources */,
 				5A26CC7C1BBDD509006DFFD3 /* OpenAppWordsList.m in Sources */,
 				5A26CC8B1BBDD509006DFFD3 /* UWVideoSource.m in Sources */,
@@ -4173,6 +4214,7 @@
 				5A26CC7B1BBDD509006DFFD3 /* _UWVideoSource.m in Sources */,
 				5A3E553D1A9D4CB700D1D920 /* DWImageGetter.m in Sources */,
 				5A9AC0461B0A38B100753AAB /* UFWLanguageNameCell.m in Sources */,
+				5A22403B1BE85D0700A16421 /* ioapi.c in Sources */,
 				5A26CC851BBDD509006DFFD3 /* UWStatus.m in Sources */,
 				5A9AC0411B0A38B100753AAB /* USFMChapterCell.m in Sources */,
 				5AAC5C601A97B46C001AFA3D /* FPTouchView.m in Sources */,
@@ -4183,7 +4225,9 @@
 				5A9AC0061B0A370000753AAB /* UFWBaseURLTableVC.m in Sources */,
 				5AD953CB1BB07B3400E3D654 /* UnfoldingWord.xcdatamodeld in Sources */,
 				5A26CC871BBDD509006DFFD3 /* UWTOCMedia.m in Sources */,
+				5A7752A71BE92EAC00695CB5 /* NSData+ZipHelper.swift in Sources */,
 				5AAC5C5F1A97B46C001AFA3D /* FPPopoverView.m in Sources */,
+				5A223FC61BE7F35A00A16421 /* FileNamer.swift in Sources */,
 				5A8DCB9D1B03B1A10010DD27 /* UINavigationController+UFWNavigationController.m in Sources */,
 				5A26CC6F1BBDD509006DFFD3 /* _OpenFrame.m in Sources */,
 				5A7AF7641BCC0B2500B651D4 /* XMLConverter.m in Sources */,
@@ -4201,7 +4245,6 @@
 				5AD3CBE41B4A182D003F5F33 /* ITunesSharingReceiver.swift in Sources */,
 				5AFC9B601B41950500D453D0 /* UIViewController+FileTransfer.m in Sources */,
 				5A9AC0041B0A370000753AAB /* FrameDetailsViewController.m in Sources */,
-				5A7AF7631BCC0B2500B651D4 /* README.md in Sources */,
 				5A26CC7E1BBDD509006DFFD3 /* OpenContainer.m in Sources */,
 				5AD0B4A11B45CB68006ABD21 /* MultiConnectReceiver.swift in Sources */,
 				5AAC5C631A97C5DB001AFA3D /* NSLayoutConstraint+DWSExtensions.m in Sources */,
@@ -4223,10 +4266,10 @@
 				5A6562501BBB1E4400578381 /* UWDownloaderPlusValidator.m in Sources */,
 				5A26CC741BBDD509006DFFD3 /* _UWLanguage.m in Sources */,
 				5AC377D31B38C62C00E3BB36 /* BluetoothFileReceiver.swift in Sources */,
+				5A22403E1BE85D0700A16421 /* zip.c in Sources */,
 				5AC3DCB71B1F751000703AA2 /* ACTSimpleChapterNumberCell.m in Sources */,
 				5AEDC6321AFC20CA00C722B9 /* LanguageInfoController.m in Sources */,
 				5A26CC881BBDD509006DFFD3 /* UWTopContainer.m in Sources */,
-				5AFC9B671B41D1DC00D453D0 /* GZIP.m in Sources */,
 				5A9AC03F1B0A38B100753AAB /* UFWNextChapterCell.m in Sources */,
 				5A26CC7D1BBDD509006DFFD3 /* OpenChapter.m in Sources */,
 				5A7DDAD11BB3609900A5252C /* FontSizePickerView.swift in Sources */,
@@ -4235,6 +4278,7 @@
 				5A26CC761BBDD509006DFFD3 /* _UWTOC.m in Sources */,
 				5AC377CF1B38744500E3BB36 /* FileActivityController.swift in Sources */,
 				5A9AC04A1B0A38B100753AAB /* ChapterCell.m in Sources */,
+				5A22403C1BE85D0700A16421 /* mztools.c in Sources */,
 				6392585F1A24506500B5B8D2 /* main.m in Sources */,
 				5A9AC0091B0A370000753AAB /* UFWBookPickerUSFMVC.m in Sources */,
 				5A9AC0031B0A370000753AAB /* ChapterListTableViewController.m in Sources */,
@@ -4247,6 +4291,7 @@
 				5A82BA721AF928E100C5044E /* UFWImporterUSFMEncoding.m in Sources */,
 				5A9AC04E1B0A38B100753AAB /* UFWBaseUrlCell.m in Sources */,
 				5A45ECBD1B99F03C00F345C6 /* ContainerVC.swift in Sources */,
+				5A22403D1BE85D0700A16421 /* unzip.c in Sources */,
 				5AD0B49F1B445642006ABD21 /* MultiConnectSender.swift in Sources */,
 				5AE06E481BC18CB80072EB27 /* AuditionFileReader.swift in Sources */,
 				5AF051F31B756BD1003EA5A4 /* UFWFileActivityItemProvider.swift in Sources */,
@@ -4261,6 +4306,7 @@
 				5A3E553C1A9D4CB700D1D920 /* DWImageFileManager.m in Sources */,
 				5A26CC781BBDD509006DFFD3 /* _UWTopContainer.m in Sources */,
 				5A26CC771BBDD509006DFFD3 /* _UWTOCMedia.m in Sources */,
+				5A22403F1BE85D0700A16421 /* SSZipArchive.m in Sources */,
 				5AF0B6B61BA080C300987463 /* USFMChapterVC.swift in Sources */,
 				5A2B79AE1B5EA22D00AD9993 /* UIViewControllerExtension.swift in Sources */,
 				5AD20D8D1B9665B7000B813B /* FileDownloader.swift in Sources */,

@@ -10,6 +10,7 @@
 #import "UWCoreDataClasses.h"
 #import "NSString+Trim.h"
 #import "UFWVerifier.h"
+#import "UnfoldingWord-Swift.h"
 
 @implementation UWDownloaderPlusValidator
 
@@ -87,6 +88,7 @@
 }
 
 + (BOOL)validateData:(NSData *)data withSignature:(NSString *)signature {
+    signature = [SignatureHandler bareSignatureStringFromString:signature];
     NSString *temporaryFile = [self saveFileData:data];
     BOOL result = [UFWVerifier verifyFile:temporaryFile withSignature:signature];
     [[NSFileManager defaultManager] removeItemAtPath:temporaryFile error:nil];
@@ -125,5 +127,9 @@
     };
     return [signatureJSON objectOrNilForKey:@"sig"];
 }
+
+
+// Mark : Convert Signature if necessary
+
 
 @end

@@ -59,7 +59,7 @@ static NSString *const kSize = @"size";
     if (sourceData == nil) {
         return NO;
     }
-    NSString *filename = (self.filename == nil) ? [self uniqueFilename] : self.filename;
+    NSString *filename = self.filename ?: [FileNamer nameForAudioBitrate:self];
     NSString *sourcePermanentpath = [NSString documentsPathWithFilename:filename];
     if ([sourceData writeToFile:sourcePermanentpath atomically:YES]) {
         self.filename = filename;
@@ -97,13 +97,5 @@ static NSString *const kSize = @"size";
     }
     return nil;
 }
-
-    
-- (NSString *)uniqueFilename
-{
-    UWTOC *toc = self.source.audio.media.toc;
-    return [NSString stringWithFormat:@"%@-%@-%@-%@-%@.mp3", toc.version.slug, toc.version.language.lc, self.source.chapter, self.rate.stringValue, [NSString uniqueString]];
-}
-
 
 @end

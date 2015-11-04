@@ -15,9 +15,11 @@ import UIKit
     /// Returns the data containing the JSON string that represents all the data needed to create teh 
     var fileData : NSData {
         get {
-            if let data = try? NSJSONSerialization.dataWithJSONObject(sourceDictionary, options: []),
-            zipData = data.gzippedDataWithCompressionLevel(0.95) {
-                return zipData
+            if let
+                data = try? NSJSONSerialization.dataWithJSONObject(sourceDictionary, options: []),
+                zipped = data.zippedData("json.txt")
+            {
+                return zipped
             }
             assertionFailure("Could not create gzipped data from dictionary \(sourceDictionary)")
             return NSData()
@@ -55,22 +57,16 @@ import UIKit
     }
     
     init(fileData : NSData) {
-        var dictionary: NSDictionary?
 
-        if let unzippedData = fileData.gunzippedData(),
-            data = try? NSJSONSerialization.JSONObjectWithData(unzippedData, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary {
-                dictionary = data
+        if let unzippedData = fileData.unzippedData(),
+            let dictionary = try? NSJSONSerialization.JSONObjectWithData(unzippedData, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary {
+                self.sourceDictionary = dictionary!
+                self.isValid = true
         }
-        
-        switch (dictionary) {
-        case .None:
+        else {
             self.sourceDictionary = NSDictionary()
             self.isValid = false
             assertionFailure("Could not create dictionary from gzipped data \(fileData)")
-        case .Some:
-            self.sourceDictionary = dictionary!
-            self.isValid = true
-
         }
     }
     
