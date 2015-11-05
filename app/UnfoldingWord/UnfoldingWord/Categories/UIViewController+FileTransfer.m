@@ -15,6 +15,7 @@ typedef NS_ENUM(NSInteger, TransferType) {
     TransferTypeBluetooth = 1,
     TransferTypeWireless = 2,
     TransferTypeEmail = 3,
+    TransferTypeiTunes = 4,
 };
 
 typedef NS_ENUM(NSInteger, TransferRole) {
@@ -52,15 +53,15 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
 
 - (void)sendFileForVersion:(UWVersion *)version fromBarButtonOrView:(id)item;
 {
-    [self initiateActivityPresentationWithVersion:version isSend:YES fromItem:item];
+    [self initiateActivityPresentationWithVersion:version isSend:YES fromItem:item completion:nil];
 }
 
-- (void)receiveFileFromBarButtonOrView:(id)item;
+- (void)receiveFileFromBarButtonOrView:(id)item completion:(FileCompletion)completion
 {
-    [self initiateActivityPresentationWithVersion:nil isSend:NO fromItem:item];
+    [self initiateActivityPresentationWithVersion:nil isSend:NO fromItem:item completion:completion];
 }
 
-- (void) handleActivityType:(NSString *)activityType
+- (void) handleActivityType:(NSString *)activityType completion:(FileCompletion)completion
 {
     NSParameterAssert(self.fileActivityController);
     
@@ -68,40 +69,40 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
         
         if ([activityType isEqualToString:BluetoothSend]) {
             [UIApplication sharedApplication].idleTimerDisabled = YES;
-            [self sendBluetooth];
+            [self sendBluetoothWithCompletion:completion];
         }
         else if ([activityType isEqualToString:MultiConnectSend]) {
             [UIApplication sharedApplication].idleTimerDisabled = YES;
-            [self sendWireless];
+            [self sendWirelessWithCompletion:completion];
         }
         else if ([activityType isEqualToString:iTunesSend]) {
-            [self sendiTunes];
+            [self sendiTunesWithCompletion:completion];
         }
     }
     else {
         
         if ([activityType isEqualToString:BluetoothReceive]) {
             [UIApplication sharedApplication].idleTimerDisabled = YES;
-            [self receiveBluetooth];
+            [self receiveBluetoothWithCompletion:completion];
         }
         else if ([activityType isEqualToString:MultiConnectReceive]) {
             [UIApplication sharedApplication].idleTimerDisabled = YES;
-            [self receiveWireless];
+            [self receiveWirelessWithCompletion:completion];
         }
         else if ([activityType isEqualToString:iTunesReceive]) {
-            [self receiveITunes];
+            [self receiveITunesWithCompletion:completion];
         }
     }
 }
 
-- (void)initiateActivityPresentationWithVersion:(UWVersion *) version isSend:(BOOL)isSend fromItem:(id)item
+- (void)initiateActivityPresentationWithVersion:(UWVersion *) version isSend:(BOOL)isSend fromItem:(id)item completion:(FileCompletion)completion
 {
     self.fileActivityController = [[FileActivityController alloc] initWithVersion:version shouldSend:isSend];
     UIActivityViewController *activityController = self.fileActivityController.activityViewController;
     __weak typeof(self) weakself = self;
     activityController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
         if (completed) {
-            [weakself handleActivityType:activityType];
+            [weakself handleActivityType:activityType completion:completion];
         }
     };
     
@@ -126,26 +127,26 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
 
 }
 
-- (void)sendWireless {
+- (void)sendWirelessWithCompletion:(FileCompletion)completion {
     NSData *data = [self data];
     if (data) {
         NSString *title = self.fileActivityController.ufwVersion.name;
         
         // Set up progress indicator using alert controller
         TransferRole roleSend = TransferRoleSend;
-        [self presentAlertControllerWithTitle:kSendWireless];
+        [self presentAlertControllerWithTitle:kSendWireless completion:completion];
         
         // Create a sender and apply the update block
         __weak typeof(self) weakself = self;
         self.senderMC = [[MultiConnectSender alloc] initWithDataToSend:data filename:title updateBlock:^(float percent, BOOL connected , BOOL complete) {
-            [weakself updateProgress:percent connected:connected finished:complete role:roleSend type:TransferTypeWireless];
+            [weakself updateProgress:percent connected:connected finished:complete role:roleSend type:TransferTypeWireless completion:completion];
         }];
         
-        [self updateProgress:0 connected:NO finished:NO role:roleSend type:TransferTypeWireless];
+        [self updateProgress:0 connected:NO finished:NO role:roleSend type:TransferTypeWireless completion:completion];
     }
 }
 
-- (void)sendiTunes {
+- (void)sendiTunesWithCompletion:(FileCompletion)completion {
     NSData *data = [self data];
     NSString *filename = [self.fileActivityController.ufwVersion filename];
     
@@ -158,65 +159,79 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
     }
 }
 
-- (void)receiveWireless
+- (void)receiveWirelessWithCompletion:(FileCompletion)completion
 {
     // Set up progress indicator using alert controller
     TransferRole roleReceive = TransferRoleReceive;
-    [self presentAlertControllerWithTitle:kReceiveWireless];
+    [self presentAlertControllerWithTitle:kReceiveWireless completion:completion];
     
     // Create a receiver and apply the update block
     __weak typeof(self) weakself = self;
     self.receiverMC = [[MultiConnectReceiver alloc] initWithUpdateBlock:^(float percent, BOOL connected, BOOL complete) {
-        [weakself updateProgress:percent connected:connected finished:complete role:roleReceive type:TransferTypeWireless];
+        [weakself updateProgress:percent connected:connected finished:complete role:roleReceive type:TransferTypeWireless completion:completion];
     }];
-    [self updateProgress:0 connected:NO finished:NO role:roleReceive type:TransferTypeWireless];
+    [self updateProgress:0 connected:NO finished:NO role:roleReceive type:TransferTypeWireless completion:completion];
 
 }
 
-- (void)sendBluetooth
+- (void)sendBluetoothWithCompletion:(FileCompletion)completion
 {
     NSData *data = [self data];
     TransferRole roleSend = TransferRoleSend;
     if (data) {
         // Set up progress indicator using alert controller
-        [self presentAlertControllerWithTitle:kSendBluetooth];
+        [self presentAlertControllerWithTitle:kSendBluetooth completion:completion];
         
         // Create a sender and apply the update block
         __weak typeof(self) weakself = self;
         self.senderBT = [[BluetoothFileSender alloc] initWithDataToSend:data updateBlock:^(float percent, BOOL connected , BOOL complete) {
-            [weakself updateProgress:percent connected:connected finished:complete role:roleSend type:TransferTypeBluetooth];
+            [weakself updateProgress:percent connected:connected finished:complete role:roleSend type:TransferTypeBluetooth completion:completion];
         }];
         
-        [self updateProgress:0 connected:NO finished:NO role:roleSend type:TransferTypeBluetooth];
+        [self updateProgress:0 connected:NO finished:NO role:roleSend type:TransferTypeBluetooth completion:completion];
     }
 }
 
-- (void)receiveBluetooth
+- (void)receiveBluetoothWithCompletion:(FileCompletion)completion
 {
     // Set up progress indicator using alert controller
     TransferRole roleReceive = TransferRoleReceive;
-    [self presentAlertControllerWithTitle:kReceiveBluetooth];
+    [self presentAlertControllerWithTitle:kReceiveBluetooth completion:completion];
     
     // Create a receiver and apply the update block
     __weak typeof(self) weakself = self;
     self.receiverBT = [[BluetoothFileReceiver alloc] initWithUpdateBlock:^(float percent, BOOL connected, BOOL complete) {
-        [weakself updateProgress:percent connected:connected finished:complete role:roleReceive type:TransferTypeBluetooth];
+        [weakself updateProgress:percent connected:connected finished:complete role:roleReceive type:TransferTypeBluetooth completion:completion];
     }];
-    [self updateProgress:0 connected:NO finished:NO role:roleReceive type:TransferTypeBluetooth];
+    [self updateProgress:0 connected:NO finished:NO role:roleReceive type:TransferTypeBluetooth completion:completion];
 
 }
 
 
-- (void)receiveITunes
+- (void)receiveITunesWithCompletion:(FileCompletion)completion
 {
     __weak typeof(self) weakself = self;
     UINavigationController *navController = [ITunesFilePickerTableVC pickerInsideNavController:^(BOOL canceled, NSString *filepath ) {
         [weakself dismissViewControllerAnimated:YES completion:^{
-            if ( canceled == NO && filepath != nil) {
-                ITunesSharingReceiver *receiver = [[ITunesSharingReceiver alloc] init];
-                [receiver importFileAtPath:filepath];
+            if (canceled == YES) {
+                return;
             }
+            
+            [weakself presentAlertControllerWithTitle:@"Importing..." completion:completion];
+            [self.alertController setMessage:@"Please wait."];
+            
+            // We want to give the alert controller time to show.
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                BOOL isSuccessful = NO;
+                if ( filepath != nil) {
+                    ITunesSharingReceiver *receiver = [[ITunesSharingReceiver alloc] init];
+                    isSuccessful = [receiver importFileAtPath:filepath];
+                }
+                [weakself dismissWithSuccess:isSuccessful completion:completion];
+            });
+
         }];
+
     }];
     [self presentViewController:navController animated:YES completion:^{}];
 }
@@ -240,7 +255,6 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
 
 - (void)resetAllState
 {
-    void (^cleanup)() = ^void() {
         [UIApplication sharedApplication].idleTimerDisabled = NO;
         self.senderBT = nil;
         self.receiverBT = nil;
@@ -248,49 +262,47 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
         self.receiverMC = nil;
         self.fileActivityController = nil;
         self.alertController = nil;
-    };
-    
-    if ([self.presentedViewController isEqual:self.alertController]) {
-        [self dismissViewControllerAnimated:YES completion:^{
-            cleanup();
-        }];
-    }
-    else {
-        cleanup();
-    }
 }
 
 #pragma mark - Alert Controller
-- (void)presentAlertControllerWithTitle:(NSString *)title
+- (void)presentAlertControllerWithTitle:(NSString *)title completion:(FileCompletion)completion
 {
-    if (self.presentedViewController != nil) { // State check
-        [self dismissViewControllerAnimated:NO completion:^{}];
-    }
-    
     __weak typeof(self) weakself = self;
-    self.alertController = [UIAlertController alertControllerWithTitle:title message:@"Preparing..." preferredStyle:UIAlertControllerStyleAlert];
-    [self.alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-        [weakself dismissWithSuccess:NO];
-    }]];
-    [self presentViewController:self.alertController animated:YES completion:^{}];
+    void(^alertBlock)() = ^void () {
+        self.alertController = [UIAlertController alertControllerWithTitle:title message:@"Preparing..." preferredStyle:UIAlertControllerStyleAlert];
+        [self.alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            [weakself dismissWithSuccess:NO completion:completion];
+        }]];
+        [self presentViewController:self.alertController animated:YES completion:^{}];
+    };
+    
+    if (self.presentedViewController != nil) { // State check
+        [self dismissViewControllerAnimated:NO completion:^{
+            alertBlock();
+        }];
+    }
+    else {
+        alertBlock();
+    }
 }
 
-- (void)dismissWithSuccess:(BOOL) success {
+- (void)dismissWithSuccess:(BOOL) success completion:(FileCompletion)something {
     [self resetAllState];
-
     [self dismissViewControllerAnimated:YES completion:^{
-        
         if (success) {
-            [[[UIAlertView alloc] initWithTitle:@"Success!" message:@"Your file was successfully transmitted!" delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
+            [[[UIAlertView alloc] initWithTitle:@"Success!" message:@"Your action was successful." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
         }
         else {
-            [[[UIAlertView alloc] initWithTitle:@"Failure" message:@"There was an error transmitting this file." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
+            [[[UIAlertView alloc] initWithTitle:@"Failure" message:@"There was an error with this file." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
+        }
+        if (something != nil) {
+            something(success);
         }
     }];
 }
 
 #pragma mark - Progress Update
-- (void)updateProgress:(CGFloat)percent connected:(BOOL)connected finished:(BOOL)finished role:(TransferRole)role type:(TransferType)type
+- (void)updateProgress:(CGFloat)percent connected:(BOOL)connected finished:(BOOL)finished role:(TransferRole)role type:(TransferType)type completion:(FileCompletion)completion
 {
     if (finished == YES) {
         if (role == TransferRoleReceive) {
@@ -310,12 +322,12 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
             }
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self saveFile:data];
+                [self saveFile:data completion:completion];
             });
         }
         else if (role == TransferRoleSend) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self dismissWithSuccess:YES];
+                [self dismissWithSuccess:YES completion:completion];
             });
         }
     }
@@ -347,7 +359,7 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
 
 #pragma mark - Process File
 
-- (void)saveFile:(NSData *)fileData
+- (void)saveFile:(NSData *)fileData completion:(FileCompletion)completion
 {
     BOOL success = NO;
     if (fileData != nil) {
@@ -356,7 +368,7 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
             success = importer.importFile;
         }
     }
-    [self dismissWithSuccess:success];
+    [self dismissWithSuccess:success completion:completion];
 }
 
 #pragma mark - Dynamic Property Setters and Getters

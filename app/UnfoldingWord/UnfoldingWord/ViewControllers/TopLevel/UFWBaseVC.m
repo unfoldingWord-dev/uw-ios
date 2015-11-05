@@ -106,7 +106,11 @@
 
 - (IBAction)userRequestedSharing:(UIBarButtonItem *)activityBarButtonItem
 {
-    [self receiveFileFromBarButtonOrView:activityBarButtonItem];
+    __weak typeof(self) weakself = self;
+    [self receiveFileFromBarButtonOrView:activityBarButtonItem completion:^(BOOL success) {
+        [weakself loadTopLevelObjects];
+        [weakself.tableView reloadData];
+    }];
 }
 
 #pragma mark - Settings
