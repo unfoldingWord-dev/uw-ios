@@ -144,12 +144,11 @@ class USFMPageViewController : UIPageViewController, UIPageViewControllerDataSou
     
     func audioSourceWithChapter(chapter : Int, inAudio audio : UWAudio) -> UWAudioSource? {
         for (_, source) in audio.sources.enumerate() {
-            let castSource = source as! UWAudioSource
-            if let chapterString = castSource.chapter {
+            if let chapterString = source.chapter {
                 let castString = chapterString as NSString
                 let currentChapter = castString.integerValue
                 if chapter == currentChapter {
-                    return castSource
+                    return source
                 }
             }
         }

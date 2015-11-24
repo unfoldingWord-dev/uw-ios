@@ -52,11 +52,9 @@
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    
     if ([UIApplication sharedApplication].protectedDataAvailable) {
-        NSData *data = [NSData dataWithContentsOfURL:url];
-        UFWFileImporter *importer = [[UFWFileImporter alloc] initWithData:data];
-        BOOL success = [importer importFile];
+        UFWFileImporter *importer = [[UFWFileImporter alloc] init];
+        BOOL success = [importer importZipFileDataWithPath:url.path];
         if (success == true) {
             NSString *message = [NSString stringWithFormat:@"The app successfully imported \"%@\"", url.path.lastPathComponent];
             [[[UIAlertView alloc] initWithTitle:@"Success" message:message delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];

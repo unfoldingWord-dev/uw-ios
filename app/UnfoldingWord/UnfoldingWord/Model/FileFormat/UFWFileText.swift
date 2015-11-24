@@ -1,5 +1,5 @@
 //
-//  UFWFile.swift
+//  UFWFileText
 //  UnfoldingWord
 //
 //  Created by David Solberg on 6/15/15.
@@ -7,22 +7,19 @@
 
 import UIKit
 
-@objc final class UFWFile : NSObject {
+@objc final class UFWFileText : NSObject {
 
     let sourceDictionary: NSDictionary
     let isValid : Bool
     
-    /// Returns the data containing the JSON string that represents all the data needed to create teh 
-    var fileData : NSData {
+    /// Returns the data containing the JSON string that represents all the data needed to create
+    var fileData : NSData? {
         get {
-            if let
-                data = try? NSJSONSerialization.dataWithJSONObject(sourceDictionary, options: []),
-                zipped = data.zippedData("json.txt")
-            {
-                return zipped
+            guard isValid, let data = try? NSJSONSerialization.dataWithJSONObject(sourceDictionary, options: []) else {
+                assertionFailure("Could not create gzipped data from dictionary \(sourceDictionary)")
+                return nil
             }
-            assertionFailure("Could not create gzipped data from dictionary \(sourceDictionary)")
-            return NSData()
+            return data
         }
     }
     
@@ -52,22 +49,26 @@ import UIKit
     }
     
     init(sourceDictionary : NSDictionary) {
-        self.isValid = UFWFile.validateSource(sourceDictionary)
+        self.isValid = UFWFileText.validateSource(sourceDictionary)
         self.sourceDictionary = sourceDictionary
     }
     
-    init(fileData : NSData) {
+    init?(fileData : NSData) {
+        
+        guard
+            let dictionary = try? NSJSONSerialization.JSONObjectWithData(fileData, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary,
+            let source = dictionary
+            else {
+                // Why initialize this stuff to return nil? Because of a bug in Swift as of Nov 20, 2015
+                self.sourceDictionary = NSDictionary()
+                self.isValid = false
+                super.init()
+                return nil
+        }
+        self.sourceDictionary = source
+        self.isValid = true
+        super.init()
 
-        if let unzippedData = fileData.unzippedData(),
-            let dictionary = try? NSJSONSerialization.JSONObjectWithData(unzippedData, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary {
-                self.sourceDictionary = dictionary!
-                self.isValid = true
-        }
-        else {
-            self.sourceDictionary = NSDictionary()
-            self.isValid = false
-            assertionFailure("Could not create dictionary from gzipped data \(fileData)")
-        }
     }
     
     class func validateSource(source : NSDictionary?) -> Bool {

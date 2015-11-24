@@ -36,7 +36,35 @@ extension NSData {
         return result
     }
     
-    func unzippedData() -> NSData?
+    /// Returns the path to files enclosed in the zip data. WARNING: The files at the path are immediately deleted. If you want to keep the files, copy and/or more them in the same run loop.
+    func pathToUnzippedData() -> String?
+    {
+        let directory = NSString.cacheTempDirectory()
+        let inputFile = "input.zip"
+        let inputPath = directory.stringByAppendingPathComponent(inputFile)
+        
+        guard self.writeToFile(inputPath, atomically: true) else {
+            assertionFailure("Could not write input zip data to file!")
+            return nil
+        }
+        
+        let output = "files"
+        let outputPath = directory.stringByAppendingPathComponent(output)
+        
+        guard SSZipArchive.unzipFileAtPath(inputPath, toDestination: outputPath) else {
+            assertionFailure("Could not write output from zip to new file!")
+            return nil
+        }
+        
+        delay(1.0) { () -> Void in
+            inputPath.deleteFileOrFolder()
+            outputPath.deleteFileOrFolder()
+        }
+        
+        return outputPath
+    }
+    
+    func unzippedTextData() -> NSData?
     {
         let directory = NSString.cacheTempDirectory()
         let inputFile = "input.zip"
@@ -73,14 +101,8 @@ extension NSData {
         let result = NSData(contentsOfFile: finalPath)
         assert(result != nil, "Could not unzip")
 
-        do {
-            try NSFileManager.defaultManager().removeItemAtPath(inputPath)
-            try NSFileManager.defaultManager().removeItemAtPath(outputPath)
-        }
-        catch {
-            assertionFailure("Could not delete files at path \(inputPath) or \(outputPath)")
-            return nil
-        }
+        inputPath.deleteFileOrFolder()
+        outputPath.deleteFileOrFolder()
         
         return result
     }

@@ -154,6 +154,7 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
 {
     NSData *openData = [openBible dataUsingEncoding:NSUTF8StringEncoding];
     if ([self processOpenBibleStoriesJSONData:openData]) {
+        [self setImportSuccessTrue];
         return [UWDownloaderPlusValidator validateData:openData withSignature:signature];
     }
     else {
@@ -163,7 +164,7 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
 
 - (BOOL)saveSignatureData:(NSData *)sigData withFilename:(NSString *)filename
 {
-    return [sigData writeToFile:[NSString documentsPathWithFilename:filename] atomically:YES];
+    return [sigData writeToFile:[filename documentsPath] atomically:YES];
 }
 
 

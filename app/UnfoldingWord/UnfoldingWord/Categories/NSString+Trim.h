@@ -19,7 +19,7 @@
 
 + (NSString *)appDocumentsDirectory;
 
-+ (NSString *)documentsPathWithFilename:(NSString *)filename;
+- (NSString *)documentsPath;
 
 - (CGFloat)widthUsingFont:(UIFont *)font;
 

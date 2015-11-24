@@ -16,20 +16,12 @@ final class UFWFileActivityItemProvider : UIActivityItemProvider {
     
     var url : NSURL! {
         get {
-            if let url = self.urlSaved {
-                return url
-            }
-            else if let
-                file = file(),
-                theUrl = tempFileURL()
-            {
-                if file.writeToURL(theUrl, atomically: true) {
-                    self.urlSaved = theUrl
-                    return urlSaved
+            if self.urlSaved == nil {
+                if let fileDataPath = filePath() {
+                    self.urlSaved = NSURL(fileURLWithPath: fileDataPath)
                 }
             }
-            assertionFailure("Could not return a url!")
-            return nil
+            return urlSaved
         }
     }
 
@@ -47,14 +39,15 @@ final class UFWFileActivityItemProvider : UIActivityItemProvider {
         if let url = self.urlSaved {
             do {
                 try NSFileManager.defaultManager().removeItemAtURL(url)
-            } catch _ {
+            } catch {
+                print("Error deleting url \(url)")
             }
         }
     }
     
-    private func file() -> NSData? {
+    private func filePath() -> String? {
         let exporter = UFWFileExporter(version: version)
-        return exporter.fileData
+        return exporter.fileDataPath
     }
     
     private func tempFileURL() -> NSURL? {

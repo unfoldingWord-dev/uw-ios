@@ -21,3 +21,4 @@
 #import "FrameDetailsViewController.h"
 #import "ChapterListTableViewController.h"
 #import "XMLConverter.h"
+#import "UWDownloaderPlusValidator.h"

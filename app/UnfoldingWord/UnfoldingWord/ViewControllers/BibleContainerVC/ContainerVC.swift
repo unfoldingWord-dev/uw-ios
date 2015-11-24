@@ -21,7 +21,7 @@ protocol ChromeHidingProtocol : class {
     override init() {
         super.init()
     }
-    
+
     init(source : UWAudioSource?, frameOrVerse : Int?) {
         self.audioSource = source
         self.frameOrVerse = frameOrVerse
@@ -31,6 +31,10 @@ protocol ChromeHidingProtocol : class {
 
 @objc class VideoInfo : NSObject {
     var videoSource : UWVideoSource?
+    
+    override init() {
+        super.init()
+    }
     
     init(source : UWVideoSource?) {
         self.videoSource = source
@@ -139,6 +143,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
     }
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         self.view.backgroundColor = BACKGROUND_GREEN()
         self.toolbarBottom.barTintColor = BACKGROUND_GREEN()
@@ -150,7 +155,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
         guard
             let language = topContainer.languages.first as? UWLanguage,
             let version = language.versions.first as? UWVersion,
-            let toc = version.toc.first as? UWTOC
+            let toc = version.toc.first
         else { return }
         
         if toc.isUSFMValue { // Add USFM VC
@@ -405,6 +410,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
             }
         }
         barButtonVideo.enabled = false
+        
     }
     
     private func matchingTOCFromTOC(toc : UWTOC?, forNewArea area : TOCArea) -> UWTOC? {
@@ -419,7 +425,6 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
         for (_, candidateTOC) in existingTOC.version.toc.enumerate() {
             
             guard let
-                candidateTOC = candidateTOC as? UWTOC,
                 candSlug = candidateTOC.slug
                 else { break }
             
@@ -430,7 +435,6 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
         }
         return matchingTOC
     }
-    
     
     private func selectChapter(chapterNum : Int) {
         if let _ = usfmPageVC {

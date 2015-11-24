@@ -290,7 +290,7 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
     [self resetAllState];
     [self dismissViewControllerAnimated:YES completion:^{
         if (success) {
-            [[[UIAlertView alloc] initWithTitle:@"Success!" message:@"Your action was successful." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
+            [[[UIAlertView alloc] initWithTitle:@"Success!" message:@"Your file transfer was successful." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
         }
         else {
             [[[UIAlertView alloc] initWithTitle:@"Failure" message:@"There was an error with this file." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
@@ -361,13 +361,8 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
 
 - (void)saveFile:(NSData *)fileData completion:(FileCompletion)completion
 {
-    BOOL success = NO;
-    if (fileData != nil) {
-        UFWFileImporter *importer = [[UFWFileImporter alloc] initWithData:fileData];
-        if (importer.file.isValid) {
-            success = importer.importFile;
-        }
-    }
+    UFWFileImporter *importer = [[UFWFileImporter alloc] init];
+    BOOL success = [importer importData: fileData];
     [self dismissWithSuccess:success completion:completion];
 }
 

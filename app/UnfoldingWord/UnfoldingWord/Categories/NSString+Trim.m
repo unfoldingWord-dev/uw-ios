@@ -35,20 +35,21 @@
 
 - (BOOL)writeFileToDocumentsDirectory:(NSString *)filename atomically:(BOOL)useAuxiliaryFile encoding:(NSStringEncoding)enc error:(NSError **)error
 {
-    NSString *path = [NSString documentsPathWithFilename:filename];
+    NSString *path = [filename documentsPath];
     return [self writeToFile:path atomically:YES encoding:enc error:error];
 }
 
 + (instancetype)stringWithContentsOfFileInDocumentsDirectory:(NSString *)filename encoding:(NSStringEncoding)enc error:(NSError **)error
 {
-    NSString *path = [NSString documentsPathWithFilename:filename];
+    NSString *path = [filename documentsPath];
     return [NSString stringWithContentsOfFile:path encoding:enc error:error];
 }
 
-+ (NSString *)documentsPathWithFilename:(NSString *)filename
+- (NSString *)documentsPath
 {
-    return [[NSString documentsDirectory] stringByAppendingPathComponent:filename];
+    return [[NSString documentsDirectory] stringByAppendingPathComponent:self];
 }
+
 
 + (NSString *)documentsDirectory
 {

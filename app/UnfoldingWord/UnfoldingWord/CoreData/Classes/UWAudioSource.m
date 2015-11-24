@@ -76,7 +76,7 @@ static NSString *const KPLaceHolderForBitrate = @"{bitrate}";
     if (bitrate == nil) {
         return nil;
     }
-    NSString *filepath = [NSString documentsPathWithFilename:bitrate.filename];
+    NSString *filepath = [bitrate.filename documentsPath];
     if (filepath == nil) {
         return nil;
     }
@@ -100,9 +100,7 @@ static NSString *const KPLaceHolderForBitrate = @"{bitrate}";
         completion(NO);
         return;
     }
-    
-    NSLog(@"Filename: %@", [FileNamer nameForAudioBitrate:bitrate]);
-    
+        
     [UWDownloaderPlusValidator downloadPlusValidateSourceUrl:sourceUrl signatureUrl:signatureUrl withCompletion:^(NSString * _Nullable sourceDataPath, NSString * _Nullable signatureDataPath, BOOL fileValidated) {
         if (sourceDataPath == nil) {
             completion(NO);

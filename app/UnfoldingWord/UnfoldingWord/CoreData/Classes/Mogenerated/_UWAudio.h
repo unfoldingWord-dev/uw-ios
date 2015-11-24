@@ -45,7 +45,7 @@ extern const struct UWAudioFetchedProperties {
 
 //- (BOOL)validateMedia:(id*)value_ error:(NSError**)error_;
 
-@property (nonatomic, strong) NSSet* sources;
+@property (nonatomic, strong) NSSet<UWAudioSource *>* sources;
 
 - (NSMutableSet*)sourcesSet;
 

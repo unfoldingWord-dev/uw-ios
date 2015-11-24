@@ -23,6 +23,7 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
     var audioData : NSData?
     
     @IBOutlet weak var sliderTime: UISlider! {
+        
         didSet {
             sliderTime.setThumbImage(UIImage(named: "thumb-audio"), forState: UIControlState.Normal)
             sliderTime.minimumTrackTintColor = UIColor(red: 0.0, green: 0.769, blue: 0.980, alpha: 1.0)
@@ -106,9 +107,11 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
             
             if url.fileURL {
                 AuditionFileReader.parseFileUrl(url, completion: { [weak self] (audioFileInfo) -> Void in
-                    guard let strongself = self else { return }
-                    strongself.chapterInfo = audioFileInfo
+                    guard let strong = self else { return }
+                    strong.chapterInfo = audioFileInfo
                 })
+                
+                
                 createPlayerWithFileUrl(url)
                 showPlayerUI()
                 return;

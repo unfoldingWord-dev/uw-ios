@@ -63,6 +63,7 @@
 		5A26CC8A1BBDD509006DFFD3 /* UWVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A26CC691BBDD509006DFFD3 /* UWVideo.m */; };
 		5A26CC8B1BBDD509006DFFD3 /* UWVideoSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A26CC6B1BBDD509006DFFD3 /* UWVideoSource.m */; };
 		5A2B79AE1B5EA22D00AD9993 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2B79AD1B5EA22D00AD9993 /* UIViewControllerExtension.swift */; };
+		5A2DD85D1BFD10CA00011DA2 /* String+Zip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2DD85C1BFD10CA00011DA2 /* String+Zip.swift */; };
 		5A30C3951BEA6F4200B1A1C3 /* SignatureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A30C3941BEA6F4200B1A1C3 /* SignatureHandler.swift */; };
 		5A323B1D1A3381FB00099C94 /* NSDictionary+DWSNull.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A323B1C1A3381FB00099C94 /* NSDictionary+DWSNull.m */; };
 		5A36D3B51B223F23001D6E04 /* UFWAppInformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A36D3B31B223F23001D6E04 /* UFWAppInformationView.m */; };
@@ -779,6 +780,7 @@
 		5AD20D8D1B9665B7000B813B /* FileDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD20D8C1B9665B7000B813B /* FileDownloader.swift */; };
 		5AD3CBE41B4A182D003F5F33 /* ITunesSharingReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD3CBE31B4A182D003F5F33 /* ITunesSharingReceiver.swift */; };
 		5AD3CBE61B4A185B003F5F33 /* ITunesSharingSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD3CBE51B4A185B003F5F33 /* ITunesSharingSender.swift */; };
+		5AD8CE8C1BFE596A00EBD58B /* NSArray+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD8CE8B1BFE596A00EBD58B /* NSArray+Helpers.swift */; };
 		5AD953CA1BB07B3400E3D654 /* DWSCoreDataStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AD953A81BB07B3400E3D654 /* DWSCoreDataStack.m */; };
 		5AD953CB1BB07B3400E3D654 /* UnfoldingWord.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5AD953A91BB07B3400E3D654 /* UnfoldingWord.xcdatamodeld */; };
 		5AE06E481BC18CB80072EB27 /* AuditionFileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE06E471BC18CB80072EB27 /* AuditionFileReader.swift */; };
@@ -787,7 +789,7 @@
 		5AEECBFD1A994C7400BC7E40 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5AEECBFF1A994C7400BC7E40 /* Localizable.strings */; };
 		5AEECC021A994C7500BC7E40 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5AEECC041A994C7500BC7E40 /* InfoPlist.strings */; };
 		5AF051DA1B756A8A003EA5A4 /* UWConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF051D91B756A8A003EA5A4 /* UWConstants.swift */; };
-		5AF051EE1B756BD1003EA5A4 /* UWFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF051DD1B756BD1003EA5A4 /* UWFile.swift */; };
+		5AF051EE1B756BD1003EA5A4 /* UFWFileText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF051DD1B756BD1003EA5A4 /* UFWFileText.swift */; };
 		5AF051EF1B756BD1003EA5A4 /* UWUrlSourceItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF051DE1B756BD1003EA5A4 /* UWUrlSourceItem.swift */; };
 		5AF051F01B756BD1003EA5A4 /* langnames2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5AF051E01B756BD1003EA5A4 /* langnames2.plist */; };
 		5AF051F11B756BD1003EA5A4 /* UFWLanguageInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AF051E21B756BD1003EA5A4 /* UFWLanguageInfo.m */; };
@@ -800,6 +802,7 @@
 		5AF0529A1B756D31003EA5A4 /* libssl_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AF052981B756D31003EA5A4 /* libssl_iOS.a */; };
 		5AF0B6B41B9FAB6E00987463 /* USFMPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0B6B31B9FAB6E00987463 /* USFMPageViewController.swift */; };
 		5AF0B6B61BA080C300987463 /* USFMChapterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0B6B51BA080C300987463 /* USFMChapterVC.swift */; };
+		5AF682451BFFDD300048B611 /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF682441BFFDD300048B611 /* String+Helpers.swift */; };
 		5AFC90421AFACAE20012D177 /* UIView+ACTQuickLook.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFC90411AFACAE20012D177 /* UIView+ACTQuickLook.m */; };
 		5AFC9B601B41950500D453D0 /* UIViewController+FileTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AFC9B5F1B41950500D453D0 /* UIViewController+FileTransfer.m */; };
 		5AFC9B6B1B41D2FB00D453D0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AFC9B6A1B41D2FB00D453D0 /* libz.dylib */; };
@@ -905,6 +908,7 @@
 		5A26CC6A1BBDD509006DFFD3 /* UWVideoSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UWVideoSource.h; sourceTree = "<group>"; };
 		5A26CC6B1BBDD509006DFFD3 /* UWVideoSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UWVideoSource.m; sourceTree = "<group>"; };
 		5A2B79AD1B5EA22D00AD9993 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
+		5A2DD85C1BFD10CA00011DA2 /* String+Zip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Zip.swift"; sourceTree = "<group>"; };
 		5A30C3941BEA6F4200B1A1C3 /* SignatureHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignatureHandler.swift; sourceTree = "<group>"; };
 		5A323B1B1A3381FB00099C94 /* NSDictionary+DWSNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+DWSNull.h"; sourceTree = "<group>"; };
 		5A323B1C1A3381FB00099C94 /* NSDictionary+DWSNull.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+DWSNull.m"; sourceTree = "<group>"; };
@@ -1667,10 +1671,10 @@
 		5AAC5C641A97C5F5001AFA3D /* UIViewController+DWSExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+DWSExtensions.h"; sourceTree = "<group>"; };
 		5AAC5C651A97C5F5001AFA3D /* UIViewController+DWSExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+DWSExtensions.m"; sourceTree = "<group>"; };
 		5ABFFD381B348678006FB166 /* UnfoldingWord-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UnfoldingWord-Bridging-Header.h"; sourceTree = "<group>"; };
-		5ABFFD461B34882F006FB166 /* UWFileExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWFileExporter.swift; sourceTree = "<group>"; };
-		5ABFFD471B34882F006FB166 /* UWFileImporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWFileImporter.swift; sourceTree = "<group>"; };
+		5ABFFD461B34882F006FB166 /* UWFileExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = UWFileExporter.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		5ABFFD471B34882F006FB166 /* UWFileImporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = UWFileImporter.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5AC121D61B6ECA3300D61BF7 /* FrameCellDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameCellDelegate.h; sourceTree = "<group>"; };
-		5AC377CE1B38744500E3BB36 /* FileActivityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileActivityController.swift; sourceTree = "<group>"; };
+		5AC377CE1B38744500E3BB36 /* FileActivityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FileActivityController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5AC377D01B38C38300E3BB36 /* BluetoothFileSender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothFileSender.swift; sourceTree = "<group>"; };
 		5AC377D21B38C62C00E3BB36 /* BluetoothFileReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothFileReceiver.swift; sourceTree = "<group>"; };
 		5AC3DCB41B1F751000703AA2 /* ACTSimpleChapterNumberCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACTSimpleChapterNumberCell.h; sourceTree = "<group>"; };
@@ -1680,8 +1684,9 @@
 		5AD0B4A01B45CB68006ABD21 /* MultiConnectReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiConnectReceiver.swift; sourceTree = "<group>"; };
 		5AD20D8A1B960166000B813B /* AudioPlayerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AudioPlayerView.xib; sourceTree = "<group>"; };
 		5AD20D8C1B9665B7000B813B /* FileDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileDownloader.swift; sourceTree = "<group>"; };
-		5AD3CBE31B4A182D003F5F33 /* ITunesSharingReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITunesSharingReceiver.swift; sourceTree = "<group>"; };
+		5AD3CBE31B4A182D003F5F33 /* ITunesSharingReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ITunesSharingReceiver.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5AD3CBE51B4A185B003F5F33 /* ITunesSharingSender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITunesSharingSender.swift; sourceTree = "<group>"; };
+		5AD8CE8B1BFE596A00EBD58B /* NSArray+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSArray+Helpers.swift"; sourceTree = "<group>"; };
 		5AD953A61BB07B3400E3D654 /* CoreDataClasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataClasses.h; sourceTree = "<group>"; };
 		5AD953A71BB07B3400E3D654 /* DWSCoreDataStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWSCoreDataStack.h; sourceTree = "<group>"; };
 		5AD953A81BB07B3400E3D654 /* DWSCoreDataStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWSCoreDataStack.m; sourceTree = "<group>"; };
@@ -1708,13 +1713,13 @@
 		5AEECC151A994CDC00BC7E40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5AEECC161A994CDD00BC7E40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5AF051D91B756A8A003EA5A4 /* UWConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWConstants.swift; sourceTree = "<group>"; };
-		5AF051DD1B756BD1003EA5A4 /* UWFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWFile.swift; sourceTree = "<group>"; };
+		5AF051DD1B756BD1003EA5A4 /* UFWFileText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = UFWFileText.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5AF051DE1B756BD1003EA5A4 /* UWUrlSourceItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWUrlSourceItem.swift; sourceTree = "<group>"; };
 		5AF051E01B756BD1003EA5A4 /* langnames2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = langnames2.plist; sourceTree = "<group>"; };
 		5AF051E11B756BD1003EA5A4 /* UFWLanguageInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFWLanguageInfo.h; sourceTree = "<group>"; };
 		5AF051E21B756BD1003EA5A4 /* UFWLanguageInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UFWLanguageInfo.m; sourceTree = "<group>"; };
 		5AF051E41B756BD1003EA5A4 /* UFWActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UFWActivity.swift; sourceTree = "<group>"; };
-		5AF051E51B756BD1003EA5A4 /* UFWFileActivityItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UFWFileActivityItemProvider.swift; sourceTree = "<group>"; };
+		5AF051E51B756BD1003EA5A4 /* UFWFileActivityItemProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = UFWFileActivityItemProvider.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5AF051E71B756BD1003EA5A4 /* USFMChapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = USFMChapter.h; sourceTree = "<group>"; };
 		5AF051E81B756BD1003EA5A4 /* USFMChapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = USFMChapter.m; sourceTree = "<group>"; };
 		5AF051E91B756BD1003EA5A4 /* USFMCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = USFMCoding.h; sourceTree = "<group>"; };
@@ -1801,10 +1806,11 @@
 		5AF052981B756D31003EA5A4 /* libssl_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl_iOS.a; sourceTree = "<group>"; };
 		5AF0B6B31B9FAB6E00987463 /* USFMPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = USFMPageViewController.swift; sourceTree = "<group>"; };
 		5AF0B6B51BA080C300987463 /* USFMChapterVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = USFMChapterVC.swift; sourceTree = "<group>"; };
+		5AF682441BFFDD300048B611 /* String+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Helpers.swift"; sourceTree = "<group>"; };
 		5AFC90401AFACAE20012D177 /* UIView+ACTQuickLook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ACTQuickLook.h"; sourceTree = "<group>"; };
 		5AFC90411AFACAE20012D177 /* UIView+ACTQuickLook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ACTQuickLook.m"; sourceTree = "<group>"; };
 		5AFC9B5E1B41950500D453D0 /* UIViewController+FileTransfer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+FileTransfer.h"; sourceTree = "<group>"; };
-		5AFC9B5F1B41950500D453D0 /* UIViewController+FileTransfer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+FileTransfer.m"; sourceTree = "<group>"; };
+		5AFC9B5F1B41950500D453D0 /* UIViewController+FileTransfer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "UIViewController+FileTransfer.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5AFC9B6A1B41D2FB00D453D0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		5AFDC3371AF1366C002F58A0 /* NSManagedObject+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Convenience.h"; sourceTree = "<group>"; };
 		5AFDC3381AF1366C002F58A0 /* NSManagedObject+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Convenience.m"; sourceTree = "<group>"; };
@@ -1812,7 +1818,7 @@
 		6392585D1A24506500B5B8D2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6392585E1A24506500B5B8D2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		639258601A24506500B5B8D2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		639258611A24506500B5B8D2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		639258611A24506500B5B8D2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6392586C1A24506500B5B8D2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6392586F1A24506500B5B8D2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		639258751A24506500B5B8D2 /* UnfoldingWordTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnfoldingWordTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2008,6 +2014,9 @@
 				5A2B79AD1B5EA22D00AD9993 /* UIViewControllerExtension.swift */,
 				5A0DD1D61BA0E50F00F351C7 /* String+Paths.swift */,
 				5A7752A61BE92EAC00695CB5 /* NSData+ZipHelper.swift */,
+				5A2DD85C1BFD10CA00011DA2 /* String+Zip.swift */,
+				5AF682441BFFDD300048B611 /* String+Helpers.swift */,
+				5AD8CE8B1BFE596A00EBD58B /* NSArray+Helpers.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -3197,7 +3206,7 @@
 		5AF051DC1B756BD1003EA5A4 /* FileFormat */ = {
 			isa = PBXGroup;
 			children = (
-				5AF051DD1B756BD1003EA5A4 /* UWFile.swift */,
+				5AF051DD1B756BD1003EA5A4 /* UFWFileText.swift */,
 				5AF051DE1B756BD1003EA5A4 /* UWUrlSourceItem.swift */,
 				5A223FC51BE7F35A00A16421 /* FileNamer.swift */,
 			);
@@ -4231,6 +4240,7 @@
 				5A8DCB9D1B03B1A10010DD27 /* UINavigationController+UFWNavigationController.m in Sources */,
 				5A26CC6F1BBDD509006DFFD3 /* _OpenFrame.m in Sources */,
 				5A7AF7641BCC0B2500B651D4 /* XMLConverter.m in Sources */,
+				5AD8CE8C1BFE596A00EBD58B /* NSArray+Helpers.swift in Sources */,
 				5A9AC03D1B0A38B100753AAB /* FrameCell.m in Sources */,
 				5A26CC751BBDD509006DFFD3 /* _UWStatus.m in Sources */,
 				5A9AC04C1B0A38B100753AAB /* UFWBaseSettingsCell.m in Sources */,
@@ -4239,6 +4249,7 @@
 				5A9AC0011B0A370000753AAB /* UFWStatusInfoViewController.m in Sources */,
 				5A9AC03B1B0A38B100753AAB /* EmptyCell.m in Sources */,
 				5AD3CBE61B4A185B003F5F33 /* ITunesSharingSender.swift in Sources */,
+				5A2DD85D1BFD10CA00011DA2 /* String+Zip.swift in Sources */,
 				5AC377D11B38C38300E3BB36 /* BluetoothFileSender.swift in Sources */,
 				5A9AC0431B0A38B100753AAB /* UFWInfoView.m in Sources */,
 				5A8DCB971B02601A0010DD27 /* UFWSelectionTracker.m in Sources */,
@@ -4248,7 +4259,8 @@
 				5A26CC7E1BBDD509006DFFD3 /* OpenContainer.m in Sources */,
 				5AD0B4A11B45CB68006ABD21 /* MultiConnectReceiver.swift in Sources */,
 				5AAC5C631A97C5DB001AFA3D /* NSLayoutConstraint+DWSExtensions.m in Sources */,
-				5AF051EE1B756BD1003EA5A4 /* UWFile.swift in Sources */,
+				5AF051EE1B756BD1003EA5A4 /* UFWFileText.swift in Sources */,
+				5AF682451BFFDD300048B611 /* String+Helpers.swift in Sources */,
 				5AF0B6B41B9FAB6E00987463 /* USFMPageViewController.swift in Sources */,
 				5A9AC0451B0A38B100753AAB /* ACTLabelButton.m in Sources */,
 				5AFC90421AFACAE20012D177 /* UIView+ACTQuickLook.m in Sources */,

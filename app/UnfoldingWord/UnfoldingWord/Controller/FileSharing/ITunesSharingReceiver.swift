@@ -53,20 +53,18 @@ import Foundation
     
     func importFileAtPath(path : String) -> Bool {
         
-        if let data = NSFileManager.defaultManager().contentsAtPath(path) {
-            let importer = UFWFileImporter(data: data)
-            
-            // If successfully import file, remove from disk and from the local list
-            if importer.file.isValid && importer.importFile() {
-                deleteFileForFilePath(path)
-                removeDeletedFilesFromExistingFileList()
-                saveFileList()
-                return true
-            }
+        if UFWFileImporter().importZipFileData(withPath: path) {
+            deleteFileForFilePath(path)
+            removeDeletedFilesFromExistingFileList()
+            saveFileList()
+            return true
         }
-        return false
+        else {
+            return false
+        }
     }
-    
+
+
     func addExistingFilePath(path : String) {
         let stringPath = path as NSString
         let matchingArray = self.arrayExistingFileNames.filter({ stringPath.isEqualToString($0) })

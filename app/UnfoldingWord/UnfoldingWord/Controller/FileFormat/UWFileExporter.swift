@@ -17,21 +17,72 @@ import CoreData
     }
     
     /// The file is a json string converted to data. The enclosed json is a dictionary with 1. a toplevel dictionary with the exported language and version, and 2. a sources dictionary that contains the necessary contents to populate based on the urls in the version's TOC items.
-    var fileData : NSData? {
+    var fileDataPath : String? {
         get {
-            let top = createTopContainerFullDictionary()
-            let sources = createUrlSources()
-            let fileDict = NSDictionary(objects: [top, sources], forKeys: [Constants.FileFormat.TopLevel, Constants.FileFormat.SourcesArray])
-            let file = UFWFile(sourceDictionary: fileDict)
-            if file.isValid {
-                return file.fileData
-            }
-            else {
-                assertionFailure("File was invalid based on dictionary \(fileDict)")
-                return nil
-            }
+            guard let textPath = textFileDataTemporaryPath() else { return nil }
+            let audioPaths = audioFileDataTemporaryPathArray()
+            return createZipArchive(textPath, audioFilePaths: audioPaths)
         }
     }
+    
+    private func textFileDataTemporaryPath() -> String?
+    {
+        let top = createTopContainerFullDictionary()
+        let sources = createUrlSources()
+        let fileDict = NSDictionary(objects: [top, sources], forKeys: [Constants.FileFormat.TopLevel, Constants.FileFormat.SourcesArray])
+        let file = UFWFileText(sourceDictionary: fileDict)
+        let textFilePath = FileNamer.nameForVersionText(sourceVersion).pathInCacheDirectory()
+        guard let textData = file.fileData where textData.writeToFile(textFilePath, atomically: true) else {
+            assertionFailure("Text File was invalid or could not be written based on dictionary \(fileDict)")
+            return nil
+        }
+        return textFilePath
+    }
+    
+    private func audioFileDataTemporaryPathArray() -> [String]
+    {
+        guard let tocSet = sourceVersion.toc else  { return [String]() }
+        
+        // Work through all the sources in each toc that has media sources
+        var paths = [String]()
+        
+        tocSet.forEach { (toc) -> () in
+            guard let media = toc.media, let audio = media.audio, let sources = audio.sources where sources.count > 0 else { return }
+            
+            sources.forEach({ (audioSource) -> () in
+                guard let
+                    bitrate = audioSource.bestBitrateWithDownloadedAudio(),
+                    filename = bitrate.filename
+                    where NSFileManager.defaultManager().fileExistsAtPath(filename.documentsPath())
+                else { return } // no audio file
+                
+                paths.append(filename.documentsPath())
+                
+                // Check for a signature
+                let sigName = FileNamer.signatureFileFromAudioFile(filename)
+                if NSFileManager.defaultManager().fileExistsAtPath(sigName.documentsPath()) {
+                    paths.append(sigName.documentsPath())
+                }
+            })
+        }
+        return paths
+    }
+    
+    private func createZipArchive(textPath : String, audioFilePaths : [String]) -> String?
+    {
+        var combinedFilePaths = [String]()
+        combinedFilePaths.append(textPath)
+        combinedFilePaths.appendContentsOf(audioFilePaths)
+        
+        let zipPath = String.temporaryFilePathInCacheDirectory()
+        if (SSZipArchive.createZipFileAtPath(zipPath, withFilesAtPaths: combinedFilePaths)) {
+            return zipPath
+        }
+        else {
+            return nil
+        }
+    }
+    
     
     /// Creates a JSON representation that would exist if we had just one top level object with one language and one version. Of course, this requires that importing does not delete objects that already exist
     private func createTopContainerFullDictionary() -> NSDictionary {

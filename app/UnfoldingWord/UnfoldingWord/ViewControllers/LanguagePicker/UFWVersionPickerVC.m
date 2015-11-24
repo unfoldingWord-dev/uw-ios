@@ -15,6 +15,7 @@
 #import "Constants.h"
 #import "UINavigationController+UFWNavigationController.h"
 #import "UFWSelectionTracker.h"
+#import "UnfoldingWord-Swift.h"
 
 @interface UFWVersionPickerVC () <ACTLabelButtonDelegate, CellExpandableDelegate>
 
@@ -43,7 +44,7 @@
 }
 
 - (void)viewDidLoad
-{
+{    
     [super viewDidLoad];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -222,6 +223,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UWVersion *version = self.arrayOfRowObjects[indexPath.row];
+
     if ([version isKindOfClass:[UWVersion class]]) {
         if ([version isAllDownloaded]) {
             self.completion(NO, version);

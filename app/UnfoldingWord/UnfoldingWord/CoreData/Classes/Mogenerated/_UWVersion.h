@@ -60,7 +60,7 @@ extern const struct UWVersionFetchedProperties {
 
 //- (BOOL)validateStatus:(id*)value_ error:(NSError**)error_;
 
-@property (nonatomic, strong) NSSet* toc;
+@property (nonatomic, strong) NSSet<UWTOC *>* toc;
 
 - (NSMutableSet*)tocSet;
 

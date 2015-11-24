@@ -60,7 +60,7 @@ static NSString *const kSize = @"size";
         return NO;
     }
     NSString *filename = self.filename ?: [FileNamer nameForAudioBitrate:self];
-    NSString *sourcePermanentpath = [NSString documentsPathWithFilename:filename];
+    NSString *sourcePermanentpath = [filename documentsPath];
     if ([sourceData writeToFile:sourcePermanentpath atomically:YES]) {
         self.filename = filename;
         self.isDownloadedValue = YES;
@@ -72,8 +72,8 @@ static NSString *const kSize = @"size";
     
     if (sigData) {
         self.signature = [UWDownloaderPlusValidator signatureFromServerRawData:sigData];
-        NSString *sigFileName = [filename stringByAppendingString:SignatureFileAppend];
-        NSString *sigPermanentFilePath = [NSString documentsPathWithFilename:sigFileName];
+        NSString *sigFileName = [FileNamer nameForAudioSignatureBitrate:self];
+        NSString *sigPermanentFilePath = [sigFileName documentsPath];
         [sigData writeToFile:sigPermanentFilePath atomically:YES];
     }
     
