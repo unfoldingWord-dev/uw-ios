@@ -17,7 +17,7 @@
 #import "UFWSelectionTracker.h"
 #import "UnfoldingWord-Swift.h"
 
-@interface UFWVersionPickerVC () <ACTLabelButtonDelegate, CellExpandableDelegate>
+@interface UFWVersionPickerVC () <ACTLabelButtonDelegate>
 
 @property (nonatomic, strong) NSArray *arrayLanguages;
 @property (nonatomic, strong) NSMutableArray *arrayLanguagesSelected;
@@ -62,6 +62,9 @@
     self.cellVersion = NSStringFromClass([UFWVersionCell class]);
     UINib *versionNib = [UINib nibWithNibName:self.cellVersion bundle:nil];
     [self.tableView registerNib:versionNib forCellReuseIdentifier:self.cellVersion];
+    
+    self.tableView.estimatedRowHeight = 60;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationDownloadComplete:) name:kNotificationDownloadCompleteForVersion object:nil];
     
@@ -193,10 +196,7 @@
     else if ([object isKindOfClass:[UWVersion class]]) {
         UWVersion *version = (UWVersion *)object;
         UFWVersionCell *versionCell = [tableView dequeueReusableCellWithIdentifier:self.cellVersion forIndexPath:indexPath];
-        versionCell.delegate = self;
         versionCell.version = version;
-        versionCell.isExpanded = [self isVersionExpanded:version];
-        versionCell.isSelected = [version isEqual:self.initialTOC.version];
         return versionCell;
     }
     else {
@@ -204,35 +204,36 @@
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    id object = self.arrayOfRowObjects[indexPath.row];
-    if ([object isKindOfClass:[UWLanguage class]]) {
-        return 44.0f;
-    }
-    else if ([object isKindOfClass:[UWVersion class]]) {
-        UWVersion *version = (UWVersion *)object;
-        return [UFWVersionCell heightForVersion:version expanded:[self isVersionExpanded:version] forWidth:self.tableView.frame.size.width];
-    }
-    else {
-        NSAssert1(NO, @"no height for %@", object);
-        return 0;
-    }
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    id object = self.arrayOfRowObjects[indexPath.row];
+//    if ([object isKindOfClass:[UWLanguage class]]) {
+//        return 44.0f;
+//    }
+//    else if ([object isKindOfClass:[UWVersion class]]) {
+//        UWVersion *version = (UWVersion *)object;
+//        return [UFWVersionCell heightForVersion:version expanded:[self isVersionExpanded:version] forWidth:self.tableView.frame.size.width];
+//    }
+//    else {
+//        NSAssert1(NO, @"no height for %@", object);
+//        return 0;
+//    }
+//}
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UWVersion *version = self.arrayOfRowObjects[indexPath.row];
-
-    if ([version isKindOfClass:[UWVersion class]]) {
-        if ([version isAllDownloaded]) {
-            self.completion(NO, version);
-        }
-        else {
-            [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"This item has not been downloaded yet. Press the download button first.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles: nil] show];
-        }
-    }
-}
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    UWVersion *version = self.arrayOfRowObjects[indexPath.row];
+//
+//    if ([version isKindOfClass:[UWVersion class]]) {
+//#warning Check for audio and video separately.
+//        if ([version isAllTextDownloaded]) {
+//            self.completion(NO, version);
+//        }
+//        else {
+//            [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"This item has not been downloaded yet. Press the download button first.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles: nil] show];
+//        }
+//    }
+//}
 
 - (BOOL)isVersionExpanded:(UWVersion *)version
 {

@@ -3,6 +3,7 @@
 //
 
 #import "_UWTOC.h"
+#import "UWDownloadOptions.h"
 
 @class UWVersion, OpenChapter, UWFile;
 
@@ -14,11 +15,24 @@ typedef void (^TOCDownloadCompletion) (BOOL success);
 
 + (void)updateTOCitems:(NSArray *)tocItems forVersion:(UWVersion *)version;
 
-- (void)downloadWithCompletion:(TOCDownloadCompletion)completion;
+- (void)downloadUsingOptions:(DownloadOptions)options completion:(TOCDownloadCompletion)completion;
 
 - (BOOL)deleteAllContent;
 
-- (BOOL)isDownloadedAndValid;
+- (BOOL)isDownloadedForOptions:(DownloadOptions)options;
+- (BOOL)isDownloadedAndValidForOptions:(DownloadOptions)options;
+
+// Check audio download status
+- (BOOL)hasAudio;
+- (BOOL)allAudioDownloaded;
+- (BOOL)allAudioDownloadedAndValid;
+- (BOOL)anyAudioDownloaded;
+
+// Check video download status
+- (BOOL)hasVideo;
+- (BOOL)allVideoDownloaded;
+- (BOOL)allVideoDownloadedAndValid;
+- (BOOL)anyVideoDownloaded;
 
 - (OpenChapter *)chapterForNumber:(NSInteger)number;
 

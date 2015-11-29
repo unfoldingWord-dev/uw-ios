@@ -23,4 +23,7 @@
 
 - (CGFloat)widthUsingFont:(UIFont *)font;
 
+- (NSString *)stringAfterLastPeriod;
+
+
 @end

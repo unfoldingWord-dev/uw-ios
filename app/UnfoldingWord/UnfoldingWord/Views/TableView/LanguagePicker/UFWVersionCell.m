@@ -12,17 +12,13 @@
 #import "Constants.h"
 #import "UFWInfoView.h"
 #import "NSBundle+DWSExtensions.h"
+#import "UnfoldingWord-Swift.h"
+#import "NSLayoutConstraint+DWSExtensions.h"
 
 @interface UFWVersionCell ()
-@property (nonatomic, weak) IBOutlet UIImageView *imageViewCheckLevel;
-@property (nonatomic, weak) IBOutlet UIImageView *imageViewVerify;
-@property (nonatomic, weak) IBOutlet UILabel *labelName;
-@property (nonatomic, weak) IBOutlet UIButton *buttonDisclosure;
-@property (nonatomic, weak) IBOutlet UIButton *buttonDownload;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
 
-@property (nonatomic, assign) BOOL isDownloading;
-@property (nonatomic, strong) UFWInfoView *infoViewExpanded;
+@property (nonatomic, weak) IBOutlet UILabel *labelName;
+@property (nonatomic, strong) NSArray *arrayMediaTypeViews;
 @end
 
 @implementation UFWVersionCell
@@ -37,8 +33,6 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     
-    [self.buttonDisclosure addTarget:self action:@selector(userPressedExpandContractButton:) forControlEvents:UIControlEventTouchUpInside];
-    [self.buttonDownload addTarget:self action:@selector(userPressedDownloadButton:) forControlEvents:UIControlEventTouchUpInside];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationDownloadComplete:) name:kNotificationDownloadCompleteForVersion object:nil];
 }
 
@@ -47,185 +41,266 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (UIImage *)imageForCheckingLevel:(NSInteger)level {
+    switch (level) {
+        case 1:
+            return [UIImage imageNamed:LEVEL_1_IMAGE];
+            break;
+        case 2:
+            return [UIImage imageNamed:LEVEL_2_IMAGE];
+            break;
+        case 3:
+            return [UIImage imageNamed:LEVEL_3_IMAGE];
+            break;
+        default:
+            return nil;
+    }
+}
+
+- (void)removeAllExistingMediaTypeViews {
+    for (UIView *view in self.arrayMediaTypeViews) {
+        [view removeFromSuperview];
+    }
+    self.arrayMediaTypeViews = nil;
+}
+
 - (void)setVersion:(UWVersion *)version
 {
     _version = version;
     
-    switch (version.status.checking_level.integerValue) {
-        case 1:
-            self.imageViewCheckLevel.image = [UIImage imageNamed:LEVEL_1_IMAGE];
-            break;
-        case 2:
-            self.imageViewCheckLevel.image = [UIImage imageNamed:LEVEL_2_IMAGE];
-            break;
-        case 3:
-            self.imageViewCheckLevel.image = [UIImage imageNamed:LEVEL_3_IMAGE];
-            break;
-        default:
-            self.imageViewCheckLevel.image = nil;
-            break;
-    }
-    
     self.labelName.text = self.version.name;
     
-    if (self.isExpanded) {
-        [self addExpandedView];
-        self.contentView.backgroundColor = [UIColor colorWithRed:.91 green:.91 blue:.91 alpha:1];
-    }
-    else {
-        [self removeExpandedView];
-        self.contentView.backgroundColor = [UIColor whiteColor];
-    }
+    [self removeAllExistingMediaTypeViews];
     
-    [self updateDownloadInfo];
-}
-
-- (void)setIsSelected:(BOOL)isSelected
-{
-    _isSelected = isSelected;
-    self.labelName.textColor = (isSelected) ? SELECTION_BLUE_COLOR : [UIColor blackColor];
-}
-
-- (void)addExpandedView;
-{
-    if (self.infoViewExpanded == nil || self.infoViewExpanded.superview == nil) {
-        UFWInfoView *infoView = [UFWInfoView newView];
-        infoView.translatesAutoresizingMaskIntoConstraints = NO;
-        
-        NSLayoutConstraint *leftEdge = [NSLayoutConstraint constraintWithItem:infoView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeft multiplier:1 constant:10];
-        NSLayoutConstraint *rightEdge = [NSLayoutConstraint constraintWithItem:infoView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeRight multiplier:1 constant:0];
-        NSLayoutConstraint *topEdge = [NSLayoutConstraint constraintWithItem:infoView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.imageViewCheckLevel attribute:NSLayoutAttributeBottom multiplier:1.0 constant:8];
-        
-        [self.contentView addSubview:infoView];
-        [self.contentView addConstraints:@[leftEdge, rightEdge, topEdge]];
-        self.infoViewExpanded = infoView;
-    }
+    NSMutableArray *views = [NSMutableArray new];
+    [views addObject:[self createMediaViewText]];
     
-    [self.infoViewExpanded setStatus:self.version.status];
-    self.infoViewExpanded.layer.opacity = 0.0;
-    [UIView animateWithDuration:.25 delay:.2 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        self.infoViewExpanded.layer.opacity = 1.0;
-    } completion:^(BOOL finished) {}];
+    DownloadStatus audioStatus = [self.version statusAudio];
+    DownloadStatus videoStatus = [self.version statusVideo];
+
+    if ( audioStatus != DownloadStatusNoContent) {
+        [views addObject:[self createMediaViewAudio]];
+    }
+    if ( videoStatus != DownloadStatusNoContent ) {
+        [views addObject:[self createMediaViewVideo]];
+    }
+    self.arrayMediaTypeViews = views;
+    [self updateMediaViews];
+    
+    // Stack the subviews
+    UIView *topView = self.labelName;
+    for (MediaTypeView *mediaView in views) {
+        NSArray *constraints = [NSLayoutConstraint constraintsToPutView:mediaView belowView:topView padding:8.0 withContainerView:self.contentView leftMargin:25 rightMargin:10];
+        [self.contentView addSubview:mediaView];
+        [self.contentView addConstraints:constraints];
+        topView = mediaView;
+    }
+    NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:topView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:10];
+    [self.contentView addConstraint:bottomConstraint];
 }
 
-- (void)removeExpandedView;
-{
-    [self.infoViewExpanded removeFromSuperview];
-    self.infoViewExpanded = nil;
+- (void)updateMediaViews {
+    for (MediaTypeView *mediaView in self.arrayMediaTypeViews) {
+        [self updateMediaView:mediaView];
+    }
 }
 
 #pragma mark - Downloading
 
-- (void) userPressedDownloadButton:(UIButton *)button
-{
-    [self showDownloading];
-    [self.version downloadWithCompletion:^(BOOL success, NSString *errorMessage) {} ];
+- (void)startDownloadingForMediaView:(MediaTypeView *)mediaView
+{    
+    DownloadOptions options = [self downloadOptionsForMediaView:mediaView];
+    [self.version downloadUsingOptions:options completion:^(BOOL success, NSString *errorMessage) {}];
+    [self updateMediaViews];
 }
 
-- (void)showDownloading
-{
-    [self.activityIndicator startAnimating];
-    self.imageViewVerify.hidden = YES;
-    self.buttonDownload.hidden = YES;
-}
-
-- (void)showDownloadComplete
-{
-    [self.activityIndicator stopAnimating];
-    self.imageViewVerify.hidden = NO;
-    if ([self.version isAllValid]) {
-        self.imageViewVerify.image = [UIImage imageNamed:IMAGE_VERIFY_GOOD];
+// Specify which items should start downloading when a user taps download for a given media view.
+- (DownloadOptions)downloadOptionsForMediaView:(MediaTypeView *)mediaView {
+    DownloadOptions options = DownloadOptionsEmpty;
+    switch ([mediaView getType]) {
+        case MediaTypeText:
+            options = options | DownloadOptionsText;
+            break;
+        case MediaTypeAudio:
+            options = options | DownloadOptionsText | DownloadOptionsAudio;
+            break;
+        case MediaTypeVideo:
+            options = options | DownloadOptionsText | DownloadOptionsVideo;
+            break;
     }
-    else {
-        self.imageViewVerify.image = [UIImage imageNamed:IMAGE_VERIFY_FAIL];
-    }
-    self.buttonDownload.hidden = YES;
-}
-
-- (void)showDownloadFailed
-{
-    [self.activityIndicator stopAnimating];
-    self.buttonDownload.hidden = NO;
-    self.imageViewVerify.hidden = YES;
-    [self.buttonDownload setBackgroundImage:[UIImage imageNamed:IMAGE_VERIFY_EXPIRE] forState:UIControlStateNormal];
-}
-
-- (void)showUndownloaded
-{
-    [self.activityIndicator stopAnimating];
-    self.buttonDownload.hidden = NO;
-    [self.buttonDownload setBackgroundImage:[UIImage imageNamed:@"download_arrow.png"] forState:UIControlStateNormal];
-    self.imageViewVerify.hidden = YES;
+    return options;
 }
 
 - (void)notificationDownloadComplete:(NSNotification *)notification
 {
     NSString *versionId = notification.userInfo[kKeyVersionId];
     if ([self.version.objectID.URIRepresentation.absoluteString isEqualToString:versionId]) {
-        [self updateDownloadInfo];
+        [self updateMediaViews];
     }
 }
 
-- (void)updateDownloadInfo
+- (BOOL)isDownloadingForType:(MediaType)type withActiveOptions:(DownloadOptions)options
 {
-    if ([self.version isDownloading]) {
-        [self showDownloading];
+    if (options == DownloadOptionsEmpty) {
+        return NO;
     }
-    else if (self.version.isAnyFailedDownload) {
-        [self showDownloadFailed];
+    else if (type == MediaTypeAudio) {
+        return options & DownloadOptionsAudio;
     }
-    else if (self.version.isAllDownloaded) {
-        [self showDownloadComplete];
+    else if (type == MediaTypeText) {
+        return options & DownloadOptionsText;
     }
-    else {
-        [self showUndownloaded];
+    else if (type == MediaTypeVideo) {
+        return options & DownloadOptionsVideo;
+    }
+    return NO;
+}
+
+- (void)updateMediaView:(MediaTypeView *)mediaView {
+    
+    DownloadStatus status = [self statusForMediaView:mediaView];
+    BOOL isDownloading = [self isDownloadingForType:[mediaView getType] withActiveOptions:[self.version currentDownloadingOptions]];
+    
+    if (isDownloading) {
+        [mediaView hideRightEdgeViewsExcept:mediaView.activityIndicator];
+        
+        switch (mediaView.getType) {
+            case MediaTypeText:
+                mediaView.labelDescription.text = @"Downloading Text";
+                break;
+            case MediaTypeAudio:
+                mediaView.labelDescription.text = @"Downloading Audio";
+                break;
+            case MediaTypeVideo:
+                mediaView.labelDescription.text = @"Downloading Video";
+                break;
+        }
+        return;
+    }
+    
+    // Handle right side button
+    NSAssert2(status != DownloadStatusNoContent, @"%s: Do not show if there is no content: %@", __PRETTY_FUNCTION__, mediaView);
+    if (status & DownloadStatusAllValid) {
+        mediaView.imageViewVerify.image = [UIImage imageNamed:IMAGE_VERIFY_GOOD];
+        [mediaView hideRightEdgeViewsExcept:mediaView.imageViewVerify];
+    } else if (status & DownloadStatusAll) {
+        mediaView.imageViewVerify.image = [UIImage imageNamed:IMAGE_VERIFY_FAIL];
+        [mediaView hideRightEdgeViewsExcept:mediaView.imageViewVerify];
+    } else if (status & DownloadStatusSome || status & DownloadStatusNone) {
+        [mediaView hideRightEdgeViewsExcept:mediaView.buttonDownload];
+    }
+
+    if (status & DownloadStatusAll ) {
+        switch (mediaView.getType) {
+            case MediaTypeText:
+                mediaView.labelDescription.text = @"Read";
+                break;
+            case MediaTypeAudio:
+                mediaView.labelDescription.text = @"Play Audio";
+                break;
+            case MediaTypeVideo:
+                mediaView.labelDescription.text = @"Play Video";
+                break;
+        }
+    } else if (status & DownloadStatusNone || status & DownloadStatusSome) {
+        switch (mediaView.getType) {
+            case MediaTypeText:
+                mediaView.labelDescription.text = @"Download Text";
+                break;
+            case MediaTypeAudio:
+                mediaView.labelDescription.text = @"Download Audio";
+                break;
+            case MediaTypeVideo:
+                mediaView.labelDescription.text = @"Download Video";
+                break;
+        }
+    } else {
+        NSAssert2(NO, @"%s: Unexpected status %ld", __PRETTY_FUNCTION__, status);
     }
 }
 
-#pragma mark - Expanding
-
-- (void)userPressedExpandContractButton:(UIButton *)button
+- (MediaTypeView *)createMediaViewText
 {
-    [self.delegate cellDidChangeExpandedState:self];
+    MediaTypeView *mediaView = [self createMediaView];
+    [mediaView setType:MediaTypeText];
+    mediaView.imageViewType.image = [UIImage imageNamed:@"bible_icon"];
+    [mediaView.buttonCheckingLevel setBackgroundImage:[self imageForCheckingLevel:self.version.status.checking_level.integerValue] forState:UIControlStateNormal];
+    return mediaView;
 }
 
-- (void)setIsExpanded:(BOOL)isExpanded
+- (MediaTypeView *)createMediaViewAudio
 {
-    _isExpanded = isExpanded;
-    [self setVersion:_version];
+    MediaTypeView *mediaView = [self createMediaView];
+    [mediaView setType:MediaTypeAudio];
+    mediaView.imageViewType.image = [UIImage imageNamed:@"audio_icon"];
+    [mediaView.buttonCheckingLevel setBackgroundImage:[self imageForCheckingLevel:self.version.status.checking_level.integerValue] forState:UIControlStateNormal];
+    return mediaView;
 }
 
-#pragma mark - Fitting
-
-+ (instancetype)sizingCell
+- (MediaTypeView *)createMediaViewVideo
 {
-    static UFWVersionCell *_sizingCell = nil;
-    if (_sizingCell == nil) {
-        _sizingCell = [self newView];
-        _sizingCell.hidden = true;
-    }
-    return _sizingCell;
+    MediaTypeView *mediaView = [self createMediaView];
+    [mediaView setType:MediaTypeVideo];
+    mediaView.imageViewType.image = [UIImage imageNamed:@"video_icon"];
+    [mediaView.buttonCheckingLevel setBackgroundImage:[self imageForCheckingLevel:self.version.status.checking_level.integerValue] forState:UIControlStateNormal];
+    return mediaView;
 }
 
-+ (CGFloat)heightForVersion:(UWVersion *)version expanded:(BOOL)isExpanded forWidth:(CGFloat)width;
+- (void)userPressedCheckingInformationForMediaView:(MediaTypeView *) mediaView {
+    [self.delegate userDidRequestShowCheckingLevelForType:[mediaView getType] forVersion:self.version];
+}
+
+- (void)userPressedBackgroundButtonForMediaView:(MediaTypeView *) mediaView
 {
-    UFWVersionCell *sizingCell = [self sizingCell];
-    static CGFloat const margin = 8.0f;
-    CGFloat normalBottom = CGRectGetMaxY(sizingCell.imageViewCheckLevel.frame);
-    if (isExpanded == NO) {
-        return normalBottom + margin;
+    // Don't do anything if we're downloading.
+    if ([self.version currentDownloadingOptions] != DownloadOptionsEmpty) {
+        return;
     }
-    else {
-        sizingCell.version = version;
-        [sizingCell setIsExpanded:YES];
-        sizingCell.bounds = CGRectMake(0, 0, width, 10000);
-        sizingCell.contentView.bounds = CGRectMake(0, 0, width, 10000);
-        UFWInfoView *infoView = sizingCell.infoViewExpanded;
-        [infoView setNeedsUpdateConstraints];
-        [infoView setNeedsLayout];
-        [infoView layoutIfNeeded];
-        return sizingCell.infoViewExpanded.frame.size.height + normalBottom + (2*margin);
+    
+    DownloadStatus status = [self statusForMediaView:mediaView];
+    if (status & DownloadStatusSome) {
+        [self.delegate userDidRequestShow:[mediaView getType] forVersion:self.version];
+    }
+
+}
+
+- (void)userPressedDownloadButtonForMediaView:(MediaTypeView *)mediaView {
+    [self startDownloadingForMediaView:mediaView];
+}
+
+- (MediaTypeView *)createMediaView {
+    NSString *classname = NSStringFromClass([MediaTypeView class]);
+    classname = [classname stringAfterLastPeriod];
+    MediaTypeView *mediaView = (MediaTypeView *)[NSBundle topLevelViewForNibName:classname];
+    mediaView.translatesAutoresizingMaskIntoConstraints = NO;
+    __weak typeof(self) weak = self;
+    __weak typeof(mediaView) weakMediaView = mediaView;
+    
+    [mediaView setDownloadButtonBlock:^{
+        [weak userPressedDownloadButtonForMediaView:weakMediaView];
+    }];
+    [mediaView setCheckingLevelButtonBlock:^{
+        [weak userPressedCheckingInformationForMediaView:weakMediaView];
+    }];
+    [mediaView setBackgroundButtonBlock:^{
+        [weak userPressedBackgroundButtonForMediaView:weakMediaView];
+    }];
+    return mediaView;
+}
+
+- (DownloadStatus)statusForMediaView:(MediaTypeView *)mediaView {
+    switch (mediaView.getType) {
+        case MediaTypeText:
+            return [self.version statusText];
+            break;
+        case MediaTypeAudio:
+            return [self.version statusAudio];
+            break;
+        case MediaTypeVideo:
+            return [self.version statusVideo];
+            break;
     }
 }
+
 
 @end

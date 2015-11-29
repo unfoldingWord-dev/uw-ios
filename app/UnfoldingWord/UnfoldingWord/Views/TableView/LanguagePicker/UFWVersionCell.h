@@ -7,19 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-@class UFWVersionCell;
-@class UWVersion;
 
-@protocol CellExpandableDelegate <NSObject>
-- (void)cellDidChangeExpandedState:(UFWVersionCell *)cell;
+@class UWVersion;
+#import "Constants.h"
+
+@protocol VersionCellDelegate <NSObject>
+- (void)userDidRequestShow:(MediaType)type forVersion:(UWVersion *)version;
+- (void)userDidRequestShowCheckingLevelForType:(MediaType)type forVersion:(UWVersion *)version;
 @end
 
+
 @interface UFWVersionCell : UITableViewCell
-@property (nonatomic, weak) id <CellExpandableDelegate> delegate;
 @property (nonatomic, strong) UWVersion *version;
-@property (nonatomic, assign) BOOL isExpanded;
-@property (nonatomic, assign) BOOL isSelected;
-
-+ (CGFloat)heightForVersion:(UWVersion *)version expanded:(BOOL)isExpanded forWidth:(CGFloat)width;
-
+@property (nonatomic, weak) id <VersionCellDelegate> delegate;
 @end

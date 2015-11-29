@@ -92,6 +92,9 @@
 		5A82BA721AF928E100C5044E /* UFWImporterUSFMEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A82BA6D1AF928E100C5044E /* UFWImporterUSFMEncoding.m */; };
 		5A8DCB971B02601A0010DD27 /* UFWSelectionTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A8DCB961B02601A0010DD27 /* UFWSelectionTracker.m */; };
 		5A8DCB9D1B03B1A10010DD27 /* UINavigationController+UFWNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A8DCB9C1B03B1A10010DD27 /* UINavigationController+UFWNavigationController.m */; };
+		5A9830BB1C06476C00D4E705 /* bible_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A9830B81C06476C00D4E705 /* bible_icon@3x.png */; };
+		5A9830BC1C06476C00D4E705 /* video_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A9830B91C06476C00D4E705 /* video_icon@3x.png */; };
+		5A9830BD1C06476C00D4E705 /* audio_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A9830BA1C06476C00D4E705 /* audio_icon@3x.png */; };
 		5A9A1FC41B950FA700ED8225 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9A1FC31B950FA700ED8225 /* AVFoundation.framework */; };
 		5A9A1FC61B950FC100ED8225 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9A1FC51B950FC100ED8225 /* MediaPlayer.framework */; };
 		5A9A1FC91B95141F00ED8225 /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9A1FC81B95141F00ED8225 /* AudioPlayerView.swift */; };
@@ -788,6 +791,8 @@
 		5AEDC6F11B068B0200551D27 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AEDC6F01B068B0200551D27 /* SystemConfiguration.framework */; };
 		5AEECBFD1A994C7400BC7E40 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5AEECBFF1A994C7400BC7E40 /* Localizable.strings */; };
 		5AEECC021A994C7500BC7E40 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5AEECC041A994C7500BC7E40 /* InfoPlist.strings */; };
+		5AF047061C0539AB004F3AB1 /* MediaTypeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5AF047051C0539AB004F3AB1 /* MediaTypeView.xib */; };
+		5AF047081C0539E0004F3AB1 /* MediaTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF047071C0539E0004F3AB1 /* MediaTypeView.swift */; };
 		5AF051DA1B756A8A003EA5A4 /* UWConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF051D91B756A8A003EA5A4 /* UWConstants.swift */; };
 		5AF051EE1B756BD1003EA5A4 /* UFWFileText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF051DD1B756BD1003EA5A4 /* UFWFileText.swift */; };
 		5AF051EF1B756BD1003EA5A4 /* UWUrlSourceItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF051DE1B756BD1003EA5A4 /* UWUrlSourceItem.swift */; };
@@ -965,6 +970,9 @@
 		5A8DCB961B02601A0010DD27 /* UFWSelectionTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UFWSelectionTracker.m; sourceTree = "<group>"; };
 		5A8DCB9B1B03B1A10010DD27 /* UINavigationController+UFWNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+UFWNavigationController.h"; sourceTree = "<group>"; };
 		5A8DCB9C1B03B1A10010DD27 /* UINavigationController+UFWNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+UFWNavigationController.m"; sourceTree = "<group>"; };
+		5A9830B81C06476C00D4E705 /* bible_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bible_icon@3x.png"; sourceTree = "<group>"; };
+		5A9830B91C06476C00D4E705 /* video_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video_icon@3x.png"; sourceTree = "<group>"; };
+		5A9830BA1C06476C00D4E705 /* audio_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audio_icon@3x.png"; sourceTree = "<group>"; };
 		5A9A1FC31B950FA700ED8225 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		5A9A1FC51B950FC100ED8225 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		5A9A1FC81B95141F00ED8225 /* AudioPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
@@ -1712,6 +1720,9 @@
 		5AEECC141A994CDC00BC7E40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		5AEECC151A994CDC00BC7E40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5AEECC161A994CDD00BC7E40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		5AF047021C04E96F004F3AB1 /* UWDownloadOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UWDownloadOptions.h; sourceTree = "<group>"; };
+		5AF047051C0539AB004F3AB1 /* MediaTypeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaTypeView.xib; sourceTree = "<group>"; };
+		5AF047071C0539E0004F3AB1 /* MediaTypeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaTypeView.swift; sourceTree = "<group>"; };
 		5AF051D91B756A8A003EA5A4 /* UWConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWConstants.swift; sourceTree = "<group>"; };
 		5AF051DD1B756BD1003EA5A4 /* UFWFileText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = UFWFileText.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5AF051DE1B756BD1003EA5A4 /* UWUrlSourceItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWUrlSourceItem.swift; sourceTree = "<group>"; };
@@ -2219,6 +2230,9 @@
 		5A9ABAF11B0A35F600753AAB /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				5A9830B81C06476C00D4E705 /* bible_icon@3x.png */,
+				5A9830B91C06476C00D4E705 /* video_icon@3x.png */,
+				5A9830BA1C06476C00D4E705 /* audio_icon@3x.png */,
 				5A43253A1B4F2F7C00105908 /* ActivityIcons */,
 				5A6997D31B2F859000BB0618 /* ufw_file_icon.png */,
 				5A9ABAF21B0A35F600753AAB /* arrow_right.png */,
@@ -3052,6 +3066,8 @@
 		5A9AC0251B0A38B100753AAB /* LanguagePicker */ = {
 			isa = PBXGroup;
 			children = (
+				5AF047071C0539E0004F3AB1 /* MediaTypeView.swift */,
+				5AF047051C0539AB004F3AB1 /* MediaTypeView.xib */,
 				5A9AC0261B0A38B100753AAB /* UFWLanguageNameCell.h */,
 				5A9AC0271B0A38B100753AAB /* UFWLanguageNameCell.m */,
 				5A9AC0281B0A38B100753AAB /* UFWLanguageNameCell.xib */,
@@ -3209,6 +3225,7 @@
 				5AF051DD1B756BD1003EA5A4 /* UFWFileText.swift */,
 				5AF051DE1B756BD1003EA5A4 /* UWUrlSourceItem.swift */,
 				5A223FC51BE7F35A00A16421 /* FileNamer.swift */,
+				5AF047021C04E96F004F3AB1 /* UWDownloadOptions.h */,
 			);
 			path = FileFormat;
 			sourceTree = "<group>";
@@ -3524,6 +3541,7 @@
 				5A9ABE1E1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-14-02jpg in Resources */,
 				5A9ABD721B0A35FA00753AAB /* Icon-60.png in Resources */,
 				5A9ABEC01B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-27-01jpg in Resources */,
+				5A9830BD1C06476C00D4E705 /* audio_icon@3x.png in Resources */,
 				5A9ABE471B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-16-15jpg in Resources */,
 				5A9ABFC91B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-50-07jpg in Resources */,
 				5A9ABEB41B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-25-07jpg in Resources */,
@@ -3589,6 +3607,7 @@
 				5A9ABDBD1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-06-01jpg in Resources */,
 				5A9ABE621B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-18-10jpg in Resources */,
 				5A9ABEED1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-31-07jpg in Resources */,
+				5A9830BB1C06476C00D4E705 /* bible_icon@3x.png in Resources */,
 				5A9ABED11B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-28-07jpg in Resources */,
 				5A9ABF9D1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-47-09jpg in Resources */,
 				5A9ABD6A1B0A35FA00753AAB /* arrow_right.png in Resources */,
@@ -4010,6 +4029,7 @@
 				5A9ABF441B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-39-05jpg in Resources */,
 				5A9ABF191B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-35-08jpg in Resources */,
 				5A9ABF251B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-36-07jpg in Resources */,
+				5AF047061C0539AB004F3AB1 /* MediaTypeView.xib in Resources */,
 				5A9ABF961B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-47-02jpg in Resources */,
 				5A9ABE281B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-14-12jpg in Resources */,
 				5A9ABF081B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-34-01jpg in Resources */,
@@ -4067,6 +4087,7 @@
 				5A9ABFCC1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-50-10jpg in Resources */,
 				5A9ABDCC1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-07-09jpg in Resources */,
 				5A9ABE7C1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-20-05jpg in Resources */,
+				5A9830BC1C06476C00D4E705 /* video_icon@3x.png in Resources */,
 				5A9ABDAD1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-04-04jpg in Resources */,
 				5A9ABFCF1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-50-13jpg in Resources */,
 				5A9ABED41B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-28-10jpg in Resources */,
@@ -4222,6 +4243,7 @@
 				5A26CC6D1BBDD509006DFFD3 /* _OpenChapter.m in Sources */,
 				5A26CC7B1BBDD509006DFFD3 /* _UWVideoSource.m in Sources */,
 				5A3E553D1A9D4CB700D1D920 /* DWImageGetter.m in Sources */,
+				5AF047081C0539E0004F3AB1 /* MediaTypeView.swift in Sources */,
 				5A9AC0461B0A38B100753AAB /* UFWLanguageNameCell.m in Sources */,
 				5A22403B1BE85D0700A16421 /* ioapi.c in Sources */,
 				5A26CC851BBDD509006DFFD3 /* UWStatus.m in Sources */,

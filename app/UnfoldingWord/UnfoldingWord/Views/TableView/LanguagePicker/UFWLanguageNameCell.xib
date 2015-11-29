@@ -24,7 +24,7 @@
                         </constraints>
                     </view>
                     <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aj4-av-uY2" customClass="ACTLabelButton">
-                        <rect key="frame" x="8" y="7" width="304" height="21"/>
+                        <rect key="frame" x="8" y="8" width="304" height="22"/>
                         <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -35,8 +35,10 @@
                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstAttribute="trailingMargin" secondItem="aj4-av-uY2" secondAttribute="trailing" id="ACn-a7-RW0"/>
+                    <constraint firstAttribute="bottom" secondItem="aj4-av-uY2" secondAttribute="bottom" constant="5" id="F0r-u9-bAZ"/>
                     <constraint firstItem="hXc-P2-4od" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="K5G-gA-d6F"/>
                     <constraint firstItem="hXc-P2-4od" firstAttribute="top" secondItem="aj4-av-uY2" secondAttribute="bottom" id="QRD-gM-5Wq"/>
+                    <constraint firstItem="aj4-av-uY2" firstAttribute="top" secondItem="hXc-P2-4od" secondAttribute="bottom" constant="7" id="SMB-7N-L2f"/>
                     <constraint firstItem="aj4-av-uY2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="WXk-7k-5uh"/>
                     <constraint firstAttribute="centerY" secondItem="aj4-av-uY2" secondAttribute="centerY" id="nE3-8i-FdW"/>
                     <constraint firstItem="hXc-P2-4od" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="p7b-Hx-obl"/>
@@ -47,6 +49,7 @@
                     <mask key="constraints">
                         <exclude reference="QRD-gM-5Wq"/>
                         <exclude reference="p7b-Hx-obl"/>
+                        <exclude reference="nE3-8i-FdW"/>
                     </mask>
                 </variation>
             </tableViewCellContentView>

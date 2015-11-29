@@ -45,6 +45,11 @@
     return [NSString stringWithContentsOfFile:path encoding:enc error:error];
 }
 
+- (NSString *)stringAfterLastPeriod {
+    NSArray *parts = [self componentsSeparatedByString:@"."];
+    return parts.lastObject;
+}
+
 - (NSString *)documentsPath
 {
     return [[NSString documentsDirectory] stringByAppendingPathComponent:self];

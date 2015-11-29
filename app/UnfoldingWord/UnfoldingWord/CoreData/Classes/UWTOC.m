@@ -180,18 +180,54 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
     }
 }
 
-- (BOOL)isDownloadedAndValid
+- (BOOL)isDownloadedForOptions:(DownloadOptions)options
 {
-    if (self.isDownloadedValue == YES && self.isContentValidValue == YES && self.isContentChangedValue == NO) {
-        return YES;
+    NSAssert2(options != DownloadOptionsEmpty, @"%s: What ask if you're not downloading anything? %ld", __PRETTY_FUNCTION__, options);
+    
+    if (options & DownloadOptionsText) {
+        if (self.isContentChangedValue == YES || self.isDownloadedValue == NO) {
+            return NO;
+        }
     }
-    else {
-        return NO;
+    if (options & DownloadOptionsAudio) {
+        if ([self allAudioDownloaded] == NO) {
+            return NO;
+        }
     }
+    if (options & DownloadOptionsVideo) {
+        if ([self allVideoDownloaded] == NO) {
+            return NO;
+        }
+    }
+    return YES;
 }
 
-- (void)downloadWithCompletion:(TOCDownloadCompletion)completion;
+- (BOOL)isDownloadedAndValidForOptions:(DownloadOptions)options
 {
+    NSAssert2(options != DownloadOptionsEmpty, @"%s: What ask if you're not downloading anything? %ld", __PRETTY_FUNCTION__, options);
+    
+    if (options & DownloadOptionsText) {
+        if (self.isContentChangedValue == YES || self.isDownloadedValue == NO || self.isContentValidValue == NO) {
+            return NO;
+        }
+    }
+    if (options & DownloadOptionsAudio) {
+        if ([self allAudioDownloadedAndValid] == NO) {
+            return NO;
+        }
+    }
+    if (options & DownloadOptionsVideo) {
+        if ([self allVideoDownloadedAndValid] == NO) {
+            return NO;
+        }
+    }
+    return YES;
+}
+
+- (void)downloadUsingOptions:(DownloadOptions)options completion:(TOCDownloadCompletion)completion
+{
+    NSAssert2(options != DownloadOptionsEmpty, @"%s: No options for downloading: %@", __PRETTY_FUNCTION__, self);
+    
     NSURL *sourceUrl = [NSURL URLWithString:self.src];
     NSURL *sigUrl = [NSURL URLWithString:self.src_sig];
     if ( ! sourceUrl || ! sigUrl) {
@@ -252,7 +288,7 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
         [[DWSCoreDataStack managedObjectContext] save:nil];
         
         if (importSuccessful) {
-            if (self.media.audio != nil) { // make sure that we don't call a nil
+            if (self.media.audio != nil && options & DownloadOptionsAudio) { // make sure that we don't call a nil
             [self.media.audio downloadAllAudioWithQuality:AudioFileQualityLow completion:^(BOOL success) {
                 completion(YES);
             }];
@@ -274,6 +310,82 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
     self.isContentChanged = @(NO);
 }
 
+
+#pragma mark - Audio Download Info
+
+- (BOOL)hasAudio
+{
+    return (self.media.audio.sources.count > 0) ? YES : NO;
+}
+
+- (BOOL)allAudioDownloaded
+{
+    if ([self hasAudio] == NO) {
+        return NO;
+    }
+    
+    for (UWAudioSource *source in self.media.audio.sources) {
+        if ( [source bestBitrateWithDownloadedAudio] == nil) {
+            return NO;
+        }
+    }
+    return YES;
+}
+
+- (BOOL)allAudioDownloadedAndValid
+{
+    if ([self hasAudio] == NO) {
+        return NO;
+    }
+    
+    for (UWAudioSource *source in self.media.audio.sources) {
+        if ([source bestBitrateWithDownloadedAudio].isValidValue == NO) {
+            return NO;
+        }
+    }
+    return YES;
+}
+
+- (BOOL)anyAudioDownloaded
+{
+    if ([self hasAudio] == NO) {
+        return NO;
+    }
+    
+    for (UWAudioSource *source in self.media.audio.sources) {
+        if ([source bestBitrateWithDownloadedAudio] != nil) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+
+#pragma mark - Video Download Info
+
+- (BOOL)hasVideo
+{
+    return YES;
+//    return (self.media.video.sources.count > 0) ? YES : NO;
+}
+
+- (BOOL)allVideoDownloaded
+{
+//    if ([self hasVideo] == NO) {
+        return NO;
+//    }
+}
+
+- (BOOL)allVideoDownloadedAndValid
+{
+//    if ([self hasVideo] == NO) {
+        return NO;
+//    }
+}
+
+- (BOOL)anyVideoDownloaded {
+    return NO;
+}
 
 #pragma mark - USFM
 

@@ -3,6 +3,8 @@
 //
 
 #import "_UWVersion.h"
+#import "UWDownloadOptions.h"
+#import "Constants.h"
 
 @class UWLanguage;
 
@@ -18,22 +20,17 @@ extern NSString *const kNotificationVersionContentDelete;
 + (void)updateVersions:(NSArray *)versions forLanguage:(UWLanguage *)language;
 
 /// Downloads all attach TOC objects with a completion block
-- (void)downloadWithCompletion:(VersionCompletion)completion;
-
-/// Checks if any attached TOC object is currently downloading
-- (BOOL)isDownloading;
-
-/// Checks if all attached TOC objects are validated
-- (BOOL)isAllValid;
-
-/// Checks if all attached TOC objects are downloaded
-- (BOOL)isAllDownloaded;
-
-/// Checks if any attached TOC was downloaded.
-- (BOOL)isAnyDownloaded;
+- (void)downloadUsingOptions:(DownloadOptions)options completion:(VersionCompletion)completion;
 
 /// Checks if any attached TOC objects have a failed download
-- (BOOL)isAnyFailedDownload;
+- (BOOL)isAnyTextFailedDownload;
+
+- (DownloadStatus)statusText;
+- (DownloadStatus)statusAudio;
+- (DownloadStatus)statusVideo;
+
+/// Check this bitmask to see if which items are currently downloading. DownloadOptionsEmpty means that the item is not downloading.
+- (DownloadOptions)currentDownloadingOptions;
 
 /// Deletes all downloaded content for attached TOC objects
 - (BOOL)deleteAllContent;

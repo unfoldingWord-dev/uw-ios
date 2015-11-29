@@ -79,7 +79,7 @@ static NSString *const kKeyTopContainers = @"cat";
     }
     else {
         UWTOC *toc = [tocToUpdateArray firstObject];
-        [toc downloadWithCompletion:^(BOOL success) {
+        [toc downloadUsingOptions:DownloadOptionsText | DownloadOptionsAudio | DownloadOptionsVideo completion:^(BOOL success) {
             if (success == NO) {
                 [self postErrorForTOC:toc];
                 [self postNotificationDownloadDone];
@@ -100,8 +100,25 @@ static NSString *const kKeyTopContainers = @"cat";
     
     // Find the first toc to download from a partially downloaded version
     UWVersion *versionToDownload = nil;
+    BOOL requiresText = NO;
+    BOOL requiresAudio = NO;
+    BOOL requiresVideo = NO;
     for (UWVersion *version in versionsArray) {
-        if ([version isAnyDownloaded] == YES && [version isAllDownloaded] == NO) {
+        BOOL textStatus = [version statusText];
+        BOOL audioStatus = [version statusAudio];
+        BOOL videoStatus = [version statusVideo];
+
+        if (textStatus & DownloadStatusSome  &&  (textStatus & DownloadStatusAll) == 0) {
+            requiresText = YES;
+        }
+        if (audioStatus & DownloadStatusSome  &&  (audioStatus & DownloadStatusAll) == 0) {
+            requiresAudio = YES;
+        }
+        if (videoStatus & DownloadStatusSome  &&  (videoStatus & DownloadStatusAll) == 0) {
+            requiresVideo = YES;
+        }
+        
+        if (requiresText || requiresAudio || requiresVideo) {
             versionToDownload = version;
             break;
         }
@@ -111,7 +128,21 @@ static NSString *const kKeyTopContainers = @"cat";
         [self postNotificationDownloadDone];
     }
     else {
-        [versionToDownload downloadWithCompletion:^(BOOL success, NSString *errorMessage) {
+        
+        // Only download audio or video that's already been downloaded
+        DownloadOptions options = DownloadOptionsEmpty;
+        
+        if (requiresText) {
+            options = options | DownloadOptionsText;
+        }
+        if (requiresAudio) {
+            options = options | DownloadOptionsAudio;
+        }
+        if (requiresAudio) {
+            options = options | DownloadOptionsVideo;
+        }
+        
+        [versionToDownload downloadUsingOptions:options completion:^(BOOL success, NSString *errorMessage) {
             if (success == NO) {
                 [self postErrorForVersion:versionToDownload];
                 [self postNotificationDownloadDone];

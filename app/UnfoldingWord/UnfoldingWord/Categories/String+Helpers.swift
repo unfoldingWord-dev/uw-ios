@@ -10,6 +10,12 @@ import Foundation
 
 extension String {
     
+    // The actual class name in NSStringFromClass() is the text after the period. Before that is the module name.
+    func textAfterLastPeriod() -> String {
+        let components = self.componentsSeparatedByString(".")
+        return components.last!
+    }
+    
     func deleteFileOrFolder() -> Bool {
         do {
             try NSFileManager.defaultManager().removeItemAtPath(self)

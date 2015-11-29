@@ -11,10 +11,23 @@ typedef NS_ENUM(NSInteger, AudioFileQuality) {
     AudioFileQualityHigh = 2,
 };
 
+typedef NS_ENUM(NSInteger, MediaType) {
+    MediaTypeText = 1,
+    MediaTypeAudio = 2,
+    MediaTypeVideo = 3,
+};
+
+typedef NS_OPTIONS(NSUInteger, DownloadStatus) {
+    DownloadStatusNoContent = 0,
+    DownloadStatusNone = 1 << 0,
+    DownloadStatusSome = 1 << 1,
+    DownloadStatusAll = 1 << 2,
+    DownloadStatusAllValid = 1 << 3,
+};
+
 static NSString *const NotificationUserChangedAudioSegment = @"__NotificationUserChangedAudioSegment";
 static NSString *const NotificationAudioSegmentDidChange = @"__NotificationAudioSegmentDidChange";
 static NSString *const NotificationKeyAudioSegment = @"__NotificationKeyAudioSegment";
-
 
 #define SELECTION_BLUE_COLOR    [UIColor colorWithRed:76.0/255.0 green:185.0/255.0 blue:224.0/255.0 alpha:1.0]
 #define TEXT_COLOR_NORMAL       [UIColor colorWithRed:32.0/255.0 green:27.0/255.0 blue:22.0/255.0 alpha:1.0]

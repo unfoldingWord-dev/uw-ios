@@ -59,7 +59,8 @@ static CGFloat const kSpacer = 12;
     [self setUpLabels];
     
     // Verification Info
-    if ([self.status.uwversion isAllDownloaded] == NO) {
+    DownloadStatus downloadTextStatus = [self.status.uwversion statusText];
+    if (downloadTextStatus & DownloadStatusNone) {
         self.labelVerifyText.text = nil;
         self.labelVerifyTitle.text = nil;
         self.constraintVerifySpacer.constant = 0;
@@ -67,11 +68,11 @@ static CGFloat const kSpacer = 12;
     else {
         self.labelVerifyTitle.text = NSLocalizedString(@"Verification Information", nil);
         self.constraintVerifySpacer.constant = kSpacer;
-        if ([self.status.uwversion isAllValid] == NO) {
-            self.labelVerifyText.text = NSLocalizedString(@"Error verifying content.", nil);
+        if (downloadTextStatus & DownloadStatusAllValid) {
+            self.labelVerifyText.text = NSLocalizedString(@"This content is verified by: unfoldingWord", nil);
         }
         else {
-            self.labelVerifyText.text = NSLocalizedString(@"This content is verified by: unfoldingWord", nil);
+            self.labelVerifyText.text = NSLocalizedString(@"Error verifying content.", nil);
         }
     }
     
@@ -104,7 +105,7 @@ static CGFloat const kSpacer = 12;
     self.labelVersionText.text = self.status.version;
     self.labelPublishText.text = self.status.publish_date;
     
-    if ([self.status.uwversion isAllDownloaded] && self.isAlwaysHidDelete == NO) {
+    if ( (downloadTextStatus & DownloadStatusSome) && self.isAlwaysHidDelete == NO) {
         self.constraintHeightButton.constant = kButtonDeleteHeight;
         self.constraintSpaceToButton.constant = kMargin;
         self.buttonDelete.hidden = NO;
