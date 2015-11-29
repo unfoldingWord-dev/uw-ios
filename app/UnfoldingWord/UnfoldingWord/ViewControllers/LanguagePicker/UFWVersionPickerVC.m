@@ -17,7 +17,7 @@
 #import "UFWSelectionTracker.h"
 #import "UnfoldingWord-Swift.h"
 
-@interface UFWVersionPickerVC () <ACTLabelButtonDelegate>
+@interface UFWVersionPickerVC () <ACTLabelButtonDelegate, VersionCellDelegate>
 
 @property (nonatomic, strong) NSArray *arrayLanguages;
 @property (nonatomic, strong) NSMutableArray *arrayLanguagesSelected;
@@ -31,6 +31,8 @@
 @property (nonatomic, strong) UWTOC *initialTOC;
 @property (nonatomic, strong) UWTopContainer *topContainer;
 @end
+
+
 
 @implementation UFWVersionPickerVC
 
@@ -125,7 +127,7 @@
 #pragma mark - Cancel
 - (void)cancel:(id)sender
 {
-    self.completion(YES, nil);
+    self.completion(YES, nil, MediaTypeNone);
 }
 
 #pragma mark = Notifications
@@ -196,6 +198,7 @@
     else if ([object isKindOfClass:[UWVersion class]]) {
         UWVersion *version = (UWVersion *)object;
         UFWVersionCell *versionCell = [tableView dequeueReusableCellWithIdentifier:self.cellVersion forIndexPath:indexPath];
+        versionCell.delegate = self;
         versionCell.version = version;
         return versionCell;
     }
@@ -204,36 +207,13 @@
     }
 }
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    id object = self.arrayOfRowObjects[indexPath.row];
-//    if ([object isKindOfClass:[UWLanguage class]]) {
-//        return 44.0f;
-//    }
-//    else if ([object isKindOfClass:[UWVersion class]]) {
-//        UWVersion *version = (UWVersion *)object;
-//        return [UFWVersionCell heightForVersion:version expanded:[self isVersionExpanded:version] forWidth:self.tableView.frame.size.width];
-//    }
-//    else {
-//        NSAssert1(NO, @"no height for %@", object);
-//        return 0;
-//    }
-//}
+- (void)userDidRequestShow:(MediaType)type forVersion:(UWVersion *)version {
+    self.completion(NO, version, type);
+}
 
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    UWVersion *version = self.arrayOfRowObjects[indexPath.row];
-//
-//    if ([version isKindOfClass:[UWVersion class]]) {
-//#warning Check for audio and video separately.
-//        if ([version isAllTextDownloaded]) {
-//            self.completion(NO, version);
-//        }
-//        else {
-//            [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"This item has not been downloaded yet. Press the download button first.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles: nil] show];
-//        }
-//    }
-//}
+- (void)userDidRequestShowCheckingLevelForType:(MediaType)type forVersion:(UWVersion *)version {
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"This should show a popover with the version information, but that's not done yet.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles: nil] show];
+}
 
 - (BOOL)isVersionExpanded:(UWVersion *)version
 {

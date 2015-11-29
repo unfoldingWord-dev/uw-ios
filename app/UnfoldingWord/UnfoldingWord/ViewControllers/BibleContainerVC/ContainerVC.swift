@@ -330,7 +330,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
     private func showVersionPickerForArea(area : TOCArea) -> Bool {
         
         let navVC = UFWVersionPickerVC.navigationLanguagePickerWithTOC(tocForArea(area), topContainer: topContainer) {
-            [weak self] (isCanceled : Bool, versionPicked : UWVersion?) -> Void in
+            [weak self] (isCanceled : Bool, versionPicked : UWVersion?, mediaToShow : MediaType) -> Void in
             
             guard let strongself = self else { return }
             strongself.dismissViewControllerAnimated(true, completion: { () -> Void in })

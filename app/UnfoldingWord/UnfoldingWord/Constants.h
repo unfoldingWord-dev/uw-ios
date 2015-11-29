@@ -12,6 +12,7 @@ typedef NS_ENUM(NSInteger, AudioFileQuality) {
 };
 
 typedef NS_ENUM(NSInteger, MediaType) {
+    MediaTypeNone = 0,
     MediaTypeText = 1,
     MediaTypeAudio = 2,
     MediaTypeVideo = 3,

@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Constants.h"
 @class UWTOC;
 @class UWVersion;
 @class UWTopContainer;
 
-typedef void (^VersionPickerCompletion) (BOOL isCanceled, UWVersion * __nullable versionPicked);
+typedef void (^VersionPickerCompletion) (BOOL isCanceled, UWVersion * __nullable versionPicked, MediaType mediaToShow);
 
 @interface UFWVersionPickerVC : UITableViewController
 

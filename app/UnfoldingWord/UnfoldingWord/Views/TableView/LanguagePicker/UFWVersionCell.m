@@ -118,6 +118,8 @@
 - (DownloadOptions)downloadOptionsForMediaView:(MediaTypeView *)mediaView {
     DownloadOptions options = DownloadOptionsEmpty;
     switch ([mediaView getType]) {
+        case MediaTypeNone:
+            break;
         case MediaTypeText:
             options = options | DownloadOptionsText;
             break;
@@ -165,6 +167,9 @@
         [mediaView hideRightEdgeViewsExcept:mediaView.activityIndicator];
         
         switch (mediaView.getType) {
+            case MediaTypeNone:
+                NSAssert1(NO, @"%s: Don't call this with no type!", __PRETTY_FUNCTION__);
+                break;
             case MediaTypeText:
                 mediaView.labelDescription.text = @"Downloading Text";
                 break;
@@ -192,6 +197,10 @@
 
     if (status & DownloadStatusAll ) {
         switch (mediaView.getType) {
+            case MediaTypeNone:
+                NSAssert1(NO, @"%s: Don't call this with no type!", __PRETTY_FUNCTION__);
+                mediaView.labelDescription.text = @"---";
+                break;
             case MediaTypeText:
                 mediaView.labelDescription.text = @"Read";
                 break;
@@ -204,6 +213,10 @@
         }
     } else if (status & DownloadStatusNone || status & DownloadStatusSome) {
         switch (mediaView.getType) {
+            case MediaTypeNone:
+                NSAssert1(NO, @"%s: Don't call this with no type!", __PRETTY_FUNCTION__);
+                mediaView.labelDescription.text = @"---";
+                break;
             case MediaTypeText:
                 mediaView.labelDescription.text = @"Download Text";
                 break;
@@ -290,6 +303,9 @@
 
 - (DownloadStatus)statusForMediaView:(MediaTypeView *)mediaView {
     switch (mediaView.getType) {
+        case MediaTypeNone:
+            return DownloadStatusNone;
+            break;
         case MediaTypeText:
             return [self.version statusText];
             break;
