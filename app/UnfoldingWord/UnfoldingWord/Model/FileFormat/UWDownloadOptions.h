@@ -13,4 +13,6 @@ typedef NS_OPTIONS(NSInteger, DownloadOptions) {
     DownloadOptionsText = 1 << 0,
     DownloadOptionsAudio = 1 << 1,
     DownloadOptionsVideo = 1 << 2,
+    DownloadOptionsLowQuality = 1 << 3,
+    DownloadOptionsHighQuality = 1 << 4,
 };

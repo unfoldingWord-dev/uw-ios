@@ -287,11 +287,12 @@ NSString *const kKeyVersionId = @"__kKeyVersionId";
 - (void)downloadUsingOptions:(DownloadOptions)options completion:(VersionCompletion)completion;
 {
     NSAssert1(options != DownloadOptionsEmpty, @"%s: Download options cannot be empty!", __PRETTY_FUNCTION__);
-
+    
     if (self.toc.count == 0) {
         completion(NO, @"No items to download.");
     }
     else {
+        
         [UWVersion addVersionDownloading:self options:options];
         [self downloadNextTOC:nil options:options completion:completion];
     }

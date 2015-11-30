@@ -18,11 +18,11 @@ static NSString *const kFrames = @"frames";
 + (NSArray *)createChaptersFromArray:(NSArray *)chapters forOpenContainer:(OpenContainer *)container
 {
     NSMutableArray *array = [NSMutableArray new];
-    NSSet *oldChapters = container.chapters;
-    for (OpenChapter *chapter in oldChapters) {
-        [[DWSCoreDataStack managedObjectContext] deleteObject:chapter];
-    }
-    
+//    NSSet *oldChapters = container.chapters;
+//    for (OpenChapter *chapter in oldChapters) {
+//        [[DWSCoreDataStack managedObjectContext] deleteObject:chapter];
+//    }
+//    
     for (NSDictionary *dictionary in chapters) {
         [OpenChapter chapterForDictionary:dictionary forOpenContainer:container];
     }

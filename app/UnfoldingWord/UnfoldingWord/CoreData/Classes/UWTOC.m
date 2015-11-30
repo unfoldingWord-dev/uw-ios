@@ -228,6 +228,29 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
 {
     NSAssert2(options != DownloadOptionsEmpty, @"%s: No options for downloading: %@", __PRETTY_FUNCTION__, self);
     
+    // Always download text when necessary
+    if (self.isDownloadedValue == NO || self.isDownloadFailedValue == YES || self.isContentChangedValue == YES) {
+        options = options | DownloadOptionsText;
+    }
+    
+    if (options & DownloadOptionsText || self.isDownloadedValue == NO ) {
+        [self startDownloadWithTextUsingOptions:options completion:completion];
+    }
+    else if (options & DownloadOptionsAudio) {
+        [self startDownloadWithAudioUsingOptions:options completion:completion];
+    }
+    else if (options & DownloadOptionsVideo) {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Video downloading not done yet." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
+        completion(NO);
+    }
+    else {
+        NSAssert2(NO, @"%s: Did not understand options: %ld", __PRETTY_FUNCTION__, options);
+        completion(NO);
+    }
+}
+
+- (void)startDownloadWithTextUsingOptions:(DownloadOptions)options completion:(TOCDownloadCompletion)completion {
+    
     NSURL *sourceUrl = [NSURL URLWithString:self.src];
     NSURL *sigUrl = [NSURL URLWithString:self.src_sig];
     if ( ! sourceUrl || ! sigUrl) {
@@ -280,27 +303,37 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
         
         if (signatureFileName != nil && sigData != nil) {
             NSString *filepath = [[NSString documentsDirectory] stringByAppendingPathComponent:signatureFileName];
-                if ([sigData writeToFile:filepath atomically:YES] == NO) {
-                    NSAssert1(NO, @"Could not save file to %@", filepath);
-                }
+            if ([sigData writeToFile:filepath atomically:YES] == NO) {
+                NSAssert1(NO, @"Could not save file to %@", filepath);
+            }
         }
         
         [[DWSCoreDataStack managedObjectContext] save:nil];
         
+        // Next download the audio if successful
         if (importSuccessful) {
-            if (self.media.audio != nil && options & DownloadOptionsAudio) { // make sure that we don't call a nil
-            [self.media.audio downloadAllAudioWithQuality:AudioFileQualityLow completion:^(BOOL success) {
-                completion(YES);
-            }];
-            }
-            else {
-                completion(YES);
-            }
+            [self startDownloadWithAudioUsingOptions:options completion:completion];
         }
         else {
             completion(NO);
         }
     }];
+
+}
+
+
+
+- (void)startDownloadWithAudioUsingOptions:(DownloadOptions)options completion:(TOCDownloadCompletion)completion
+{
+    if (self.media.audio != nil && options & DownloadOptionsAudio) { // make sure that we don't call a nil
+        AudioFileQuality quality = (options & DownloadOptionsLowQuality) ? AudioFileQualityLow : AudioFileQualityHigh;
+        [self.media.audio downloadAllAudioWithQuality:quality completion:^(BOOL success) {
+            completion(YES);
+        }];
+    }
+    else {
+        completion(YES);
+    }
 }
 
 - (void)setImportSuccessTrue

@@ -107,18 +107,29 @@
 
 #pragma mark - Downloading
 
-- (void)showAudioOptionsForMediaView:(MediaTypeView *)mediaView {
+
+- (void)downloadForMediaView:(MediaTypeView *)mediaView {
     
-    AudioPickerView *picker = [AudioPickerView create:^(BOOL isLowQuality) {
-        [self startDownloadingForMediaView:mediaView];
-    }];
-    [self showDialog:picker];
-    
+    __block DownloadOptions options = [self downloadOptionsForMediaView:mediaView];
+    if ([mediaView getType] == MediaTypeAudio) {
+        __weak typeof(self) weak = self;
+        AudioPickerView *picker = [AudioPickerView create:^(BOOL isLowQuality) {
+            if (isLowQuality) {
+                options = options | DownloadOptionsLowQuality;
+            } else {
+                options = options | DownloadOptionsHighQuality;
+            }
+            [weak downloadWithOptions:options];
+        }];
+        [self showDialog:picker];
+    }
+    else {
+        [self downloadWithOptions:options];
+    }
+
 }
 
-- (void)startDownloadingForMediaView:(MediaTypeView *)mediaView
-{    
-    DownloadOptions options = [self downloadOptionsForMediaView:mediaView];
+- (void)downloadWithOptions:(DownloadOptions)options {
     [self.version downloadUsingOptions:options completion:^(BOOL success, NSString *errorMessage) {}];
     [self updateMediaViews];
 }
@@ -133,10 +144,10 @@
             options = options | DownloadOptionsText;
             break;
         case MediaTypeAudio:
-            options = options | DownloadOptionsText | DownloadOptionsAudio;
+            options = options | DownloadOptionsAudio;
             break;
         case MediaTypeVideo:
-            options = options | DownloadOptionsText | DownloadOptionsVideo;
+            options = options | DownloadOptionsVideo;
             break;
     }
     return options;
@@ -288,12 +299,7 @@
 }
 
 - (void)userPressedDownloadButtonForMediaView:(MediaTypeView *)mediaView {
-    if ([mediaView getType] == MediaTypeAudio) {
-        [self showAudioOptionsForMediaView:mediaView];
-    }
-    else {
-        [self startDownloadingForMediaView:mediaView];
-    }
+        [self downloadForMediaView:mediaView];
 }
 
 - (MediaTypeView *)createMediaView {
