@@ -95,6 +95,13 @@
 		5A9830BB1C06476C00D4E705 /* bible_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A9830B81C06476C00D4E705 /* bible_icon@3x.png */; };
 		5A9830BC1C06476C00D4E705 /* video_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A9830B91C06476C00D4E705 /* video_icon@3x.png */; };
 		5A9830BD1C06476C00D4E705 /* audio_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A9830BA1C06476C00D4E705 /* audio_icon@3x.png */; };
+		5A9830BF1C0CB98700D4E705 /* DialogBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9830BE1C0CB98600D4E705 /* DialogBackgroundView.swift */; };
+		5A9830C11C0CBA5D00D4E705 /* NSLayoutConstraint-Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9830C01C0CBA5D00D4E705 /* NSLayoutConstraint-Extensions.swift */; };
+		5A9830C41C0CC07800D4E705 /* radio_button_empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A9830C21C0CC07800D4E705 /* radio_button_empty.png */; };
+		5A9830C51C0CC07800D4E705 /* radio_button_filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A9830C31C0CC07800D4E705 /* radio_button_filled.png */; };
+		5A9830C81C0CC13800D4E705 /* AudioPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9830C71C0CC13800D4E705 /* AudioPickerView.swift */; };
+		5A9830CA1C0CC14800D4E705 /* AudioPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A9830C91C0CC14800D4E705 /* AudioPickerView.xib */; };
+		5A9830CC1C0CD0FE00D4E705 /* UIViewController+Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9830CB1C0CD0FE00D4E705 /* UIViewController+Dialog.swift */; };
 		5A9A1FC41B950FA700ED8225 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9A1FC31B950FA700ED8225 /* AVFoundation.framework */; };
 		5A9A1FC61B950FC100ED8225 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9A1FC51B950FC100ED8225 /* MediaPlayer.framework */; };
 		5A9A1FC91B95141F00ED8225 /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9A1FC81B95141F00ED8225 /* AudioPlayerView.swift */; };
@@ -973,6 +980,13 @@
 		5A9830B81C06476C00D4E705 /* bible_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bible_icon@3x.png"; sourceTree = "<group>"; };
 		5A9830B91C06476C00D4E705 /* video_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video_icon@3x.png"; sourceTree = "<group>"; };
 		5A9830BA1C06476C00D4E705 /* audio_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audio_icon@3x.png"; sourceTree = "<group>"; };
+		5A9830BE1C0CB98600D4E705 /* DialogBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialogBackgroundView.swift; sourceTree = "<group>"; };
+		5A9830C01C0CBA5D00D4E705 /* NSLayoutConstraint-Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint-Extensions.swift"; sourceTree = "<group>"; };
+		5A9830C21C0CC07800D4E705 /* radio_button_empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = radio_button_empty.png; sourceTree = "<group>"; };
+		5A9830C31C0CC07800D4E705 /* radio_button_filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = radio_button_filled.png; sourceTree = "<group>"; };
+		5A9830C71C0CC13800D4E705 /* AudioPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPickerView.swift; sourceTree = "<group>"; };
+		5A9830C91C0CC14800D4E705 /* AudioPickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AudioPickerView.xib; sourceTree = "<group>"; };
+		5A9830CB1C0CD0FE00D4E705 /* UIViewController+Dialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Dialog.swift"; sourceTree = "<group>"; };
 		5A9A1FC31B950FA700ED8225 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		5A9A1FC51B950FC100ED8225 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		5A9A1FC81B95141F00ED8225 /* AudioPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
@@ -2027,7 +2041,9 @@
 				5A7752A61BE92EAC00695CB5 /* NSData+ZipHelper.swift */,
 				5A2DD85C1BFD10CA00011DA2 /* String+Zip.swift */,
 				5AF682441BFFDD300048B611 /* String+Helpers.swift */,
+				5A9830C01C0CBA5D00D4E705 /* NSLayoutConstraint-Extensions.swift */,
 				5AD8CE8B1BFE596A00EBD58B /* NSArray+Helpers.swift */,
+				5A9830CB1C0CD0FE00D4E705 /* UIViewController+Dialog.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -2208,6 +2224,15 @@
 			path = SelectionTracker;
 			sourceTree = "<group>";
 		};
+		5A9830C61C0CC11800D4E705 /* AudioPickerView */ = {
+			isa = PBXGroup;
+			children = (
+				5A9830C71C0CC13800D4E705 /* AudioPickerView.swift */,
+				5A9830C91C0CC14800D4E705 /* AudioPickerView.xib */,
+			);
+			path = AudioPickerView;
+			sourceTree = "<group>";
+		};
 		5A9A1FC71B95140D00ED8225 /* AudioPlayerView */ = {
 			isa = PBXGroup;
 			children = (
@@ -2230,6 +2255,8 @@
 		5A9ABAF11B0A35F600753AAB /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				5A9830C21C0CC07800D4E705 /* radio_button_empty.png */,
+				5A9830C31C0CC07800D4E705 /* radio_button_filled.png */,
 				5A9830B81C06476C00D4E705 /* bible_icon@3x.png */,
 				5A9830B91C06476C00D4E705 /* video_icon@3x.png */,
 				5A9830BA1C06476C00D4E705 /* audio_icon@3x.png */,
@@ -2985,6 +3012,8 @@
 		5A9AC00D1B0A38B100753AAB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5A9830C61C0CC11800D4E705 /* AudioPickerView */,
+				5A9830BE1C0CB98600D4E705 /* DialogBackgroundView.swift */,
 				5A7DDACF1BB3608900A5252C /* FontSizePicker */,
 				5A147A8A1BA7898D009496EB /* FakeNavBarView */,
 				5A9A1FC71B95140D00ED8225 /* AudioPlayerView */,
@@ -3661,6 +3690,7 @@
 				5A9ABF921B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-46-08jpg in Resources */,
 				5A9ABF161B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-35-05jpg in Resources */,
 				5A9ABDA41B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-03-11jpg in Resources */,
+				5A9830CA1C0CC14800D4E705 /* AudioPickerView.xib in Resources */,
 				5A9ABF5D1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-42-01jpg in Resources */,
 				5A9AC0511B0A38B100753AAB /* UFWTopLevelItemCell.xib in Resources */,
 				5A9ABEF91B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-32-11jpg in Resources */,
@@ -4116,6 +4146,7 @@
 				5A9ABF221B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-36-04jpg in Resources */,
 				5A9ABDFB1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-11-04jpg in Resources */,
 				5A9ABE801B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-20-09jpg in Resources */,
+				5A9830C51C0CC07800D4E705 /* radio_button_filled.png in Resources */,
 				5A9ABE791B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-20-02jpg in Resources */,
 				5A9ABE641B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-18-12jpg in Resources */,
 				5A9ABDAA1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-04-01jpg in Resources */,
@@ -4181,6 +4212,7 @@
 				5A9AC04B1B0A38B100753AAB /* ChapterCell.xib in Resources */,
 				5A9ABF841B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-45-07jpg in Resources */,
 				5A9ABE8A1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-21-06jpg in Resources */,
+				5A9830C41C0CC07800D4E705 /* radio_button_empty.png in Resources */,
 				5A9ABDDB1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-08-14jpg in Resources */,
 				5A9ABEB61B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-26-01jpg in Resources */,
 				5A9ABD981B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-02-11jpg in Resources */,
@@ -4280,6 +4312,7 @@
 				5A9AC0041B0A370000753AAB /* FrameDetailsViewController.m in Sources */,
 				5A26CC7E1BBDD509006DFFD3 /* OpenContainer.m in Sources */,
 				5AD0B4A11B45CB68006ABD21 /* MultiConnectReceiver.swift in Sources */,
+				5A9830C11C0CBA5D00D4E705 /* NSLayoutConstraint-Extensions.swift in Sources */,
 				5AAC5C631A97C5DB001AFA3D /* NSLayoutConstraint+DWSExtensions.m in Sources */,
 				5AF051EE1B756BD1003EA5A4 /* UFWFileText.swift in Sources */,
 				5AF682451BFFDD300048B611 /* String+Helpers.swift in Sources */,
@@ -4303,6 +4336,7 @@
 				5A22403E1BE85D0700A16421 /* zip.c in Sources */,
 				5AC3DCB71B1F751000703AA2 /* ACTSimpleChapterNumberCell.m in Sources */,
 				5AEDC6321AFC20CA00C722B9 /* LanguageInfoController.m in Sources */,
+				5A9830BF1C0CB98700D4E705 /* DialogBackgroundView.swift in Sources */,
 				5A26CC881BBDD509006DFFD3 /* UWTopContainer.m in Sources */,
 				5A9AC03F1B0A38B100753AAB /* UFWNextChapterCell.m in Sources */,
 				5A26CC7D1BBDD509006DFFD3 /* OpenChapter.m in Sources */,
@@ -4318,6 +4352,7 @@
 				5A9AC0031B0A370000753AAB /* ChapterListTableViewController.m in Sources */,
 				5AF051F41B756BD1003EA5A4 /* USFMChapter.m in Sources */,
 				5AD953CA1BB07B3400E3D654 /* DWSCoreDataStack.m in Sources */,
+				5A9830C81C0CC13800D4E705 /* AudioPickerView.swift in Sources */,
 				5A7ECE201AFD2C08002C94AD /* NSBundle+DWSExtensions.m in Sources */,
 				5A9AC00A1B0A370000753AAB /* UFWChapterPickerUSFMTableVC.m in Sources */,
 				5AF051F21B756BD1003EA5A4 /* UFWActivity.swift in Sources */,
@@ -4346,6 +4381,7 @@
 				5AD20D8D1B9665B7000B813B /* FileDownloader.swift in Sources */,
 				5A26CC791BBDD509006DFFD3 /* _UWVersion.m in Sources */,
 				5AFDC3391AF1366C002F58A0 /* NSManagedObject+Convenience.m in Sources */,
+				5A9830CC1C0CD0FE00D4E705 /* UIViewController+Dialog.swift in Sources */,
 				5A9AC0501B0A38B100753AAB /* UFWTopLevelItemCell.m in Sources */,
 				5A7A66EC1AEF06B500FF3EA1 /* NSString+Trim.m in Sources */,
 				5A26CC7A1BBDD509006DFFD3 /* _UWVideo.m in Sources */,

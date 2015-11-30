@@ -107,6 +107,15 @@
 
 #pragma mark - Downloading
 
+- (void)showAudioOptionsForMediaView:(MediaTypeView *)mediaView {
+    
+    AudioPickerView *picker = [AudioPickerView create:^(BOOL isLowQuality) {
+        [self startDownloadingForMediaView:mediaView];
+    }];
+    [self showDialog:picker];
+    
+}
+
 - (void)startDownloadingForMediaView:(MediaTypeView *)mediaView
 {    
     DownloadOptions options = [self downloadOptionsForMediaView:mediaView];
@@ -274,12 +283,17 @@
     if (status & DownloadStatusSome) {
         [self.delegate userDidRequestShow:[mediaView getType] forVersion:self.version];
     } else {
-        [self startDownloadingForMediaView:mediaView];
+        [self userPressedDownloadButtonForMediaView:mediaView];
     }
 }
 
 - (void)userPressedDownloadButtonForMediaView:(MediaTypeView *)mediaView {
-    [self startDownloadingForMediaView:mediaView];
+    if ([mediaView getType] == MediaTypeAudio) {
+        [self showAudioOptionsForMediaView:mediaView];
+    }
+    else {
+        [self startDownloadingForMediaView:mediaView];
+    }
 }
 
 - (MediaTypeView *)createMediaView {

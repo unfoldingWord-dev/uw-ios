@@ -29,6 +29,8 @@ typealias ITunesPickerChooseBlock = (canceled : Bool, chosenPath : String?) -> (
 typealias AudioDownloadCompletionBlock = (success : Bool, data : NSData?) -> ()
 typealias AudioDownloadProgressBlock = (percentDone : Float) -> ()
 
+typealias AudiQualitySelectionBlock = (isLowQuality : Bool) -> Void
+
 enum ActionType {
     case Audio
     case Video

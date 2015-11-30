@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" restorationIdentifier="AudioPickerView" id="Q6E-Ny-gyQ" customClass="AudioPickerView" customModule="UnfoldingWord" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="280" height="185"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Download Audio" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VR2-Ys-wRp">
+                    <rect key="frame" x="16" y="16" width="248" height="26"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Low Quality" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GIg-6R-dG1">
+                    <rect key="frame" x="16" y="60" width="89" height="21"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zr6-7X-6Md">
+                    <rect key="frame" x="232" y="55" width="32" height="32"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="F6k-jA-d9W"/>
+                        <constraint firstAttribute="width" constant="32" id="aTH-Ka-OoA"/>
+                    </constraints>
+                    <state key="normal" backgroundImage="radio_button_filled.png"/>
+                    <connections>
+                        <action selector="userTouchedQuality:" destination="Q6E-Ny-gyQ" eventType="touchUpInside" id="nxO-Nt-iJ6"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xqI-e1-L1D" userLabel="Line 1">
+                    <rect key="frame" x="16" y="48" width="248" height="1"/>
+                    <animations/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="dRe-zN-zwT"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eQq-UB-iQv" userLabel="Line 2">
+                    <rect key="frame" x="16" y="93" width="248" height="1"/>
+                    <animations/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="qmQ-6t-iGh"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wrd-h5-etU" userLabel="Line 3">
+                    <rect key="frame" x="16" y="138" width="248" height="1"/>
+                    <animations/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="TBu-dw-MDr"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fTn-7Y-cfm">
+                    <rect key="frame" x="16" y="139" width="248" height="46"/>
+                    <animations/>
+                    <state key="normal" title="Start Download"/>
+                    <connections>
+                        <action selector="userTouchedDownload:" destination="Q6E-Ny-gyQ" eventType="touchUpInside" id="IfV-go-bi0"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="High Quality" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6B7-n6-ebB">
+                    <rect key="frame" x="16" y="106" width="94" height="21"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3pL-x3-Uic">
+                    <rect key="frame" x="232" y="100" width="32" height="32"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="32" id="4VH-Pm-mLo"/>
+                        <constraint firstAttribute="height" constant="32" id="FI3-2B-ao0"/>
+                    </constraints>
+                    <state key="normal" backgroundImage="radio_button_empty.png"/>
+                    <connections>
+                        <action selector="userTouchedQuality:" destination="Q6E-Ny-gyQ" eventType="touchUpInside" id="VLr-3Q-IJw"/>
+                    </connections>
+                </button>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="eQq-UB-iQv" firstAttribute="leading" secondItem="Q6E-Ny-gyQ" secondAttribute="leading" constant="16" id="1Ln-Co-HhG"/>
+                <constraint firstItem="fTn-7Y-cfm" firstAttribute="top" secondItem="Wrd-h5-etU" secondAttribute="bottom" id="28r-28-RSc"/>
+                <constraint firstItem="Wrd-h5-etU" firstAttribute="top" secondItem="3pL-x3-Uic" secondAttribute="bottom" constant="6" id="39p-Zm-ENi"/>
+                <constraint firstItem="zr6-7X-6Md" firstAttribute="centerY" secondItem="GIg-6R-dG1" secondAttribute="centerY" id="6FV-0k-lU2"/>
+                <constraint firstItem="6B7-n6-ebB" firstAttribute="leading" secondItem="Q6E-Ny-gyQ" secondAttribute="leading" constant="16" id="9a6-Vs-s6q"/>
+                <constraint firstAttribute="trailing" secondItem="xqI-e1-L1D" secondAttribute="trailing" constant="16" id="PNy-AO-NR1"/>
+                <constraint firstAttribute="bottom" secondItem="fTn-7Y-cfm" secondAttribute="bottom" id="XFY-H9-gv4"/>
+                <constraint firstItem="Wrd-h5-etU" firstAttribute="leading" secondItem="Q6E-Ny-gyQ" secondAttribute="leading" constant="16" id="Xht-jx-uz8"/>
+                <constraint firstItem="xqI-e1-L1D" firstAttribute="leading" secondItem="Q6E-Ny-gyQ" secondAttribute="leading" constant="16" id="YbU-sO-GZO"/>
+                <constraint firstItem="fTn-7Y-cfm" firstAttribute="leading" secondItem="Q6E-Ny-gyQ" secondAttribute="leading" constant="16" id="dLo-gC-1xk"/>
+                <constraint firstAttribute="trailing" secondItem="Wrd-h5-etU" secondAttribute="trailing" constant="16" id="duD-1W-kd3"/>
+                <constraint firstItem="eQq-UB-iQv" firstAttribute="top" secondItem="zr6-7X-6Md" secondAttribute="bottom" constant="6" id="eKA-ZM-rnx"/>
+                <constraint firstAttribute="trailing" secondItem="fTn-7Y-cfm" secondAttribute="trailing" constant="16" id="fOK-9N-9Se"/>
+                <constraint firstItem="VR2-Ys-wRp" firstAttribute="leading" secondItem="Q6E-Ny-gyQ" secondAttribute="leading" constant="16" id="lbe-hw-ECR"/>
+                <constraint firstItem="xqI-e1-L1D" firstAttribute="top" secondItem="VR2-Ys-wRp" secondAttribute="bottom" constant="6" id="n3r-Eh-fCt"/>
+                <constraint firstItem="3pL-x3-Uic" firstAttribute="centerY" secondItem="6B7-n6-ebB" secondAttribute="centerY" id="nPk-Vb-7VH"/>
+                <constraint firstItem="GIg-6R-dG1" firstAttribute="leading" secondItem="Q6E-Ny-gyQ" secondAttribute="leading" constant="16" id="p4u-nZ-ZlG"/>
+                <constraint firstItem="zr6-7X-6Md" firstAttribute="top" secondItem="xqI-e1-L1D" secondAttribute="bottom" constant="6" id="qtd-Q7-9jr"/>
+                <constraint firstAttribute="trailing" secondItem="3pL-x3-Uic" secondAttribute="trailing" constant="16" id="t2y-90-iuZ"/>
+                <constraint firstAttribute="trailing" secondItem="VR2-Ys-wRp" secondAttribute="trailing" constant="16" id="vuF-jV-Qew"/>
+                <constraint firstAttribute="trailing" secondItem="zr6-7X-6Md" secondAttribute="trailing" constant="16" id="wZW-1z-SIO"/>
+                <constraint firstItem="VR2-Ys-wRp" firstAttribute="top" secondItem="Q6E-Ny-gyQ" secondAttribute="top" constant="16" id="xB4-kq-LkK"/>
+                <constraint firstItem="3pL-x3-Uic" firstAttribute="top" secondItem="eQq-UB-iQv" secondAttribute="bottom" constant="6" id="yit-rB-pO5"/>
+                <constraint firstAttribute="trailing" secondItem="eQq-UB-iQv" secondAttribute="trailing" constant="16" id="yx0-KN-7LQ"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="buttonHigh" destination="3pL-x3-Uic" id="Gug-Da-Dgv"/>
+                <outlet property="buttonLow" destination="zr6-7X-6Md" id="kTs-9m-uMm"/>
+            </connections>
+            <point key="canvasLocation" x="181" y="217.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="radio_button_empty.png" width="96" height="96"/>
+        <image name="radio_button_filled.png" width="96" height="96"/>
+    </resources>
+</document>
