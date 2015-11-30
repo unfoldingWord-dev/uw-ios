@@ -223,18 +223,22 @@ class AudioPlayerView : UIView, AVAudioPlayerDelegate {
         }
     }
     
-    // User Methods from View
+    func startPlaying() -> Bool {
+        defer { updateTimeUI() }
+        guard self.player != nil else { return false }
+            playAtTime(Double(sliderTime.value))
+            return true
+    }
     
+    // User Methods from View
     @IBAction func userPressedPlayPauseButton(sender: UIButton) {
-        if let player = self.player {
-            if player.playing {
-                pause()
-            }
-            else {
-                playAtTime(Double(sliderTime.value) )
-            }
+        defer { updateTimeUI() }
+        if let player = self.player where player.playing {
+            pause()
         }
-        updateTimeUI()
+        else {
+            startPlaying()
+        }
     }
     
     @IBAction func userChangedSliderValue(slider: UISlider) {

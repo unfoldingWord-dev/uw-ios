@@ -199,8 +199,8 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
         }
     }
 
-    @IBAction func userPressSpeakerButton(barButton: UIBarButtonItem) {
-        
+    @IBAction func userPressSpeakerButton(barButton: UIBarButtonItem)
+    {
         if isBarButtonOn(barButton) && isBarButtonOn(barButtonFont) == false {
             if let player = playerViewAudio where player.isPlaying() {
                 player.pause()
@@ -209,27 +209,44 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
             setBarButton(barButton, toOn: false)
             return
         }
-        else if let action = self.actionSpeaker {
-            let audioInfo = action()
-            if let source = audioInfo.audioSource, let url = source.sourceFileUrl() {
-                    insertAudioPlayerIntoAccessoryViewWithUrl(url)
-                    setBarButton(barButton, toOn: true)
-                    ensureAccessoryViewIsInState(showing: true)
-                
-                if let segment = audioInfo.frameOrVerse, player = playerViewAudio {
-                    if player.chapter != segment.integerValue {
-                        player.updateChapter(segment.integerValue)
-                    }
+        else if playAudio() {
+            setBarButton(barButtonFont, toOn: false)
+        }
+    }
+    
+    private func playVideo() -> Bool {
+        UIAlertView(title: "Error", message: "Video is not yet implemented!", delegate: nil, cancelButtonTitle: "Dismiss").show()
+        return false
+    }
+    
+    private func playAudio() -> Bool {
+        guard let action = self.actionSpeaker else {
+            return false;
+        }
+        let audioInfo = action()
+        if let source = audioInfo.audioSource, let url = source.sourceFileUrl() {
+            insertAudioPlayerIntoAccessoryViewWithUrl(url)
+            setBarButton(barButtonSpeaker, toOn: true)
+            ensureAccessoryViewIsInState(showing: true)
+            
+            if let segment = audioInfo.frameOrVerse, player = playerViewAudio {
+                if player.chapter != segment.integerValue {
+                    player.updateChapter(segment.integerValue)
                 }
+                player.startPlaying()
+                return true
             }
             else {
-                setBarButton(barButton, toOn: false)
-                ensureAccessoryViewIsInState(showing: false)
-                UIAlertView(title: "Not Found", message: "This chapter does not have matching audio", delegate: nil, cancelButtonTitle: "Dismiss").show()
+                return false
             }
         }
+        else {
+            setBarButton(barButtonSpeaker, toOn: false)
+            ensureAccessoryViewIsInState(showing: false)
+            UIAlertView(title: "Not Found", message: "This chapter does not have matching audio", delegate: nil, cancelButtonTitle: "Dismiss").show()
+            return false
+        }
         
-        setBarButton(barButtonFont, toOn: false)
     }
     
     @IBAction func userPressedVideoButton(sender: AnyObject) {
@@ -337,7 +354,7 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
             
             guard let versionPicked = versionPicked, arrayTOCS = versionPicked.sortedTOCs() as? [UWTOC] where arrayTOCS.count > 0  && isCanceled == false
                 else { return }
-            
+            var toc = arrayTOCS[0];
             if let initialSlug = strongself.tocForArea(area)?.slug {
                 let results = arrayTOCS.filter {
                     if let candidateSlug = $0.slug where candidateSlug.isEqual(initialSlug) {
@@ -346,14 +363,22 @@ class ContainerVC: UIViewController, FakeNavBarDelegate, ChromeHidingProtocol, F
                     return false
                 }
                 assert(results.count == 1, "There should be exactly one TOC that matches!! Instead there were \(results.count)")
-                if results.count >= 1 {
-                    strongself.selectTOC(results[0], forArea: area)
-                    return
+                if results.count == 1 {
+                    toc = results[0];
                 }
             }
-            
-            // Fall through
-            strongself.selectTOC(arrayTOCS[0], forArea: area)
+            strongself.selectTOC(toc, forArea: area)
+            if mediaToShow == MediaType.Audio {
+                delay(0.25, closure: { () -> Void in
+                    strongself.playAudio()
+                })
+                
+            }
+            else if mediaToShow == MediaType.Video {
+                delay(0.25, closure: { () -> Void in
+                    strongself.playVideo()
+                })
+            }
         }
         presentViewController(navVC, animated: true) { () -> Void in }
         return true

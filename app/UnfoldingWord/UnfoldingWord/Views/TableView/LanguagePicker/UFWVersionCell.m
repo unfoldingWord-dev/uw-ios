@@ -273,8 +273,9 @@
     DownloadStatus status = [self statusForMediaView:mediaView];
     if (status & DownloadStatusSome) {
         [self.delegate userDidRequestShow:[mediaView getType] forVersion:self.version];
+    } else {
+        [self startDownloadingForMediaView:mediaView];
     }
-
 }
 
 - (void)userPressedDownloadButtonForMediaView:(MediaTypeView *)mediaView {
