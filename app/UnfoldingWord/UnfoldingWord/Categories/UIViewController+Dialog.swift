@@ -13,6 +13,7 @@ extension NSObject {
     
     func showDialog(dialog : UIView) -> DialogBackgroundView? {
         guard let window = getWindow() else { return nil }
+        dialog.frame.size = dialog.systemLayoutSizeFittingSize(window.frame.size)
         let background = DialogBackgroundView(frame: CGRectMake(0,0,1,1))
         window.addSubview(background)
         window.bringSubviewToFront(background)

@@ -102,6 +102,10 @@
 		5A9830C81C0CC13800D4E705 /* AudioPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9830C71C0CC13800D4E705 /* AudioPickerView.swift */; };
 		5A9830CA1C0CC14800D4E705 /* AudioPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A9830C91C0CC14800D4E705 /* AudioPickerView.xib */; };
 		5A9830CC1C0CD0FE00D4E705 /* UIViewController+Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9830CB1C0CD0FE00D4E705 /* UIViewController+Dialog.swift */; };
+		5A9830CF1C0E084E00D4E705 /* SharingChoicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9830CE1C0E084E00D4E705 /* SharingChoicesView.swift */; };
+		5A9830D31C0E1A1000D4E705 /* CheckChoiceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A9830D21C0E1A1000D4E705 /* CheckChoiceView.xib */; };
+		5A9830D51C0E1B7200D4E705 /* CheckChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9830D41C0E1B7200D4E705 /* CheckChoiceView.swift */; };
+		5A9830D71C0E2A9700D4E705 /* UINib-Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9830D61C0E2A9700D4E705 /* UINib-Extensions.swift */; };
 		5A9A1FC41B950FA700ED8225 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9A1FC31B950FA700ED8225 /* AVFoundation.framework */; };
 		5A9A1FC61B950FC100ED8225 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9A1FC51B950FC100ED8225 /* MediaPlayer.framework */; };
 		5A9A1FC91B95141F00ED8225 /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9A1FC81B95141F00ED8225 /* AudioPlayerView.swift */; };
@@ -987,6 +991,10 @@
 		5A9830C71C0CC13800D4E705 /* AudioPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPickerView.swift; sourceTree = "<group>"; };
 		5A9830C91C0CC14800D4E705 /* AudioPickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AudioPickerView.xib; sourceTree = "<group>"; };
 		5A9830CB1C0CD0FE00D4E705 /* UIViewController+Dialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Dialog.swift"; sourceTree = "<group>"; };
+		5A9830CE1C0E084E00D4E705 /* SharingChoicesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharingChoicesView.swift; sourceTree = "<group>"; };
+		5A9830D21C0E1A1000D4E705 /* CheckChoiceView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CheckChoiceView.xib; sourceTree = "<group>"; };
+		5A9830D41C0E1B7200D4E705 /* CheckChoiceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckChoiceView.swift; sourceTree = "<group>"; };
+		5A9830D61C0E2A9700D4E705 /* UINib-Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINib-Extensions.swift"; sourceTree = "<group>"; };
 		5A9A1FC31B950FA700ED8225 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		5A9A1FC51B950FC100ED8225 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		5A9A1FC81B95141F00ED8225 /* AudioPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
@@ -1734,7 +1742,6 @@
 		5AEECC141A994CDC00BC7E40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		5AEECC151A994CDC00BC7E40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5AEECC161A994CDD00BC7E40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		5AF047021C04E96F004F3AB1 /* UWDownloadOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UWDownloadOptions.h; sourceTree = "<group>"; };
 		5AF047051C0539AB004F3AB1 /* MediaTypeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaTypeView.xib; sourceTree = "<group>"; };
 		5AF047071C0539E0004F3AB1 /* MediaTypeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaTypeView.swift; sourceTree = "<group>"; };
 		5AF051D91B756A8A003EA5A4 /* UWConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWConstants.swift; sourceTree = "<group>"; };
@@ -2043,6 +2050,7 @@
 				5AF682441BFFDD300048B611 /* String+Helpers.swift */,
 				5A9830C01C0CBA5D00D4E705 /* NSLayoutConstraint-Extensions.swift */,
 				5AD8CE8B1BFE596A00EBD58B /* NSArray+Helpers.swift */,
+				5A9830D61C0E2A9700D4E705 /* UINib-Extensions.swift */,
 				5A9830CB1C0CD0FE00D4E705 /* UIViewController+Dialog.swift */,
 			);
 			path = Categories;
@@ -2231,6 +2239,16 @@
 				5A9830C91C0CC14800D4E705 /* AudioPickerView.xib */,
 			);
 			path = AudioPickerView;
+			sourceTree = "<group>";
+		};
+		5A9830CD1C0E083200D4E705 /* SharingChoicesView */ = {
+			isa = PBXGroup;
+			children = (
+				5A9830CE1C0E084E00D4E705 /* SharingChoicesView.swift */,
+				5A9830D41C0E1B7200D4E705 /* CheckChoiceView.swift */,
+				5A9830D21C0E1A1000D4E705 /* CheckChoiceView.xib */,
+			);
+			path = SharingChoicesView;
 			sourceTree = "<group>";
 		};
 		5A9A1FC71B95140D00ED8225 /* AudioPlayerView */ = {
@@ -3012,6 +3030,7 @@
 		5A9AC00D1B0A38B100753AAB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5A9830CD1C0E083200D4E705 /* SharingChoicesView */,
 				5A9830C61C0CC11800D4E705 /* AudioPickerView */,
 				5A9830BE1C0CB98600D4E705 /* DialogBackgroundView.swift */,
 				5A7DDACF1BB3608900A5252C /* FontSizePicker */,
@@ -3254,7 +3273,6 @@
 				5AF051DD1B756BD1003EA5A4 /* UFWFileText.swift */,
 				5AF051DE1B756BD1003EA5A4 /* UWUrlSourceItem.swift */,
 				5A223FC51BE7F35A00A16421 /* FileNamer.swift */,
-				5AF047021C04E96F004F3AB1 /* UWDownloadOptions.h */,
 			);
 			path = FileFormat;
 			sourceTree = "<group>";
@@ -4029,6 +4047,7 @@
 				5A9ABE321B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-15-07jpg in Resources */,
 				5A9ABF5C1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-41-08jpg in Resources */,
 				5A9ABE351B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-15-10jpg in Resources */,
+				5A9830D31C0E1A1000D4E705 /* CheckChoiceView.xib in Resources */,
 				5A9ABE2C1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-15-01jpg in Resources */,
 				5A9ABF1A1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-35-09jpg in Resources */,
 				5A9ABDFD1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-11-06jpg in Resources */,
@@ -4306,6 +4325,7 @@
 				5A2DD85D1BFD10CA00011DA2 /* String+Zip.swift in Sources */,
 				5AC377D11B38C38300E3BB36 /* BluetoothFileSender.swift in Sources */,
 				5A9AC0431B0A38B100753AAB /* UFWInfoView.m in Sources */,
+				5A9830D71C0E2A9700D4E705 /* UINib-Extensions.swift in Sources */,
 				5A8DCB971B02601A0010DD27 /* UFWSelectionTracker.m in Sources */,
 				5AD3CBE41B4A182D003F5F33 /* ITunesSharingReceiver.swift in Sources */,
 				5AFC9B601B41950500D453D0 /* UIViewController+FileTransfer.m in Sources */,
@@ -4379,6 +4399,7 @@
 				5AF0B6B61BA080C300987463 /* USFMChapterVC.swift in Sources */,
 				5A2B79AE1B5EA22D00AD9993 /* UIViewControllerExtension.swift in Sources */,
 				5AD20D8D1B9665B7000B813B /* FileDownloader.swift in Sources */,
+				5A9830D51C0E1B7200D4E705 /* CheckChoiceView.swift in Sources */,
 				5A26CC791BBDD509006DFFD3 /* _UWVersion.m in Sources */,
 				5AFDC3391AF1366C002F58A0 /* NSManagedObject+Convenience.m in Sources */,
 				5A9830CC1C0CD0FE00D4E705 /* UIViewController+Dialog.swift in Sources */,
@@ -4389,6 +4410,7 @@
 				5A36D3B51B223F23001D6E04 /* UFWAppInformationView.m in Sources */,
 				5A26CC831BBDD509006DFFD3 /* UWAudioSource.m in Sources */,
 				5A9A1FC91B95141F00ED8225 /* AudioPlayerView.swift in Sources */,
+				5A9830CF1C0E084E00D4E705 /* SharingChoicesView.swift in Sources */,
 				5A26CC701BBDD509006DFFD3 /* _USFMInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

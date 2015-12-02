@@ -24,6 +24,9 @@
 /// Constraints to put a view below another view.
 + (NSArray <NSLayoutConstraint *>  * _Nullable)constraintsToPutView:(UIView * __nonnull)currentView belowView:(UIView * __nonnull)existingView padding:(CGFloat)padding withContainerView:(UIView * __nonnull)containerView leftMargin:(CGFloat)leftMargin rightMargin:(CGFloat)rightMargin;
 
+/// Constraints to put a view below another view, but uses the intrinsic height.
++ (NSArray <NSLayoutConstraint *>  * __nonnull)constraintsToFloatView:(UIView * __nonnull)currentView belowView:(UIView * __nonnull)existingView padding:(CGFloat)padding withContainerView:(UIView * __nonnull)containerView leftMargin:(CGFloat)leftMargin rightMargin:(CGFloat)rightMargin;
+
 /// Constraints for scrollView
 + (NSArray <NSLayoutConstraint *>  * _Nullable)constraintsForView:(UIView * __nonnull)subview insideScrollView:(UIView * __nonnull)scrollView topMargin:(CGFloat)topMargin leftMargin:(CGFloat)leftMargin;
 

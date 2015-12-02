@@ -26,6 +26,15 @@ typedef NS_OPTIONS(NSUInteger, DownloadStatus) {
     DownloadStatusAllValid = 1 << 3,
 };
 
+typedef NS_OPTIONS(NSInteger, DownloadOptions) {
+    DownloadOptionsEmpty = 0,
+    DownloadOptionsText = 1 << 0,
+    DownloadOptionsAudio = 1 << 1,
+    DownloadOptionsVideo = 1 << 2,
+    DownloadOptionsLowQuality = 1 << 3,
+    DownloadOptionsHighQuality = 1 << 4,
+};
+
 static NSString *const NotificationUserChangedAudioSegment = @"__NotificationUserChangedAudioSegment";
 static NSString *const NotificationAudioSegmentDidChange = @"__NotificationAudioSegmentDidChange";
 static NSString *const NotificationKeyAudioSegment = @"__NotificationKeyAudioSegment";

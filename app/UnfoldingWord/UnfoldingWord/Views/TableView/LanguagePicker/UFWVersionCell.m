@@ -108,25 +108,51 @@
 #pragma mark - Downloading
 
 
-- (void)downloadForMediaView:(MediaTypeView *)mediaView {
+- (void)downloadForMediaView:(MediaTypeView *)mediaView
+{
+    DownloadOptions currentOptions = [self.version currentDownloadingOptions];
+    if ([self.version currentDownloadingOptions] != DownloadOptionsEmpty) {
+        NSString * message = nil;
+        if (currentOptions & DownloadOptionsAudio) {
+            message = @"Wait for audio to finish downloading.";
+        } else if (currentOptions & DownloadOptionsVideo) {
+            message = @"Wait for video to finish downloading.";
+        } else if (currentOptions & DownloadOptionsText) {
+            message = @"Wait for text to finish downloading.";
+        } else {
+            NSAssert2(NO, @"%s: Nothing downloading for version: %@", __PRETTY_FUNCTION__, self.version);
+            message = @"Error. Couldn't find anything downloading?!?";
+        }
+        
+        [[[UIAlertView alloc] initWithTitle:@"Already Downloading" message:message delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil]show];
+        return;
+    }
     
     __block DownloadOptions options = [self downloadOptionsForMediaView:mediaView];
     if ([mediaView getType] == MediaTypeAudio) {
+        
+        
+        
         __weak typeof(self) weak = self;
-        AudioPickerView *picker = [AudioPickerView create:^(BOOL isLowQuality) {
-            if (isLowQuality) {
-                options = options | DownloadOptionsLowQuality;
-            } else {
-                options = options | DownloadOptionsHighQuality;
-            }
-            [weak downloadWithOptions:options];
+        
+        SharingChoicesView *picker = [SharingChoicesView createWithOptions:options completion:^(BOOL canceled, DownloadOptions options) {
+            NSLog(@"options: %ld", options);
         }];
+        
+        
+//        AudioPickerView *picker = [AudioPickerView create:^(BOOL isLowQuality) {
+//            if (isLowQuality) {
+//                options = options | DownloadOptionsLowQuality;
+//            } else {
+//                options = options | DownloadOptionsHighQuality;
+//            }
+//            [weak downloadWithOptions:options];
+//        }];
         [self showDialog:picker];
     }
     else {
         [self downloadWithOptions:options];
     }
-
 }
 
 - (void)downloadWithOptions:(DownloadOptions)options {
@@ -137,6 +163,9 @@
 // Specify which items should start downloading when a user taps download for a given media view.
 - (DownloadOptions)downloadOptionsForMediaView:(MediaTypeView *)mediaView {
     DownloadOptions options = DownloadOptionsEmpty;
+    if ( ([self.version statusText] & DownloadStatusAll) == 0) {
+        options = options | DownloadOptionsText;
+    }
     switch ([mediaView getType]) {
         case MediaTypeNone:
             break;
@@ -338,6 +367,5 @@
             break;
     }
 }
-
 
 @end

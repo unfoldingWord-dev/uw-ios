@@ -31,6 +31,9 @@ typealias AudioDownloadProgressBlock = (percentDone : Float) -> ()
 
 typealias AudiQualitySelectionBlock = (isLowQuality : Bool) -> Void
 
+typealias ShareOptionsBlock = (canceled : Bool, shareOptions : DownloadOptions) -> Void
+
+
 enum ActionType {
     case Audio
     case Video
@@ -56,6 +59,11 @@ func BACKGROUND_GREEN() -> UIColor { // duplicated in Constants.h
 }
 
 struct Constants {
+    
+    struct ImageName {
+        static let checkInBox = "checkInBox.png"
+        static let checklessBox = "checklessBox.png"
+    }
     
     struct Audio {
         static let framerateDefault : Float64 = 44100

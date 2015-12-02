@@ -3,7 +3,6 @@
 //
 
 #import "_UWVersion.h"
-#import "UWDownloadOptions.h"
 #import "Constants.h"
 
 @class UWLanguage;

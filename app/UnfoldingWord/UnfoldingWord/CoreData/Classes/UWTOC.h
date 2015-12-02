@@ -3,7 +3,7 @@
 //
 
 #import "_UWTOC.h"
-#import "UWDownloadOptions.h"
+#import "Constants.h"
 
 @class UWVersion, OpenChapter, UWFile;
 

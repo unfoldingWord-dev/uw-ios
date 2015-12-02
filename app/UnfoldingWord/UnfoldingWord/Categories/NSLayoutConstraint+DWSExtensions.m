@@ -94,6 +94,15 @@ static NSString *const kIdentifierHeight = @"height";
     return @[topConstraint, heightConstraint, leftConstraint, rightConstraint];
 }
 
++ (NSArray *)constraintsToFloatView:(UIView *)currentView belowView:(UIView *)existingView padding:(CGFloat)padding withContainerView:(UIView *)containerView leftMargin:(CGFloat)leftMargin rightMargin:(CGFloat)rightMargin
+{
+    NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:currentView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:existingView attribute:NSLayoutAttributeBottom multiplier:1 constant:padding];
+    NSLayoutConstraint *leftConstraint = [[self class] constraintForView:currentView insideView:containerView withLeftMargin:leftMargin];
+    NSLayoutConstraint *rightConstraint = [[self class] constraintForView:currentView insideView:containerView withRightMargin:rightMargin];
+    
+    return @[topConstraint, leftConstraint, rightConstraint];
+}
+
 + (NSArray *)constraintsForView:(UIView *)subview insideView:(UIView *)containerView topMargin:(CGFloat)topMargin leftMargin:(CGFloat)leftMargin rightMargin:(CGFloat)rightMargin height:(CGFloat)height
 {
     NSLayoutConstraint *topConstraint = [[self class] constraintForView:subview insideView:containerView withTopMargin:topMargin];

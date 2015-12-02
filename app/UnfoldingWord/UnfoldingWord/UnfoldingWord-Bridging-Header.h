@@ -22,4 +22,3 @@
 #import "ChapterListTableViewController.h"
 #import "XMLConverter.h"
 #import "UWDownloaderPlusValidator.h"
-#import "UWDownloadOptions.h"
