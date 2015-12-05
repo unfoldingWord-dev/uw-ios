@@ -72,6 +72,8 @@
 		5A3A23241C1249BA0082BBDD /* checkbox-empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A3A23211C1249BA0082BBDD /* checkbox-empty.png */; };
 		5A3A23251C1249BA0082BBDD /* checkbox-fixed.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A3A23221C1249BA0082BBDD /* checkbox-fixed.png */; };
 		5A3A23261C1249BA0082BBDD /* checkbox-ticked.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A3A23231C1249BA0082BBDD /* checkbox-ticked.png */; };
+		5A3A232B1C13526E0082BBDD /* UFWVerificationInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A3A23281C13526E0082BBDD /* UFWVerificationInfoView.xib */; };
+		5A3A232C1C13526E0082BBDD /* UFWVerificationInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3A232A1C13526E0082BBDD /* UFWVerificationInfoView.m */; };
 		5A3E553C1A9D4CB700D1D920 /* DWImageFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3E55371A9D4CB700D1D920 /* DWImageFileManager.m */; };
 		5A3E553D1A9D4CB700D1D920 /* DWImageGetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3E55391A9D4CB700D1D920 /* DWImageGetter.m */; };
 		5A3E553E1A9D4CB700D1D920 /* UFWModelImageSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3E553B1A9D4CB700D1D920 /* UFWModelImageSync.m */; };
@@ -104,7 +106,7 @@
 		5A9830C51C0CC07800D4E705 /* radio_button_filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A9830C31C0CC07800D4E705 /* radio_button_filled.png */; };
 		5A9830C81C0CC13800D4E705 /* AudioPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9830C71C0CC13800D4E705 /* AudioPickerView.swift */; };
 		5A9830CA1C0CC14800D4E705 /* AudioPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A9830C91C0CC14800D4E705 /* AudioPickerView.xib */; };
-		5A9830CC1C0CD0FE00D4E705 /* UIViewController+Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9830CB1C0CD0FE00D4E705 /* UIViewController+Dialog.swift */; };
+		5A9830CC1C0CD0FE00D4E705 /* NSObject+Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9830CB1C0CD0FE00D4E705 /* NSObject+Dialog.swift */; };
 		5A9830CF1C0E084E00D4E705 /* SharingChoicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9830CE1C0E084E00D4E705 /* SharingChoicesView.swift */; };
 		5A9830D31C0E1A1000D4E705 /* CheckChoiceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A9830D21C0E1A1000D4E705 /* CheckChoiceView.xib */; };
 		5A9830D51C0E1B7200D4E705 /* CheckChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9830D41C0E1B7200D4E705 /* CheckChoiceView.swift */; };
@@ -939,6 +941,9 @@
 		5A3A23211C1249BA0082BBDD /* checkbox-empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkbox-empty.png"; sourceTree = "<group>"; };
 		5A3A23221C1249BA0082BBDD /* checkbox-fixed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkbox-fixed.png"; sourceTree = "<group>"; };
 		5A3A23231C1249BA0082BBDD /* checkbox-ticked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkbox-ticked.png"; sourceTree = "<group>"; };
+		5A3A23281C13526E0082BBDD /* UFWVerificationInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UFWVerificationInfoView.xib; sourceTree = "<group>"; };
+		5A3A23291C13526E0082BBDD /* UFWVerificationInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFWVerificationInfoView.h; sourceTree = "<group>"; };
+		5A3A232A1C13526E0082BBDD /* UFWVerificationInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UFWVerificationInfoView.m; sourceTree = "<group>"; };
 		5A3E55361A9D4CB700D1D920 /* DWImageFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWImageFileManager.h; sourceTree = "<group>"; };
 		5A3E55371A9D4CB700D1D920 /* DWImageFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWImageFileManager.m; sourceTree = "<group>"; };
 		5A3E55381A9D4CB700D1D920 /* DWImageGetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWImageGetter.h; sourceTree = "<group>"; };
@@ -996,7 +1001,7 @@
 		5A9830C31C0CC07800D4E705 /* radio_button_filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = radio_button_filled.png; sourceTree = "<group>"; };
 		5A9830C71C0CC13800D4E705 /* AudioPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPickerView.swift; sourceTree = "<group>"; };
 		5A9830C91C0CC14800D4E705 /* AudioPickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AudioPickerView.xib; sourceTree = "<group>"; };
-		5A9830CB1C0CD0FE00D4E705 /* UIViewController+Dialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Dialog.swift"; sourceTree = "<group>"; };
+		5A9830CB1C0CD0FE00D4E705 /* NSObject+Dialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+Dialog.swift"; sourceTree = "<group>"; };
 		5A9830CE1C0E084E00D4E705 /* SharingChoicesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharingChoicesView.swift; sourceTree = "<group>"; };
 		5A9830D21C0E1A1000D4E705 /* CheckChoiceView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CheckChoiceView.xib; sourceTree = "<group>"; };
 		5A9830D41C0E1B7200D4E705 /* CheckChoiceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckChoiceView.swift; sourceTree = "<group>"; };
@@ -2057,7 +2062,7 @@
 				5A9830C01C0CBA5D00D4E705 /* NSLayoutConstraint-Extensions.swift */,
 				5AD8CE8B1BFE596A00EBD58B /* NSArray+Helpers.swift */,
 				5A9830D61C0E2A9700D4E705 /* UINib-Extensions.swift */,
-				5A9830CB1C0CD0FE00D4E705 /* UIViewController+Dialog.swift */,
+				5A9830CB1C0CD0FE00D4E705 /* NSObject+Dialog.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -2079,6 +2084,16 @@
 				5A36D3BA1B223FD8001D6E04 /* UFWFirstLaunchInfoVC.m */,
 			);
 			path = AppFirstLaunchInfoVC;
+			sourceTree = "<group>";
+		};
+		5A3A23271C13526E0082BBDD /* VerficationViewForSettings */ = {
+			isa = PBXGroup;
+			children = (
+				5A3A23281C13526E0082BBDD /* UFWVerificationInfoView.xib */,
+				5A3A23291C13526E0082BBDD /* UFWVerificationInfoView.h */,
+				5A3A232A1C13526E0082BBDD /* UFWVerificationInfoView.m */,
+			);
+			path = VerficationViewForSettings;
 			sourceTree = "<group>";
 		};
 		5A3E55351A9D4CB700D1D920 /* ImageManagement */ = {
@@ -3039,12 +3054,13 @@
 		5A9AC00D1B0A38B100753AAB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5A9830BE1C0CB98600D4E705 /* DialogBackgroundView.swift */,
 				5A9830CD1C0E083200D4E705 /* SharingChoicesView */,
 				5A9830C61C0CC11800D4E705 /* AudioPickerView */,
-				5A9830BE1C0CB98600D4E705 /* DialogBackgroundView.swift */,
 				5A7DDACF1BB3608900A5252C /* FontSizePicker */,
 				5A147A8A1BA7898D009496EB /* FakeNavBarView */,
 				5A9A1FC71B95140D00ED8225 /* AudioPlayerView */,
+				5A3A23271C13526E0082BBDD /* VerficationViewForSettings */,
 				5A36D3B11B223F23001D6E04 /* AppInfoView */,
 				5A9AC00E1B0A38B100753AAB /* CollectionView */,
 				5A9AC01D1B0A38B100753AAB /* InfoView */,
@@ -4254,6 +4270,7 @@
 				5A9ABD991B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-02-12jpg in Resources */,
 				5A9ABEB11B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-25-04jpg in Resources */,
 				5A9ABEDA1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-29-06jpg in Resources */,
+				5A3A232B1C13526E0082BBDD /* UFWVerificationInfoView.xib in Resources */,
 				5A9ABD6E1B0A35FA00753AAB /* icon-40@2x.png in Resources */,
 				5A9ABDBA1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-05-08jpg in Resources */,
 				5A9ABFBD1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-49-13jpg in Resources */,
@@ -4340,6 +4357,7 @@
 				5A9830D71C0E2A9700D4E705 /* UINib-Extensions.swift in Sources */,
 				5A8DCB971B02601A0010DD27 /* UFWSelectionTracker.m in Sources */,
 				5AD3CBE41B4A182D003F5F33 /* ITunesSharingReceiver.swift in Sources */,
+				5A3A232C1C13526E0082BBDD /* UFWVerificationInfoView.m in Sources */,
 				5AFC9B601B41950500D453D0 /* UIViewController+FileTransfer.m in Sources */,
 				5A9AC0041B0A370000753AAB /* FrameDetailsViewController.m in Sources */,
 				5A26CC7E1BBDD509006DFFD3 /* OpenContainer.m in Sources */,
@@ -4414,7 +4432,7 @@
 				5A9830D51C0E1B7200D4E705 /* CheckChoiceView.swift in Sources */,
 				5A26CC791BBDD509006DFFD3 /* _UWVersion.m in Sources */,
 				5AFDC3391AF1366C002F58A0 /* NSManagedObject+Convenience.m in Sources */,
-				5A9830CC1C0CD0FE00D4E705 /* UIViewController+Dialog.swift in Sources */,
+				5A9830CC1C0CD0FE00D4E705 /* NSObject+Dialog.swift in Sources */,
 				5A9AC0501B0A38B100753AAB /* UFWTopLevelItemCell.m in Sources */,
 				5A7A66EC1AEF06B500FF3EA1 /* NSString+Trim.m in Sources */,
 				5A26CC7A1BBDD509006DFFD3 /* _UWVideo.m in Sources */,

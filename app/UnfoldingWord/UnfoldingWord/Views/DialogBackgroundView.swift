@@ -8,11 +8,12 @@ import UIKit
 
 typealias CompletionDialogAnimateIn = () -> ()
 
+/// This class is used to show custom dialog boxes or fake actions. It takes care of fading the screen and animating the dialog/actions in and out. Use in conjunction with the extension to NSObject methods: showActionSheetFake, showDialog, and animateOutDialog
 class DialogBackgroundView: UIView {
     
     var viewBackground : UIView!
     var viewDialog : UIView!
-    let colorTransparentBackground = UIColor(colorLiteralRed: 0.25, green: 0.25, blue: 0.25, alpha: 0.75)
+    let colorTransparentBackground = UIColor(colorLiteralRed: 0.0, green: 0.0, blue: 0.0, alpha: 0.75)
     var constraintCenterY : NSLayoutConstraint?
     var constraintBottomY : NSLayoutConstraint?
 

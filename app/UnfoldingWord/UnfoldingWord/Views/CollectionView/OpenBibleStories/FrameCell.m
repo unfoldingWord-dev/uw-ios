@@ -54,7 +54,8 @@
     [self forceUpdateConstraints];
 }
 
-- (void)forceUpdateConstraints {
+- (void)forceUpdateConstraints
+{
     [super updateConstraints];
     [self layoutIfNeeded];
     BOOL active =  (self.frame.size.width > self.frame.size.height) ? YES : NO;

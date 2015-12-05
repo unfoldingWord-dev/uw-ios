@@ -9,6 +9,7 @@
 #import "UFWBaseURLTableVC.h"
 #import "UFWBaseUrlCell.h"
 #import "UFWSelectionTracker.h"
+#import "UFWVerificationInfoView.h"
 #import "NSLayoutConstraint+DWSExtensions.h"
 #import "Constants.h"
 
@@ -34,6 +35,18 @@ static NSInteger const kVersion = 2;
     UINib *urlEntryNib = [UINib nibWithNibName:self.cellIdUrlEntry bundle:nil];
     [self.tableView registerNib:urlEntryNib forCellReuseIdentifier:self.cellIdUrlEntry];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    UIView *footer = [UFWVerificationInfoView newView];
+    self.tableView.tableFooterView = footer;
+    [footer layoutIfNeeded];
+    CGSize size = [footer systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    self.tableView.tableFooterView = nil;
+    CGRect frame = footer.frame;
+    frame.size = size;
+    footer.frame = frame;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.tableView.tableFooterView = footer;
+    });    
 }
 
 - (void)viewDidAppear:(BOOL)animated
