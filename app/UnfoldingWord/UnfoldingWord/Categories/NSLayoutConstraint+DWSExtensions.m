@@ -49,6 +49,18 @@ static NSString *const kIdentifierHeight = @"height";
     return @[topConstraint, heightConstraint, leftConstraint, rightConstraint];
 }
 
++ (NSArray <NSLayoutConstraint *>  * __nonnull)constraintsTopAnchorView:(UIView * __nonnull)subview insideView:(UIView * __nonnull)containerView {
+    if ([[self class] viewHasInstrinicContentSize:subview] == NO) {
+        NSLog(@"\n\nWARNING: Need a height because there is no instrinsic content size for %@.\n\n", subview);
+    }
+    
+    NSLayoutConstraint *topConstraint = [[self class] constraintForView:subview insideView:containerView withTopMargin:0];
+    NSLayoutConstraint *leftConstraint = [[self class] constraintForView:subview insideView:containerView withLeftMargin:0];
+    NSLayoutConstraint *rightConstraint = [[self class] constraintForView:subview insideView:containerView withRightMargin:0];
+    
+    return @[topConstraint, leftConstraint, rightConstraint];
+}
+
 + (NSArray *)constraintsBottomAnchorView:(UIView *)subview insideView:(UIView *)containerView height:(CGFloat)height
 {
     if ([[self class] viewHasInstrinicContentSize:subview]) {

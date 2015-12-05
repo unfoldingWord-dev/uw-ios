@@ -53,7 +53,23 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
 
 - (void)sendFileForVersion:(UWVersion *)version fromBarButtonOrView:(id)item;
 {
-    [self initiateActivityPresentationWithVersion:version isSend:YES fromItem:item completion:nil];
+    if ( ([version statusAudio] & DownloadStatusSome) || ([version statusVideo] & DownloadStatusSome) ) {
+        __weak typeof(self) weakself = self;
+        DownloadOptions options = DownloadOptionsText;
+        if ([version statusAudio] & DownloadStatusSome) {
+            options = options | DownloadOptionsAudio;
+        }
+        if ([version statusVideo] & DownloadStatusSome) {
+            options = options | DownloadOptionsVideo;
+        }
+        SharingChoicesView *picker = [SharingChoicesView createWithOptions:options completion:^(BOOL canceled, DownloadOptions options) {
+            [weakself initiateActivityPresentationWithVersion:version isSend:YES fromItem:item completion:nil];
+        }];
+        [self showActionSheetFake:picker];
+    } else {
+        [self initiateActivityPresentationWithVersion:version isSend:YES fromItem:item completion:nil];
+    }
+    
 }
 
 - (void)receiveFileFromBarButtonOrView:(id)item completion:(FileCompletion)completion

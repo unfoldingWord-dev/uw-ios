@@ -32,7 +32,7 @@ extension UIView {
     }
     
     func constraintAlignBottom(inside container : UIView, constant : CGFloat) -> NSLayoutConstraint {
-        return NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.Bottom, relatedBy: .Equal, toItem: container, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: constant)
+        return NSLayoutConstraint(item: container, attribute: NSLayoutAttribute.Bottom, relatedBy: .Equal, toItem: self, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: constant)
     }
     
     func constraintAlignLeft(inside container : UIView, constant : CGFloat) -> NSLayoutConstraint {
@@ -40,7 +40,7 @@ extension UIView {
     }
     
     func constraintAlignRight(inside container : UIView, constant : CGFloat) -> NSLayoutConstraint {
-        return NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.Right, relatedBy: .Equal, toItem: container, attribute: NSLayoutAttribute.Right, multiplier: 1.0, constant: constant)
+        return NSLayoutConstraint(item: container, attribute: NSLayoutAttribute.Right, relatedBy: .Equal, toItem: self, attribute: NSLayoutAttribute.Right, multiplier: 1.0, constant: constant)
     }
     
     func constraintsToBox(inside container : UIView, withMarginsAllSides margins : CGFloat) -> [NSLayoutConstraint] {

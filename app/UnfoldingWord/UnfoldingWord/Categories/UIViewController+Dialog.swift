@@ -11,6 +11,20 @@ import UIKit
 
 extension NSObject {
     
+    func showActionSheetFake(dialog : UIView) -> DialogBackgroundView? {
+        guard let window = getWindow() else { return nil }
+        dialog.frame.size = dialog.systemLayoutSizeFittingSize(window.frame.size)
+        let background = DialogBackgroundView(frame: CGRectMake(0,0,1,1))
+        window.addSubview(background)
+        window.bringSubviewToFront(background)
+        window.addConstraints(background.constraintsToBox(inside: window, withMarginsAllSides: 0))
+        window.layoutIfNeeded()
+        background.layoutIfNeeded()
+        
+        background.animateInActionSheetStyle(dialog) { () -> Void in }
+        return background
+    }
+    
     func showDialog(dialog : UIView) -> DialogBackgroundView? {
         guard let window = getWindow() else { return nil }
         dialog.frame.size = dialog.systemLayoutSizeFittingSize(window.frame.size)

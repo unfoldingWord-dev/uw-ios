@@ -398,7 +398,7 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
 
 - (BOOL)hasVideo
 {
-    return YES;
+    return NO;
 //    return (self.media.video.sources.count > 0) ? YES : NO;
 }
 

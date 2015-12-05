@@ -69,6 +69,9 @@
 		5A36D3B51B223F23001D6E04 /* UFWAppInformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A36D3B31B223F23001D6E04 /* UFWAppInformationView.m */; };
 		5A36D3B61B223F23001D6E04 /* UFWAppInformationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A36D3B41B223F23001D6E04 /* UFWAppInformationView.xib */; };
 		5A36D3BB1B223FD8001D6E04 /* UFWFirstLaunchInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A36D3BA1B223FD8001D6E04 /* UFWFirstLaunchInfoVC.m */; };
+		5A3A23241C1249BA0082BBDD /* checkbox-empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A3A23211C1249BA0082BBDD /* checkbox-empty.png */; };
+		5A3A23251C1249BA0082BBDD /* checkbox-fixed.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A3A23221C1249BA0082BBDD /* checkbox-fixed.png */; };
+		5A3A23261C1249BA0082BBDD /* checkbox-ticked.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A3A23231C1249BA0082BBDD /* checkbox-ticked.png */; };
 		5A3E553C1A9D4CB700D1D920 /* DWImageFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3E55371A9D4CB700D1D920 /* DWImageFileManager.m */; };
 		5A3E553D1A9D4CB700D1D920 /* DWImageGetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3E55391A9D4CB700D1D920 /* DWImageGetter.m */; };
 		5A3E553E1A9D4CB700D1D920 /* UFWModelImageSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3E553B1A9D4CB700D1D920 /* UFWModelImageSync.m */; };
@@ -933,6 +936,9 @@
 		5A36D3B41B223F23001D6E04 /* UFWAppInformationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UFWAppInformationView.xib; sourceTree = "<group>"; };
 		5A36D3B91B223FD8001D6E04 /* UFWFirstLaunchInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFWFirstLaunchInfoVC.h; sourceTree = "<group>"; };
 		5A36D3BA1B223FD8001D6E04 /* UFWFirstLaunchInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UFWFirstLaunchInfoVC.m; sourceTree = "<group>"; };
+		5A3A23211C1249BA0082BBDD /* checkbox-empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkbox-empty.png"; sourceTree = "<group>"; };
+		5A3A23221C1249BA0082BBDD /* checkbox-fixed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkbox-fixed.png"; sourceTree = "<group>"; };
+		5A3A23231C1249BA0082BBDD /* checkbox-ticked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkbox-ticked.png"; sourceTree = "<group>"; };
 		5A3E55361A9D4CB700D1D920 /* DWImageFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWImageFileManager.h; sourceTree = "<group>"; };
 		5A3E55371A9D4CB700D1D920 /* DWImageFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWImageFileManager.m; sourceTree = "<group>"; };
 		5A3E55381A9D4CB700D1D920 /* DWImageGetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWImageGetter.h; sourceTree = "<group>"; };
@@ -2273,6 +2279,9 @@
 		5A9ABAF11B0A35F600753AAB /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				5A3A23211C1249BA0082BBDD /* checkbox-empty.png */,
+				5A3A23221C1249BA0082BBDD /* checkbox-fixed.png */,
+				5A3A23231C1249BA0082BBDD /* checkbox-ticked.png */,
 				5A9830C21C0CC07800D4E705 /* radio_button_empty.png */,
 				5A9830C31C0CC07800D4E705 /* radio_button_filled.png */,
 				5A9830B81C06476C00D4E705 /* bible_icon@3x.png */,
@@ -4039,6 +4048,7 @@
 				5A9ABEAA1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-24-06jpg in Resources */,
 				5A9ABEAB1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-24-07jpg in Resources */,
 				5A9ABF831B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-45-06jpg in Resources */,
+				5A3A23241C1249BA0082BBDD /* checkbox-empty.png in Resources */,
 				5A9ABD7C1B0A35FA00753AAB /* icon.png in Resources */,
 				5A9ABDD41B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-08-07jpg in Resources */,
 				5A9ABE041B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-12-05jpg in Resources */,
@@ -4099,6 +4109,7 @@
 				5A9ABF031B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-33-05jpg in Resources */,
 				5A9ABF0E1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-34-07jpg in Resources */,
 				5A9ABF861B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-45-09jpg in Resources */,
+				5A3A23251C1249BA0082BBDD /* checkbox-fixed.png in Resources */,
 				5A9ABE571B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-17-13jpg in Resources */,
 				5A9ABDC01B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-06-04jpg in Resources */,
 				5A9ABFAD1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-48-11jpg in Resources */,
@@ -4147,6 +4158,7 @@
 				5A9ABE5F1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-18-07jpg in Resources */,
 				5A9ABDFC1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-11-05jpg in Resources */,
 				5A9ABDE81B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-09-12jpg in Resources */,
+				5A3A23261C1249BA0082BBDD /* checkbox-ticked.png in Resources */,
 				5A9ABF9A1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-47-06jpg in Resources */,
 				5A9ABE651B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-18-13jpg in Resources */,
 				5A9ABDA61B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-03-13jpg in Resources */,

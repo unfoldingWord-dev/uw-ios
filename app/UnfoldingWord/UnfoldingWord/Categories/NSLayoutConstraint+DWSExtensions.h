@@ -37,8 +37,10 @@
 + (NSArray <NSLayoutConstraint *>  * _Nullable)constraintsForView:(UIView * __nonnull)subview insideView:(UIView * __nonnull)containerView topMargin:(CGFloat)topMargin leftMargin:(CGFloat)leftMargin rightMargin:(CGFloat)rightMargin minimumHeight:(CGFloat)height;
 
 + (NSArray <NSLayoutConstraint *>  * _Nullable)constraintsTopAnchorView:(UIView * __nonnull)subview insideView:(UIView * __nonnull)containerView height:(CGFloat)height;
-+ (NSArray <NSLayoutConstraint *>  * _Nullable)constraintsBottomAnchorView:(UIView * __nonnull)subview insideView:(UIView * __nonnull)containerView height:(CGFloat)height;
 
++ (NSArray <NSLayoutConstraint *>  * __nonnull)constraintsTopAnchorView:(UIView * __nonnull)subview insideView:(UIView * __nonnull)containerView;
+
++ (NSArray <NSLayoutConstraint *>  * _Nullable)constraintsBottomAnchorView:(UIView * __nonnull)subview insideView:(UIView * __nonnull)containerView height:(CGFloat)height;
 
 + (NSArray <NSLayoutConstraint *>  * _Nullable)constraintsForSizedView:(UIView * __nonnull)subview insideView:(UIView * __nonnull)containerView topMargin:(CGFloat)topMargin leftMargin:(CGFloat)leftMargin;
 

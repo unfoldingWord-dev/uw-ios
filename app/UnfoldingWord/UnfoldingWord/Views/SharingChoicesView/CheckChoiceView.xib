@@ -35,7 +35,7 @@
                 </button>
             </subviews>
             <animations/>
-            <color key="backgroundColor" red="1" green="0.87405108890000005" blue="0.056655094070000002" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="BbR-f5-CEL" firstAttribute="leading" secondItem="1CG-nC-lFQ" secondAttribute="leading" id="JRw-jQ-HQE"/>
                 <constraint firstItem="BbR-f5-CEL" firstAttribute="top" secondItem="1CG-nC-lFQ" secondAttribute="top" id="RKx-iD-DnC"/>
@@ -55,7 +55,7 @@
                 <outlet property="imageView" destination="K9H-q0-URh" id="XcC-ar-xjI"/>
                 <outlet property="label" destination="bjs-CU-ocz" id="g3O-2P-LWt"/>
             </connections>
-            <point key="canvasLocation" x="1159" y="-44"/>
+            <point key="canvasLocation" x="1225" y="-52"/>
         </view>
     </objects>
 </document>

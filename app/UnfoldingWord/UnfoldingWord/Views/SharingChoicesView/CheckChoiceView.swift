@@ -13,11 +13,34 @@ class CheckChoiceView: UIView {
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak private var imageView: UIImageView!
     
-    var type : MediaType = .None
+    var type : MediaType = .None {
+        didSet {
+            switch type {
+            case .Text:
+                label.text = "Text"
+                self.userInteractionEnabled = false
+                self.selected = true
+            case .Audio:
+                label.text = "Audio"
+                self.selected = false
+            case .Video:
+                label.text = "Video"
+                self.selected = false
+            case .None:
+                assertionFailure("Can't set no media type!")
+            }
+        }
+    }
     
     var selected = false {
         didSet {
-            let imagename = selected ? Constants.ImageName.checkInBox : Constants.ImageName.checklessBox
+            let imagename : String
+            if type == .Text {
+                 imagename = Constants.ImageName.checkBoxFixedOn
+            } else {
+                imagename = selected ? Constants.ImageName.checkInBox : Constants.ImageName.checklessBox
+            }
+            
             imageView.image = UIImage(named: imagename)
         }
     }

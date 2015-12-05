@@ -135,20 +135,15 @@
         
         __weak typeof(self) weak = self;
         
-        SharingChoicesView *picker = [SharingChoicesView createWithOptions:options completion:^(BOOL canceled, DownloadOptions options) {
-            NSLog(@"options: %ld", options);
+        AudioPickerView *picker = [AudioPickerView create:^(BOOL isLowQuality) {
+            if (isLowQuality) {
+                options = options | DownloadOptionsLowQuality;
+            } else {
+                options = options | DownloadOptionsHighQuality;
+            }
+            [weak downloadWithOptions:options];
         }];
-        
-        
-//        AudioPickerView *picker = [AudioPickerView create:^(BOOL isLowQuality) {
-//            if (isLowQuality) {
-//                options = options | DownloadOptionsLowQuality;
-//            } else {
-//                options = options | DownloadOptionsHighQuality;
-//            }
-//            [weak downloadWithOptions:options];
-//        }];
-        [self showDialog:picker];
+         [self showDialog:picker];
     }
     else {
         [self downloadWithOptions:options];
