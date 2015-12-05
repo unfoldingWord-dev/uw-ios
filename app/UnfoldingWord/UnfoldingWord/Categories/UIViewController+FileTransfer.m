@@ -63,18 +63,18 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
             options = options | DownloadOptionsVideo;
         }
         SharingChoicesView *picker = [SharingChoicesView createWithOptions:options completion:^(BOOL canceled, DownloadOptions options) {
-            [weakself initiateActivityPresentationWithVersion:version isSend:YES fromItem:item completion:nil];
+            [weakself  initiateActivityPresentationWithVersion:version isSend:YES options:options fromItem:item completion:nil];
         }];
         [self showActionSheetFake:picker];
     } else {
-        [self initiateActivityPresentationWithVersion:version isSend:YES fromItem:item completion:nil];
+        [self initiateActivityPresentationWithVersion:version isSend:YES options:DownloadOptionsText fromItem:item completion:nil];
     }
     
 }
 
 - (void)receiveFileFromBarButtonOrView:(id)item completion:(FileCompletion)completion
 {
-    [self initiateActivityPresentationWithVersion:nil isSend:NO fromItem:item completion:completion];
+    [self initiateActivityPresentationWithVersion:nil isSend:NO options:DownloadOptionsEmpty fromItem:item completion:completion];
 }
 
 - (void) handleActivityType:(NSString *)activityType completion:(FileCompletion)completion
@@ -111,9 +111,9 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
     }
 }
 
-- (void)initiateActivityPresentationWithVersion:(UWVersion *) version isSend:(BOOL)isSend fromItem:(id)item completion:(FileCompletion)completion
+- (void)initiateActivityPresentationWithVersion:(UWVersion *) version isSend:(BOOL)isSend options:(DownloadOptions)options fromItem:(id)item completion:(FileCompletion)completion
 {
-    self.fileActivityController = [[FileActivityController alloc] initWithVersion:version shouldSend:isSend];
+    self.fileActivityController = [[FileActivityController alloc] initWithVersion:version options:options shouldSend:isSend];
     UIActivityViewController *activityController = self.fileActivityController.activityViewController;
     __weak typeof(self) weakself = self;
     activityController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {

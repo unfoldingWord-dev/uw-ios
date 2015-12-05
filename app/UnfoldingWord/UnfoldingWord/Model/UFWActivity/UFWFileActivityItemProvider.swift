@@ -12,6 +12,7 @@ import Foundation
 final class UFWFileActivityItemProvider : UIActivityItemProvider {
     
     let version : UWVersion
+    let options : DownloadOptions
     private var urlSaved : NSURL?
     
     var url : NSURL! {
@@ -25,8 +26,9 @@ final class UFWFileActivityItemProvider : UIActivityItemProvider {
         }
     }
 
-    init(placeholderItem: AnyObject, version : UWVersion) {
+    init(placeholderItem: AnyObject, version : UWVersion, options : DownloadOptions) {
         self.version = version
+        self.options = options
         super.init(placeholderItem: placeholderItem)
     }
     
@@ -46,7 +48,7 @@ final class UFWFileActivityItemProvider : UIActivityItemProvider {
     }
     
     private func filePath() -> String? {
-        let exporter = UFWFileExporter(version: version)
+        let exporter = UFWFileExporter(version: version, options: options)
         return exporter.fileDataPath
     }
     

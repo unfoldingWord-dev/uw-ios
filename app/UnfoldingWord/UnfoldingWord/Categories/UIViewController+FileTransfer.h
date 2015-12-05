@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-
 @class UWVersion, BluetoothFileSender, BluetoothFileReceiver, MultiConnectReceiver, MultiConnectSender, FileActivityController;
 
 /// This class adds UWVersion file transfer capabilities to any view controller. Used in conjunction with UFWActivity objects that are presented by a UIActivityViewController;

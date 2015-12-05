@@ -11,8 +11,10 @@ import CoreData
 @objc final class UFWFileExporter : NSObject {
     
     let sourceVersion : UWVersion
+    let options : DownloadOptions
     
-    init(version : UWVersion) {
+    init(version : UWVersion, options : DownloadOptions) {
+        self.options = options
         self.sourceVersion = version
     }
     
@@ -20,7 +22,7 @@ import CoreData
     var fileDataPath : String? {
         get {
             guard let textPath = textFileDataTemporaryPath() else { return nil }
-            let audioPaths = audioFileDataTemporaryPathArray()
+            let audioPaths : [String]? = options.contains(.Audio) ? audioFileDataTemporaryPathArray() : nil
             return createZipArchive(textPath, audioFilePaths: audioPaths)
         }
     }
@@ -39,9 +41,9 @@ import CoreData
         return textFilePath
     }
     
-    private func audioFileDataTemporaryPathArray() -> [String]
+    private func audioFileDataTemporaryPathArray() -> [String]?
     {
-        guard let tocSet = sourceVersion.toc else  { return [String]() }
+        guard let tocSet = sourceVersion.toc else  { return nil }
         
         // Work through all the sources in each toc that has media sources
         var paths = [String]()
@@ -68,11 +70,13 @@ import CoreData
         return paths
     }
     
-    private func createZipArchive(textPath : String, audioFilePaths : [String]) -> String?
+    private func createZipArchive(textPath : String, audioFilePaths : [String]?) -> String?
     {
         var combinedFilePaths = [String]()
         combinedFilePaths.append(textPath)
-        combinedFilePaths.appendContentsOf(audioFilePaths)
+        if let audioFilePaths = audioFilePaths {
+            combinedFilePaths.appendContentsOf(audioFilePaths)
+        }
         
         let zipPath = String.temporaryFilePathInCacheDirectory()
         if (SSZipArchive.createZipFileAtPath(zipPath, withFilesAtPaths: combinedFilePaths)) {

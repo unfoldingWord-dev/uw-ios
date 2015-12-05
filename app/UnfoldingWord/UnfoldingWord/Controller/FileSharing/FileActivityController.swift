@@ -12,16 +12,18 @@ import UIKit
 @objc final class FileActivityController: NSObject {
     
     let ufwVersion : UWVersion?
+    let options : DownloadOptions
     let isSend : Bool
     let urlProvider : UFWFileActivityItemProvider?
     
-    init(version: UWVersion?, shouldSend : Bool) {
+    init(version: UWVersion?, options: DownloadOptions, shouldSend : Bool) {
         self.ufwVersion = version
         self.isSend = shouldSend
+        self.options = options
         let placeHolder = NSURL(fileURLWithPath: NSString.documentsDirectory(), isDirectory: true)
         
         if shouldSend, let version = version {
-            self.urlProvider = UFWFileActivityItemProvider(placeholderItem: placeHolder, version: version)
+            self.urlProvider = UFWFileActivityItemProvider(placeholderItem: placeHolder, version: version, options: options)
         }
         else {
             self.urlProvider = nil
