@@ -212,6 +212,9 @@
 }
 
 - (void)userDidRequestShowCheckingLevelForType:(MediaType)type forVersion:(UWVersion *)version {
+    
+    
+    
     [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"This should show a popover with the version information, but that's not done yet.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles: nil] show];
 }
 

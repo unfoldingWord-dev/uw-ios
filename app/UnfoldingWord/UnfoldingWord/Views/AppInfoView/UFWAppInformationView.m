@@ -56,7 +56,7 @@
     self.labelVerifyTitle.font = [FONT_MEDIUM fontWithSize:self.labelVerifyTitle.font.pointSize];
     
     self.labelAppInfoTop.text = NSLocalizedString(@"App Information", nil);
-    self.labelOverview.text = NSLocalizedString(@"We use a three-level, Church-centric approach for identifying the fidelity of translated Biblical content:", nil);
+    self.labelOverview.text = VERSION_INFO;
     self.labelLevel1Text.text = LEVEL_1_DESC;
     self.labelLevel2Text.text = LEVEL_2_DESC;
     self.labelLevel3Text.text = LEVEL_3_DESC;

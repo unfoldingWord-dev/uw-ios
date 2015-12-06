@@ -60,6 +60,7 @@ func BACKGROUND_GREEN() -> UIColor { // duplicated in Constants.h
 
 struct Constants {
     
+    
     struct Color {
         static let lightBlue = UIColor(red:0.078,  green:0.490,  blue:1, alpha:1)
         static let lightGray = UIColor(red:0.835,  green:0.835,  blue:0.839, alpha:1)

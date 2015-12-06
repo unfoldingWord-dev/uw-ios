@@ -51,9 +51,11 @@ static NSString *const NotificationKeyAudioSegment = @"__NotificationKeyAudioSeg
 #define FONT_NORMAL [UIFont fontWithName:@"HelveticaNeue" size:17]
 #define FONT_MEDIUM [UIFont fontWithName:@"HelveticaNeue-Medium" size:17]
 
-#define LEVEL_1_DESC NSLocalizedString(@"Level 1: internal — Translator (or team) affirms that translation is in line with Statement of Faith and Translation Guidelines.", nil)
-#define LEVEL_2_DESC NSLocalizedString(@"Level 2: external — Translation is independently checked and confirmed by at least two others not on the translation team.", nil)
-#define LEVEL_3_DESC NSLocalizedString(@"Level 3: authenticated — Translation is checked and confirmed by leadership of at least one Church network with native speakers of the language.", nil)
+
+#define VERSION_INFO @"We use a three-level, Church-centric approach for identifying the fidelity of translated Biblical content."
+#define LEVEL_1_DESC @"Level 1: internal — Translator (or team) affirms that translation is in line with Statement of Faith and Translation Guidelines."
+#define LEVEL_2_DESC @"Level 2: external — Translation is independently checked and confirmed by at least two others not on the translation team."
+#define LEVEL_3_DESC @"Level 3: authenticated — Translation is checked and confirmed by leadership of at least one Church network with native speakers of the language."
 
 #define LEVEL_1_IMAGE @"level1Cell"
 #define LEVEL_2_IMAGE @"level2Cell"

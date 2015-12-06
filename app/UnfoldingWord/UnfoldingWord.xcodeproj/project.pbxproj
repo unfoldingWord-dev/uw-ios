@@ -74,6 +74,8 @@
 		5A3A23261C1249BA0082BBDD /* checkbox-ticked.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A3A23231C1249BA0082BBDD /* checkbox-ticked.png */; };
 		5A3A232B1C13526E0082BBDD /* UFWVerificationInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A3A23281C13526E0082BBDD /* UFWVerificationInfoView.xib */; };
 		5A3A232C1C13526E0082BBDD /* UFWVerificationInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3A232A1C13526E0082BBDD /* UFWVerificationInfoView.m */; };
+		5A3A232F1C13740D0082BBDD /* VerseVerifyInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A3A232E1C13740D0082BBDD /* VerseVerifyInfoView.swift */; };
+		5A3A23311C1374C50082BBDD /* VerseVerifyInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A3A23301C1374C50082BBDD /* VerseVerifyInfoView.xib */; };
 		5A3E553C1A9D4CB700D1D920 /* DWImageFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3E55371A9D4CB700D1D920 /* DWImageFileManager.m */; };
 		5A3E553D1A9D4CB700D1D920 /* DWImageGetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3E55391A9D4CB700D1D920 /* DWImageGetter.m */; };
 		5A3E553E1A9D4CB700D1D920 /* UFWModelImageSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3E553B1A9D4CB700D1D920 /* UFWModelImageSync.m */; };
@@ -944,6 +946,8 @@
 		5A3A23281C13526E0082BBDD /* UFWVerificationInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UFWVerificationInfoView.xib; sourceTree = "<group>"; };
 		5A3A23291C13526E0082BBDD /* UFWVerificationInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFWVerificationInfoView.h; sourceTree = "<group>"; };
 		5A3A232A1C13526E0082BBDD /* UFWVerificationInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UFWVerificationInfoView.m; sourceTree = "<group>"; };
+		5A3A232E1C13740D0082BBDD /* VerseVerifyInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerseVerifyInfoView.swift; sourceTree = "<group>"; };
+		5A3A23301C1374C50082BBDD /* VerseVerifyInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VerseVerifyInfoView.xib; sourceTree = "<group>"; };
 		5A3E55361A9D4CB700D1D920 /* DWImageFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWImageFileManager.h; sourceTree = "<group>"; };
 		5A3E55371A9D4CB700D1D920 /* DWImageFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWImageFileManager.m; sourceTree = "<group>"; };
 		5A3E55381A9D4CB700D1D920 /* DWImageGetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWImageGetter.h; sourceTree = "<group>"; };
@@ -2096,6 +2100,15 @@
 			path = VerficationViewForSettings;
 			sourceTree = "<group>";
 		};
+		5A3A232D1C1373D80082BBDD /* VerseVerificationView */ = {
+			isa = PBXGroup;
+			children = (
+				5A3A232E1C13740D0082BBDD /* VerseVerifyInfoView.swift */,
+				5A3A23301C1374C50082BBDD /* VerseVerifyInfoView.xib */,
+			);
+			path = VerseVerificationView;
+			sourceTree = "<group>";
+		};
 		5A3E55351A9D4CB700D1D920 /* ImageManagement */ = {
 			isa = PBXGroup;
 			children = (
@@ -3060,6 +3073,7 @@
 				5A7DDACF1BB3608900A5252C /* FontSizePicker */,
 				5A147A8A1BA7898D009496EB /* FakeNavBarView */,
 				5A9A1FC71B95140D00ED8225 /* AudioPlayerView */,
+				5A3A232D1C1373D80082BBDD /* VerseVerificationView */,
 				5A3A23271C13526E0082BBDD /* VerficationViewForSettings */,
 				5A36D3B11B223F23001D6E04 /* AppInfoView */,
 				5A9AC00E1B0A38B100753AAB /* CollectionView */,
@@ -3965,6 +3979,7 @@
 				5A9ABEA01B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-23-06jpg in Resources */,
 				5A9ABF2C1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-37-07jpg in Resources */,
 				5A9ABF491B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-39-10jpg in Resources */,
+				5A3A23311C1374C50082BBDD /* VerseVerifyInfoView.xib in Resources */,
 				5A9ABF431B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-39-04jpg in Resources */,
 				5A9ABDC51B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-07-02jpg in Resources */,
 				5A9ABD7A1B0A35FA00753AAB /* icon-small@2x.png in Resources */,
@@ -4312,6 +4327,7 @@
 				5A9ABFE31B0A364C00753AAB /* UFWVerifier.m in Sources */,
 				5A9AC0481B0A38B100753AAB /* UFWVersionCell.m in Sources */,
 				5A26CC811BBDD509006DFFD3 /* UWAudio.m in Sources */,
+				5A3A232F1C13740D0082BBDD /* VerseVerifyInfoView.swift in Sources */,
 				5A26CC6C1BBDD509006DFFD3 /* _OpenAppWordsList.m in Sources */,
 				5A26CC861BBDD509006DFFD3 /* UWTOC.m in Sources */,
 				5A26CC721BBDD509006DFFD3 /* _UWAudioBitrate.m in Sources */,

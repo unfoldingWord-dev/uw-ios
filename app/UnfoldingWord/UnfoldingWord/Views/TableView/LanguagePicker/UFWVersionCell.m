@@ -131,8 +131,6 @@
     __block DownloadOptions options = [self downloadOptionsForMediaView:mediaView];
     if ([mediaView getType] == MediaTypeAudio) {
         
-        
-        
         __weak typeof(self) weak = self;
         
         AudioPickerView *picker = [AudioPickerView create:^(BOOL isLowQuality) {
@@ -304,7 +302,10 @@
 }
 
 - (void)userPressedCheckingInformationForMediaView:(MediaTypeView *) mediaView {
-    [self.delegate userDidRequestShowCheckingLevelForType:[mediaView getType] forVersion:self.version];
+//    [self.delegate userDidRequestShowCheckingLevelForType:[mediaView getType] forVersion:self.version];
+    
+    VerseVerifyInfoView *infoView = [VerseVerifyInfoView verifyViewForVersion:self.version];
+    [self showDialog:infoView];
 }
 
 - (void)userPressedBackgroundButtonForMediaView:(MediaTypeView *) mediaView
