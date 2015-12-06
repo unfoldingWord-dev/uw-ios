@@ -23,11 +23,11 @@ class SharingChoicesView: UIView {
         let shareView = SharingChoicesView()
         shareView.options = options
         shareView.completionBlock = completion
-        shareView.setupAllViews()
+        shareView.addAllViews()
         return shareView
     }
     
-    private func setupAllViews()
+    private func addAllViews()
     {
         let viewGroup1 = UIView(frame: CGRectMake(0,0,1,1))
         viewGroup1.translatesAutoresizingMaskIntoConstraints = false
@@ -62,7 +62,7 @@ class SharingChoicesView: UIView {
         viewGroup1.addSubview(shareButton)
         viewGroup1.addConstraints(shareConst)
         
-        // Add Bottom Defining Constraint for Group 1
+        // Add Bottom Defining Constraint for Top Area (Group 1)
         let group1bottomConstraint = NSLayoutConstraint(item: shareButton, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: viewGroup1, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0)
         viewGroup1.addConstraint(group1bottomConstraint)
         

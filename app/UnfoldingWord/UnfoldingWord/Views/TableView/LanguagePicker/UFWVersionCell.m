@@ -213,13 +213,13 @@
                 NSAssert1(NO, @"%s: Don't call this with no type!", __PRETTY_FUNCTION__);
                 break;
             case MediaTypeText:
-                mediaView.labelDescription.text = @"Downloading Text";
+                mediaView.labelDescription.text = @"Downloading Text...";
                 break;
             case MediaTypeAudio:
-                mediaView.labelDescription.text = @"Downloading Audio";
+                mediaView.labelDescription.text = @"Downloading Audio...";
                 break;
             case MediaTypeVideo:
-                mediaView.labelDescription.text = @"Downloading Video";
+                mediaView.labelDescription.text = @"Downloading Video...";
                 break;
         }
         return;

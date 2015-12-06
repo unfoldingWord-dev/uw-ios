@@ -46,9 +46,13 @@
     
     for (NSString *line in lines) {
         
+        USFMElement *lastElement = elements.lastObject;
         // Skip over lines that don't have a code. If possible add them to the prior quote or verse. If not, delete them.
-        if (elements.count > 0 && [self didRequireFixMissingCodeForLine:line previousElement:elements.lastObject]) {
+        if (elements.count > 0 && [self didRequireFixMissingCodeForLine:line previousElement:lastElement]) {
             continue;
+        }
+        if (lastElement.isFootNote && lastElement.isFootNoteComplete == NO) {
+            [self handleFootnote:lastElement withLine:line];
         }
         
         NSScanner *scanner = [[NSScanner alloc] initWithString:line];
@@ -57,7 +61,6 @@
         NSMutableString *completeText = [NSMutableString new];
         NSMutableArray *codes = [NSMutableArray new];
         do {
-            
             // Get to the first marker
             if (firstCode == YES) {
                 [scanner scanUpToString:@"\\" intoString:NULL];
@@ -87,6 +90,10 @@
             
             firstCode = NO;
             
+            if ([code isEqualToString:@"f"]) {
+                NSLog(@"Breakpoint.");
+            }
+            
         } while ( ! [scanner isAtEnd]);
         
         // Now create one element with the line, ignoring mid-line codes
@@ -97,6 +104,50 @@
     }
     
     return elements;
+}
+
++ (void)handleFootnote:(USFMElement *)footnoteElement withLine:(NSString *)line
+{
+    NSScanner *scanner = [[NSScanner alloc] initWithString:line];
+    BOOL firstCode = YES;
+    NSString *code = nil;
+    NSMutableString *completeText = [NSMutableString new];
+    do {
+        // Get to the first marker
+        if (firstCode == YES) {
+            [scanner scanUpToString:@"\\" intoString:NULL];
+        }
+        
+        // Scan the code
+        [scanner scanString:@"\\" intoString:NULL];
+        code = nil;
+        [scanner scanUpToCharactersFromSet:[self usfmBreakCharacterSet] intoString:&code];
+        
+        if ([code isEqualToString:@"f"]) {
+            footnoteElement.isFootNoteComplete = YES;
+        }
+        
+        // Remove stop characters after the code.
+        [scanner scanCharactersFromSet:[self usfmAbsorbCharacterSet] intoString:NULL];
+        
+        // Now get all text before the next code
+        NSString *sourceText = nil;
+        [scanner scanUpToString:@"\\" intoString:&sourceText];
+        
+        // Append the source text to the full text
+        sourceText = [sourceText trimSpacesBeforeAfter];
+        if (sourceText.length > 0) {
+            [completeText appendFormat:@" %@", sourceText];
+        }
+        
+        firstCode = NO;
+        
+    } while ( ! [scanner isAtEnd]);
+    
+    if (completeText.length > 0) {
+        [footnoteElement appendText:[NSString stringWithFormat:@" %@", completeText]];
+    }
+
 }
 
 + (BOOL)didRequireFixMissingCodeForLine:(NSString *)line previousElement:(USFMElement *)element
