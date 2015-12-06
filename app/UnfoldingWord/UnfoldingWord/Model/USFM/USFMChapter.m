@@ -50,11 +50,14 @@
     NSMutableAttributedString *string = [NSMutableAttributedString new];
     USFMElement *previousElement = nil;
     NSNumber *verseNumber = nil;
+    
+    NSMutableArray *footnotes = [NSMutableArray new];
 
     for (USFMElement *element in self.elements) {
         
         NSString *lastStringCharacter = (string.length > 0) ? [string.string substringWithRange:NSMakeRange(string.string.length-1, 1)] : nil;
         BOOL isLastCharacterReturn = ([lastStringCharacter rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]].location != NSNotFound);
+        BOOL isLastCharacterSpace = ([lastStringCharacter rangeOfCharacterFromSet:[NSCharacterSet whitespaceCharacterSet]].location != NSNotFound);
         
         // Handle verses - can also contain embedded quotes
         if (element.isChapterTitle) { // Not used within the text.
@@ -71,6 +74,17 @@
             NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", element.text] attributes:normalItalic];
             [text addAttribute:NSParagraphStyleAttributeName value:paraStyle range:NSMakeRange(0, text.length)];
             [string appendAttributedString:text];
+        }
+        else if (element.isFootNote) {
+            if (isLastCharacterSpace || isLastCharacterReturn) { // remove the space before adding the footnote so it pushes against the text
+                [string deleteCharactersInRange:NSMakeRange(string.string.length-1, 1)];
+            }
+            [footnotes addObject:element];
+            NSString *footnoteString = [NSString stringWithFormat:@"*%ld ", (long)[footnotes count]];
+            NSMutableAttributedString *superscriptString = [[NSMutableAttributedString alloc] initWithString:footnoteString attributes:superScript];
+            [superscriptString addAttribute:USFM_FOOTNOTE_NUMBER value:@([footnotes count]) range:NSMakeRange(0, superscriptString.length)];
+            [string appendAttributedString:superscriptString];
+
         }
         else if (element.isVerse) {
             
@@ -138,6 +152,31 @@
         previousElement = element;
     }
     
+    // If no footnotes, then we're done!
+    if ([footnotes count] == 0) {
+        return string;
+    }
+    
+    // add an empty line before starting the footnotes.
+    NSAttributedString *para = [[NSAttributedString alloc] initWithString:@"\n\n" attributes:normal];
+    [string appendAttributedString:para];
+    
+    
+    NSParagraphStyle *paraStyle = [self paragraphStyleFootnote];
+    
+    for (int i = 0; i < [footnotes count]; i++) {
+        USFMElement *footnoteElement = footnotes[i];
+
+        NSString *bareFootnoteString = [NSString stringWithFormat:@"*%d\t", i+1];
+        NSMutableAttributedString *baseAS = [[NSMutableAttributedString alloc] initWithString:bareFootnoteString attributes:superScript];
+        NSMutableAttributedString *footnoteTextAS = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", footnoteElement.text] attributes:normalItalic];
+        
+        [baseAS appendAttributedString:footnoteTextAS];
+        [baseAS addAttribute:NSParagraphStyleAttributeName value:paraStyle range:NSMakeRange(0, baseAS.string.length)];
+        
+        [string appendAttributedString:baseAS];
+    }
+    
     return string;
 }
 
@@ -163,6 +202,19 @@
     paragraphStyle.firstLineHeadIndent = 0.0f;
     paragraphStyle.paragraphSpacing = 10.0f;
     paragraphStyle.alignment = [self oppositeTextAlignment];
+    return paragraphStyle;
+}
+
+// Make any changes to the standard paragraph here.
+- (NSMutableParagraphStyle *)paragraphStyleFootnote
+{
+    // Create the formatting dictionaries we need
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.lineHeightMultiple = 1.0f;
+    paragraphStyle.paragraphSpacing = 0.0f;
+    paragraphStyle.firstLineHeadIndent = 5.0f;
+    paragraphStyle.headIndent = 35.0f;
+    paragraphStyle.alignment = [self regularTextAlignment];
     return paragraphStyle;
 }
 

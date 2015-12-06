@@ -72,6 +72,8 @@ static NSString *const NotificationKeyAudioSegment = @"__NotificationKeyAudioSeg
 
 // Allows us to track the verse for each part of an attributed string
 static NSString *const USFM_VERSE_NUMBER = @"USFMVerseNumber"; // Duplicated in UWConstants.swift
+static NSString *const USFM_FOOTNOTE_NUMBER = @"USFMFootnoteNumber"; // Duplicated in UWConstants.swift
+
 
 static NSString *const SignatureFileAppend = @".sig"; // Duplicated in UWConstants.swift
 

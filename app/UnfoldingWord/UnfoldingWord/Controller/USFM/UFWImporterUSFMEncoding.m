@@ -53,6 +53,7 @@
         }
         if (lastElement.isFootNote && lastElement.isFootNoteComplete == NO) {
             [self handleFootnote:lastElement withLine:line];
+            continue;
         }
         
         NSScanner *scanner = [[NSScanner alloc] initWithString:line];
@@ -90,8 +91,9 @@
             
             firstCode = NO;
             
-            if ([code isEqualToString:@"f"]) {
-                NSLog(@"Breakpoint.");
+            // The "ft" code means the start of the footnote actual text. Delete everything before this.
+            if ([code isEqualToString:@"ft"]) {
+                [completeText deleteCharactersInRange:NSMakeRange(0, completeText.length)];
             }
             
         } while ( ! [scanner isAtEnd]);
@@ -108,6 +110,12 @@
 
 + (void)handleFootnote:(USFMElement *)footnoteElement withLine:(NSString *)line
 {
+    // If there are no control characters, just add everything
+    if ([line rangeOfString:@"\\"].location == NSNotFound) {
+        [footnoteElement appendText:[NSString stringWithFormat:@" %@", line]];
+    }
+    
+    
     NSScanner *scanner = [[NSScanner alloc] initWithString:line];
     BOOL firstCode = YES;
     NSString *code = nil;
@@ -146,13 +154,14 @@
     
     if (completeText.length > 0) {
         [footnoteElement appendText:[NSString stringWithFormat:@" %@", completeText]];
+        NSLog(@"Footnote text: %@", footnoteElement.text);
     }
 
 }
 
 + (BOOL)didRequireFixMissingCodeForLine:(NSString *)line previousElement:(USFMElement *)element
 {
-    if ([line rangeOfString:@"\\"].location != NSNotFound) {
+    if ([line rangeOfString:@"\\"].location != NSNotFound || element.isFootNote) {
         return NO;
     }
     else if (element.isVerse || element.isQuote) {

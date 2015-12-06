@@ -33,4 +33,6 @@
 /// Append additional text to the previous quote or verse. Returns YES if text was appended, or NO if the text could not be appended
 - (BOOL)appendText:(NSString *)text;
 
+- (void)resetText;
+
 @end

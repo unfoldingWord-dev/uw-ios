@@ -43,12 +43,16 @@ static NSString *const codeFootnote = @"f";
     }
 }
 
+- (void)resetText {
+    self.text = nil;
+}
+
 - (BOOL)appendText:(NSString *)text
 {
     if ([text isKindOfClass:[NSString class]] == NO || [text trimSpacesBeforeAfter].length == 0) {
         return NO;
     }
-    else if (self.isVerse || self.isQuote) {
+    else if (self.isVerse || self.isQuote || self.isFootNote) {
         text = [text trimSpacesBeforeAfter];
         self.text = [self.text stringByAppendingFormat:@" %@", text];
         return YES;
