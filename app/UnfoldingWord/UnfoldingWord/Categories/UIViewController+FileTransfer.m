@@ -63,7 +63,9 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
             options = options | DownloadOptionsVideo;
         }
         SharingChoicesView *picker = [SharingChoicesView createWithOptions:options completion:^(BOOL canceled, DownloadOptions options) {
-            [weakself  initiateActivityPresentationWithVersion:version isSend:YES options:options fromItem:item completion:nil];
+            if (canceled == NO) {
+                [weakself  initiateActivityPresentationWithVersion:version isSend:YES options:options fromItem:item completion:nil];
+            }
         }];
         [self showActionSheetFake:picker];
     } else {
