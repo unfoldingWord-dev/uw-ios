@@ -44,6 +44,7 @@
     UIFont *italicFont = [FONT_LIGHT_ITALIC fontWithSize:size];
     UIFont *superScriptFont = [baseFont fontWithSize:(baseFont.pointSize/1.35)];
     NSDictionary *superScript = @{NSBaselineOffsetAttributeName:@(-1),NSKernAttributeName:@(1), NSFontAttributeName:superScriptFont, (NSString *)kCTSuperscriptAttributeName : @1};
+    NSDictionary *subScript = @{NSBaselineOffsetAttributeName:@(1), NSFontAttributeName:superScriptFont, (NSString *)kCTSuperscriptAttributeName : @-1};
     NSDictionary *normal = @{NSBaselineOffsetAttributeName:@(0), NSFontAttributeName:baseFont};
     NSDictionary *normalItalic = @{NSBaselineOffsetAttributeName:@(0), NSFontAttributeName:italicFont};
 
@@ -80,10 +81,10 @@
                 [string deleteCharactersInRange:NSMakeRange(string.string.length-1, 1)];
             }
             [footnotes addObject:element];
-            NSString *footnoteString = [NSString stringWithFormat:@"*%ld ", (long)[footnotes count]];
-            NSMutableAttributedString *superscriptString = [[NSMutableAttributedString alloc] initWithString:footnoteString attributes:superScript];
-            [superscriptString addAttribute:USFM_FOOTNOTE_NUMBER value:@([footnotes count]) range:NSMakeRange(0, superscriptString.length)];
-            [string appendAttributedString:superscriptString];
+            NSString *footnoteString = [NSString stringWithFormat:@"%ld ", (long)[footnotes count]];
+            NSMutableAttributedString *subscriptString = [[NSMutableAttributedString alloc] initWithString:footnoteString attributes:subScript];
+            [subscriptString addAttribute:USFM_FOOTNOTE_NUMBER value:@([footnotes count]) range:NSMakeRange(0, subscriptString.length)];
+            [string appendAttributedString:subscriptString];
 
         }
         else if (element.isVerse) {
@@ -166,15 +167,9 @@
     
     for (int i = 0; i < [footnotes count]; i++) {
         USFMElement *footnoteElement = footnotes[i];
-
-        NSString *bareFootnoteString = [NSString stringWithFormat:@"*%d\t", i+1];
-        NSMutableAttributedString *baseAS = [[NSMutableAttributedString alloc] initWithString:bareFootnoteString attributes:superScript];
-        NSMutableAttributedString *footnoteTextAS = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", footnoteElement.text] attributes:normalItalic];
-        
-        [baseAS appendAttributedString:footnoteTextAS];
-        [baseAS addAttribute:NSParagraphStyleAttributeName value:paraStyle range:NSMakeRange(0, baseAS.string.length)];
-        
-        [string appendAttributedString:baseAS];
+        NSMutableAttributedString *footnoteTextAS = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%d\t%@\n", i+1, footnoteElement.text] attributes:normalItalic];
+        [footnoteTextAS addAttribute:NSParagraphStyleAttributeName value:paraStyle range:NSMakeRange(0, footnoteTextAS.string.length)];
+        [string appendAttributedString:footnoteTextAS];
     }
     
     return string;
