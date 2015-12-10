@@ -94,12 +94,18 @@
             // The "ft" code means the start of the footnote actual text. Delete everything before this.
             if ([code isEqualToString:@"ft"]) {
                 [completeText deleteCharactersInRange:NSMakeRange(0, completeText.length)];
+                if (sourceText) {
+                    [completeText appendString:sourceText];
+                }
             }
             
         } while ( ! [scanner isAtEnd]);
         
         // Now create one element with the line, ignoring mid-line codes
         USFMElement *element = [USFMElement newElementWithCodeInfo:codes textInfo:completeText];
+        if (element.isFootNote && [line rangeOfString:@"\\f*"].location != NSNotFound) {
+            element.isFootNoteComplete = YES;
+        }
         if (element != nil) {
             [elements addObject:element];
         }
