@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -13,14 +13,12 @@
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zXe-zi-2HL">
                     <rect key="frame" x="0.0" y="0.0" width="380" height="32"/>
-                    <animations/>
                     <connections>
                         <action selector="userPressedBackgroundButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="gME-IX-nC5"/>
                     </connections>
                 </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="video-active" translatesAutoresizingMaskIntoConstraints="NO" id="yDu-3P-cdn">
                     <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
-                    <animations/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="axT-pp-Kwh"/>
                         <constraint firstAttribute="width" constant="32" id="vNT-iW-DAZ"/>
@@ -28,7 +26,6 @@
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FPP-Nl-sk9">
                     <rect key="frame" x="292" y="0.0" width="32" height="32"/>
-                    <animations/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="NTQ-8W-LSY"/>
                         <constraint firstAttribute="width" constant="32" id="YON-a2-fgy"/>
@@ -38,9 +35,27 @@
                         <action selector="userPressedCheckingLevelButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="Xfs-rd-Mgq"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ksx-lz-iYD" userLabel="Button Delete">
+                    <rect key="frame" x="350" y="0.0" width="28" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="32" id="EAW-U3-UHm"/>
+                        <constraint firstAttribute="height" constant="32" id="bck-b4-MHr"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="kmp-Ek-bFm"/>
+                        <constraint firstAttribute="width" constant="28" id="nth-RX-onV"/>
+                    </constraints>
+                    <state key="normal" backgroundImage="delete"/>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="EAW-U3-UHm"/>
+                            <exclude reference="kmp-Ek-bFm"/>
+                        </mask>
+                    </variation>
+                    <connections>
+                        <action selector="userPressedDeleteButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="b3I-0K-oim"/>
+                    </connections>
+                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L5S-Ml-okU">
                     <rect key="frame" x="348" y="0.0" width="32" height="32"/>
-                    <animations/>
                     <constraints>
                         <constraint firstAttribute="width" constant="32" id="fHp-xI-y9a"/>
                         <constraint firstAttribute="height" constant="32" id="kAU-SB-BfF"/>
@@ -52,15 +67,12 @@
                 </button>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="CPw-l1-gds">
                     <rect key="frame" x="354" y="6" width="20" height="20"/>
-                    <animations/>
                 </activityIndicatorView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uHg-uU-2CE">
                     <rect key="frame" x="348" y="0.0" width="32" height="32"/>
-                    <animations/>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Download Text" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qfn-4x-yH4">
                     <rect key="frame" x="48" y="0.0" width="224" height="32"/>
-                    <animations/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="6ZK-sf-LbY"/>
                     </constraints>
@@ -69,7 +81,6 @@
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="L5S-Ml-okU" firstAttribute="trailing" secondItem="uHg-uU-2CE" secondAttribute="trailing" id="0Yg-5Q-7ae"/>
@@ -77,11 +88,13 @@
                 <constraint firstAttribute="bottom" secondItem="zXe-zi-2HL" secondAttribute="bottom" id="858-C6-hod"/>
                 <constraint firstItem="L5S-Ml-okU" firstAttribute="centerY" secondItem="CPw-l1-gds" secondAttribute="centerY" id="Gdz-Pq-YUM"/>
                 <constraint firstItem="L5S-Ml-okU" firstAttribute="leading" secondItem="FPP-Nl-sk9" secondAttribute="trailing" constant="24" id="HEH-y0-GVW"/>
+                <constraint firstItem="L5S-Ml-okU" firstAttribute="centerX" secondItem="ksx-lz-iYD" secondAttribute="centerX" id="KNZ-7h-Eq0"/>
                 <constraint firstItem="yDu-3P-cdn" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Ll1-jc-G6D"/>
                 <constraint firstItem="FPP-Nl-sk9" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Ltd-Cn-PGw"/>
                 <constraint firstAttribute="trailing" secondItem="L5S-Ml-okU" secondAttribute="trailing" id="Rhb-X2-JoO"/>
                 <constraint firstItem="L5S-Ml-okU" firstAttribute="bottom" secondItem="uHg-uU-2CE" secondAttribute="bottom" id="SJD-J5-IXC"/>
                 <constraint firstItem="qfn-4x-yH4" firstAttribute="leading" secondItem="yDu-3P-cdn" secondAttribute="trailing" constant="16" id="UDi-49-2eD"/>
+                <constraint firstItem="ksx-lz-iYD" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="V4P-5w-rvD"/>
                 <constraint firstItem="yDu-3P-cdn" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="X3X-HU-8tX"/>
                 <constraint firstItem="qfn-4x-yH4" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Z68-1O-sek"/>
                 <constraint firstItem="L5S-Ml-okU" firstAttribute="leading" secondItem="uHg-uU-2CE" secondAttribute="leading" id="dda-bn-Q7p"/>
@@ -107,15 +120,17 @@
                 <outlet property="activityIndicator" destination="CPw-l1-gds" id="ZvW-uO-8gL"/>
                 <outlet property="buttonBackground" destination="zXe-zi-2HL" id="lsb-6y-XSM"/>
                 <outlet property="buttonCheckingLevel" destination="FPP-Nl-sk9" id="cEk-su-SYb"/>
+                <outlet property="buttonDelete" destination="ksx-lz-iYD" id="esq-O6-UcP"/>
                 <outlet property="buttonDownload" destination="L5S-Ml-okU" id="qJ4-MH-BCv"/>
                 <outlet property="imageViewType" destination="yDu-3P-cdn" id="lfx-T2-Zzm"/>
                 <outlet property="imageViewVerify" destination="uHg-uU-2CE" id="3hG-b0-9eH"/>
                 <outlet property="labelDescription" destination="qfn-4x-yH4" id="Tfq-tF-Wym"/>
             </connections>
-            <point key="canvasLocation" x="285" y="333"/>
+            <point key="canvasLocation" x="71" y="360"/>
         </view>
     </objects>
     <resources>
+        <image name="delete" width="32" height="42"/>
         <image name="download_arrow.png" width="66" height="66"/>
         <image name="level2" width="25" height="26"/>
         <image name="video-active" width="44" height="44"/>

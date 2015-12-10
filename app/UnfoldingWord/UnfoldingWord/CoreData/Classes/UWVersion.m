@@ -77,16 +77,17 @@ NSString *const kKeyVersionId = @"__kKeyVersionId";
     [UWTOC updateTOCitems:tocItems forVersion:self];
 }
 
-- (BOOL)deleteAllContent
+- (BOOL)deleteContentForDownloadOptions:(DownloadOptions)options;
 {
     BOOL success = YES;
     for (UWTOC *toc in self.toc) {
-        if ([toc deleteAllContent] == NO) {
+        if ([toc deleteContentForDownloadOptions:options] == NO) {
             success = NO;
         }
     }
     return success;
 }
+
 
 #pragma mark - Status Tracking
 

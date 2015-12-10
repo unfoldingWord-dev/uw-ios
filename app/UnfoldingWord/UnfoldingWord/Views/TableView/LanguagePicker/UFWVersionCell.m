@@ -107,7 +107,6 @@
 
 #pragma mark - Downloading
 
-
 - (void)downloadForMediaView:(MediaTypeView *)mediaView
 {
     DownloadOptions currentOptions = [self.version currentDownloadingOptions];
@@ -228,12 +227,14 @@
     // Handle right side button
     NSAssert2(status != DownloadStatusNoContent, @"%s: Do not show if there is no content: %@", __PRETTY_FUNCTION__, mediaView);
     if (status & DownloadStatusAllValid) {
-        mediaView.imageViewVerify.image = [UIImage imageNamed:IMAGE_VERIFY_GOOD];
-        [mediaView hideRightEdgeViewsExcept:mediaView.imageViewVerify];
+        [mediaView.buttonCheckingLevel setBackgroundImage:[self imageForCheckingLevel:self.version.status.checking_level.integerValue] forState:UIControlStateNormal];
     } else if (status & DownloadStatusAll) {
-        mediaView.imageViewVerify.image = [UIImage imageNamed:IMAGE_VERIFY_FAIL];
-        [mediaView hideRightEdgeViewsExcept:mediaView.imageViewVerify];
-    } else if (status & DownloadStatusSome || status & DownloadStatusNone) {
+        [mediaView.buttonCheckingLevel setBackgroundImage:[UIImage imageNamed:IMAGE_VERIFY_FAIL] forState:UIControlStateNormal];
+    }
+    
+    if (status & DownloadStatusAll) {
+        [mediaView hideRightEdgeViewsExcept:mediaView.buttonDelete];
+    } else {
         [mediaView hideRightEdgeViewsExcept:mediaView.buttonDownload];
     }
 
@@ -301,9 +302,8 @@
     return mediaView;
 }
 
-- (void)userPressedCheckingInformationForMediaView:(MediaTypeView *) mediaView {
-//    [self.delegate userDidRequestShowCheckingLevelForType:[mediaView getType] forVersion:self.version];
-    
+- (void)userPressedCheckingInformationForMediaView:(MediaTypeView *) mediaView
+{
     VerseVerifyInfoView *infoView = [VerseVerifyInfoView verifyViewForVersion:self.version];
     [self showDialog:infoView];
 }
@@ -324,7 +324,63 @@
 }
 
 - (void)userPressedDownloadButtonForMediaView:(MediaTypeView *)mediaView {
+    
         [self downloadForMediaView:mediaView];
+}
+
+- (void)userPressedDeleteButtonForMediaView:(MediaTypeView *)mediaView
+{
+    NSString *message = nil;
+    MediaType type = [mediaView getType];
+    switch (type) {
+        case MediaTypeText:
+        {
+            BOOL hasAudio = ([self.version statusAudio] & DownloadStatusSome) == DownloadStatusSome;
+            BOOL hasVideo = ([self.version statusVideo] & DownloadStatusSome) == DownloadStatusSome;
+            if (hasAudio && hasVideo) {
+                message = @"Delete all text? This will also delete all audio and video for this item.";
+            } else if (hasAudio) {
+                message = @"Delete all text? This will also delete all audio for this item.";
+            }else if (hasVideo) {
+                message = @"Delete all text? This will also delete all video for this item.";
+            } else {  // just text
+                message = @"Delete all text?";
+            }
+        }
+            break;
+        case MediaTypeAudio:
+            message = @"Delete all audio?";
+            break;
+        case MediaTypeVideo:
+            message = @"Delete all video?";
+            break;
+        case MediaTypeNone:
+            NSAssert2(NO, @"%s: Nothing to delete for media view: %@", __PRETTY_FUNCTION__, mediaView);
+            message = @"Error: Nothing to delete";
+            break;
+    }
+    
+    __weak typeof(self) weakself = self;
+    __weak typeof(mediaView) weakMedia = mediaView;
+    [UIAlertView showWithTitle:@"Delete" message:message cancelButtonTitle:@"Keep" otherButtonTitles:@[@"Delete"] tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+        if (buttonIndex != 0) {
+            [weakself deleteContentForMediaView:weakMedia];
+        }
+    }];
+}
+
+- (void)deleteContentForMediaView:(MediaTypeView *)mediaView
+{
+    MediaType mediaTypeToDelete = [mediaView getType];
+    if (mediaTypeToDelete == MediaTypeText) {
+        [self.version deleteContentForDownloadOptions:DownloadOptionsText | DownloadOptionsVideo | DownloadOptionsAudio];
+    } else if (mediaTypeToDelete == MediaTypeAudio) {
+        [self.version deleteContentForDownloadOptions:DownloadOptionsAudio];
+    } else if (mediaTypeToDelete == MediaTypeVideo) {
+        [self.version deleteContentForDownloadOptions:DownloadOptionsVideo];
+    }
+    
+    [self updateMediaViews];
 }
 
 - (MediaTypeView *)createMediaView {
@@ -343,6 +399,9 @@
     }];
     [mediaView setBackgroundButtonBlock:^{
         [weak userPressedBackgroundButtonForMediaView:weakMediaView];
+    }];
+    [mediaView setDeleteButtonBlock:^{
+        [weak userPressedDeleteButtonForMediaView:weakMediaView];
     }];
     return mediaView;
 }

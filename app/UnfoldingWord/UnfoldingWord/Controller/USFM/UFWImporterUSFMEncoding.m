@@ -113,8 +113,8 @@
     // If there are no control characters, just add everything
     if ([line rangeOfString:@"\\"].location == NSNotFound) {
         [footnoteElement appendText:[NSString stringWithFormat:@" %@", line]];
+        return;
     }
-    
     
     NSScanner *scanner = [[NSScanner alloc] initWithString:line];
     BOOL firstCode = YES;

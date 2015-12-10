@@ -32,7 +32,8 @@ extern NSString *const kNotificationVersionContentDelete;
 - (DownloadOptions)currentDownloadingOptions;
 
 /// Deletes all downloaded content for attached TOC objects
-- (BOOL)deleteAllContent;
+//- (BOOL)deleteAllContent;
+- (BOOL)deleteContentForDownloadOptions:(DownloadOptions)options;
 
 - (NSArray *)sortedTOCs;
 

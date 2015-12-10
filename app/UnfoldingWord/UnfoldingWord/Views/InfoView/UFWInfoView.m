@@ -146,7 +146,7 @@ static CGFloat const kSpacer = 12;
 {
     NSString *buttonName = [alertView buttonTitleAtIndex:buttonIndex];
     if ([buttonName isEqualToString:NSLocalizedString(@"Delete", nil)]) {
-        if ([self.status.uwversion deleteAllContent] == NO) {
+        if ([self.status.uwversion deleteContentForDownloadOptions:DownloadOptionsText | DownloadOptionsVideo | DownloadOptionsAudio] == NO) {
             [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Could not delete all content.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles: nil] show];
         }
         else {

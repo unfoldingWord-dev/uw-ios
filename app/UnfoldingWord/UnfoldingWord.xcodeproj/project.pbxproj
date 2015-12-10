@@ -83,6 +83,7 @@
 		5A43253F1B4F2F7C00105908 /* iTunesActivity.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A43253C1B4F2F7C00105908 /* iTunesActivity.png */; };
 		5A4325401B4F2F7C00105908 /* wirelessActivity.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A43253D1B4F2F7C00105908 /* wirelessActivity.png */; };
 		5A444F951B517C86005949C0 /* ITunesFilePickerTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A444F941B517C86005949C0 /* ITunesFilePickerTableVC.swift */; };
+		5A4494DB1C19F6B300638919 /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A4494DA1C19F6B300638919 /* UIAlertView+Blocks.m */; };
 		5A45ECBB1B990B8600F345C6 /* MasterContainer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A45ECBA1B990B8600F345C6 /* MasterContainer.storyboard */; };
 		5A45ECBD1B99F03C00F345C6 /* ContainerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A45ECBC1B99F03C00F345C6 /* ContainerVC.swift */; };
 		5A5996321B0A93980060668F /* AbyssinicaSIL-R.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5A5996251B0A93980060668F /* AbyssinicaSIL-R.ttf */; };
@@ -958,6 +959,8 @@
 		5A43253C1B4F2F7C00105908 /* iTunesActivity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTunesActivity.png; sourceTree = "<group>"; };
 		5A43253D1B4F2F7C00105908 /* wirelessActivity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wirelessActivity.png; sourceTree = "<group>"; };
 		5A444F941B517C86005949C0 /* ITunesFilePickerTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITunesFilePickerTableVC.swift; sourceTree = "<group>"; };
+		5A4494D91C19F6B300638919 /* UIAlertView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Blocks.h"; sourceTree = "<group>"; };
+		5A4494DA1C19F6B300638919 /* UIAlertView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Blocks.m"; sourceTree = "<group>"; };
 		5A45ECBA1B990B8600F345C6 /* MasterContainer.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MasterContainer.storyboard; sourceTree = "<group>"; };
 		5A45ECBC1B99F03C00F345C6 /* ContainerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerVC.swift; sourceTree = "<group>"; };
 		5A5996251B0A93980060668F /* AbyssinicaSIL-R.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AbyssinicaSIL-R.ttf"; sourceTree = "<group>"; };
@@ -2038,6 +2041,8 @@
 		5A323B1A1A3381FB00099C94 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				5A4494D91C19F6B300638919 /* UIAlertView+Blocks.h */,
+				5A4494DA1C19F6B300638919 /* UIAlertView+Blocks.m */,
 				5AFC9B5E1B41950500D453D0 /* UIViewController+FileTransfer.h */,
 				5AFC9B5F1B41950500D453D0 /* UIViewController+FileTransfer.m */,
 				5A7ECE1E1AFD2C08002C94AD /* NSBundle+DWSExtensions.h */,
@@ -4381,6 +4386,7 @@
 				5A9830C11C0CBA5D00D4E705 /* NSLayoutConstraint-Extensions.swift in Sources */,
 				5AAC5C631A97C5DB001AFA3D /* NSLayoutConstraint+DWSExtensions.m in Sources */,
 				5AF051EE1B756BD1003EA5A4 /* UFWFileText.swift in Sources */,
+				5A4494DB1C19F6B300638919 /* UIAlertView+Blocks.m in Sources */,
 				5AF682451BFFDD300048B611 /* String+Helpers.swift in Sources */,
 				5AF0B6B41B9FAB6E00987463 /* USFMPageViewController.swift in Sources */,
 				5A9AC0451B0A38B100753AAB /* ACTLabelButton.m in Sources */,

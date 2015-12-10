@@ -17,10 +17,12 @@ class MediaTypeView: UIView {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var imageViewVerify: UIImageView!
     @IBOutlet weak var buttonBackground: UIButton!
+    @IBOutlet weak var buttonDelete: UIButton!
     
     var downloadButtonBlock : ButtonPressBlock? = nil
     var backgroundButtonBlock : ButtonPressBlock? = nil
     var checkingLevelButtonBlock : ButtonPressBlock? = nil
+    var deleteButtonBlock : ButtonPressBlock? = nil
     
     func hideRightEdgeViewsExcept(view : UIView) {
         if (view === activityIndicator) {
@@ -30,6 +32,7 @@ class MediaTypeView: UIView {
         }
         buttonDownload.hidden = buttonDownload === view ? false : true
         imageViewVerify.hidden = imageViewVerify === view ? false : true
+        buttonDelete.hidden = buttonDelete === view ? false : true
     }
     
     // Custom getter and setter because of some issue with the Swift headers. Ideally this would just be an plain var called type.
@@ -53,6 +56,10 @@ class MediaTypeView: UIView {
     
     @IBAction func userPressedCheckingLevelButton(sender: UIButton) {
         fire(checkingLevelButtonBlock)
+    }
+    
+    @IBAction func userPressedDeleteButton(sender: UIButton) {
+        fire(deleteButtonBlock)
     }
     
     private func fire(block : ButtonPressBlock?) {

@@ -69,6 +69,7 @@ static NSString *const NotificationKeyAudioSegment = @"__NotificationKeyAudioSeg
 #define IMAGE_VERIFY_FAIL @"verifyFail.png"
 #define IMAGE_VERIFY_EXPIRE @"verifyExpired.png"
 
+#define IMAGE_TRASH_CAN @"delete"
 
 // Allows us to track the verse for each part of an attributed string
 static NSString *const USFM_VERSE_NUMBER = @"USFMVerseNumber"; // Duplicated in UWConstants.swift

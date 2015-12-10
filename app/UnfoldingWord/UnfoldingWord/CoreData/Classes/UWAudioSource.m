@@ -123,6 +123,24 @@ static NSString *const KPLaceHolderForBitrate = @"{bitrate}";
     return NO;
 }
 
+- (BOOL)deleteAllContent
+{
+    for (UWAudioBitrate *bitrate in self.bitrates) {
+        if (bitrate.filename != nil && bitrate.isDownloadedValue) {
+            NSString *filepath = [bitrate.filename documentsPath];
+            if ([[NSFileManager defaultManager] removeItemAtPath:filepath error:nil]) {
+                bitrate.isDownloadedValue = NO;
+                bitrate.filename = nil;
+            }
+            else {
+                NSAssert2(NO, @"%s: Could not delete file at file %@", __PRETTY_FUNCTION__, filepath);
+                return NO;
+            }
+        }
+    }
+    return YES;
+}
+
 - (UWAudioBitrate *)bitrateWithQuality:(AudioFileQuality)quality
 {
     switch (quality) {

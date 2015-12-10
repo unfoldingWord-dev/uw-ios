@@ -17,7 +17,7 @@ typedef void (^TOCDownloadCompletion) (BOOL success);
 
 - (void)downloadUsingOptions:(DownloadOptions)options completion:(TOCDownloadCompletion)completion;
 
-- (BOOL)deleteAllContent;
+- (BOOL)deleteContentForDownloadOptions:(DownloadOptions)options;
 
 - (BOOL)isDownloadedForOptions:(DownloadOptions)options;
 - (BOOL)isDownloadedAndValidForOptions:(DownloadOptions)options;

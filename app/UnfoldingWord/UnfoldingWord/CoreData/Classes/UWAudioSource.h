@@ -19,6 +19,9 @@
 
 - (BOOL)hasPlayableContent;
 
+/// Deletes all content. If more than one bitrate is downloaded, deletes both. Asserts & Returns no if an item is listed as downloaded, but we can't delete it.
+- (BOOL)deleteAllContent;
+
 - (UWAudioBitrate * __nullable)bestBitrateWithDownloadedAudio;
 
 - (UWAudioBitrate * __nullable)bitrateWithQuality:(AudioFileQuality)quality;

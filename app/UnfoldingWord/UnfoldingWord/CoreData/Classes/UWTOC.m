@@ -170,13 +170,14 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
 
 #pragma mark - Methods to Download the content for a TOC item.
 
-- (BOOL)deleteAllContent
+- (BOOL)deleteContentForDownloadOptions:(DownloadOptions)options;
+
 {
     if (self.isUSFM.boolValue) {
-        return [self deleteUSFMContent];
+        return [self deleteUSFMContentForDownloadOptions:options];
     }
     else {
-        return [self deleteJSONContent];
+        return [self deleteJSONContentForDownloadOptions:options];
     }
 }
 
@@ -422,7 +423,22 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
 
 #pragma mark - USFM
 
-- (BOOL)deleteUSFMContent
+- (BOOL)deleteUSFMContentForDownloadOptions:(DownloadOptions)options
+{
+    BOOL result = YES;
+    if (options & DownloadOptionsAudio || options & DownloadOptionsText) {
+        result = [self deleteAllAudio];
+    }
+    if (result == YES && (options & DownloadOptionsVideo || options & DownloadOptionsText) ) {
+        result = [self deleteAllVideo];
+    }
+    if (result == YES && (options & DownloadOptionsText) ) {
+        result = [self deleteUSFMTextContent];
+    }
+    return result;
+}
+
+- (BOOL)deleteUSFMTextContent
 {
     if (self.usfmInfo.filename == nil) {
         return YES;
@@ -476,7 +492,22 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
 
 #pragma mark - Open Bible Stories JSON
 
-- (BOOL)deleteJSONContent
+- (BOOL)deleteJSONContentForDownloadOptions:(DownloadOptions)options
+{
+    BOOL result = YES;
+    if (options & DownloadOptionsAudio) {
+        result = [self deleteAllAudio];
+    }
+    if (result == YES && (options & DownloadOptionsVideo) ) {
+        result = [self deleteAllVideo];
+    }
+    if (result == YES && (options & DownloadOptionsText) ) {
+        result = [self deleteJSONTextContent];
+    }
+    return result;
+}
+
+- (BOOL)deleteJSONTextContent
 {
     BOOL success = NO;
     NSString *filepath = [[NSString documentsDirectory] stringByAppendingPathComponent:self.openContainer.filename];
@@ -522,6 +553,24 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
     return NO;
 }
 
+- (BOOL)deleteAllAudio
+{
+    if ([self hasAudio] == NO) {
+        return YES;
+    }
+    
+    for (UWAudioSource *source in self.media.audio.sources) {
+        if ([source deleteAllContent] == NO) {
+            return NO;
+        }
+    }
+    return YES;
+}
+
+- (BOOL) deleteAllVideo
+{
+    return YES;
+}
 
 - (NSString *)uniqueFilename
 {

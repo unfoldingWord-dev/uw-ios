@@ -181,19 +181,19 @@
                     <variation key="default">
                         <mask key="constraints">
                             <exclude reference="0Yf-KR-mx7"/>
-                            <exclude reference="gx3-O3-5v3"/>
+                            <exclude reference="0yn-gX-i5O"/>
                             <exclude reference="26g-Gp-8bb"/>
                             <exclude reference="2EZ-xD-IGR"/>
-                            <exclude reference="0yn-gX-i5O"/>
-                            <exclude reference="ug2-2k-bCz"/>
                             <exclude reference="V9r-Wu-2b4"/>
-                            <exclude reference="caI-1z-EiL"/>
-                            <exclude reference="a8N-lA-Qkl"/>
+                            <exclude reference="gx3-O3-5v3"/>
+                            <exclude reference="ug2-2k-bCz"/>
                             <exclude reference="1XV-X2-xpv"/>
-                            <exclude reference="LN5-et-qU6"/>
-                            <exclude reference="KVy-o6-QVq"/>
-                            <exclude reference="g11-ID-IpO"/>
                             <exclude reference="8zH-EL-xUG"/>
+                            <exclude reference="KVy-o6-QVq"/>
+                            <exclude reference="LN5-et-qU6"/>
+                            <exclude reference="a8N-lA-Qkl"/>
+                            <exclude reference="caI-1z-EiL"/>
+                            <exclude reference="g11-ID-IpO"/>
                         </mask>
                     </variation>
                 </view>
@@ -262,17 +262,17 @@
                         <mask key="constraints">
                             <exclude reference="9ba-pl-3Ni"/>
                             <exclude reference="AOs-zW-Oy3"/>
+                            <exclude reference="Acx-jX-5mc"/>
+                            <exclude reference="FBA-af-j4y"/>
+                            <exclude reference="McE-FF-GxM"/>
                             <exclude reference="X33-JO-Lir"/>
                             <exclude reference="lWg-UR-IL5"/>
-                            <exclude reference="McE-FF-GxM"/>
-                            <exclude reference="FBA-af-j4y"/>
-                            <exclude reference="Acx-jX-5mc"/>
-                            <exclude reference="PnS-M9-thF"/>
-                            <exclude reference="NZ0-55-SeK"/>
-                            <exclude reference="nc9-fj-mZF"/>
-                            <exclude reference="MTy-s6-0t9"/>
                             <exclude reference="91z-ct-3H5"/>
+                            <exclude reference="MTy-s6-0t9"/>
+                            <exclude reference="NZ0-55-SeK"/>
+                            <exclude reference="PnS-M9-thF"/>
                             <exclude reference="boJ-f1-cNA"/>
+                            <exclude reference="nc9-fj-mZF"/>
                             <exclude reference="y36-Zz-JTB"/>
                         </mask>
                     </variation>
