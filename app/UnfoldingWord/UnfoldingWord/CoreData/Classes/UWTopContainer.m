@@ -14,6 +14,13 @@ static NSString *const kVersionSlug = @"slug"; // This must match the UWVersion.
 
 @implementation UWTopContainer
 
++ (NSArray *)sortedContainers
+{
+    return [[UWTopContainer allObjects] sortedArrayUsingComparator:^NSComparisonResult(UWTopContainer *top1, UWTopContainer *top2) {
+        return [top1.sortOrder compare:top2.sortOrder];
+    }];
+}
+
 + (instancetype)topContainerForDictionary:(NSDictionary *)dictionary
 {
     NSString *slug = dictionary[kSlug];

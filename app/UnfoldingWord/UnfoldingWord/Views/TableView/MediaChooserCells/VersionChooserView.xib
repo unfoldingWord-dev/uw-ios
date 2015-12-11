@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="rKB-sP-hxq" customClass="VersionChooserView" customModule="UnfoldingWord" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="507" height="114"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="myC-32-IWB">
+                    <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="32" id="8sq-Xl-WYH"/>
+                        <constraint firstAttribute="height" constant="32" id="Gut-ST-iXZ"/>
+                    </constraints>
+                    <state key="normal" backgroundImage="checkbox-empty.png"/>
+                    <connections>
+                        <action selector="userPressedCheckmarkButton:" destination="rKB-sP-hxq" eventType="touchUpInside" id="DiI-hc-9ea"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fhR-Lo-hA4">
+                    <rect key="frame" x="40" y="6" width="451" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="fhR-Lo-hA4" secondAttribute="trailing" constant="16" id="AX6-1D-BxP"/>
+                <constraint firstItem="myC-32-IWB" firstAttribute="leading" secondItem="rKB-sP-hxq" secondAttribute="leading" id="Lv3-v7-MoO"/>
+                <constraint firstItem="fhR-Lo-hA4" firstAttribute="centerY" secondItem="myC-32-IWB" secondAttribute="centerY" id="TNt-0c-wH7"/>
+                <constraint firstItem="fhR-Lo-hA4" firstAttribute="leading" secondItem="myC-32-IWB" secondAttribute="trailing" constant="8" id="elx-ui-YHg"/>
+                <constraint firstItem="myC-32-IWB" firstAttribute="top" secondItem="rKB-sP-hxq" secondAttribute="top" id="yPM-gp-XY8"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="buttonCheckmark" destination="myC-32-IWB" id="Wj9-yL-h70"/>
+                <outlet property="labelVersionName" destination="fhR-Lo-hA4" id="ihP-wN-1DZ"/>
+            </connections>
+            <point key="canvasLocation" x="301.5" y="108"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="checkbox-empty.png" width="48" height="48"/>
+    </resources>
+</document>

@@ -122,9 +122,7 @@
 
 - (void)loadTopLevelObjects
 {
-    self.arrayTopLevelObjects = [[UWTopContainer allObjects] sortedArrayUsingComparator:^NSComparisonResult(UWTopContainer *top1, UWTopContainer *top2) {
-        return [top1.sortOrder compare:top2.sortOrder];
-    }];
+    self.arrayTopLevelObjects = [UWTopContainer sortedContainers];
 }
 
 - (void)registerForNotifications

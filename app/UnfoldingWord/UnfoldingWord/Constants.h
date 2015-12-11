@@ -35,6 +35,8 @@ typedef NS_OPTIONS(NSInteger, DownloadOptions) {
     DownloadOptionsHighQuality = 1 << 4,
 };
 
+
+
 static NSString *const NotificationUserChangedAudioSegment = @"__NotificationUserChangedAudioSegment";
 static NSString *const NotificationAudioSegmentDidChange = @"__NotificationAudioSegmentDidChange";
 static NSString *const NotificationKeyAudioSegment = @"__NotificationKeyAudioSegment";

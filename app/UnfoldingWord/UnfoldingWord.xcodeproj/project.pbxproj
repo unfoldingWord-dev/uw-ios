@@ -86,6 +86,15 @@
 		5A4494DB1C19F6B300638919 /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A4494DA1C19F6B300638919 /* UIAlertView+Blocks.m */; };
 		5A45ECBB1B990B8600F345C6 /* MasterContainer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A45ECBA1B990B8600F345C6 /* MasterContainer.storyboard */; };
 		5A45ECBD1B99F03C00F345C6 /* ContainerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A45ECBC1B99F03C00F345C6 /* ContainerVC.swift */; };
+		5A4C4E9B1C1A2DCB000BCFEF /* VersionSharingInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4C4E9A1C1A2DCB000BCFEF /* VersionSharingInfo.swift */; };
+		5A4C4E9D1C1A3E33000BCFEF /* ChooseMediaToShareTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4C4E9C1C1A3E33000BCFEF /* ChooseMediaToShareTableVC.swift */; };
+		5A4C4EB01C1B4959000BCFEF /* UWVersion-Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4C4EAF1C1B4959000BCFEF /* UWVersion-Helpers.swift */; };
+		5A4C4EBC1C1B6449000BCFEF /* LanguageShareChooserTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4C4EB61C1B6449000BCFEF /* LanguageShareChooserTableCell.swift */; };
+		5A4C4EBD1C1B6449000BCFEF /* LanguageShareChooserTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A4C4EB71C1B6449000BCFEF /* LanguageShareChooserTableCell.xib */; };
+		5A4C4EBE1C1B6449000BCFEF /* MediaChooserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4C4EB81C1B6449000BCFEF /* MediaChooserView.swift */; };
+		5A4C4EBF1C1B6449000BCFEF /* MediaChooserView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A4C4EB91C1B6449000BCFEF /* MediaChooserView.xib */; };
+		5A4C4EC01C1B6449000BCFEF /* VersionChooserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4C4EBA1C1B6449000BCFEF /* VersionChooserView.swift */; };
+		5A4C4EC11C1B6449000BCFEF /* VersionChooserView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A4C4EBB1C1B6449000BCFEF /* VersionChooserView.xib */; };
 		5A5996321B0A93980060668F /* AbyssinicaSIL-R.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5A5996251B0A93980060668F /* AbyssinicaSIL-R.ttf */; };
 		5A59974A1B0A9A3F0060668F /* UFWDataSeeder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A5997491B0A9A3F0060668F /* UFWDataSeeder.m */; };
 		5A6562501BBB1E4400578381 /* UWDownloaderPlusValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A65624F1BBB1E4400578381 /* UWDownloaderPlusValidator.m */; };
@@ -963,6 +972,15 @@
 		5A4494DA1C19F6B300638919 /* UIAlertView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Blocks.m"; sourceTree = "<group>"; };
 		5A45ECBA1B990B8600F345C6 /* MasterContainer.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MasterContainer.storyboard; sourceTree = "<group>"; };
 		5A45ECBC1B99F03C00F345C6 /* ContainerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerVC.swift; sourceTree = "<group>"; };
+		5A4C4E9A1C1A2DCB000BCFEF /* VersionSharingInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionSharingInfo.swift; sourceTree = "<group>"; };
+		5A4C4E9C1C1A3E33000BCFEF /* ChooseMediaToShareTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseMediaToShareTableVC.swift; sourceTree = "<group>"; };
+		5A4C4EAF1C1B4959000BCFEF /* UWVersion-Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UWVersion-Helpers.swift"; sourceTree = "<group>"; };
+		5A4C4EB61C1B6449000BCFEF /* LanguageShareChooserTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageShareChooserTableCell.swift; sourceTree = "<group>"; };
+		5A4C4EB71C1B6449000BCFEF /* LanguageShareChooserTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LanguageShareChooserTableCell.xib; sourceTree = "<group>"; };
+		5A4C4EB81C1B6449000BCFEF /* MediaChooserView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaChooserView.swift; sourceTree = "<group>"; };
+		5A4C4EB91C1B6449000BCFEF /* MediaChooserView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaChooserView.xib; sourceTree = "<group>"; };
+		5A4C4EBA1C1B6449000BCFEF /* VersionChooserView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionChooserView.swift; sourceTree = "<group>"; };
+		5A4C4EBB1C1B6449000BCFEF /* VersionChooserView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VersionChooserView.xib; sourceTree = "<group>"; };
 		5A5996251B0A93980060668F /* AbyssinicaSIL-R.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AbyssinicaSIL-R.ttf"; sourceTree = "<group>"; };
 		5A5996271B0A93980060668F /* AbyssinicaSILGraphiteFontFeatures.odt */ = {isa = PBXFileReference; lastKnownFileType = file; path = AbyssinicaSILGraphiteFontFeatures.odt; sourceTree = "<group>"; };
 		5A5996281B0A93980060668F /* AbyssinicaSILGraphiteFontFeatures.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = AbyssinicaSILGraphiteFontFeatures.pdf; sourceTree = "<group>"; };
@@ -1991,6 +2009,7 @@
 				5A26CC651BBDD509006DFFD3 /* UWTopContainer.m */,
 				5A26CC661BBDD509006DFFD3 /* UWVersion.h */,
 				5A26CC671BBDD509006DFFD3 /* UWVersion.m */,
+				5A4C4EAF1C1B4959000BCFEF /* UWVersion-Helpers.swift */,
 				5A26CC681BBDD509006DFFD3 /* UWVideo.h */,
 				5A26CC691BBDD509006DFFD3 /* UWVideo.m */,
 				5A26CC6A1BBDD509006DFFD3 /* UWVideoSource.h */,
@@ -2159,6 +2178,27 @@
 				5A45ECBC1B99F03C00F345C6 /* ContainerVC.swift */,
 			);
 			path = BibleContainerVC;
+			sourceTree = "<group>";
+		};
+		5A4C4E961C1A2C75000BCFEF /* MediaSharingTableVC */ = {
+			isa = PBXGroup;
+			children = (
+				5A4C4E9C1C1A3E33000BCFEF /* ChooseMediaToShareTableVC.swift */,
+			);
+			path = MediaSharingTableVC;
+			sourceTree = "<group>";
+		};
+		5A4C4EB51C1B6449000BCFEF /* MediaChooserCells */ = {
+			isa = PBXGroup;
+			children = (
+				5A4C4EB61C1B6449000BCFEF /* LanguageShareChooserTableCell.swift */,
+				5A4C4EB71C1B6449000BCFEF /* LanguageShareChooserTableCell.xib */,
+				5A4C4EB81C1B6449000BCFEF /* MediaChooserView.swift */,
+				5A4C4EB91C1B6449000BCFEF /* MediaChooserView.xib */,
+				5A4C4EBA1C1B6449000BCFEF /* VersionChooserView.swift */,
+				5A4C4EBB1C1B6449000BCFEF /* VersionChooserView.xib */,
+			);
+			path = MediaChooserCells;
 			sourceTree = "<group>";
 		};
 		5A59961A1B0A893F0060668F /* Fonts */ = {
@@ -2992,6 +3032,7 @@
 		5A9ABFE51B0A370000753AAB /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				5A4C4E961C1A2C75000BCFEF /* MediaSharingTableVC */,
 				5A45ECB91B990B6D00F345C6 /* BibleContainerVC */,
 				5A444F931B517C10005949C0 /* ITunesSharing */,
 				5A36D3B81B223F95001D6E04 /* AppFirstLaunchInfoVC */,
@@ -3146,6 +3187,7 @@
 		5A9AC0241B0A38B100753AAB /* TableView */ = {
 			isa = PBXGroup;
 			children = (
+				5A4C4EB51C1B6449000BCFEF /* MediaChooserCells */,
 				5AC3DCB31B1F74E300703AA2 /* SimpleChapterNumberCell */,
 				5A9AC0251B0A38B100753AAB /* LanguagePicker */,
 				5A9AC02C1B0A38B100753AAB /* OpenBibleStories */,
@@ -3314,6 +3356,7 @@
 		5AF051DC1B756BD1003EA5A4 /* FileFormat */ = {
 			isa = PBXGroup;
 			children = (
+				5A4C4E9A1C1A2DCB000BCFEF /* VersionSharingInfo.swift */,
 				5AF051DD1B756BD1003EA5A4 /* UFWFileText.swift */,
 				5AF051DE1B756BD1003EA5A4 /* UWUrlSourceItem.swift */,
 				5A223FC51BE7F35A00A16421 /* FileNamer.swift */,
@@ -4016,6 +4059,7 @@
 				5A9ABE741B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-19-15jpg in Resources */,
 				5A9ABE931B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-21-15jpg in Resources */,
 				5A9ABE071B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-12-08jpg in Resources */,
+				5A4C4EBF1C1B6449000BCFEF /* MediaChooserView.xib in Resources */,
 				5A9ABDF61B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-10-11jpg in Resources */,
 				5A9ABEF21B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-32-04jpg in Resources */,
 				5A9ABE721B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-19-13jpg in Resources */,
@@ -4129,6 +4173,7 @@
 				5A9ABE281B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-14-12jpg in Resources */,
 				5A9ABF081B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-34-01jpg in Resources */,
 				5A9ABE861B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-21-02jpg in Resources */,
+				5A4C4EBD1C1B6449000BCFEF /* LanguageShareChooserTableCell.xib in Resources */,
 				5A9ABFBB1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-49-11jpg in Resources */,
 				5A9ABDA91B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-03-16jpg in Resources */,
 				5A9ABE411B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-16-09jpg in Resources */,
@@ -4216,6 +4261,7 @@
 				5A9830C51C0CC07800D4E705 /* radio_button_filled.png in Resources */,
 				5A9ABE791B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-20-02jpg in Resources */,
 				5A9ABE641B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-18-12jpg in Resources */,
+				5A4C4EC11C1B6449000BCFEF /* VersionChooserView.xib in Resources */,
 				5A9ABDAA1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-04-01jpg in Resources */,
 				5A9ABFD21B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-50-16jpg in Resources */,
 				5A9ABF591B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-41-05jpg in Resources */,
@@ -4374,6 +4420,7 @@
 				5AD3CBE61B4A185B003F5F33 /* ITunesSharingSender.swift in Sources */,
 				5A2DD85D1BFD10CA00011DA2 /* String+Zip.swift in Sources */,
 				5AC377D11B38C38300E3BB36 /* BluetoothFileSender.swift in Sources */,
+				5A4C4E9B1C1A2DCB000BCFEF /* VersionSharingInfo.swift in Sources */,
 				5A9AC0431B0A38B100753AAB /* UFWInfoView.m in Sources */,
 				5A9830D71C0E2A9700D4E705 /* UINib-Extensions.swift in Sources */,
 				5A8DCB971B02601A0010DD27 /* UFWSelectionTracker.m in Sources */,
@@ -4397,10 +4444,14 @@
 				5A0DD1D71BA0E50F00F351C7 /* String+Paths.swift in Sources */,
 				5A444F951B517C86005949C0 /* ITunesFilePickerTableVC.swift in Sources */,
 				5AAB78761A9299A800376C36 /* NSString+Date.m in Sources */,
+				5A4C4EC01C1B6449000BCFEF /* VersionChooserView.swift in Sources */,
 				5A26CC711BBDD509006DFFD3 /* _UWAudio.m in Sources */,
+				5A4C4EB01C1B4959000BCFEF /* UWVersion-Helpers.swift in Sources */,
+				5A4C4EBE1C1B6449000BCFEF /* MediaChooserView.swift in Sources */,
 				5A26CC7F1BBDD509006DFFD3 /* OpenFrame.m in Sources */,
 				5A26CC891BBDD509006DFFD3 /* UWVersion.m in Sources */,
 				5AF051F11B756BD1003EA5A4 /* UFWLanguageInfo.m in Sources */,
+				5A4C4EBC1C1B6449000BCFEF /* LanguageShareChooserTableCell.swift in Sources */,
 				5AA7F2A81A34EEED00F49D40 /* UFWNotifications.m in Sources */,
 				5A6562501BBB1E4400578381 /* UWDownloaderPlusValidator.m in Sources */,
 				5A26CC741BBDD509006DFFD3 /* _UWLanguage.m in Sources */,
@@ -4408,6 +4459,7 @@
 				5A22403E1BE85D0700A16421 /* zip.c in Sources */,
 				5AC3DCB71B1F751000703AA2 /* ACTSimpleChapterNumberCell.m in Sources */,
 				5AEDC6321AFC20CA00C722B9 /* LanguageInfoController.m in Sources */,
+				5A4C4E9D1C1A3E33000BCFEF /* ChooseMediaToShareTableVC.swift in Sources */,
 				5A9830BF1C0CB98700D4E705 /* DialogBackgroundView.swift in Sources */,
 				5A26CC881BBDD509006DFFD3 /* UWTopContainer.m in Sources */,
 				5A9AC03F1B0A38B100753AAB /* UFWNextChapterCell.m in Sources */,

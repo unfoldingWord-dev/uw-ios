@@ -36,9 +36,8 @@ class VerseVerifyInfoView: UIView {
         }
     }
     
-    static func verifyViewForVersion(version : UWVersion) -> VerseVerifyInfoView? {
-        guard let verifyView = UINib.viewForName(NSStringFromClass(VerseVerifyInfoView).textAfterLastPeriod()) as? VerseVerifyInfoView
-            else { return nil }
+    static func verifyViewForVersion(version : UWVersion) -> VerseVerifyInfoView {
+        let verifyView = UINib.viewForName(NSStringFromClass(VerseVerifyInfoView).textAfterLastPeriod()) as! VerseVerifyInfoView
         verifyView.version = version
         verifyView.layer.cornerRadius = 9
         return verifyView
