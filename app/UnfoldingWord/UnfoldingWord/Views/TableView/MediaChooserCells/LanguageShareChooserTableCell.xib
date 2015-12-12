@@ -8,7 +8,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="36" id="um8-gw-5Z8" customClass="LanguageShareChooserTableCell" customModule="UnfoldingWord" customModuleProvider="target">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="36" id="um8-gw-5Z8" customClass="LanguageShareChooserTableCell" customModule="UnfoldingWord" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="36"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="um8-gw-5Z8" id="Lwq-zb-hyE">
@@ -22,7 +22,7 @@
                             <constraint firstAttribute="height" constant="1" id="QdV-81-rFg"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aCa-Eo-11B" customClass="ACTLabelButton">
+                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aCa-Eo-11B" customClass="ACTLabelButton">
                         <rect key="frame" x="8" y="8" width="304" height="22"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -47,14 +47,14 @@
                         <exclude reference="9Ib-we-za8"/>
                         <exclude reference="FgH-kp-Ol2"/>
                         <exclude reference="LU4-7h-dcz"/>
+                        <exclude reference="Qcg-Bs-dcQ"/>
                     </mask>
                 </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="labelButtonLanguage" destination="aCa-Eo-11B" id="ICD-Mc-CoV"/>
-                <outlet property="labelButtonLanguageName" destination="aCa-Eo-11B" id="vAe-vg-C1H"/>
             </connections>
-            <point key="canvasLocation" x="204" y="148"/>
+            <point key="canvasLocation" x="34" y="296"/>
         </tableViewCell>
     </objects>
 </document>

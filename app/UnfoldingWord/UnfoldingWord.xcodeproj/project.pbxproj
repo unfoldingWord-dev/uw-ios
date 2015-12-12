@@ -88,7 +88,7 @@
 		5A45ECBD1B99F03C00F345C6 /* ContainerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A45ECBC1B99F03C00F345C6 /* ContainerVC.swift */; };
 		5A4C4E9B1C1A2DCB000BCFEF /* VersionSharingInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4C4E9A1C1A2DCB000BCFEF /* VersionSharingInfo.swift */; };
 		5A4C4E9D1C1A3E33000BCFEF /* ChooseMediaToShareTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4C4E9C1C1A3E33000BCFEF /* ChooseMediaToShareTableVC.swift */; };
-		5A4C4EB01C1B4959000BCFEF /* UWVersion-Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4C4EAF1C1B4959000BCFEF /* UWVersion-Helpers.swift */; };
+		5A4C4EB01C1B4959000BCFEF /* UWCoreDataModel-Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4C4EAF1C1B4959000BCFEF /* UWCoreDataModel-Helpers.swift */; };
 		5A4C4EBC1C1B6449000BCFEF /* LanguageShareChooserTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4C4EB61C1B6449000BCFEF /* LanguageShareChooserTableCell.swift */; };
 		5A4C4EBD1C1B6449000BCFEF /* LanguageShareChooserTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A4C4EB71C1B6449000BCFEF /* LanguageShareChooserTableCell.xib */; };
 		5A4C4EBE1C1B6449000BCFEF /* MediaChooserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4C4EB81C1B6449000BCFEF /* MediaChooserView.swift */; };
@@ -974,7 +974,7 @@
 		5A45ECBC1B99F03C00F345C6 /* ContainerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerVC.swift; sourceTree = "<group>"; };
 		5A4C4E9A1C1A2DCB000BCFEF /* VersionSharingInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionSharingInfo.swift; sourceTree = "<group>"; };
 		5A4C4E9C1C1A3E33000BCFEF /* ChooseMediaToShareTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseMediaToShareTableVC.swift; sourceTree = "<group>"; };
-		5A4C4EAF1C1B4959000BCFEF /* UWVersion-Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UWVersion-Helpers.swift"; sourceTree = "<group>"; };
+		5A4C4EAF1C1B4959000BCFEF /* UWCoreDataModel-Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UWCoreDataModel-Helpers.swift"; sourceTree = "<group>"; };
 		5A4C4EB61C1B6449000BCFEF /* LanguageShareChooserTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageShareChooserTableCell.swift; sourceTree = "<group>"; };
 		5A4C4EB71C1B6449000BCFEF /* LanguageShareChooserTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LanguageShareChooserTableCell.xib; sourceTree = "<group>"; };
 		5A4C4EB81C1B6449000BCFEF /* MediaChooserView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaChooserView.swift; sourceTree = "<group>"; };
@@ -2009,7 +2009,7 @@
 				5A26CC651BBDD509006DFFD3 /* UWTopContainer.m */,
 				5A26CC661BBDD509006DFFD3 /* UWVersion.h */,
 				5A26CC671BBDD509006DFFD3 /* UWVersion.m */,
-				5A4C4EAF1C1B4959000BCFEF /* UWVersion-Helpers.swift */,
+				5A4C4EAF1C1B4959000BCFEF /* UWCoreDataModel-Helpers.swift */,
 				5A26CC681BBDD509006DFFD3 /* UWVideo.h */,
 				5A26CC691BBDD509006DFFD3 /* UWVideo.m */,
 				5A26CC6A1BBDD509006DFFD3 /* UWVideoSource.h */,
@@ -4446,7 +4446,7 @@
 				5AAB78761A9299A800376C36 /* NSString+Date.m in Sources */,
 				5A4C4EC01C1B6449000BCFEF /* VersionChooserView.swift in Sources */,
 				5A26CC711BBDD509006DFFD3 /* _UWAudio.m in Sources */,
-				5A4C4EB01C1B4959000BCFEF /* UWVersion-Helpers.swift in Sources */,
+				5A4C4EB01C1B4959000BCFEF /* UWCoreDataModel-Helpers.swift in Sources */,
 				5A4C4EBE1C1B6449000BCFEF /* MediaChooserView.swift in Sources */,
 				5A26CC7F1BBDD509006DFFD3 /* OpenFrame.m in Sources */,
 				5A26CC891BBDD509006DFFD3 /* UWVersion.m in Sources */,

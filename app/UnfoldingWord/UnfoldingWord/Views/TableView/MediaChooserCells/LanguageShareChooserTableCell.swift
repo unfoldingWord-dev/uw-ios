@@ -19,6 +19,7 @@ class LanguageShareChooserTableCell: UITableViewCell, ACTLabelButtonDelegate {
     }
     
     var delegate : LanguageChooserCellDelegate? = nil
+    var constraintLabelBottom : NSLayoutConstraint?
 
     @IBOutlet weak var labelButtonLanguage: ACTLabelButton! {
         didSet {
@@ -29,13 +30,6 @@ class LanguageShareChooserTableCell: UITableViewCell, ACTLabelButtonDelegate {
     }
     
     private var arrayVersionChooserViews: [VersionChooserView]?
-    
-    var expanded : Bool! {
-        didSet {
-            sharingInfo.isExpanded = expanded
-            updateCellViews()
-        }
-    }
 
     func labelButtonPressed(labelButton: ACTLabelButton!) {
         guard let delegate = delegate else {
@@ -49,27 +43,36 @@ class LanguageShareChooserTableCell: UITableViewCell, ACTLabelButtonDelegate {
     {
         updateLanguageCell()
         removeExistingChooserViews()
-        addVersionChooserViews()
+        addVersionChooserViewsIfNecessary()
     }
 
-    private func addVersionChooserViews()
+    private func addVersionChooserViewsIfNecessary()
     {
-        arrayVersionChooserViews = sharingInfo.arrayVersionSharingInfo.map { VersionChooserView.createWithInfo($0) }
+        if let constraint = constraintLabelBottom {
+            self.contentView.removeConstraint(constraint)
+            constraintLabelBottom = nil
+        }
         
-        guard let views = arrayVersionChooserViews where views.count > 0 else {
-            assertionFailure("NO available views for info \(sharingInfo)")
+        guard sharingInfo.isExpanded else {
+            let bottomConst = NSLayoutConstraint(item: self.contentView, attribute: .Bottom, relatedBy: .Equal, toItem: labelButtonLanguage, attribute: .Bottom, multiplier: 1, constant: 8)
+            self.contentView.addConstraint(bottomConst)
+            constraintLabelBottom = bottomConst
             return
         }
+        
+        arrayVersionChooserViews = sharingInfo.arrayVersionSharingInfo.map { VersionChooserView.createWithInfo($0) }
+        
+        guard let views = arrayVersionChooserViews where views.count > 0 else { return }
         
         var previousView : UIView = labelButtonLanguage
         
         views.forEach { (view) -> () in
-            addConstraints( NSLayoutConstraint.constraintsToPutView(view, belowView: previousView, padding: 0, withContainerView: self, leftMargin: 16, rightMargin: 16)! )
-            addSubview(view)
+            self.contentView.addSubview(view)
+            self.contentView.addConstraints( NSLayoutConstraint.constraintsToFloatView(view, belowView: previousView, padding: 0, withContainerView: self.contentView, leftMargin: 16, rightMargin: 16) )
             previousView = view
         }
         
-        addConstraint( NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: previousView, attribute: .Bottom, multiplier: 1, constant: 0))
+        self.contentView.addConstraint( NSLayoutConstraint(item: self.contentView, attribute: .Bottom, relatedBy: .Equal, toItem: previousView, attribute: .Bottom, multiplier: 1, constant: 12))
     }
 
 
@@ -79,8 +82,7 @@ class LanguageShareChooserTableCell: UITableViewCell, ACTLabelButtonDelegate {
     }
     
     private func removeExistingChooserViews() {
-        guard let chooserViews = arrayVersionChooserViews else { return }
-        chooserViews.forEach { $0.removeFromSuperview() }
+        arrayVersionChooserViews?.forEach { $0.removeFromSuperview() }
     }
     
 }

@@ -34,6 +34,7 @@ class VersionChooserView: UIView {
     static func createWithInfo(info:VersionSharingInfo) -> VersionChooserView {
         let view = UINib.viewForName(NSStringFromClass(VersionChooserView).textAfterLastPeriod()) as! VersionChooserView
         view.sharingInfo = info
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }
     
@@ -153,8 +154,8 @@ class VersionChooserView: UIView {
         var previousView : UIView = buttonCheckmark
         
         views.forEach { (view) -> () in
-            self.addConstraints( NSLayoutConstraint.constraintsToPutView(view, belowView: previousView, padding: 5, withContainerView: self, leftMargin: 24, rightMargin: 16)! )
             addSubview(view)
+            self.addConstraints( NSLayoutConstraint.constraintsToFloatView(view, belowView: previousView, padding: 5, withContainerView: self, leftMargin: 24, rightMargin: 16) )
             previousView = view
         }
         
@@ -166,7 +167,7 @@ class VersionChooserView: UIView {
         view.checkmarkMarkBlock = { [weak self] () -> Void in
             self?.updateAllViewsWithCompleteState(nil)
         }
-        view.checkmarkMarkBlock = { [weak self] () -> Void in
+        view.checkingLevelBlock = { [weak self] () -> Void in
             self?.showCheckingInfo()
         }
         return view

@@ -207,7 +207,9 @@
 
 - (IBAction)userPressedRefreshButton:(id)sender
 {
-    [self triggerRefresh];
+    ChooseMediaToShareTableVC *chooseVC = [[ChooseMediaToShareTableVC alloc] init];
+    [self.navigationController pushViewController:chooseVC animated:YES];
+//    [self triggerRefresh];
 }
 
 - (void)triggerRefresh

@@ -11,12 +11,12 @@ import UIKit
 
 typealias VersionSharingCompletion = (isCanceled: Bool, versionSharingInfoArray: [VersionSharingInfo])
 
-
-class ChooseMediaToShareTableVC: UITableViewController {
+class ChooseMediaToShareTableVC: UITableViewController, LanguageChooserCellDelegate {
     
-    var completion : VersionSharingCompletion? = nil
-    var topContainers = UWTopContainer.sortedContainers()
-    var expandedLanguages = [UWLanguage]()
+    var completion : VersionSharingCompletion! = nil
+    var arrayTopSharing : [[LanguageSharingInfo]] = UWTopContainer.sortedLanguagedSharingInfoForDownloadedItems()
+    
+    let cellId = NSStringFromClass(LanguageShareChooserTableCell)
     
     static func chooserInNavControllerWithCompletion(completion : VersionSharingCompletion) -> UINavigationController
     {
@@ -25,62 +25,56 @@ class ChooseMediaToShareTableVC: UITableViewController {
         return UINavigationController(rootViewController: vc)
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let cell = UINib.init(nibName: cellId.textAfterLastPeriod(), bundle: nil)
+        self.tableView.registerNib(cell, forCellReuseIdentifier: cellId)
+        
+        self.tableView.estimatedRowHeight = 44
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        
+        self.tableView.separatorStyle = .None
+        
+        self.tableView.setNeedsLayout()
+        self.tableView.layoutIfNeeded()
+    }
+    
+    func userTappedCell(cell: LanguageShareChooserTableCell) {
+        guard let indexPath = tableView.indexPathForCell(cell) else { assertionFailure("Tapped nonexistent cell?!?"); return }
+        let sharingInfo = arrayTopSharing[indexPath.section][indexPath.row]
+        sharingInfo.isExpanded = !sharingInfo.isExpanded
+        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+    }
+    
     // MARK: - TableView Methods
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return topContainers.count
+        return arrayTopSharing.count
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        let top = topContainers[section]
-        return top.sortedLanguages.count
+        let sharingInfoArray: [LanguageSharingInfo] = arrayTopSharing[section]
+        return sharingInfoArray.count
     }
     
-    func setLanguage(language : UWLanguage, toExpanded expanded: Bool)
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let sharingInfoArray: [LanguageSharingInfo] = arrayTopSharing[section]
+        if sharingInfoArray.count > 0 {
+            let langSharingInfo = sharingInfoArray[0]
+            return langSharingInfo.language.topContainer.title
+        }
+        return nil
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
-        let existingIndex : Int? = expandedLanguages.indexOf(language)
-        if let existingIndex = existingIndex where expanded == false {
-            expandedLanguages.removeAtIndex(existingIndex)
-            return
-        }
-        else if let _ = existingIndex where expanded == true {
-            return
-        }
-        else if expanded == true {
-            expandedLanguages.append(language)
-        }
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellId, forIndexPath: indexPath) as! LanguageShareChooserTableCell
+        cell.sharingInfo = arrayTopSharing[indexPath.section][indexPath.row]
+        cell.delegate = self
+        return cell
     }
-    
-    func isExpandedLanguage(language : UWLanguage) -> Bool {
-        return expandedLanguages.indexOf(language) != nil
-    }
-    
-//    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
-//    {
-//        let cell : UFWTopLevelItemCell = tableView.dequeueReusableCellWithIdentifier(self.cellId, forIndexPath: indexPath) as! UFWTopLevelItemCell
-//        if self.arrayFileNames.count > 0 {
-//            let filepath = self.arrayFileNames[indexPath.row]
-//            let filename = filepath.lastPathComponent
-//            cell.labelName.text = filename as String
-//        }
-//        else {
-//            cell.labelName.text = "No new files in the iTunes folder"
-//        }
-//        return cell
-//    }
-//    
-//    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        if let chooseBlock = self.chooseBlock {
-//            
-//            if self.arrayFileNames.count == 0 {
-//                chooseBlock(canceled: true, chosenPath: nil)
-//            }
-//            else {
-//                let filepath = self.arrayFileNames[indexPath.row]
-//                chooseBlock(canceled: false, chosenPath: filepath as String)
-//            }
-//        }
-//    }
+
 
 }
