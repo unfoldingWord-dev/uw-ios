@@ -38,7 +38,7 @@ class MediaChooserView: UIView {
     
     func setType(type : MediaType) {
         internalType = type
-        updateLabel()
+        updateLabelAndImage()
     }
     
     func getType() -> MediaType {
@@ -54,7 +54,6 @@ class MediaChooserView: UIView {
         fire(checkingLevelBlock)
     }
     
-    
     private func fire(block : ButtonPressBlock?) {
         guard let block = block else {
             assertionFailure("No outlet for button!")
@@ -62,14 +61,17 @@ class MediaChooserView: UIView {
         block()
     }
     
-    private func updateLabel() {
+    private func updateLabelAndImage() {
         switch internalType {
         case .Text:
             labelDescription.text = "Text"
+            imageViewType.image = Constants.Image.fileText
         case .Audio:
             labelDescription.text = "Audio"
+            imageViewType.image = Constants.Image.fileAudio
         case .Video:
             labelDescription.text = "Video"
+            imageViewType.image = Constants.Image.fileVideo
         case .None:
             assertionFailure("Created a choose view with no type.")
             labelDescription.text = "Error!"

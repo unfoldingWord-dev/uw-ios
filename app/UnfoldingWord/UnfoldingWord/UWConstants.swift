@@ -58,8 +58,27 @@ func BACKGROUND_GREEN() -> UIColor { // duplicated in Constants.h
     return UIColor(red: 0.0, green: 0.588, blue: 0.533, alpha: 1)
 }
 
+func imageForCheckingLevel(level: Int) -> UIImage? {
+    switch level {
+    case 1:
+        return UIImage(named: LEVEL_1_IMAGE)
+    case 2:
+        return UIImage(named: LEVEL_2_IMAGE)
+    case 3:
+        return UIImage(named: LEVEL_3_IMAGE)
+    default:
+        assertionFailure("No image for level \(level)")
+        return nil
+    }
+}
+
 struct Constants {
     
+    struct Image {
+        static let fileText = UIImage(named: "text-file")
+        static let fileAudio = UIImage(named: "audio-file")
+        static let fileVideo = UIImage(named: "video-file")
+    }
     
     struct Color {
         static let lightBlue = UIColor(red:0.078,  green:0.490,  blue:1, alpha:1)

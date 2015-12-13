@@ -22,8 +22,8 @@
                             <constraint firstAttribute="height" constant="1" id="QdV-81-rFg"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aCa-Eo-11B" customClass="ACTLabelButton">
-                        <rect key="frame" x="8" y="8" width="304" height="22"/>
+                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aCa-Eo-11B" customClass="ACTLabelButton">
+                        <rect key="frame" x="16" y="8" width="296" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -33,7 +33,7 @@
                 <constraints>
                     <constraint firstItem="ff2-4W-XWs" firstAttribute="top" secondItem="aCa-Eo-11B" secondAttribute="bottom" id="9Ib-we-za8"/>
                     <constraint firstItem="ff2-4W-XWs" firstAttribute="top" secondItem="Lwq-zb-hyE" secondAttribute="topMargin" id="FgH-kp-Ol2"/>
-                    <constraint firstItem="aCa-Eo-11B" firstAttribute="leading" secondItem="Lwq-zb-hyE" secondAttribute="leadingMargin" id="LI6-ae-l7n"/>
+                    <constraint firstItem="aCa-Eo-11B" firstAttribute="leading" secondItem="Lwq-zb-hyE" secondAttribute="leadingMargin" constant="8" id="LI6-ae-l7n"/>
                     <constraint firstAttribute="centerY" secondItem="aCa-Eo-11B" secondAttribute="centerY" id="LU4-7h-dcz"/>
                     <constraint firstAttribute="bottom" secondItem="aCa-Eo-11B" secondAttribute="bottom" constant="5" id="Qcg-Bs-dcQ"/>
                     <constraint firstAttribute="trailing" secondItem="ff2-4W-XWs" secondAttribute="trailing" id="Vkn-E8-mwG"/>

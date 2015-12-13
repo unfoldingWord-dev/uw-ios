@@ -23,7 +23,18 @@ class VersionChooserView: UIView {
         didSet {  updateCellsBasedOnSharingInfo() }
     }
     
-    private var state = CheckState.None
+    private var state = CheckState.None {
+        didSet {
+            switch state {
+            case .None:
+                buttonCheckmark.setBackgroundImage(UIImage(named: Constants.ImageName.checklessBox), forState: .Normal)
+            case .Partial:
+                buttonCheckmark.setBackgroundImage(UIImage(named: Constants.ImageName.checkBoxFixedOn), forState: .Normal)
+            case .Complete:
+                buttonCheckmark.setBackgroundImage(UIImage(named: Constants.ImageName.checkInBox), forState: .Normal)
+            }
+        }
+    }
     
     private var chooserViews: [MediaChooserView]?
     
@@ -100,6 +111,7 @@ class VersionChooserView: UIView {
     
     private func updateContents()
     {
+        labelVersionName.text = version.name
         removeExistingChooserViews()
         addMediaChooserViews()
         setNeedsLayout()
@@ -127,7 +139,7 @@ class VersionChooserView: UIView {
         }
         else {
             let count = chooserViews.reduce(0, combine: { (count, view) -> Int in
-                return view.isChecked ? 1 : 0
+                return view.isChecked ? count+1 : count
             })
             if count == chooserViews.count {
                 state = .Complete
@@ -155,7 +167,7 @@ class VersionChooserView: UIView {
         
         views.forEach { (view) -> () in
             addSubview(view)
-            self.addConstraints( NSLayoutConstraint.constraintsToFloatView(view, belowView: previousView, padding: 5, withContainerView: self, leftMargin: 24, rightMargin: 16) )
+            self.addConstraints( NSLayoutConstraint.constraintsToFloatView(view, belowView: previousView, padding: 1, withContainerView: self, leftMargin: 34, rightMargin: 16) )
             previousView = view
         }
         
@@ -164,6 +176,7 @@ class VersionChooserView: UIView {
     
     private func createMediaChooserViewWithType(type: MediaType) -> MediaChooserView {
         let view = MediaChooserView.createWithType(type)
+        view.buttonCheckingLevel.setBackgroundImage(imageForCheckingLevel((version.status.checking_level as NSString).integerValue), forState: .Normal)
         view.checkmarkMarkBlock = { [weak self] () -> Void in
             self?.updateAllViewsWithCompleteState(nil)
         }

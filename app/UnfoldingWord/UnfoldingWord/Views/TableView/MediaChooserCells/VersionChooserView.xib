@@ -23,9 +23,9 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fhR-Lo-hA4">
-                    <rect key="frame" x="40" y="6" width="451" height="21"/>
+                    <rect key="frame" x="38" y="6" width="453" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
@@ -34,7 +34,7 @@
                 <constraint firstAttribute="trailing" secondItem="fhR-Lo-hA4" secondAttribute="trailing" constant="16" id="AX6-1D-BxP"/>
                 <constraint firstItem="myC-32-IWB" firstAttribute="leading" secondItem="rKB-sP-hxq" secondAttribute="leading" id="Lv3-v7-MoO"/>
                 <constraint firstItem="fhR-Lo-hA4" firstAttribute="centerY" secondItem="myC-32-IWB" secondAttribute="centerY" id="TNt-0c-wH7"/>
-                <constraint firstItem="fhR-Lo-hA4" firstAttribute="leading" secondItem="myC-32-IWB" secondAttribute="trailing" constant="8" id="elx-ui-YHg"/>
+                <constraint firstItem="fhR-Lo-hA4" firstAttribute="leading" secondItem="myC-32-IWB" secondAttribute="trailing" constant="6" id="elx-ui-YHg"/>
                 <constraint firstItem="myC-32-IWB" firstAttribute="top" secondItem="rKB-sP-hxq" secondAttribute="top" id="yPM-gp-XY8"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>

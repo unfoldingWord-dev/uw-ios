@@ -24,7 +24,7 @@ class LanguageShareChooserTableCell: UITableViewCell, ACTLabelButtonDelegate {
     @IBOutlet weak var labelButtonLanguage: ACTLabelButton! {
         didSet {
             labelButtonLanguage.delegate = self
-            labelButtonLanguage.font = FONT_LIGHT()
+            labelButtonLanguage.font = FONT_MEDIUM()
             labelButtonLanguage.colorHover = UIColor.lightGrayColor()
         }
     }
@@ -68,7 +68,7 @@ class LanguageShareChooserTableCell: UITableViewCell, ACTLabelButtonDelegate {
         
         views.forEach { (view) -> () in
             self.contentView.addSubview(view)
-            self.contentView.addConstraints( NSLayoutConstraint.constraintsToFloatView(view, belowView: previousView, padding: 0, withContainerView: self.contentView, leftMargin: 16, rightMargin: 16) )
+            self.contentView.addConstraints( NSLayoutConstraint.constraintsToFloatView(view, belowView: previousView, padding: 6, withContainerView: self.contentView, leftMargin: 12, rightMargin: 16) )
             previousView = view
         }
         
