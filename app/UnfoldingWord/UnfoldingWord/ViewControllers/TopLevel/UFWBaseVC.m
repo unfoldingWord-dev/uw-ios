@@ -53,9 +53,6 @@
     self.navigationItem.titleView = titleImageView;
     self.navigationItem.title = @"";
     
-//    UIBarButtonItem *bbiShare = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userRequestedSharing:)];
-//    self.navigationItem.rightBarButtonItem = bbiShare;
-    
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
     self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil];
@@ -107,10 +104,36 @@
 - (IBAction)userRequestedSharing:(UIBarButtonItem *)activityBarButtonItem
 {
     __weak typeof(self) weakself = self;
-    [self receiveFileFromBarButtonOrView:activityBarButtonItem completion:^(BOOL success) {
-        [weakself loadTopLevelObjects];
-        [weakself.tableView reloadData];
+    UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"Share" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *sendAction = [UIAlertAction actionWithTitle:@"Send Content" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        ChooseMediaToShareTableVC *chooser = [[ChooseMediaToShareTableVC alloc] init];
+        chooser.navigationItem.title = @"Choose Content";
+        chooser.completion = ^(BOOL isCanceled, NSArray<VersionSharingInfo *> * sharingInfo) {
+            NSLog(@"Canceled: %d", isCanceled);
+            [self dismissViewControllerAnimated:YES completion:^{}];
+//            if (isCanceled == NO) {
+//                [weakself sendFileForVersion:nil fromBarButtonOrView:activityBarButtonItem];
+//            }
+        };
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:chooser];
+        [weakself presentViewController:navController animated:YES completion:^{}];
     }];
+    
+    UIAlertAction *receiveAction = [UIAlertAction actionWithTitle:@"Receive Content" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [weakself receiveFileFromBarButtonOrView:activityBarButtonItem completion:^(BOOL success) {
+            [weakself loadTopLevelObjects];
+            [weakself.tableView reloadData];
+        }];
+    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}];
+    
+    [ac addAction:sendAction];
+    [ac addAction:receiveAction];
+    [ac addAction:cancelAction];
+    
+    [self presentViewController:ac animated:YES completion:^{}];
 }
 
 #pragma mark - Settings
@@ -207,9 +230,7 @@
 
 - (IBAction)userPressedRefreshButton:(id)sender
 {
-    ChooseMediaToShareTableVC *chooseVC = [[ChooseMediaToShareTableVC alloc] init];
-    [self.navigationController pushViewController:chooseVC animated:YES];
-//    [self triggerRefresh];
+    [self triggerRefresh];
 }
 
 - (void)triggerRefresh

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-typealias VersionSharingCompletion = (isCanceled: Bool, versionSharingInfoArray: [VersionSharingInfo])
+typealias VersionSharingCompletion = (isCanceled: Bool, versionSharingInfoArray: [VersionSharingInfo]) -> Void
 
 class ChooseMediaToShareTableVC: UITableViewController, LanguageChooserCellDelegate {
     
@@ -22,11 +22,21 @@ class ChooseMediaToShareTableVC: UITableViewController, LanguageChooserCellDeleg
     {
         let vc = ChooseMediaToShareTableVC()
         vc.completion = completion
+        vc.navigationItem.title = "Choose Items To Share"
         return UINavigationController(rootViewController: vc)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.navigationBar.barTintColor = BACKGROUND_GREEN()
+        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        
+        let share = UIBarButtonItem(title: "Share", style: UIBarButtonItemStyle.Done, target: self, action: "userTappedShareButton:")
+        self.navigationItem.rightBarButtonItem = share
+        let cancel = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: self, action: "userTappedCancelButton:")
+        self.navigationItem.leftBarButtonItem = cancel
+        
         
         let cell = UINib.init(nibName: cellId.textAfterLastPeriod(), bundle: nil)
         self.tableView.registerNib(cell, forCellReuseIdentifier: cellId)
@@ -39,6 +49,17 @@ class ChooseMediaToShareTableVC: UITableViewController, LanguageChooserCellDeleg
         self.tableView.setNeedsLayout()
         self.tableView.layoutIfNeeded()
     }
+    
+    func userTappedCancelButton(barButton: UIBarButtonItem)
+    {
+        completion(isCanceled: true, versionSharingInfoArray: LanguageSharingInfo.collapsedVersionSharingInfo(arrayTopSharing) )
+    }
+    
+    func userTappedShareButton(barButton: UIBarButtonItem)
+    {
+        completion(isCanceled: false, versionSharingInfoArray:  LanguageSharingInfo.collapsedVersionSharingInfo(arrayTopSharing))
+    }
+    
     
     func userTappedCell(cell: LanguageShareChooserTableCell) {
         guard let indexPath = tableView.indexPathForCell(cell) else { assertionFailure("Tapped nonexistent cell?!?"); return }

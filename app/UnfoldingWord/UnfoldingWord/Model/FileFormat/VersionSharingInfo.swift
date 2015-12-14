@@ -17,6 +17,14 @@ import Foundation
         self.language = language
         self.arrayVersionSharingInfo = sharingArray
     }
+    
+    static func collapsedVersionSharingInfo(arrayOfArrays: [[LanguageSharingInfo]]) -> [VersionSharingInfo] {
+        return arrayOfArrays.flatMap {$0}.flatMap { (languageInfo) -> [VersionSharingInfo] in
+            languageInfo.arrayVersionSharingInfo.flatMap({ (versionInfo) -> [VersionSharingInfo] in
+                return versionInfo.hasContent ? [versionInfo] : [VersionSharingInfo]()
+            })
+        }
+    }
 }
 
 @objc class VersionSharingInfo : NSObject {
@@ -27,4 +35,13 @@ import Foundation
         self.version = version
         self.options = options
     }
+    
+    var hasContent : Bool {
+        if options.contains(.Audio) || options.contains(.Text) || options.contains(.Video) {
+            return true
+        }
+        return false
+    }
+
 }
+

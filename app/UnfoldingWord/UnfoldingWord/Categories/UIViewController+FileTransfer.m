@@ -71,8 +71,8 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
     } else {
         [self initiateActivityPresentationWithVersion:version isSend:YES options:DownloadOptionsText fromItem:item completion:nil];
     }
-    
 }
+
 
 - (void)receiveFileFromBarButtonOrView:(id)item completion:(FileCompletion)completion
 {
