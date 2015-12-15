@@ -72,7 +72,7 @@ struct FilePackage {
     func updateProgressWithConnected(connected: Bool, percent : Float, complete: Bool, error: Bool) {
         let shareCompleted = Float(queue.count)/Float(countTotal)
         let adjusted = percent / Float(queue.count)
-        self.updateBlock(percentComplete: shareCompleted+adjusted, connected: connected, complete: complete)
+        self.updateBlock(percentComplete: shareCompleted+adjusted, connected: connected, complete: complete, fileUrl: nil)
     }
     
     func advertise() {
@@ -132,11 +132,11 @@ struct FilePackage {
     }
 
     func advertiser(advertiser: MCNearbyServiceAdvertiser, didNotStartAdvertisingPeer error: NSError) {
-        self.updateBlock(percentComplete: 0, connected: false, complete: false)
+        self.updateBlock(percentComplete: 0, connected: false, complete: false, fileUrl: nil)
     }
     
     func advertiser(advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: NSData?, invitationHandler: (Bool, MCSession) -> Void) {
-        if peerID.displayName == Constants.MultiConnect.PeerDisplayReceiver {
+        if (peerID.displayName as NSString).rangeOfString(Constants.MultiConnect.PeerDisplayReceiver).location != NSNotFound {
             
             let createdSession = MCSession(peer: self.localPeer)
             

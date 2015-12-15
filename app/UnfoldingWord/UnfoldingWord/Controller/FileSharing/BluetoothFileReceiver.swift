@@ -31,11 +31,11 @@ import CoreBluetooth
     // This sends an update to via a non-optional progress block
     func updateProgress(connected: Bool) {
         if self.receivedData.length == 0 && self.finished == false {
-            self.updateBlock(percentComplete: 0, connected: connected, complete: self.finished)
+            self.updateBlock(percentComplete: 0, connected: connected, complete: self.finished, fileUrl: nil)
         }
         else {
             let percent =  Float(self.receivedData.length) / Float(self.totalDataByteSize)
-            self.updateBlock(percentComplete: percent, connected: connected, complete: self.finished)
+            self.updateBlock(percentComplete: percent, connected: connected, complete: self.finished, fileUrl: nil)
         }
     }
     

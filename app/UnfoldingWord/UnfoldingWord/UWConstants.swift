@@ -22,7 +22,7 @@ func delay(delay:Double, closure: () -> Void ) {
 typealias ButtonPressBlock = () -> Void
 
 // Percent complete is an Int from 0 to 100. 100 indicates that the transfer is complete.
-typealias FileUpdateBlock = (percentComplete: Float, connected : Bool, complete : Bool) -> ()
+typealias FileUpdateBlock = (percentComplete: Float, connected : Bool, complete : Bool, fileUrl: NSURL?) -> ()
 
 typealias ITunesPickerChooseBlock = (canceled : Bool, chosenPath : String?) -> ()
 

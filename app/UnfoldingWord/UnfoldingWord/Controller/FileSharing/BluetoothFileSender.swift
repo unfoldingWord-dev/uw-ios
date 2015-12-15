@@ -38,11 +38,11 @@ enum SendStatus {
     func updateProgress(connected: Bool) {
         let complete = (self.status == SendStatus.Complete) ? true : false
         if self.sendIndex <= 0 {
-            self.updateBlock(percentComplete: 0, connected: connected, complete: complete)
+            self.updateBlock(percentComplete: 0, connected: connected, complete: complete, fileUrl: nil)
         }
         else {
             let percent =  Float(self.sendIndex) / Float(self.data.length)
-            self.updateBlock(percentComplete: percent, connected: connected, complete: complete)
+            self.updateBlock(percentComplete: percent, connected: connected, complete: complete, fileUrl: nil)
         }
     }
     

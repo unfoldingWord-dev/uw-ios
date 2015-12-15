@@ -13,7 +13,6 @@ import MultipeerConnectivity
     
     let updateBlock : FileUpdateBlock
     let localPeer : MCPeerID = MCPeerID(displayName:Constants.MultiConnect.PeerDisplayReceiver);
-    var receivedFileData : NSData?
     var session : MCSession?
     var browser : MCNearbyServiceBrowser?
     var progress : NSProgress?
@@ -21,7 +20,6 @@ import MultipeerConnectivity
     
     init(updateBlock: FileUpdateBlock) {
         self.updateBlock = updateBlock
-        self.receivedFileData = nil
         self.session = nil
         self.browser = nil
         self.progress = nil
@@ -35,8 +33,8 @@ import MultipeerConnectivity
     }
     
     // This sends an update to via a non-optional progress block
-    func updateProgressWithConnected(connected: Bool, percent : Float, complete: Bool, error: Bool) {
-        self.updateBlock(percentComplete: percent, connected: connected, complete: complete)
+    func updateProgressWithConnected(connected: Bool, percent : Float, complete: Bool, error: Bool, url : NSURL?) {
+        self.updateBlock(percentComplete: percent, connected: connected, complete: complete, fileUrl: url)
     }
     
     func browse() {
@@ -47,7 +45,7 @@ import MultipeerConnectivity
     
     // MCNearbyServiceBrowserDelegate Methods
     func browser(browser: MCNearbyServiceBrowser, didNotStartBrowsingForPeers error: NSError) {
-        updateProgressWithConnected(false, percent: 0, complete: false, error: true)
+        updateProgressWithConnected(false, percent: 0, complete: false, error: true, url: nil)
     }
     
     func browser(browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
@@ -63,7 +61,7 @@ import MultipeerConnectivity
     }
     
     func browser(browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
-        updateProgressWithConnected(false, percent: 0, complete: false, error: true)
+        updateProgressWithConnected(false, percent: 0, complete: false, error: true, url: nil)
     }
 
     
@@ -73,14 +71,13 @@ import MultipeerConnectivity
             if let progress = self.progress {
                 let percent = Float(progress.fractionCompleted)
                 let connected = progress.cancelled
-                updateProgressWithConnected(connected, percent: percent, complete: false, error: false)
+                updateProgressWithConnected(connected, percent: percent, complete: false, error: false, url: nil)
             }
         }
         else {
             super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
         }
     }
-    
     
     // Session Delegate
     // These are really only used by the receiver.
@@ -92,7 +89,7 @@ import MultipeerConnectivity
     func session(session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, withProgress progress: NSProgress) {
         progress.addObserver(self, forKeyPath:Constants.MultiConnect.KeyPathFractionCompleted, options: NSKeyValueObservingOptions.New, context: nil)
         self.progress = progress
-        updateProgressWithConnected(true, percent: 0.0, complete: false, error: false)
+        updateProgressWithConnected(true, percent: 0.0, complete: false, error: false, url: nil)
     }
     
     func session(session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, atURL localURL: NSURL, withError error: NSError?) {
@@ -100,25 +97,24 @@ import MultipeerConnectivity
         guard error != nil else {
             session.disconnect()
             print("\(error?.userInfo)")
-            updateProgressWithConnected(false, percent: 1.0, complete: false, error: true)
+            updateProgressWithConnected(false, percent: 1.0, complete: false, error: true, url: nil)
             return
         }
         
-        if let path = localURL.path {
-            self.receivedFileData = NSFileManager.defaultManager().contentsAtPath(path)
-            counter += 1
-        } else {
+        guard localURL.path != nil else {
             session.disconnect()
             print("No path for local url \(localURL)")
-            updateProgressWithConnected(false, percent: 1.0, complete: false, error: true)
+            updateProgressWithConnected(false, percent: 1.0, complete: false, error: true, url: nil)
             return
         }
         
         let total = countFromPeer(peerID)
+        counter += 1
         if (total == counter) {
-            updateProgressWithConnected(false, percent: 1.0, complete: true, error: false)
+            session.disconnect()
+            updateProgressWithConnected(false, percent: 1.0, complete: true, error: false, url: localURL)
         } else {
-            updateProgressWithConnected(false, percent: Float(counter)/Float(total), complete: false, error: false)
+            updateProgressWithConnected(true, percent: Float(counter)/Float(total), complete: false, error: false, url: localURL)
         }
     }
     
@@ -131,7 +127,7 @@ import MultipeerConnectivity
             self.browser?.startBrowsingForPeers()
         }
         if state == MCSessionState.Connected {
-            updateProgressWithConnected(true, percent: 0, complete: false, error: false)
+            updateProgressWithConnected(true, percent: 0, complete: false, error: false, url: nil)
         }
     }
     

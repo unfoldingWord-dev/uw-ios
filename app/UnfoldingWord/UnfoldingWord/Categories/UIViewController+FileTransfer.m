@@ -178,11 +178,11 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
 
         // Create a sender and apply the update block
         __weak typeof(self) weakself = self;
-        self.senderMC = [[MultiConnectSender alloc] initWithQueue:queue updateBlock:^(float percent, BOOL connected , BOOL complete) {
-            [weakself updateProgress:percent connected:connected finished:complete role:TransferRoleSend type:TransferTypeWireless completion:completion];
+        self.senderMC = [[MultiConnectSender alloc] initWithQueue:queue updateBlock:^(float percent, BOOL connected , BOOL complete, NSURL *fileUrl) {
+            [weakself updateProgress:percent connected:connected finished:complete role:TransferRoleSend type:TransferTypeWireless fileUrl:fileUrl completion:completion];
         }];
         
-        [self updateProgress:0 connected:NO finished:NO role:TransferRoleSend type:TransferTypeWireless completion:completion];
+        [self updateProgress:0 connected:NO finished:NO role:TransferRoleSend type:TransferTypeWireless fileUrl:nil completion:completion];
     } else {
         completion(NO);
     }
@@ -203,7 +203,7 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
 
     ITunesSharingSender *sender = [[ITunesSharingSender alloc] init];
     if ( [sender sendToITunesFolder:queue] ) {
-        [[[UIAlertView alloc] initWithTitle:@"Saved" message:[NSString stringWithFormat:@"%ld files(s) successfully saved to your iTunes folder.", count] delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Saved" message:[NSString stringWithFormat:@"%ld files(s) successfully saved to your iTunes folder.", (long)count] delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
     }
     else {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Could not save to iTunes folder." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
@@ -218,10 +218,10 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
     
     // Create a receiver and apply the update block
     __weak typeof(self) weakself = self;
-    self.receiverMC = [[MultiConnectReceiver alloc] initWithUpdateBlock:^(float percent, BOOL connected, BOOL complete) {
-        [weakself updateProgress:percent connected:connected finished:complete role:roleReceive type:TransferTypeWireless completion:completion];
+    self.receiverMC = [[MultiConnectReceiver alloc] initWithUpdateBlock:^(float percent, BOOL connected, BOOL complete, NSURL *fileUrl) {
+        [weakself updateProgress:percent connected:connected finished:complete role:roleReceive type:TransferTypeWireless fileUrl:fileUrl completion:completion];
     }];
-    [self updateProgress:0 connected:NO finished:NO role:roleReceive type:TransferTypeWireless completion:completion];
+    [self updateProgress:0 connected:NO finished:NO role:roleReceive type:TransferTypeWireless fileUrl:nil completion:completion];
 
 }
 
@@ -242,11 +242,11 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
         
         // Create a sender and apply the update block
         __weak typeof(self) weakself = self;
-        self.senderBT = [[BluetoothFileSender alloc] initWithDataToSend:data updateBlock:^(float percent, BOOL connected , BOOL complete) {
-            [weakself updateProgress:percent connected:connected finished:complete role:roleSend type:TransferTypeBluetooth completion:completion];
+        self.senderBT = [[BluetoothFileSender alloc] initWithDataToSend:data updateBlock:^(float percent, BOOL connected , BOOL complete, NSURL *fileUrl) {
+            [weakself updateProgress:percent connected:connected finished:complete role:roleSend type:TransferTypeBluetooth fileUrl:fileUrl completion:completion];
         }];
         
-        [self updateProgress:0 connected:NO finished:NO role:roleSend type:TransferTypeBluetooth completion:completion];
+        [self updateProgress:0 connected:NO finished:NO role:roleSend type:TransferTypeBluetooth fileUrl:nil completion:completion];
     }
 }
 
@@ -258,10 +258,10 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
     
     // Create a receiver and apply the update block
     __weak typeof(self) weakself = self;
-    self.receiverBT = [[BluetoothFileReceiver alloc] initWithUpdateBlock:^(float percent, BOOL connected, BOOL complete) {
-        [weakself updateProgress:percent connected:connected finished:complete role:roleReceive type:TransferTypeBluetooth completion:completion];
+    self.receiverBT = [[BluetoothFileReceiver alloc] initWithUpdateBlock:^(float percent, BOOL connected, BOOL complete, NSURL *fileUrl) {
+        [weakself updateProgress:percent connected:connected finished:complete role:roleReceive type:TransferTypeBluetooth fileUrl:fileUrl completion:completion];
     }];
-    [self updateProgress:0 connected:NO finished:NO role:roleReceive type:TransferTypeBluetooth completion:completion];
+    [self updateProgress:0 connected:NO finished:NO role:roleReceive type:TransferTypeBluetooth fileUrl:nil completion:completion];
 
 }
 
@@ -345,27 +345,30 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
 }
 
 #pragma mark - Progress Update
-- (void)updateProgress:(CGFloat)percent connected:(BOOL)connected finished:(BOOL)finished role:(TransferRole)role type:(TransferType)type completion:(FileCompletion)completion
+- (void)updateProgress:(CGFloat)percent connected:(BOOL)connected finished:(BOOL)finished role:(TransferRole)role type:(TransferType)type fileUrl:(NSURL *)url completion:(FileCompletion)completion
 {
     if (finished == YES) {
         if (role == TransferRoleReceive) {
             [self.alertController setTitle:@"Importing"];
-            [self.alertController setMessage:@"Importing and saving the received file."];
+            [self.alertController setMessage:@"Importing and saving the received file(s)."];
             
             NSData *data = nil;
             switch (type) {
                 case TransferTypeBluetooth:
                     data = self.receiverBT.receivedData;
                     break;
-                case TransferTypeWireless:
-                    data = self.receiverMC.receivedFileData;
-                    break;
                 default:
                     break;
             }
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self saveFile:data completion:completion];
+                if (data) {
+                    [self saveFile:data completion:completion];
+                } else if (url) {
+                    UFWFileImporter *importer = [[UFWFileImporter alloc] init];
+                    BOOL success = [importer importZipFileDataWithPath:url.path];
+                    [self dismissWithSuccess:success completion:completion];
+                }
             });
         }
         else if (role == TransferRoleSend) {
@@ -378,6 +381,12 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
         NSString *activity = (role == TransferRoleSend) ? kSending : kReceiving;
         [self.alertController setTitle:activity];
         [self.alertController setMessage:[NSString stringWithFormat:@"%.2f%% complete.", percent*100]];
+        if (url) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UFWFileImporter *importer = [[UFWFileImporter alloc] init];
+                [importer importZipFileDataWithPath:url.path];
+            });
+        }
     }
     else { // not connected!
         NSString *message = (role == TransferRoleSend) ? kTextSearchSender : kTextSearchReceive;
