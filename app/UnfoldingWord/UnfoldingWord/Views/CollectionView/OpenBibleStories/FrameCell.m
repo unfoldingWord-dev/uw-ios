@@ -96,8 +96,17 @@
 
 - (void)setIsShowingSide:(BOOL)isShowingSide animated:(BOOL)animated
 {
-    self.constraintMainOnly.active = !isShowingSide;
-    self.constraintSideBySide.active = isShowingSide;
+    if (isShowingSide) {
+        [self.contentView removeConstraint:self.constraintMainOnly];
+        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.viewTextBackground attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeWidth multiplier:0.5 constant:0];
+        [self.contentView addConstraint:constraint];
+        self.constraintSideBySide = constraint;
+    } else {
+        [self.contentView removeConstraint:self.constraintSideBySide];
+        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.viewTextBackground attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0];
+        [self.contentView addConstraint:constraint];
+        self.constraintMainOnly = constraint;
+    }
     
     CGFloat duration = (animated == YES) ? 0.5 : 0.0;
     [UIView animateWithDuration:duration animations:^{
