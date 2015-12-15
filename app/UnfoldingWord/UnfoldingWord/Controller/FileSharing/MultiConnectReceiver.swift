@@ -17,7 +17,7 @@ import MultipeerConnectivity
     var session : MCSession?
     var browser : MCNearbyServiceBrowser?
     var progress : NSProgress?
-    
+    var counter : Int = 0
     
     init(updateBlock: FileUpdateBlock) {
         self.updateBlock = updateBlock
@@ -33,7 +33,6 @@ import MultipeerConnectivity
         browser?.stopBrowsingForPeers()
         session?.disconnect()
     }
-    
     
     // This sends an update to via a non-optional progress block
     func updateProgressWithConnected(connected: Bool, percent : Float, complete: Bool, error: Bool) {
@@ -98,19 +97,29 @@ import MultipeerConnectivity
     
     func session(session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, atURL localURL: NSURL, withError error: NSError?) {
         
-        session.disconnect()
-        if let error = error {
-            print("\(error.userInfo)")
+        guard error != nil else {
+            session.disconnect()
+            print("\(error?.userInfo)")
             updateProgressWithConnected(false, percent: 1.0, complete: false, error: true)
             return
         }
-        else if let path = localURL.path {
+        
+        if let path = localURL.path {
             self.receivedFileData = NSFileManager.defaultManager().contentsAtPath(path)
-            updateProgressWithConnected(false, percent: 1.0, complete: true, error: false)
+            counter += 1
+        } else {
+            session.disconnect()
+            print("No path for local url \(localURL)")
+            updateProgressWithConnected(false, percent: 1.0, complete: false, error: true)
             return
         }
         
-        updateProgressWithConnected(false, percent: 1.0, complete: false, error: true)
+        let total = countFromPeer(peerID)
+        if (total == counter) {
+            updateProgressWithConnected(false, percent: 1.0, complete: true, error: false)
+        } else {
+            updateProgressWithConnected(false, percent: Float(counter)/Float(total), complete: false, error: false)
+        }
     }
     
     func session(session: MCSession, didReceiveStream stream: NSInputStream, withName streamName: String, fromPeer peerID: MCPeerID) {}
@@ -138,5 +147,11 @@ import MultipeerConnectivity
     
     func temporaryFilePath() -> String {
         return NSString.cachesDirectory().stringByAppendingPathComponent(Constants.MultiConnect.FilePathSend)
+    }
+    
+    private func countFromPeer(peer : MCPeerID) -> Int {
+        let countString = peer.displayName.textAfterLastPeriod()
+        guard let count = Int(countString) else { assertionFailure("No count!"); return 0 }
+        return count
     }
 }

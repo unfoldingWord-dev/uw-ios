@@ -10,16 +10,21 @@ import Foundation
 
 @objc final class ITunesSharingSender : NSObject {
     
-    func sendToITunesFolder(data : NSData?, filename : String?) -> Bool {
-        if let data = data, filename = filename {
+    func sendToITunesFolder(queue : VersionQueue) -> Bool {
+        repeat {
+            guard let info = queue.popVersionSharingInfo(), fileUrl = info.fileSource() else {  return false }
+            
             let basePath = NSString.appDocumentsDirectory() as NSString
-            let savePath = basePath.stringByAppendingPathComponent(filename)            
-            if NSFileManager.defaultManager().createFileAtPath(savePath, contents: data, attributes: nil) {
-                ITunesSharingReceiver().addExistingFilePath(savePath)
-                return true
+            let savePath = basePath.stringByAppendingPathComponent(info.version.filename())
+            do {
+                try NSFileManager.defaultManager().moveItemAtURL(fileUrl, toURL: NSURL(fileURLWithPath: savePath) )
+            } catch (let error) {
+                print("\(error)")
             }
-        }
-        return false
+            
+        } while queue.count > 0
+        
+        return true
     }
-
+    
 }

@@ -64,19 +64,21 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
         }
         SharingChoicesView *picker = [SharingChoicesView createWithOptions:options completion:^(BOOL canceled, DownloadOptions options) {
             if (canceled == NO) {
-                [weakself  initiateActivityPresentationWithVersion:version isSend:YES options:options fromItem:item completion:nil];
+                VersionQueue *queue = [[VersionQueue alloc] initWithVersion:version options:options];
+                [weakself initiateActivityPresentationWithQueue:queue isSend:YES fromItem:item completion:nil];
             }
         }];
         [self showActionSheetFake:picker];
     } else {
-        [self initiateActivityPresentationWithVersion:version isSend:YES options:DownloadOptionsText fromItem:item completion:nil];
+        VersionQueue *queue = [[VersionQueue alloc] initWithVersion:version options:DownloadOptionsText];
+        [self initiateActivityPresentationWithQueue:queue isSend:YES fromItem:item completion:nil];
     }
 }
 
 
 - (void)receiveFileFromBarButtonOrView:(id)item completion:(FileCompletion)completion
 {
-    [self initiateActivityPresentationWithVersion:nil isSend:NO options:DownloadOptionsEmpty fromItem:item completion:completion];
+    [self initiateActivityPresentationWithQueue:nil isSend:NO fromItem:item completion:completion];
 }
 
 - (void) handleActivityType:(NSString *)activityType completion:(FileCompletion)completion
@@ -113,9 +115,9 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
     }
 }
 
-- (void)initiateActivityPresentationWithVersion:(UWVersion *) version isSend:(BOOL)isSend options:(DownloadOptions)options fromItem:(id)item completion:(FileCompletion)completion
+- (void)initiateActivityPresentationWithQueue:(VersionQueue *) queue isSend:(BOOL)isSend fromItem:(id)item completion:(FileCompletion)completion
 {
-    self.fileActivityController = [[FileActivityController alloc] initWithVersion:version options:options shouldSend:isSend];
+    self.fileActivityController = [[FileActivityController alloc] initWithQueue:queue shouldSend:isSend];
     UIActivityViewController *activityController = self.fileActivityController.activityViewController;
     __weak typeof(self) weakself = self;
     activityController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
@@ -145,32 +147,63 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
 
 }
 
+- (VersionQueue *)queue {
+    VersionQueue *queue = self.fileActivityController.itemProvider.item;
+    if ([queue isKindOfClass:[VersionQueue class]] == NO) {
+        NSAssert1(NO, @"%s: Could not find the queue to send!", __PRETTY_FUNCTION__);
+        return nil;
+    }
+    return queue;
+}
+
+- (VersionSharingInfo *)nextVersionSharingInfo {
+    VersionQueue *queue = [self queue];
+    return [queue popVersionSharingInfo];
+}
+
+- (NSInteger)remainingCount {
+    VersionQueue *queue = [self queue];
+    return queue.count;
+}
+
 - (void)sendWirelessWithCompletion:(FileCompletion)completion {
-    NSData *data = [self data];
-    if (data) {
-        NSString *title = self.fileActivityController.ufwVersion.name;
-        
-        // Set up progress indicator using alert controller
-        TransferRole roleSend = TransferRoleSend;
+    
+    if ([self remainingCount] == 0) {
+        completion(YES);
+    }
+    
+    VersionQueue *queue = [self queue];
+    if (queue != nil) {
         [self presentAlertControllerWithTitle:kSendWireless completion:completion];
-        
+
         // Create a sender and apply the update block
         __weak typeof(self) weakself = self;
-        self.senderMC = [[MultiConnectSender alloc] initWithDataToSend:data filename:title updateBlock:^(float percent, BOOL connected , BOOL complete) {
-            [weakself updateProgress:percent connected:connected finished:complete role:roleSend type:TransferTypeWireless completion:completion];
+        self.senderMC = [[MultiConnectSender alloc] initWithQueue:queue updateBlock:^(float percent, BOOL connected , BOOL complete) {
+            [weakself updateProgress:percent connected:connected finished:complete role:TransferRoleSend type:TransferTypeWireless completion:completion];
         }];
         
-        [self updateProgress:0 connected:NO finished:NO role:roleSend type:TransferTypeWireless completion:completion];
+        [self updateProgress:0 connected:NO finished:NO role:TransferRoleSend type:TransferTypeWireless completion:completion];
+    } else {
+        completion(NO);
     }
 }
 
 - (void)sendiTunesWithCompletion:(FileCompletion)completion {
-    NSData *data = [self data];
-    NSString *filename = [self.fileActivityController.ufwVersion filename];
+    if ([self remainingCount] == 0) {
+        completion(YES);
+        return;
+    }
     
+    VersionQueue *queue = [self queue];
+    if (queue == nil) {
+        completion(NO);
+    }
+    
+    NSInteger count = queue.count;
+
     ITunesSharingSender *sender = [[ITunesSharingSender alloc] init];
-    if ( [sender sendToITunesFolder:data filename:filename]) {
-        [[[UIAlertView alloc] initWithTitle:@"Saved" message:[NSString stringWithFormat:@"The file %@ was successfully saved to your iTunes folder.", filename] delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
+    if ( [sender sendToITunesFolder:queue] ) {
+        [[[UIAlertView alloc] initWithTitle:@"Saved" message:[NSString stringWithFormat:@"%ld files(s) successfully saved to your iTunes folder.", count] delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
     }
     else {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Could not save to iTunes folder." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
@@ -194,7 +227,14 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
 
 - (void)sendBluetoothWithCompletion:(FileCompletion)completion
 {
-    NSData *data = [self data];
+    if ([self remainingCount] == 0) {
+        completion(YES);
+    }
+    
+    VersionSharingInfo *info = [self nextVersionSharingInfo];
+    NSURL *fileUrl = [info fileSource];
+    NSData *data = [[NSFileManager defaultManager] contentsAtPath:fileUrl.path];
+
     TransferRole roleSend = TransferRoleSend;
     if (data) {
         // Set up progress indicator using alert controller
@@ -255,21 +295,6 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
 }
 
 #pragma mark - Helpers
-- (NSData *)data
-{
-    NSParameterAssert(self.fileActivityController);
-    NSData *data = nil;
-    if (self.fileActivityController != nil) {
-        NSURL *fileUrl = [self.fileActivityController.urlProvider url];
-        data = [[NSFileManager defaultManager] contentsAtPath:fileUrl.path];
-    }
-    
-    if (data == nil) {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Could not create a file!" delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
-    }
-    return data;
-}
-
 
 - (void)resetAllState
 {

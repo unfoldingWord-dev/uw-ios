@@ -109,12 +109,19 @@
     UIAlertAction *sendAction = [UIAlertAction actionWithTitle:@"Send Content" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         ChooseMediaToShareTableVC *chooser = [[ChooseMediaToShareTableVC alloc] init];
         chooser.navigationItem.title = @"Choose Content";
-        chooser.completion = ^(BOOL isCanceled, NSArray<VersionSharingInfo *> * sharingInfo) {
-            NSLog(@"Canceled: %d", isCanceled);
-            [self dismissViewControllerAnimated:YES completion:^{}];
-//            if (isCanceled == NO) {
-//                [weakself sendFileForVersion:nil fromBarButtonOrView:activityBarButtonItem];
-//            }
+        chooser.completion = ^(BOOL isCanceled, VersionQueue *queue) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSLog(@"Canceled: %d", isCanceled);
+                [self dismissViewControllerAnimated:YES completion:^{}];
+                if (isCanceled == NO) {
+                    [weakself initiateActivityPresentationWithQueue:queue isSend:YES fromItem:activityBarButtonItem completion:^(BOOL success) {
+                        // completed the transfer.
+                        
+                    }];
+                }
+                // TODO: -                   [weakself sendFileForVersion:nil fromBarButtonOrView:activityBarButtonItem];
+
+            });
         };
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:chooser];
         [weakself presentViewController:navController animated:YES completion:^{}];

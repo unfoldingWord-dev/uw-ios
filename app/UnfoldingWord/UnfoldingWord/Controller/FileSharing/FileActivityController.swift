@@ -11,29 +11,25 @@ import UIKit
 
 @objc final class FileActivityController: NSObject {
     
-    let ufwVersion : UWVersion?
-    let options : DownloadOptions
     let isSend : Bool
-    let urlProvider : UFWFileActivityItemProvider?
+    let itemProvider : UFWFileActivityItemProvider?
     
-    init(version: UWVersion?, options: DownloadOptions, shouldSend : Bool) {
-        self.ufwVersion = version
+    init(queue: VersionQueue?, shouldSend : Bool) {
         self.isSend = shouldSend
-        self.options = options
         let placeHolder = NSURL(fileURLWithPath: NSString.documentsDirectory(), isDirectory: true)
         
-        if shouldSend, let version = version {
-            self.urlProvider = UFWFileActivityItemProvider(placeholderItem: placeHolder, version: version, options: options)
+        if shouldSend, let queue = queue {
+            self.itemProvider = UFWFileActivityItemProvider(placeholderItem: placeHolder, queue: queue)
         }
         else {
-            self.urlProvider = nil
+            self.itemProvider = nil
         }
     }
     
     func activityViewController() -> UIActivityViewController? {
         
-        if let version = self.ufwVersion, provider = self.urlProvider {
-            let items = [provider, version.filename()]
+        if isSend, let provider = itemProvider {
+            let items = [provider]
             let activityVC = UIActivityViewController(activityItems: items, applicationActivities: applicationActivities() )
             activityVC.excludedActivityTypes = [UIActivityTypePostToWeibo, UIActivityTypePostToFacebook, UIActivityTypePostToTwitter,UIActivityTypeCopyToPasteboard, UIActivityTypeMessage, UIActivityTypePrint ]
             return activityVC
@@ -52,11 +48,15 @@ import UIKit
     
     func applicationActivities() -> [UFWActivity] {
         
-        if self.isSend {
+        if isSend {
             let bluetoothSend = UFWActivity(type: UFWActivityType.SendBluetooth)
             let wirelessSend = UFWActivity(type: UFWActivityType.SendMultiConnect)
             let itunesSend = UFWActivity(type: UFWActivityType.SendiTunes)
-            return [bluetoothSend, wirelessSend, itunesSend]
+            if itemProvider?.queue.count > 1 {
+                return [wirelessSend, itunesSend]
+            } else {
+                return [wirelessSend, itunesSend, bluetoothSend]
+            }
         }
         else {
             let bluetoothReceive = UFWActivity(type: UFWActivityType.GetBluetooth)
@@ -64,13 +64,6 @@ import UIKit
             let itunesReceive = UFWActivity(type: UFWActivityType.GetiTunes)
             return [bluetoothReceive, wirelessReceive, itunesReceive]
         }
-    }
-    
-    func cleanup() {
-        if let provider = self.urlProvider {
-            provider.cleanup()
-        }
-
     }
     
 }

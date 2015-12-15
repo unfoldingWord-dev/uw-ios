@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-typealias VersionSharingCompletion = (isCanceled: Bool, versionSharingInfoArray: [VersionSharingInfo]) -> Void
+typealias VersionSharingCompletion = (isCanceled: Bool, versionQueue: VersionQueue?) -> Void
 
 class ChooseMediaToShareTableVC: UITableViewController, LanguageChooserCellDelegate {
     
@@ -52,14 +52,13 @@ class ChooseMediaToShareTableVC: UITableViewController, LanguageChooserCellDeleg
     
     func userTappedCancelButton(barButton: UIBarButtonItem)
     {
-        completion(isCanceled: true, versionSharingInfoArray: LanguageSharingInfo.collapsedVersionSharingInfo(arrayTopSharing) )
+        completion(isCanceled: true, versionQueue: nil)
     }
     
     func userTappedShareButton(barButton: UIBarButtonItem)
     {
-        completion(isCanceled: false, versionSharingInfoArray:  LanguageSharingInfo.collapsedVersionSharingInfo(arrayTopSharing))
+        completion(isCanceled: false, versionQueue: LanguageSharingInfo.createVersionQueue(arrayTopSharing) )
     }
-    
     
     func userTappedCell(cell: LanguageShareChooserTableCell) {
         guard let indexPath = tableView.indexPathForCell(cell) else { assertionFailure("Tapped nonexistent cell?!?"); return }

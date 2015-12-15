@@ -9,24 +9,33 @@
 import Foundation
 import MultipeerConnectivity
 
+struct FilePackage {
+    let url: NSURL
+    let filename: String
+}
+
 @objc final class MultiConnectSender : NSObject, MCNearbyServiceAdvertiserDelegate, MCSessionDelegate {
     
     let updateBlock : FileUpdateBlock
-    let filename : NSString
-    let localPeer : MCPeerID = MCPeerID(displayName:Constants.MultiConnect.PeerDisplaySender);
+    let queue : VersionQueue
+    let countTotal : Int
+    var package: FilePackage? = nil
+    let localPeer : MCPeerID
     var session : MCSession?
     var advertiser : MCNearbyServiceAdvertiser?
     var progress : NSProgress?
-    
         
-    init(dataToSend: NSData, filename: NSString, updateBlock: FileUpdateBlock) {
+    init(queue: VersionQueue, updateBlock: FileUpdateBlock) {
         self.updateBlock = updateBlock
-        self.filename = filename
+        self.queue = queue
+        self.countTotal = queue.count
+        let peerName = (Constants.MultiConnect.PeerDisplaySender as NSString).stringByAppendingFormat(".%ld", queue.count) as String
+        self.localPeer = MCPeerID(displayName:peerName);
+
         self.session = nil
         self.advertiser = nil
         self.progress = nil
         super.init()
-        saveData(dataToSend)
         advertise()
     }
     
@@ -37,12 +46,33 @@ import MultipeerConnectivity
         if let session = self.session {
             session.disconnect()
         }
+        deleteCurrentFileIfExists()
+    }
+    
+    private func deleteCurrentFileIfExists() {
+        if let package = package, path = package.url.path where NSFileManager.defaultManager().fileExistsAtPath(path) {
+            do { try NSFileManager.defaultManager().removeItemAtURL(package.url) } catch {}
+        }
+    }
+    
+    func prepareNextFilePackage() -> FilePackage?
+    {
+        guard let
+            info = queue.popVersionSharingInfo(),
+            fileUrl = info.fileSource()
+        else {
+            assertionFailure("Don't call this method unless there is another package. Check with queue.count")
+            return nil
+        }
+        
+        return FilePackage(url: fileUrl, filename: info.version.name)
     }
 
-    
     // This sends an update to via a non-optional progress block
     func updateProgressWithConnected(connected: Bool, percent : Float, complete: Bool, error: Bool) {
-        self.updateBlock(percentComplete: percent, connected: connected, complete: complete)
+        let shareCompleted = Float(queue.count)/Float(countTotal)
+        let adjusted = percent / Float(queue.count)
+        self.updateBlock(percentComplete: shareCompleted+adjusted, connected: connected, complete: complete)
     }
     
     func advertise() {
@@ -54,27 +84,36 @@ import MultipeerConnectivity
     }
     
     func startSendingFileToPeer(peer : MCPeerID) {
-        let url = NSURL(fileURLWithPath: temporaryFilePath())
-        if let session = self.session
-        {
-            weak var weakself = self
-            self.progress = session.sendResourceAtURL(url, withName: self.filename as String, toPeer: peer, withCompletionHandler: { (error) -> Void in
-                if let
-                    error = error,
-                    strongself = weakself
-                {
-                    print("\(error.userInfo)")
-                    strongself.updateProgressWithConnected(false, percent: 0, complete: false, error: true)
+        guard let nextPackage = prepareNextFilePackage(), session = self.session else {
+            updateProgressWithConnected(false, percent: 0, complete: false, error: true)
+            return
+        }
+        package = nextPackage
+        
+        self.progress = session.sendResourceAtURL(nextPackage.url, withName: nextPackage.filename, toPeer: peer, withCompletionHandler: { [weak self] (error) -> Void in
+            guard let strong = self else { return }
+            if let error = error {
+                strong.deleteCurrentFileIfExists()
+                strong.session?.disconnect()
+                print("\(error.userInfo)")
+                strong.updateProgressWithConnected(false, percent: 0, complete: false, error: true)
+            } else {
+                if strong.queue.count > 0 {
+                    strong.deleteCurrentFileIfExists()
+                    strong.startSendingFileToPeer(peer)
+                } else {
+                    strong.session?.disconnect()
+                    strong.updateProgressWithConnected(false, percent: 1, complete: true, error: false)
                 }
-            })
-            
-            if let progress = self.progress {
-                progress.addObserver(self, forKeyPath:Constants.MultiConnect.KeyPathFractionCompleted, options: NSKeyValueObservingOptions.New, context: nil)
             }
-            else {
-                assertionFailure("Could not set up progress")
-                updateProgressWithConnected(false, percent: 0, complete: false, error: true)
-            }
+        })
+        
+        if let progress = self.progress {
+            progress.addObserver(self, forKeyPath:Constants.MultiConnect.KeyPathFractionCompleted, options: NSKeyValueObservingOptions.New, context: nil)
+        }
+        else {
+            assertionFailure("Could not set up progress")
+            updateProgressWithConnected(false, percent: 0, complete: false, error: true)
         }
     }
     
@@ -140,15 +179,5 @@ import MultipeerConnectivity
     
     func session(session: MCSession, didReceiveCertificate certificate: [AnyObject]?, fromPeer peerID: MCPeerID, certificateHandler: (Bool) -> Void) {
         certificateHandler(true)
-    }
-    
-    // Helpers
-    
-    func saveData(data : NSData) {
-        NSFileManager.defaultManager().createFileAtPath(temporaryFilePath(), contents: data, attributes: nil)
-    }
-    
-    func temporaryFilePath() -> String {
-        return NSString.cachesDirectory().stringByAppendingPathComponent(Constants.MultiConnect.FilePathSend)
     }
 }
