@@ -94,7 +94,7 @@ import MultipeerConnectivity
     
     func session(session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, atURL localURL: NSURL, withError error: NSError?) {
         
-        guard error != nil else {
+        guard error == nil else {
             session.disconnect()
             print("\(error?.userInfo)")
             updateProgressWithConnected(false, percent: 1.0, complete: false, error: true, url: nil)
