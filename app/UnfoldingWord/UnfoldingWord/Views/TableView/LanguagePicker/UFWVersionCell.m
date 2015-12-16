@@ -73,16 +73,16 @@
     [self removeAllExistingMediaTypeViews];
     
     NSMutableArray *views = [NSMutableArray new];
-    [views addObject:[self createMediaViewText]];
+    [views addObject:[self createMediaViewWithType:MediaTypeText]];
     
     DownloadStatus audioStatus = [self.version statusAudio];
     DownloadStatus videoStatus = [self.version statusVideo];
 
     if ( audioStatus != DownloadStatusNoContent) {
-        [views addObject:[self createMediaViewAudio]];
+        [views addObject:[self createMediaViewWithType:MediaTypeAudio]];
     }
     if ( videoStatus != DownloadStatusNoContent ) {
-        [views addObject:[self createMediaViewVideo]];
+        [views addObject:[self createMediaViewWithType:MediaTypeVideo]];
     }
     self.arrayMediaTypeViews = views;
     [self updateMediaViews];
@@ -275,33 +275,6 @@
     }
 }
 
-- (MediaTypeView *)createMediaViewText
-{
-    MediaTypeView *mediaView = [self createMediaView];
-    [mediaView setType:MediaTypeText];
-    mediaView.imageViewType.image = [UIImage imageNamed:@"bible_icon"];
-    [mediaView.buttonCheckingLevel setBackgroundImage:[self imageForCheckingLevel:self.version.status.checking_level.integerValue] forState:UIControlStateNormal];
-    return mediaView;
-}
-
-- (MediaTypeView *)createMediaViewAudio
-{
-    MediaTypeView *mediaView = [self createMediaView];
-    [mediaView setType:MediaTypeAudio];
-    mediaView.imageViewType.image = [UIImage imageNamed:@"audio_icon"];
-    [mediaView.buttonCheckingLevel setBackgroundImage:[self imageForCheckingLevel:self.version.status.checking_level.integerValue] forState:UIControlStateNormal];
-    return mediaView;
-}
-
-- (MediaTypeView *)createMediaViewVideo
-{
-    MediaTypeView *mediaView = [self createMediaView];
-    [mediaView setType:MediaTypeVideo];
-    mediaView.imageViewType.image = [UIImage imageNamed:@"video_icon"];
-    [mediaView.buttonCheckingLevel setBackgroundImage:[self imageForCheckingLevel:self.version.status.checking_level.integerValue] forState:UIControlStateNormal];
-    return mediaView;
-}
-
 - (void)userPressedCheckingInformationForMediaView:(MediaTypeView *) mediaView
 {
     VerseVerifyInfoView *infoView = [VerseVerifyInfoView verifyViewForVersion:self.version];
@@ -383,7 +356,8 @@
     [self updateMediaViews];
 }
 
-- (MediaTypeView *)createMediaView {
+- (MediaTypeView *)createMediaViewWithType:(MediaType)type
+{
     NSString *classname = NSStringFromClass([MediaTypeView class]);
     classname = [classname stringAfterLastPeriod];
     MediaTypeView *mediaView = (MediaTypeView *)[NSBundle topLevelViewForNibName:classname];
@@ -403,6 +377,10 @@
     [mediaView setDeleteButtonBlock:^{
         [weak userPressedDeleteButtonForMediaView:weakMediaView];
     }];
+    
+    [mediaView.buttonCheckingLevel setBackgroundImage:[self imageForCheckingLevel:self.version.status.checking_level.integerValue] forState:UIControlStateNormal];
+    [mediaView setType:type];
+    
     return mediaView;
 }
 

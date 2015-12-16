@@ -14,8 +14,8 @@
 @property (nonatomic, strong) NSLayoutConstraint *constraintImageRatio;
 
 // Used to show and hide the side diglot view
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *constraintSideBySide;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *constraintMainOnly;
+@property (nonatomic, strong) NSLayoutConstraint *constraintSideBySide;
+@property (nonatomic, strong) NSLayoutConstraint *constraintMainOnly;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintMainTextHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintSideTextHeight;
@@ -96,13 +96,14 @@
 
 - (void)setIsShowingSide:(BOOL)isShowingSide animated:(BOOL)animated
 {
+    [self.contentView removeConstraint:self.constraintMainOnly];
+    [self.contentView removeConstraint:self.constraintSideBySide];
+
     if (isShowingSide) {
-        [self.contentView removeConstraint:self.constraintMainOnly];
         NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.viewTextBackground attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeWidth multiplier:0.5 constant:0];
         [self.contentView addConstraint:constraint];
         self.constraintSideBySide = constraint;
     } else {
-        [self.contentView removeConstraint:self.constraintSideBySide];
         NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.viewTextBackground attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0];
         [self.contentView addConstraint:constraint];
         self.constraintMainOnly = constraint;

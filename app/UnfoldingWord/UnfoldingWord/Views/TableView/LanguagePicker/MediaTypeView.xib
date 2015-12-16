@@ -17,11 +17,11 @@
                         <action selector="userPressedBackgroundButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="gME-IX-nC5"/>
                     </connections>
                 </button>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="video-active" translatesAutoresizingMaskIntoConstraints="NO" id="yDu-3P-cdn">
-                    <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="video-active" translatesAutoresizingMaskIntoConstraints="NO" id="yDu-3P-cdn">
+                    <rect key="frame" x="0.0" y="2" width="28" height="28"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="32" id="axT-pp-Kwh"/>
-                        <constraint firstAttribute="width" constant="32" id="vNT-iW-DAZ"/>
+                        <constraint firstAttribute="height" constant="28" id="axT-pp-Kwh"/>
+                        <constraint firstAttribute="width" constant="28" id="vNT-iW-DAZ"/>
                     </constraints>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FPP-Nl-sk9">
@@ -72,7 +72,7 @@
                     <rect key="frame" x="348" y="0.0" width="32" height="32"/>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Download Text" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qfn-4x-yH4">
-                    <rect key="frame" x="48" y="0.0" width="224" height="32"/>
+                    <rect key="frame" x="44" y="0.0" width="228" height="32"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="6ZK-sf-LbY"/>
                     </constraints>

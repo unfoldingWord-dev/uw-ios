@@ -70,7 +70,7 @@ import MultipeerConnectivity
         if keyPath == Constants.MultiConnect.KeyPathFractionCompleted {
             if let progress = self.progress {
                 let percent = Float(progress.fractionCompleted)
-                let connected = progress.cancelled
+                let connected = !progress.cancelled
                 updateProgressWithConnected(connected, percent: percent, complete: false, error: false, url: nil)
             }
         }

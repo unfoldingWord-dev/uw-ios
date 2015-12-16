@@ -40,6 +40,17 @@ class MediaTypeView: UIView {
     
     func setType(type : MediaType) {
         internalType = type
+        switch type {
+        case .Text:
+            imageViewType.image = Constants.Image.fileText
+        case .Audio:
+            imageViewType.image = Constants.Image.fileAudio
+        case .Video:
+            imageViewType.image = Constants.Image.fileVideo
+        case .None:
+            assertionFailure("Don't set a media type of none -- no cell should have been created.")
+            imageViewType.image = nil
+        }
     }
     
     func getType() -> MediaType {

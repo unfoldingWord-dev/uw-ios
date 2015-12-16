@@ -379,8 +379,11 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
     }
     else if (connected == YES) {
         NSString *activity = (role == TransferRoleSend) ? kSending : kReceiving;
-        [self.alertController setTitle:activity];
-        [self.alertController setMessage:[NSString stringWithFormat:@"%.2f%% complete.", percent*100]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.alertController setTitle:activity];
+            [self.alertController setMessage:[NSString stringWithFormat:@"%.2f%% complete.", percent*100]];
+        });
+
         if (url) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 UFWFileImporter *importer = [[UFWFileImporter alloc] init];

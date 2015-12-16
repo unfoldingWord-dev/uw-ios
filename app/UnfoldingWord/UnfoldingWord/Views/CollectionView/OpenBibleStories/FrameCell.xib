@@ -15,8 +15,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="654" height="293"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yh1-K5-1he">
-                        <rect key="frame" x="0.0" y="0.0" width="654" height="145"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Yh1-K5-1he">
+                        <rect key="frame" x="0.0" y="0.0" width="654" height="30"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="Rlh-9o-joG"/>
                             <constraint firstAttribute="height" priority="1" constant="30" id="dfK-4Y-jkb"/>
@@ -27,11 +27,11 @@
                             </mask>
                         </variation>
                     </imageView>
-                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H5j-qN-ufX" userLabel="Main Text Background View">
-                        <rect key="frame" x="0.0" y="147" width="327" height="146"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H5j-qN-ufX" userLabel="Main Text Background View">
+                        <rect key="frame" x="0.0" y="32" width="327" height="261"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" showsHorizontalScrollIndicator="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="2I0-sb-WIk">
-                                <rect key="frame" x="4" y="4" width="319" height="138"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="2I0-sb-WIk">
+                                <rect key="frame" x="4" y="4" width="319" height="253"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="253" id="Rhj-g0-bJ3"/>
                                 </constraints>
@@ -60,11 +60,11 @@
                             </mask>
                         </variation>
                     </view>
-                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zEV-5T-Fdi" userLabel="Side Text Background View">
-                        <rect key="frame" x="329" y="147" width="327" height="146"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zEV-5T-Fdi" userLabel="Side Text Background View">
+                        <rect key="frame" x="329" y="32" width="327" height="261"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yL3-Ux-CLN">
-                                <rect key="frame" x="4" y="4" width="319" height="138"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yL3-Ux-CLN">
+                                <rect key="frame" x="4" y="4" width="319" height="253"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="253" id="Wp2-IG-MdH"/>
                                 </constraints>
@@ -99,9 +99,8 @@
             <color key="backgroundColor" red="1" green="0.13083683809999999" blue="0.98114127949999996" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="H5j-qN-ufX" firstAttribute="leading" secondItem="21c-K1-Qau" secondAttribute="leading" id="59g-zL-14O"/>
-                <constraint firstItem="H5j-qN-ufX" firstAttribute="width" secondItem="zEV-5T-Fdi" secondAttribute="width" id="AeS-13-qFT"/>
+                <constraint firstItem="H5j-qN-ufX" firstAttribute="width" secondItem="zEV-5T-Fdi" secondAttribute="width" placeholder="YES" id="AeS-13-qFT"/>
                 <constraint firstAttribute="bottom" secondItem="zEV-5T-Fdi" secondAttribute="bottom" id="GD1-NP-uvF"/>
-                <constraint firstItem="H5j-qN-ufX" firstAttribute="width" secondItem="21c-K1-Qau" secondAttribute="width" placeholder="YES" id="Ka3-RG-rch"/>
                 <constraint firstItem="Yh1-K5-1he" firstAttribute="top" secondItem="21c-K1-Qau" secondAttribute="top" id="Kl2-4W-uZr"/>
                 <constraint firstItem="H5j-qN-ufX" firstAttribute="leading" secondItem="21c-K1-Qau" secondAttribute="leading" id="MfK-6B-CgU"/>
                 <constraint firstItem="H5j-qN-ufX" firstAttribute="height" relation="lessThanOrEqual" secondItem="21c-K1-Qau" secondAttribute="height" multiplier="0.5" id="OQG-4N-yMk"/>
@@ -123,7 +122,6 @@
                 <mask key="constraints">
                     <exclude reference="59g-zL-14O"/>
                     <exclude reference="AeS-13-qFT"/>
-                    <exclude reference="Ka3-RG-rch"/>
                     <exclude reference="OQG-4N-yMk"/>
                     <exclude reference="S6T-VE-6I4"/>
                     <exclude reference="gIY-aC-TfE"/>
@@ -141,7 +139,7 @@
                 <outlet property="viewTextBackground" destination="H5j-qN-ufX" id="Z41-Wl-6or"/>
                 <outlet property="viewTextBackgroundSide" destination="zEV-5T-Fdi" id="Pyq-7e-chX"/>
             </connections>
-            <point key="canvasLocation" x="-193" y="182.5"/>
+            <point key="canvasLocation" x="-233" y="292.5"/>
         </collectionViewCell>
     </objects>
 </document>
