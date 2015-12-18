@@ -17,6 +17,7 @@ static NSString *const kUrlSource = @"src";
 static NSString *const kUrlSignature = @"src_sig";
 static NSString *const kTitle = @"title";
 static NSString *const kMedia = @"media";
+static NSString *const kSortOrder = @"sort_order";
 
 @implementation UWTOC
 {
@@ -59,9 +60,9 @@ static NSString *const kMedia = @"media";
         if (toc == nil) {
             toc = [UWTOC insertInManagedObjectContext:[DWSCoreDataStack managedObjectContext]];
         }
+        toc.sortOrderValue = sort++;
         [toc updateWithDictionary:tocDic];
         toc.version = version;
-        toc.sortOrderValue = sort++;
     }
 }
 
@@ -102,6 +103,10 @@ static NSString *const kMedia = @"media";
     self.src = [dictionary objectOrNilForKey:kUrlSource];
     self.src_sig = [dictionary objectOrNilForKey:kUrlSignature];
     self.title = [dictionary objectOrNilForKey:kTitle];
+    NSNumber *sortOrder = [dictionary objectOrNilForKey:kSortOrder];
+    if (sortOrder) {
+        self.sortOrder = sortOrder;
+    }
     
     NSString *fileEnding = [self fileEndingForUrlPath:self.src];
     if ([fileEnding rangeOfString:@"usfm" options:NSCaseInsensitiveSearch].location == NSNotFound) {
@@ -183,7 +188,7 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
 
 - (BOOL)isDownloadedForOptions:(DownloadOptions)options
 {
-    NSAssert2(options != DownloadOptionsEmpty, @"%s: What ask if you're not downloading anything? %ld", __PRETTY_FUNCTION__, options);
+    NSAssert2(options != DownloadOptionsEmpty, @"%s: What ask if you're not downloading anything? %ld", __PRETTY_FUNCTION__, (long)options);
     
     if (options & DownloadOptionsText) {
         if (self.isContentChangedValue == YES || self.isDownloadedValue == NO) {
@@ -589,6 +594,7 @@ static NSString *const kFileEndingRegex = @"[.][a-z,A-Z,0-9]*\\z";
     dictionary[kUrlSource] = self.src;
     dictionary[kUrlSignature] = self.src_sig;
     dictionary[kTitle] = self.title;
+    dictionary[kSortOrder] = self.sortOrder;
     if (self.media != nil) {
         dictionary[kMedia] = [self.media jsonRepresention];
     }

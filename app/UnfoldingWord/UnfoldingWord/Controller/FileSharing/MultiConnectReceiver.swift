@@ -13,6 +13,7 @@ import MultipeerConnectivity
     
     let updateBlock : FileUpdateBlock
     let localPeer : MCPeerID = MCPeerID(displayName:Constants.MultiConnect.PeerDisplayReceiver);
+    var remotePeer : MCPeerID?
     var session : MCSession?
     var browser : MCNearbyServiceBrowser?
     var progress : NSProgress?
@@ -61,6 +62,9 @@ import MultipeerConnectivity
     }
     
     func browser(browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
+        if peerID == remotePeer {
+            remotePeer = nil
+        }
         updateProgressWithConnected(false, percent: 0, complete: false, error: true, url: nil)
     }
 
@@ -69,9 +73,8 @@ import MultipeerConnectivity
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if keyPath == Constants.MultiConnect.KeyPathFractionCompleted {
             if let progress = self.progress {
-                let percent = Float(progress.fractionCompleted)
                 let connected = !progress.cancelled
-                updateProgressWithConnected(connected, percent: percent, complete: false, error: false, url: nil)
+                updateProgressWithConnected(connected, percent: percentForProgress(progress), complete: false, error: false, url: nil)
             }
         }
         else {
@@ -86,10 +89,12 @@ import MultipeerConnectivity
         // not used with sendResourceAtURL
     }
     
+    
     func session(session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, withProgress progress: NSProgress) {
+        remotePeer = peerID
         progress.addObserver(self, forKeyPath:Constants.MultiConnect.KeyPathFractionCompleted, options: NSKeyValueObservingOptions.New, context: nil)
         self.progress = progress
-        updateProgressWithConnected(true, percent: 0.0, complete: false, error: false, url: nil)
+        updateProgressWithConnected(true, percent: percentForProgress(progress), complete: false, error: false, url: nil)
     }
     
     func session(session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, atURL localURL: NSURL, withError error: NSError?) {
@@ -97,14 +102,14 @@ import MultipeerConnectivity
         guard error == nil else {
             session.disconnect()
             print("\(error?.userInfo)")
-            updateProgressWithConnected(false, percent: 1.0, complete: false, error: true, url: nil)
+            updateProgressWithConnected(false, percent: 0, complete: false, error: true, url: nil)
             return
         }
         
         guard localURL.path != nil else {
             session.disconnect()
             print("No path for local url \(localURL)")
-            updateProgressWithConnected(false, percent: 1.0, complete: false, error: true, url: nil)
+            updateProgressWithConnected(false, percent: 0, complete: false, error: true, url: nil)
             return
         }
         
@@ -125,6 +130,7 @@ import MultipeerConnectivity
         if state == MCSessionState.NotConnected {
             self.session = nil
             self.browser?.startBrowsingForPeers()
+            remotePeer = nil
         }
         if state == MCSessionState.Connected {
             updateProgressWithConnected(true, percent: 0, complete: false, error: false, url: nil)
@@ -149,5 +155,17 @@ import MultipeerConnectivity
         let countString = peer.displayName.textAfterLastPeriod()
         guard let count = Int(countString) else { assertionFailure("No count!"); return 0 }
         return count
+    }
+    
+    func percentForProgress(progress: NSProgress) -> Float
+    {
+        guard let peer = remotePeer where countFromPeer(peer) != 0 else {
+            return Float(progress.fractionCompleted)
+        }
+        
+        let total = Float(countFromPeer(peer))
+        let alreadyDoneComplete = Float(counter)/total
+        let fractionalProgress = Float(progress.fractionCompleted)/total
+        return alreadyDoneComplete + fractionalProgress
     }
 }

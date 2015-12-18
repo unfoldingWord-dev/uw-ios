@@ -347,6 +347,8 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
 #pragma mark - Progress Update
 - (void)updateProgress:(CGFloat)percent connected:(BOOL)connected finished:(BOOL)finished role:(TransferRole)role type:(TransferType)type fileUrl:(NSURL *)url completion:(FileCompletion)completion
 {
+    NSLog(@"Percent %.2f -- connected %d -- finished %d role %d type %d file %@", percent, connected, finished, role, type, url.path);
+    
     if (finished == YES) {
         if (role == TransferRoleReceive) {
             [self.alertController setTitle:@"Importing"];
