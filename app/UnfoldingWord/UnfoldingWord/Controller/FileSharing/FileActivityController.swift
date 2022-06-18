@@ -8,38 +8,37 @@
 import Foundation
 import UIKit
 
-
-@objc final class FileActivityController: NSObject {
+@objc class FileActivityController: NSObject {
     
-    let ufwVersion : UWVersion?
-    let isSend : Bool
-    let urlProvider : UFWFileActivityItemProvider?
+    @objc let ufwVersion : UWVersion?
+    @objc let isSend : Bool
+    @objc let urlProvider : UFWFileActivityItemProvider?
     
-    init(version: UWVersion?, shouldSend : Bool) {
+    @objc init(version: UWVersion?, shouldSend : Bool) {
         self.ufwVersion = version
         self.isSend = shouldSend
         let placeHolder = NSURL(fileURLWithPath: NSString.documentsDirectory(), isDirectory: true)
         
         if shouldSend, let version = version {
-            self.urlProvider = UFWFileActivityItemProvider(placeholderItem: placeHolder!, version: version)
+            self.urlProvider = UFWFileActivityItemProvider(placeholderItem: placeHolder, version: version)
         }
         else {
             self.urlProvider = nil
         }
     }
     
-    func activityViewController() -> UIActivityViewController? {
+    @objc func activityViewController() -> UIActivityViewController? {
         
-        if let version = self.ufwVersion, provider = self.urlProvider {
-            let items = [provider, version.filename()]
+        if let version = self.ufwVersion, let provider = self.urlProvider {
+            let items = [provider, version.filename()] as [Any]
             let activityVC = UIActivityViewController(activityItems: items, applicationActivities: applicationActivities() )
-            activityVC.excludedActivityTypes = [UIActivityTypePostToWeibo, UIActivityTypePostToFacebook, UIActivityTypePostToTwitter,UIActivityTypeCopyToPasteboard, UIActivityTypeMessage, UIActivityTypePrint ]
+            activityVC.excludedActivityTypes = [.postToWeibo, .postToTencentWeibo, .postToFacebook, .postToTwitter, .copyToPasteboard, .message, .print]
             return activityVC
         }
         else if self.isSend == false {
             let items = Array<String>()
             let activityVC = UIActivityViewController(activityItems: items, applicationActivities: applicationActivities() )
-            activityVC.excludedActivityTypes = [UIActivityTypePostToWeibo, UIActivityTypePostToFacebook, UIActivityTypePostToTwitter,UIActivityTypeCopyToPasteboard, UIActivityTypeMessage, UIActivityTypePrint, UIActivityTypeMail ]
+            activityVC.excludedActivityTypes = [.postToWeibo, .postToTencentWeibo, .postToFacebook, .postToTwitter, .copyToPasteboard, .message, .print, .mail]
             return activityVC
         }
         else {
@@ -48,7 +47,7 @@ import UIKit
         }
     }
     
-    func applicationActivities() -> [UFWActivity] {
+    @objc func applicationActivities() -> [UFWActivity] {
         
         if self.isSend {
             let bluetoothSend = UFWActivity(type: UFWActivityType.SendBluetooth)
@@ -64,7 +63,7 @@ import UIKit
         }
     }
     
-    func cleanup() {
+    @objc func cleanup() {
         if let provider = self.urlProvider {
             provider.cleanup()
         }

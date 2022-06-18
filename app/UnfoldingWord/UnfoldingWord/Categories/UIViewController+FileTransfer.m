@@ -150,8 +150,10 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
     NSData *data = [self data];
     NSString *filename = [self.fileActivityController.ufwVersion filename];
     
-    ITunesSharingSender *sender = [[ITunesSharingSender alloc] init];
-    if ( [sender sendToITunesFolder:data filename:filename]) {
+    ITunesSharingSender *sharingSender = [[ITunesSharingSender alloc] init];
+    BOOL result = [sharingSender sendToITunesFolderWithData:data filename:filename];
+
+    if (result) {
         [[[UIAlertView alloc] initWithTitle:@"Saved" message:[NSString stringWithFormat:@"The file %@ was successfully saved to your iTunes folder.", filename] delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles: nil] show];
     }
     else {
@@ -210,11 +212,11 @@ static char const *  KeyFileActivityController = "KeyFileActivityController";
 
 - (void)receiveITunes
 {
-    UINavigationController *navController = [ITunesFilePickerTableVC pickerInsideNavController:^(BOOL canceled, NSString *filepath ) {
+    UINavigationController *navController = [ITunesFilePickerTableVC pickerInsideNavControllerWithBlock:^(BOOL canceled, NSString * _Nullable filepath) {
         [self dismissViewControllerAnimated:YES completion:^{
             if ( canceled == NO && filepath != nil) {
                 ITunesSharingReceiver *receiver = [[ITunesSharingReceiver alloc] init];
-                [receiver importFileAtPath:filepath];
+                [receiver importFileAtPathWithPath:filepath];
             }
         }];
     }];

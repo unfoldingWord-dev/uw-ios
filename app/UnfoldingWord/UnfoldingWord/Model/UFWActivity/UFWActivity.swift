@@ -26,7 +26,7 @@ class UFWActivity : UIActivity {
         super.init()
     }
     
-    override func activityType() -> String? {
+    func activityType() -> String? {
         
         switch self.type {
         case .SendBluetooth:
@@ -44,8 +44,7 @@ class UFWActivity : UIActivity {
         }
     }
     
-    override func activityTitle() -> String? {
-        
+    override var activityTitle: String?  {
         switch self.type {
         case .SendBluetooth:
             return "Send by Bluetooth"
@@ -62,7 +61,7 @@ class UFWActivity : UIActivity {
         }
     }
     
-    override func activityImage() -> UIImage? {
+    override var activityImage: UIImage? {
         switch self.type {
         case .SendBluetooth, .GetBluetooth:
             return UIImage(named: "bluetoothActivity.png")
@@ -73,8 +72,7 @@ class UFWActivity : UIActivity {
         }
     }
     
-    override func canPerformWithActivityItems(activityItems: [AnyObject]) -> Bool {
-        
+    override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
         switch self.type {
         case .SendBluetooth, .SendiTunes, .SendMultiConnect:
             for anObject in activityItems {
@@ -88,16 +86,16 @@ class UFWActivity : UIActivity {
         }
     }
     
-    override func prepareWithActivityItems(activityItems: [AnyObject]) {
+    override func prepare(withActivityItems activityItems: [Any]) {
         // required to override this method, but we don't need to actually do anything here.
     }
     
-    override func performActivity() {
+    override func perform() {
         activityDidFinish(true)
         // Just a shell. We'll just say the activity completed. Then the view controller will handle the actual work.
     }
     
-    override class func activityCategory() -> UIActivityCategory {
-        return UIActivityCategory.Share
+    override class var activityCategory: UIActivity.Category {
+        return .share
     }
 }

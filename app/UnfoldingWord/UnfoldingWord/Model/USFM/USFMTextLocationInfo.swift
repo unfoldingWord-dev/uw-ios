@@ -10,10 +10,10 @@ import Foundation
 
 /// This class tracks the current offsets so we can reset the visible text after, for example, a rotation.
 @objc class USFMTextLocationInfo : NSObject {
-    var textRange : NSRange
-    var indexChapter : NSInteger
+    @objc var textRange : NSRange
+    @objc var indexChapter : NSInteger
     
-    init(range : NSRange , index : NSInteger) {
+    @objc init(range : NSRange , index : NSInteger) {
         self.textRange = range
         self.indexChapter = index
     }

@@ -14,6 +14,7 @@
 - (void)awakeFromNib {
     self.labelName.textColor = TEXT_COLOR_NORMAL;
     self.labelName.font = FONT_MEDIUM;
+    [super awakeFromNib];
 }
 
 @end

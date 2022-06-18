@@ -9,9 +9,9 @@
 import Foundation
 
 // Percent complete is an Int from 0 to 100. 100 indicates that the transfer is complete.
-typealias FileUpdateBlock = (percentComplete: Float, connected : Bool, complete : Bool) -> ()
+typealias FileUpdateBlock = (_ percentComplete: Float, _ connected : Bool, _ complete : Bool) -> ()
 
-typealias ITunesPickerChooseBlock = (canceled : Bool, chosenPath : String?) -> ()
+typealias ITunesPickerChooseBlock = (_ canceled : Bool, _ chosenPath : String?) -> ()
 
 struct Constants {
     struct URLSource {

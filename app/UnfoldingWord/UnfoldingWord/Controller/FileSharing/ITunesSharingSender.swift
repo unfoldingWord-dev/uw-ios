@@ -8,17 +8,16 @@
 
 import Foundation
 
-@objc final class ITunesSharingSender : NSObject {
+@objc class ITunesSharingSender: NSObject {
     
-    func sendToITunesFolder(data : NSData?, filename : String?) -> Bool {
-        if let data = data, filename = filename {
-            let savePath = NSString.appDocumentsDirectory().stringByAppendingPathComponent(filename)
-            if NSFileManager.defaultManager().createFileAtPath(savePath, contents: data, attributes: nil) {
-                ITunesSharingReceiver().addExistingFilePath(savePath)
+    @objc func sendToITunesFolder(data: Data?, filename: String?) -> Bool {
+        if let data = data, let filename = filename {
+            let savePath = (NSString.appDocumentsDirectory() as NSString).appendingPathComponent(filename)
+            if FileManager.default.createFile(atPath: savePath, contents: data, attributes: nil) {
+                ITunesSharingReceiver().addExistingFilePath(path: savePath)
                 return true
             }
         }
         return false
     }
-
 }

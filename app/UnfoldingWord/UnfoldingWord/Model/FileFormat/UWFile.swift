@@ -7,22 +7,25 @@
 
 import UIKit
 
-@objc final class UFWFile {
+@objc final class UFWFile: NSObject {
 
     let sourceDictionary: NSDictionary
-    let isValid : Bool
+    @objc let isValid : Bool
     
     /// Returns the data containing the JSON string that represents all the data needed to create teh 
-    var fileData : NSData {
+    var fileData : Data {
         get {
-            var error : NSError?
-            if let
-            data = NSJSONSerialization.dataWithJSONObject(sourceDictionary, options: nil, error: &error),
-            zipData = data.gzippedDataWithCompressionLevel(0.95) {
-                return zipData
+            do {
+                let data = try JSONSerialization.data(withJSONObject: sourceDictionary, options: .fragmentsAllowed)
+                if let zipData = (data as NSData).gzippedData(withCompressionLevel: 0.95) {
+                    return zipData
+                } else {
+                    assertionFailure("Could not create  data from dictionary \(sourceDictionary)")
+                }
+            } catch {
+                assertionFailure("Could not create gzip from dictionary \(sourceDictionary) \n\n error: \(error)")
             }
-            assertionFailure("Could not create gzipped data from dictionary \(sourceDictionary) \n\n error: \(error)")
-            return NSData()
+            return Data()
         }
     }
     
@@ -38,51 +41,39 @@ import UIKit
     }
     
     /// Returns a source item to populate each toc item with content and signature json
-    func sourceItemForUrl(url: NSString) -> UrlSourceItem? {
-        if let
-            sources = self.sourceDictionary[Constants.FileFormat.SourcesArray] as? NSDictionary,
-            sourceContent = sources.valueForKey(url as String) as? NSString
-            {
-                return UrlSourceItem(url: url, content: sourceContent)
-            }
-        else {
+    func sourceItemForUrl(url: String) -> UrlSourceItem? {
+        if let sources = self.sourceDictionary[Constants.FileFormat.SourcesArray] as? NSDictionary,
+           let sourceContent = sources.value(forKey: url) as? String
+        {
+            return UrlSourceItem(url: url, content: sourceContent)
+        } else {
             assertionFailure("Could not create sources for url \(url)")
             return nil
         }
     }
     
     init(sourceDictionary : NSDictionary) {
-        self.isValid = UFWFile.validateSource(sourceDictionary)
+        self.isValid = UFWFile.validateSource(source: sourceDictionary)
         self.sourceDictionary = sourceDictionary
     }
     
     init(fileData : NSData) {
-        var dictionary: NSDictionary?
-        var error : NSError?
-
-        if let unzippedData = fileData.gunzippedData() {
-            if let data = NSJSONSerialization.JSONObjectWithData(unzippedData, options: NSJSONReadingOptions.AllowFragments, error: &error) as? NSDictionary {
-                dictionary = data
-            }
-        }
-        
-        switch (dictionary) {
-        case .None:
+        if let unzippedData = fileData.gunzipped(),
+           let dictionary = try? JSONSerialization.jsonObject(with: unzippedData, options: .allowFragments) as? NSDictionary
+        {
+            self.sourceDictionary = dictionary
+            self.isValid = true
+        } else {
             self.sourceDictionary = NSDictionary()
             self.isValid = false
-            assertionFailure("Could not create dictionary from gzipped data \(fileData) \n\n error: \(error)")
-        case .Some:
-            self.sourceDictionary = dictionary!
-            self.isValid = true
-
+            assertionFailure("Could not create dictionary from gzipped data \(fileData)")
         }
     }
     
     class func validateSource(source : NSDictionary?) -> Bool {
-        if let
-            source = source,
-            top_level = source[Constants.FileFormat.TopLevel] as? NSDictionary,
-            sourceArray = source[Constants.FileFormat.SourcesArray] as? NSDictionary
+        if let source = source,
+           let _ = source[Constants.FileFormat.TopLevel] as? NSDictionary,
+           let _ = source[Constants.FileFormat.SourcesArray] as? NSDictionary
         {
             return true
         }

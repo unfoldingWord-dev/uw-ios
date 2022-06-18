@@ -12,12 +12,12 @@ import UIKit
 extension UIViewController {
     func addChildViewController(childVC : UIViewController, toView view : UIView) {
         
-        childVC.willMoveToParentViewController(self)
-        childVC.view.setTranslatesAutoresizingMaskIntoConstraints(false)
+        childVC.willMove(toParent: self)
+        childVC.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(childVC.view)
-        let constraints = NSLayoutConstraint.constraintsForView(childVC.view, insideView: view, topMargin: 0, bottomMargin: 0, leftMargin: 0, rightMargin: 0)
+        let constraints = NSLayoutConstraint.constraints(for: childVC.view, inside: view, topMargin: 0, bottomMargin: 0, leftMargin: 0, rightMargin: 0) as! [NSLayoutConstraint]
         view.addConstraints(constraints)
-        self.addChildViewController(childVC)
-        childVC.didMoveToParentViewController(self)
+        self.addChild(childVC)
+        childVC.didMove(toParent: self)
     }
 }

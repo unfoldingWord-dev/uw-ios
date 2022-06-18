@@ -12,20 +12,22 @@ import Foundation
 final class UFWFileActivityItemProvider : UIActivityItemProvider {
     
     let version : UWVersion
-    private var urlSaved : NSURL?
+    private var urlSaved : URL?
     
-    var url : NSURL! {
+    @objc var url : URL! {
         get {
             if let url = self.urlSaved {
                 return url
             }
-            else if let
-                file = file(),
-                theUrl = tempFileURL()
+            else if let file = file(),
+                let theUrl = tempFileURL()
             {
-                if file.writeToURL(theUrl, atomically: true) {
+                do {
+                    try file.write(to: theUrl, options: .atomic)
                     self.urlSaved = theUrl
                     return urlSaved
+                } catch {
+                    print("\(error)")
                 }
             }
             assertionFailure("Could not return a url!")
@@ -37,27 +39,27 @@ final class UFWFileActivityItemProvider : UIActivityItemProvider {
         self.version = version
         super.init(placeholderItem: placeholderItem)
     }
-    
-    override func item() -> AnyObject! {
-        return url;
+
+    override var item: Any {
+        return url ?? ""
     }
     
     // Removes the file from storage. Technically, it should get removed eventually because it's in the caches folder, but this does it right away.
     func cleanup () {
         if let url = self.urlSaved {
-            NSFileManager.defaultManager().removeItemAtURL(url, error: nil)
+            try? FileManager.default.removeItem(at: url)
         }
     }
     
-    private func file() -> NSData? {
+    private func file() -> Data? {
         let exporter = UFWFileExporter(version: version)
         return exporter.fileData
     }
     
-    private func tempFileURL() -> NSURL? {
+    private func tempFileURL() -> URL? {
         if let completeFilename = self.version.filename() {
-            let path = NSString.cachesDirectory().stringByAppendingPathComponent(completeFilename)
-            return NSURL(fileURLWithPath: path)
+            let path = (NSString.cachesDirectory() as NSString).appendingPathComponent(completeFilename)
+            return URL(fileURLWithPath: path)
         }
         return nil
     }

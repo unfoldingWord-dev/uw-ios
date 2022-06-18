@@ -12,7 +12,7 @@ import Foundation
     // This is a list of previously imported or created files that we don't want to include in the import list.
     var arrayExistingFileNames : Array<String>!
     
-    override init() {
+    @objc override init() {
         super.init()
         self.arrayExistingFileNames = retrieveExistingSavedFiles() as! Array<String>
     }
@@ -21,12 +21,12 @@ import Foundation
         removeDeletedFilesFromExistingFileList()
     }
     
-    func filesToDisplayForImport() -> Array<NSString> {
+    @objc func filesToDisplayForImport() -> [String] {
         let filesInFolder = arrayOfFilePathsInDocumentsFolder()
         return filesInFolder.filter(isIncluded)
     }
     
-    func isIncluded(filepath : NSString) -> Bool {
+    @objc func isIncluded(filepath : String) -> Bool {
         for excludedFilePath in self.arrayExistingFileNames {
             if excludedFilePath == filepath {
                 return false
@@ -35,15 +35,15 @@ import Foundation
         return true
     }
     
-    func arrayOfFilePathsInDocumentsFolder() -> Array<NSString> {
+    @objc func arrayOfFilePathsInDocumentsFolder() -> [String]  {
         
-        let rootPath = NSString.appDocumentsDirectory()
-        let enumerator = NSFileManager.defaultManager().enumeratorAtPath(rootPath)
-        
-        var filepathArray = Array<String>()
+        let rootPath = NSString.appDocumentsDirectory()!
+        let enumerator = FileManager.default.enumerator(atPath: rootPath)
+
+        var filepathArray = [String]()
         while let filename = enumerator?.nextObject() as? NSString {
             if filename.pathExtension == Constants.FileExtensionUFW {
-                let filepath = rootPath.stringByAppendingPathComponent(filename as String)
+                let filepath = (rootPath as NSString).appendingPathComponent(filename as String)
                 filepathArray.append(filepath)
             }
         }
@@ -51,14 +51,13 @@ import Foundation
         return filepathArray
     }
     
-    func importFileAtPath(path : String) -> Bool {
+    @objc func importFileAtPath(path : String) -> Bool {
         
-        if let data = NSFileManager.defaultManager().contentsAtPath(path) {
+        if let data = FileManager.default.contents(atPath: path) as? NSData {
             let importer = UFWFileImporter(data: data)
             
             // If successfully import file, remove from disk and from the local list
-            if importer.file.isValid && importer.importFile() {
-                deleteFileForFilePath(path)
+            if importer.file.isValid && importer.importFile(), deleteFileForFilePath(path: path) {
                 removeDeletedFilesFromExistingFileList()
                 saveFileList()
                 return true
@@ -67,9 +66,9 @@ import Foundation
         return false
     }
     
-    func addExistingFilePath(path : String) {
+    @objc func addExistingFilePath(path : String) {
         let stringPath = path as NSString
-        let matchingArray = self.arrayExistingFileNames.filter({ stringPath.isEqualToString($0) })
+        let matchingArray = self.arrayExistingFileNames.filter({ stringPath.isEqual(to: $0) })
         if (matchingArray.count == 0) {
             self.arrayExistingFileNames.append(path)
             saveFileList()
@@ -77,39 +76,32 @@ import Foundation
     }
     
     private func deleteFileForFilePath(path : String) -> Bool {
-        
-        if NSFileManager.defaultManager().fileExistsAtPath(path) {
-            var error : NSError? = nil
-            NSFileManager.defaultManager().removeItemAtPath(path, error: &error)
-            if let error = error {
-                println(error)
-                return false
-            }
-            else {
-                return true
-            }
-        }
-        else {
+        guard FileManager.default.fileExists(atPath: path) else { return true }
+        do {
+            try FileManager.default.removeItem(atPath: path)
             return true
+        } catch {
+            print(error)
+            return false
         }
     }
     
     private func saveFileList() {
         if self.arrayExistingFileNames.count > 0 {
             let array = self.arrayExistingFileNames as NSArray
-            array.writeToFile(iTunesSavedFilePath(), atomically: true)
+            _ = array.write(toFile: iTunesSavedFilePath(), atomically: true)
         }
     }
     
     private func removeDeletedFilesFromExistingFileList() {
         
-        let revisedFiles = self.arrayExistingFileNames.filter( {NSFileManager.defaultManager().fileExistsAtPath($0)} )
+        let revisedFiles = self.arrayExistingFileNames.filter( { FileManager.default.fileExists(atPath: $0) } )
         self.arrayExistingFileNames = revisedFiles
         saveFileList()
     }
     
     private func iTunesSavedFilePath() -> String {
-        return NSString.documentsDirectory().stringByAppendingPathComponent(Constants.ITunes.FilenameFiles)
+        return (NSString.documentsDirectory() as NSString).appendingPathComponent(Constants.ITunes.FilenameFiles)
     }
     
     private func retrieveExistingSavedFiles() -> NSArray {

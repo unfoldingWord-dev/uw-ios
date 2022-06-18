@@ -10,29 +10,28 @@ import CoreData
 
 @objc final class UFWFileImporter : NSObject {
     
-    let file : UFWFile
+    @objc let file : UFWFile
     
-    init(data : NSData) {
+    @objc init(data : NSData) {
         self.file = UFWFile(fileData: data)
     }
     
     /// Imports the version, creating the top level object and language only if necessary. Imports and checks the data and signature for each TOC. Overwrites any existing data.
-    func importFile() -> Bool {
+    @objc func importFile() -> Bool {
         
         if self.file.isValid == false  {
             assertionFailure("Invalid source file: \(self.file)")
             return false
         }
         
-        var topDictionary = self.file.topLevelObject
-        UWTopContainer.updateFromArray([topDictionary])
+        let topDictionary = self.file.topLevelObject
+        UWTopContainer.update(from: [topDictionary])
         
-        if let
-            top = UWTopContainer(forDictionary: topDictionary as [NSObject : AnyObject]),
-            version = top.versionForDictionary(topDictionary as [NSObject : AnyObject])
+        if let top = UWTopContainer(for: topDictionary as [NSObject : AnyObject]),
+           let version = top.version(for: topDictionary as [NSObject : AnyObject])
         {
             for toc in version.toc {
-                if importTOCContents(toc as! UWTOC) == false {
+                if importTOCContents(toc: toc as! UWTOC) == false {
                     assertionFailure("Could not import toc: \(toc)")
                 }
             }
@@ -46,21 +45,21 @@ import CoreData
     
     /// This succeeds only if both the signature and the contents are found and successfully imported
     func importTOCContents(toc : UWTOC) -> Bool {
-        if let signature = signatureForTOC(toc) {
-            let contents = contentsForTOC(toc)
+        if let signature = signatureForTOC(toc: toc) {
+            let contents = contentsForTOC(toc: toc)
             if let usfm = contents.usfm {
-                return toc.importWithUSFM(usfm as String, signature: signature as String)
+                return toc.import(withUSFM: usfm as String, signature: signature as String)
             }
             else if let openBible = contents.openJSON {
-                return toc.importWithOpenBible(openBible as String, signature: signature as String)
+                return toc.import(withOpenBible: openBible as String, signature: signature as String)
             }
         }
         return false
     }
     
     /// Retrieves the raw string for the signature JSON
-    func signatureForTOC(toc : UWTOC) -> NSString? {
-        if let signatureItem = file.sourceItemForUrl(toc.src_sig) {
+    func signatureForTOC(toc : UWTOC) -> String? {
+        if let signatureItem = file.sourceItemForUrl(url: toc.src_sig) {
             switch (signatureItem.type) {
             case let .Signature(sig):
                 return sig
@@ -72,11 +71,10 @@ import CoreData
     }
     
     /// Retrieves the raw string for either the usfm or the open bible stories JSON
-    func contentsForTOC(toc : UWTOC) -> (usfm : NSString?, openJSON : NSString?) {
-        
-        var usfm : NSString? = nil
-        var openJSON : NSString? = nil
-        if let sourceItem = file.sourceItemForUrl(toc.src) {
+    func contentsForTOC(toc : UWTOC) -> (usfm : String?, openJSON : String?) {
+        var usfm: String?
+        var openJSON: String?
+        if let sourceItem = file.sourceItemForUrl(url: toc.src) {
             switch (sourceItem.type) {
             case let UrlContentType.OpenBibleStories(open):
                 openJSON = open
@@ -92,9 +90,8 @@ import CoreData
     /// Find out whether importing the file will overwrite existing an existing version's data
     func willOverwrite() -> Bool {
         let topDictionary = self.file.topLevelObject
-        if let
-            top = UWTopContainer(forDictionary: topDictionary as [NSObject : AnyObject]),
-            version = top.versionForDictionary(topDictionary as [NSObject : AnyObject])
+        if let top = UWTopContainer(for: topDictionary as [NSObject: AnyObject]),
+           let _ = top.version(for: topDictionary as [NSObject: AnyObject])
         {
             return true
         }

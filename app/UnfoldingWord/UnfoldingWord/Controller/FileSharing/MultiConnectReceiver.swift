@@ -10,16 +10,16 @@ import Foundation
 import MultipeerConnectivity
 
 @objc final class MultiConnectReceiver : NSObject, MCSessionDelegate, MCNearbyServiceBrowserDelegate {
-    
+
     let updateBlock : FileUpdateBlock
     let localPeer : MCPeerID = MCPeerID(displayName:Constants.MultiConnect.PeerDisplayReceiver);
-    var receivedFileData : NSData?
+    @objc var receivedFileData : Data?
     var session : MCSession?
     var browser : MCNearbyServiceBrowser?
-    var progress : NSProgress?
+    var progress : Progress?
     
     
-    init(updateBlock: FileUpdateBlock) {
+    @objc init(updateBlock: @escaping FileUpdateBlock) {
         self.updateBlock = updateBlock
         self.receivedFileData = nil
         self.session = nil
@@ -37,7 +37,7 @@ import MultipeerConnectivity
     
     // This sends an update to via a non-optional progress block
     func updateProgressWithConnected(connected: Bool, percent : Float, complete: Bool, error: Bool) {
-        self.updateBlock(percentComplete: percent, connected: connected, complete: complete)
+        self.updateBlock(percent, connected, complete)
     }
     
     func browse() {
@@ -47,90 +47,81 @@ import MultipeerConnectivity
     }
     
     // MCNearbyServiceBrowserDelegate Methods
-    func browser(browser: MCNearbyServiceBrowser!, didNotStartBrowsingForPeers error: NSError!) {
-        updateProgressWithConnected(false, percent: 0, complete: false, error: true)
+    private func browser(browser: MCNearbyServiceBrowser!, didNotStartBrowsingForPeers error: NSError!) {
+        updateProgressWithConnected(connected: false, percent: 0, complete: false, error: true)
     }
     
     func browser(browser: MCNearbyServiceBrowser!, foundPeer peerID: MCPeerID!, withDiscoveryInfo info: [NSObject : AnyObject]!) {
-        
         browser.stopBrowsingForPeers()
-        if let session = self.session {             // We already have a session
-            return;
+        if self.session != nil {
+            return
         }
-        else if let session = MCSession(peer: localPeer) {
-            self.session = session
-            session.delegate = self
-            browser.invitePeer(peerID, toSession: session, withContext: nil, timeout: 30.0)
-         }
+        let session = MCSession(peer: localPeer)
+        session.delegate = self
+        browser.invitePeer(peerID, to: session, withContext: nil, timeout: 30.0)
+        self.session = session
     }
     
-    func browser(browser: MCNearbyServiceBrowser!, lostPeer peerID: MCPeerID!) {
-        updateProgressWithConnected(false, percent: 0, complete: false, error: true)
+    func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
+        updateProgressWithConnected(connected: false, percent: 0, complete: false, error: true)
     }
-
     
     // We're observing our NSProgress item to get updates as the file is sent
-    override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == Constants.MultiConnect.KeyPathFractionCompleted {
             if let progress = self.progress {
                 let percent = Float(progress.fractionCompleted)
-                let connected = progress.cancelled
-                updateProgressWithConnected(connected, percent: percent, complete: false, error: false)
+                let connected = progress.isCancelled
+                updateProgressWithConnected(connected: connected, percent: percent, complete: false, error: false)
             }
         }
         else {
-            super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
     }
     
     
     // Session Delegate
     // These are really only used by the receiver.
-    
-    func session(session: MCSession!, didReceiveData data: NSData!, fromPeer peerID: MCPeerID!) {
+
+    func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) { }
+
+    func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         // not used with sendResourceAtURL
     }
     
-    func session(session: MCSession!, didStartReceivingResourceWithName resourceName: String!, fromPeer peerID: MCPeerID!, withProgress progress: NSProgress!) {
-        progress.addObserver(self, forKeyPath:Constants.MultiConnect.KeyPathFractionCompleted, options: NSKeyValueObservingOptions.New, context: nil)
+    func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
+        progress.addObserver(self, forKeyPath:Constants.MultiConnect.KeyPathFractionCompleted, options: NSKeyValueObservingOptions.new, context: nil)
         self.progress = progress
-        updateProgressWithConnected(true, percent: 0.0, complete: false, error: false)
+        updateProgressWithConnected(connected: true, percent: 0.0, complete: false, error: false)
     }
     
-    func session(session: MCSession!, didFinishReceivingResourceWithName resourceName: String!, fromPeer peerID: MCPeerID!, atURL localURL: NSURL!, withError error: NSError!) {
+    func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {
         
         session.disconnect()
-        switch error {
-        case .Some(error):
-            updateProgressWithConnected(false, percent: 1.0, complete: false, error: true)
+        if error != nil {
+            updateProgressWithConnected(connected: false, percent: 1.0, complete: false, error: true)
             return
-        default:
-            break
         }
-        
-        switch localURL {
-        case .Some(let url):
-            if let path = url.path {
-                self.receivedFileData = NSFileManager.defaultManager().contentsAtPath(path)
-                updateProgressWithConnected(false, percent: 1.0, complete: true, error: false)
-                return
-            }
-        default:
-            break
+
+        if let path = localURL?.path {
+            self.receivedFileData = FileManager.default.contents(atPath: path)
+            updateProgressWithConnected(connected: false, percent: 1.0, complete: true, error: false)
+            return
         }
-        updateProgressWithConnected(false, percent: 1.0, complete: false, error: true)
+
+        updateProgressWithConnected(connected: false, percent: 1.0, complete: false, error: true)
     }
-    
-    func session(session: MCSession!, didReceiveStream stream: NSInputStream!, withName streamName: String!, fromPeer peerID: MCPeerID!) {}
-    
-    
-    func session(session: MCSession!, peer peerID: MCPeerID!, didChangeState state: MCSessionState) {
-        if state == MCSessionState.NotConnected {
+
+    func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) { }
+
+    func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
+        if state == .notConnected {
             self.session = nil
             self.browser?.startBrowsingForPeers()
         }
-        if state == MCSessionState.Connected {
-            updateProgressWithConnected(true, percent: 0, complete: false, error: false)
+        if state == .connected {
+            updateProgressWithConnected(connected: true, percent: 0, complete: false, error: false)
         }
     }
     
@@ -140,11 +131,11 @@ import MultipeerConnectivity
     
     // Helpers
     
-    func saveData(data : NSData) {
-        NSFileManager.defaultManager().createFileAtPath(temporaryFilePath(), contents: data, attributes: nil)
+    func saveData(data : Data) {
+        FileManager.default.createFile(atPath: temporaryFilePath(), contents: data, attributes: nil)
     }
     
     func temporaryFilePath() -> String {
-        return NSString.cachesDirectory().stringByAppendingPathComponent(Constants.MultiConnect.FilePathSend)
+        return (NSString.cachesDirectory() as NSString).appendingPathComponent(Constants.MultiConnect.FilePathSend)
     }
 }

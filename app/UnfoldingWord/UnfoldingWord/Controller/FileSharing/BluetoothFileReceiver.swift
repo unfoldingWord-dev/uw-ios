@@ -11,19 +11,18 @@ import CoreBluetooth
 
 @objc final class BluetoothFileReceiver : NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
-    lazy var manager : CBCentralManager = CBCentralManager(delegate: self, queue: nil)
-    var discoveredPeripheral : CBPeripheral? = nil
-    var receivedData : NSMutableData = NSMutableData()
-    var finished : Bool = false
-    var totalDataByteSize : Int = 0
-    let updateBlock : FileUpdateBlock
+    @objc lazy var manager : CBCentralManager = CBCentralManager(delegate: self, queue: nil)
+    @objc var discoveredPeripheral: CBPeripheral? = nil
+    @objc var receivedData: NSMutableData = NSMutableData()
+    @objc var finished: Bool = false
+    @objc var totalDataByteSize: Int = 0
+    @objc let updateBlock: FileUpdateBlock
     
-    init(updateBlock : FileUpdateBlock) {
+    @objc init(updateBlock : @escaping FileUpdateBlock) {
         self.updateBlock = updateBlock
         super.init()
-        
         // This lazy loads the manager, which will in turn power on bluetooth, which activates Step 1.
-        if self.manager.state == CBCentralManagerState.Resetting {
+        if self.manager.state == .resetting {
             self.receivedData = NSMutableData()
         }
     }
@@ -31,17 +30,17 @@ import CoreBluetooth
     // This sends an update to via a non-optional progress block
     func updateProgress(connected: Bool) {
         if self.receivedData.length == 0 && self.finished == false {
-            self.updateBlock(percentComplete: 0, connected: connected, complete: self.finished)
+            self.updateBlock(0, connected, self.finished)
         }
         else {
             let percent =  Float(self.receivedData.length) / Float(self.totalDataByteSize)
-            self.updateBlock(percentComplete: percent, connected: connected, complete: self.finished)
+            self.updateBlock(percent, connected, self.finished)
         }
     }
     
     // Step 1: As soon as bluetooth powers up, start scanning for a device to get our book
-    func centralManagerDidUpdateState(central: CBCentralManager!) {
-        if central.state == CBCentralManagerState.PoweredOn {
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        if central.state == .poweredOn {
             scanForUnfoldingWordService()
         }
     }
@@ -49,13 +48,13 @@ import CoreBluetooth
     // Step 2: Start scanning for devices that have the service we want
     func scanForUnfoldingWordService() {
         self.finished = false
-        self.manager.scanForPeripheralsWithServices([CBUUID(string: Constants.Bluetooth.SERVICE_UUID)], options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])
+        self.manager.scanForPeripherals(withServices: [CBUUID(string: Constants.Bluetooth.SERVICE_UUID)], options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])
     }
-    
+    // 'centralManager(_:didDiscover:advertisementData:rssi:)' of protocol 'CBCentralManagerDelegate'
     // Step 3: Discovered the peripheral with the correct service, now try to connect to it.
-    func centralManager(central: CBCentralManager!, didDiscoverPeripheral peripheral: CBPeripheral!, advertisementData: [NSObject : AnyObject]!, RSSI: NSNumber!) {
-        if RSSI.integerValue < -70 { // If the signal's too low, then don't even try.
-            println("Invalid RSSI \(RSSI)")
+    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
+        if RSSI.intValue < -70 { // If the signal's too low, then don't even try.
+            print("Invalid RSSI \(RSSI)")
             return
         }
         
@@ -63,18 +62,17 @@ import CoreBluetooth
         if let existingPeripheral = self.discoveredPeripheral {
             if existingPeripheral != peripheral {
                 self.discoveredPeripheral = peripheral
-                self.manager.connectPeripheral(peripheral, options: nil)
+                self.manager.connect(peripheral, options: nil)
             }
         }
         else {
             self.discoveredPeripheral = peripheral
-            self.manager.connectPeripheral(peripheral, options: nil)
+            self.manager.connect(peripheral, options: nil)
         }
     }
-    
-    func centralManager(central: CBCentralManager!, didFailToConnectPeripheral peripheral: CBPeripheral!, error: NSError!) {
-        println("\(error)")
-        updateProgress(false)
+    func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
+        print("\(String(describing: error))")
+        updateProgress(connected: false)
         disconnectAll()
     }
     
@@ -85,42 +83,40 @@ import CoreBluetooth
         self.receivedData = NSMutableData()
         peripheral.delegate = self
         peripheral.discoverServices([CBUUID(string: Constants.Bluetooth.SERVICE_UUID)])
-        updateProgress(true)
+        updateProgress(connected: true)
     }
     
     // Step 5: We got the services, now send a request to get the service characteristics that we want
-    func peripheral(peripheral: CBPeripheral!, didDiscoverServices error: NSError!) {
-        if let error = error {
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+        if error != nil {
             disconnectAll()
-            updateProgress(false)
+            updateProgress(connected: false)
         }
-        else {
-            for service in peripheral.services {
-                let serv = service as! CBService
-                peripheral.discoverCharacteristics([CBUUID(string: Constants.Bluetooth.CHARACTERISTIC_UUID)], forService: serv)
+        else if let services = peripheral.services {
+            for service in services {
+                peripheral.discoverCharacteristics([CBUUID(string: Constants.Bluetooth.CHARACTERISTIC_UUID)], for: service)
             }
         }
     }
-    
+
     // Step 6: We got the characteristics we wanted, now tell it we want that characteristic (in this case, we're asking for the data to be sent to us)
-    func peripheral(peripheral: CBPeripheral!, didDiscoverCharacteristicsForService service: CBService!, error: NSError!) {
-        if let error = error {
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        if error != nil {
             disconnectAll()
         }
-        else {
-            for characteristic in service.characteristics {
-                let char = characteristic as! CBCharacteristic
-                if char.UUID == CBUUID(string: Constants.Bluetooth.CHARACTERISTIC_UUID) {
-                    peripheral.setNotifyValue(true, forCharacteristic: char)
-                    updateProgress(true)
+        else if let characteristics = service.characteristics {
+            for characteristic in characteristics {
+                if characteristic.uuid == CBUUID(string: Constants.Bluetooth.CHARACTERISTIC_UUID) {
+                    peripheral.setNotifyValue(true, for: characteristic)
+                    updateProgress(connected: true)
                 }
             }
         }
     }
-    
+
     // Step 7: Receive the data. This comes in little chunks, so we just keep adding data to our data object until we encounter an end-of-line
-    func peripheral(peripheral: CBPeripheral!, didUpdateValueForCharacteristic characteristic: CBCharacteristic!, error: NSError!) {
-        if let error = error {
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        if error != nil {
             return
         }
         else if self.finished == true {
@@ -128,39 +124,41 @@ import CoreBluetooth
         }
         else {
             // If we can make the data into a string, check to see whether it matches any control text at the start or end of the data file.
-            if let dataAsString = NSString(data: characteristic.value, encoding: NSUTF8StringEncoding) {
-                if dataAsString == Constants.Bluetooth.EndOfMessage {
+            if let value = characteristic.value, let dataAsString = NSString(data: value, encoding: String.Encoding.utf8.rawValue) {
+                if dataAsString as String == Constants.Bluetooth.EndOfMessage {
                     self.finished = true
-                    peripheral.setNotifyValue(false, forCharacteristic: characteristic)
+                    peripheral.setNotifyValue(false, for: characteristic)
                     self.manager.cancelPeripheralConnection(peripheral)
-                    updateProgress(false)
+                    updateProgress(connected: false)
                     return
                 }
                 // If we don't have any data yet, then check whether we're getting a string that tells the file size.
-                if self.receivedData.length == 0 && dataAsString.rangeOfString(Constants.Bluetooth.MessageSize).location != NSNotFound {
-                    let sizeString : NSString = dataAsString.stringByReplacingOccurrencesOfString(Constants.Bluetooth.MessageSize, withString: "")
+                if self.receivedData.length == 0 && dataAsString.range(of: Constants.Bluetooth.MessageSize).location != NSNotFound {
+                    let sizeString : NSString = dataAsString.replacingOccurrences(of: Constants.Bluetooth.MessageSize, with: "") as NSString
                     self.totalDataByteSize = sizeString.integerValue
-                    updateProgress(true)
+                    updateProgress(connected: true)
                     return
                 }
             }
             
             // If we passed through the start or end markers of the file, we have actual file data.
-            self.receivedData.appendData(characteristic.value)
-            updateProgress(true)
+            if let value = characteristic.value {
+                self.receivedData.append(value)
+            }
+            updateProgress(connected: true)
         }
     }
     
     // If the sender canceled, then we should do something
-    func peripheral(peripheral: CBPeripheral!, didUpdateNotificationStateForCharacteristic characteristic: CBCharacteristic!, error: NSError!) {
-        if let error = error {
+    func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
+        if error != nil {
             return
         }
-        if characteristic.UUID == CBUUID(string: Constants.Bluetooth.CHARACTERISTIC_UUID)
+        if characteristic.uuid == CBUUID(string: Constants.Bluetooth.CHARACTERISTIC_UUID)
             && characteristic.isNotifying == false {
                 self.manager.cancelPeripheralConnection(peripheral)
-                updateProgress(false)
-                println("The sender must have canceled the connection.")
+            updateProgress(connected: false)
+                print("The sender must have canceled the connection.")
         }
     }
     
@@ -169,7 +167,7 @@ import CoreBluetooth
         if let peripheral = self.discoveredPeripheral {
             
             // If we haven't found anything yet, then we have no connections.
-            if peripheral.state == CBPeripheralState.Disconnected {
+            if peripheral.state == .disconnected {
                 return
             }
             
@@ -179,12 +177,10 @@ import CoreBluetooth
                 for service in services {
                     if let characteristics = service.characteristics {
                         for characteristic in characteristics {
-                            if let char : CBCharacteristic = characteristic as? CBCharacteristic {
-                                if char.UUID == NSUUID(UUIDString: Constants.Bluetooth.CHARACTERISTIC_UUID) {
-                                    if char.isNotifying {
-                                        peripheral.setNotifyValue(false, forCharacteristic: char)
-                                        return
-                                    }
+                            if characteristic.uuid == CBUUID(string: Constants.Bluetooth.CHARACTERISTIC_UUID) {
+                                if characteristic.isNotifying {
+                                    peripheral.setNotifyValue(false, for: characteristic)
+                                    return
                                 }
                             }
                         }
@@ -196,11 +192,11 @@ import CoreBluetooth
     }
     
     // Okay, we got disconnected. If we finished, then good. Otherwise start looking again
-    func centralManager(central: CBCentralManager!, didDisconnectPeripheral peripheral: CBPeripheral!, error: NSError!) {
+    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         self.discoveredPeripheral = nil
 
         if self.finished == false {
-            self.updateProgress(false)
+            self.updateProgress(connected: false)
             scanForUnfoldingWordService()
         }
     }
