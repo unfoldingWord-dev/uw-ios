@@ -1,7 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -18,17 +21,17 @@
                         <subviews>
                             <button opaque="NO" tag="111" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uxg-s9-TfX">
                                 <rect key="frame" x="40" y="273" width="508" height="48"/>
-                                <color key="backgroundColor" red="0.66666666669999997" green="0.81568627449999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.60861468315124512" green="0.79180502891540527" blue="0.026526862755417824" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="Dhv-B2-j0P"/>
                                 </constraints>
                                 <state key="normal" title="Button">
-                                    <color key="titleColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="0.92635715007781982" green="0.92635715007781982" blue="0.92635715007781982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.2470588235" green="0.21960784310000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.18821196258068085" green="0.16651672124862671" blue="0.14150407910346985" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="uxg-s9-TfX" secondAttribute="centerX" id="KB6-5b-La5"/>
                             <constraint firstItem="uxg-s9-TfX" firstAttribute="leading" relation="lessThanOrEqual" secondItem="fZk-oj-Mme" secondAttribute="leading" priority="750" constant="40" id="bxy-6s-vdM"/>
@@ -37,7 +40,6 @@
                         </constraints>
                     </view>
                 </subviews>
-                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
                 <constraint firstItem="fZk-oj-Mme" firstAttribute="leading" secondItem="5E1-fP-BHJ" secondAttribute="leading" id="3fr-fB-jgn"/>
@@ -49,7 +51,7 @@
             <connections>
                 <outlet property="buttonNextChapter" destination="uxg-s9-TfX" id="gGF-Tm-aWG"/>
             </connections>
-            <point key="canvasLocation" x="306" y="366"/>
+            <point key="canvasLocation" x="57" y="-155"/>
         </collectionViewCell>
     </objects>
 </document>

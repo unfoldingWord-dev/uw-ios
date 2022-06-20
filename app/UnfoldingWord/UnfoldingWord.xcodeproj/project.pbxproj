@@ -900,6 +900,7 @@
 		5AD0B4A11B45CB68006ABD21 /* MultiConnectReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD0B4A01B45CB68006ABD21 /* MultiConnectReceiver.swift */; };
 		5AD3CBE41B4A182D003F5F33 /* ITunesSharingReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD3CBE31B4A182D003F5F33 /* ITunesSharingReceiver.swift */; };
 		5AD3CBE61B4A185B003F5F33 /* ITunesSharingSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD3CBE51B4A185B003F5F33 /* ITunesSharingSender.swift */; };
+		5AE689382860F85700A0D71B /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5AE689372860F85700A0D71B /* Launch Screen.storyboard */; };
 		5AEDC6321AFC20CA00C722B9 /* LanguageInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AEDC6311AFC20CA00C722B9 /* LanguageInfoController.m */; };
 		5AEDC6F11B068B0200551D27 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AEDC6F01B068B0200551D27 /* SystemConfiguration.framework */; };
 		5AEECBFD1A994C7400BC7E40 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5AEECBFF1A994C7400BC7E40 /* Localizable.strings */; };
@@ -924,7 +925,6 @@
 		6392585F1A24506500B5B8D2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6392585E1A24506500B5B8D2 /* main.m */; };
 		639258621A24506500B5B8D2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 639258611A24506500B5B8D2 /* AppDelegate.m */; };
 		6392586D1A24506500B5B8D2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6392586C1A24506500B5B8D2 /* Images.xcassets */; };
-		639258701A24506500B5B8D2 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6392586E1A24506500B5B8D2 /* LaunchScreen.xib */; };
 		6392587C1A24506500B5B8D2 /* UnfoldingWordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6392587B1A24506500B5B8D2 /* UnfoldingWordTests.m */; };
 /* End PBXBuildFile section */
 
@@ -1899,14 +1899,11 @@
 		5AD0B4A01B45CB68006ABD21 /* MultiConnectReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiConnectReceiver.swift; sourceTree = "<group>"; };
 		5AD3CBE31B4A182D003F5F33 /* ITunesSharingReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITunesSharingReceiver.swift; sourceTree = "<group>"; };
 		5AD3CBE51B4A185B003F5F33 /* ITunesSharingSender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITunesSharingSender.swift; sourceTree = "<group>"; };
+		5AE689372860F85700A0D71B /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		5AEDC6301AFC20CA00C722B9 /* LanguageInfoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageInfoController.h; sourceTree = "<group>"; };
 		5AEDC6311AFC20CA00C722B9 /* LanguageInfoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguageInfoController.m; sourceTree = "<group>"; };
 		5AEDC6F01B068B0200551D27 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		5AEDC6F71B068D1900551D27 /* libcommonCrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcommonCrypto.dylib; path = usr/lib/system/libcommonCrypto.dylib; sourceTree = SDKROOT; };
-		5AEECBF41A994C3400BC7E40 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		5AEECBF61A994C3800BC7E40 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		5AEECBF81A994C5800BC7E40 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		5AEECBFA1A994C6700BC7E40 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		5AEECBFE1A994C7400BC7E40 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5AEECC031A994C7500BC7E40 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5AEECC0A1A994CB100BC7E40 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -1915,7 +1912,6 @@
 		5AEECC0E1A994CC000BC7E40 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5AEECC101A994CCD00BC7E40 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5AEECC111A994CCD00BC7E40 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		5AEECC141A994CDC00BC7E40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		5AEECC151A994CDC00BC7E40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5AEECC161A994CDD00BC7E40 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5AF051D91B756A8A003EA5A4 /* UWConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UWConstants.swift; sourceTree = "<group>"; };
@@ -2027,7 +2023,6 @@
 		639258601A24506500B5B8D2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		639258611A24506500B5B8D2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		6392586C1A24506500B5B8D2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		6392586F1A24506500B5B8D2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		639258751A24506500B5B8D2 /* UnfoldingWordTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnfoldingWordTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6392587A1A24506500B5B8D2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6392587B1A24506500B5B8D2 /* UnfoldingWordTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnfoldingWordTests.m; sourceTree = "<group>"; };
@@ -3620,7 +3615,7 @@
 				5A9ABAF11B0A35F600753AAB /* Images */,
 				5AAC5C551A97B46C001AFA3D /* Vendor */,
 				6392586C1A24506500B5B8D2 /* Images.xcassets */,
-				6392586E1A24506500B5B8D2 /* LaunchScreen.xib */,
+				5AE689372860F85700A0D71B /* Launch Screen.storyboard */,
 				6392585C1A24506500B5B8D2 /* Supporting Files */,
 			);
 			path = UnfoldingWord;
@@ -4203,7 +4198,6 @@
 				5A9ABE611B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-18-09jpg in Resources */,
 				5A43EAC31B20F35E000EC306 /* 1ch-ulb-en-9BF906DA-927E-42FC-A036-A97BF95E6DEB.usfm in Resources */,
 				5A43EAD41B20F35E000EC306 /* 1ti-ulb-en-8BDB0721-6040-491C-8FF9-A34C3E3A1B1B.usfm in Resources */,
-				639258701A24506500B5B8D2 /* LaunchScreen.xib in Resources */,
 				5A9ABF551B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-41-01jpg in Resources */,
 				5A43253F1B4F2F7C00105908 /* iTunesActivity.png in Resources */,
 				5A9ABEF71B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-32-09jpg in Resources */,
@@ -4556,6 +4550,7 @@
 				5A9ABD6E1B0A35FA00753AAB /* icon-40@2x.png in Resources */,
 				5A43EAE41B20F35E000EC306 /* 2ti-avd-ar-3D1528A0-67AC-4D75-95FB-72BBFEB3EE23.usfm in Resources */,
 				5A9ABDBA1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-05-08jpg in Resources */,
+				5AE689382860F85700A0D71B /* Launch Screen.storyboard in Resources */,
 				5A9ABFBD1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-49-13jpg in Resources */,
 				5A9ABE901B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-21-12jpg in Resources */,
 			);
@@ -4731,19 +4726,6 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		6392586E1A24506500B5B8D2 /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6392586F1A24506500B5B8D2 /* Base */,
-				5AEECBF41A994C3400BC7E40 /* fr */,
-				5AEECBF61A994C3800BC7E40 /* es */,
-				5AEECBF81A994C5800BC7E40 /* ru */,
-				5AEECBFA1A994C6700BC7E40 /* pt */,
-				5AEECC141A994CDC00BC7E40 /* en */,
-			);
-			name = LaunchScreen.xib;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -4794,7 +4776,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -4805,6 +4786,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				INFOPLIST_FILE = UnfoldingWord/Info.plist;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -4812,6 +4794,7 @@
 					"$(SDKROOT)/usr/lib/system",
 					"$(PROJECT_DIR)/UnfoldingWord/openssl",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.unfoldingword.iosapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "UnfoldingWord/UnfoldingWord-Bridging-Header.h";
@@ -4835,7 +4818,9 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = UnfoldingWordTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.unfoldingword.iosapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UnfoldingWord.app/UnfoldingWord";
@@ -4947,7 +4932,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -4958,6 +4942,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				INFOPLIST_FILE = UnfoldingWord/Info.plist;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -4965,6 +4950,7 @@
 					"$(SDKROOT)/usr/lib/system",
 					"$(PROJECT_DIR)/UnfoldingWord/openssl",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.unfoldingword.iosapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "UnfoldingWord/UnfoldingWord-Bridging-Header.h";
@@ -4977,7 +4963,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -4988,6 +4973,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				INFOPLIST_FILE = UnfoldingWord/Info.plist;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -4995,6 +4981,7 @@
 					"$(SDKROOT)/usr/lib/system",
 					"$(PROJECT_DIR)/UnfoldingWord/openssl",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.unfoldingword.iosapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "UnfoldingWord/UnfoldingWord-Bridging-Header.h";
@@ -5017,7 +5004,9 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = UnfoldingWordTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.unfoldingword.iosapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UnfoldingWord.app/UnfoldingWord";
@@ -5035,7 +5024,9 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = UnfoldingWordTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.unfoldingword.iosapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UnfoldingWord.app/UnfoldingWord";

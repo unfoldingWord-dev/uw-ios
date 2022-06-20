@@ -30,7 +30,7 @@ import UIKit
     @objc func activityViewController() -> UIActivityViewController? {
         
         if let version = self.ufwVersion, let provider = self.urlProvider {
-            let items = [provider, version.filename()] as [Any]
+            let items = [provider, version.filename() ?? ""] as [Any]
             let activityVC = UIActivityViewController(activityItems: items, applicationActivities: applicationActivities() )
             activityVC.excludedActivityTypes = [.postToWeibo, .postToTencentWeibo, .postToFacebook, .postToTwitter, .copyToPasteboard, .message, .print]
             return activityVC

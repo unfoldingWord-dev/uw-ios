@@ -48,7 +48,7 @@
 
 + (ECDSA_SIG *) ecSigFromString:(NSString *)string
 {
-    NSData *sigData = [[NSData alloc] initWithBase64EncodedString:string options:0];
+    NSData *sigData = [[NSData alloc] initWithBase64EncodedString:string options:NSDataBase64DecodingIgnoreUnknownCharacters];
     ECDSA_SIG *sig = NULL;
     const unsigned char *pp = sigData.bytes;
     sig = d2i_ECDSA_SIG(&sig, &pp, sigData.length);

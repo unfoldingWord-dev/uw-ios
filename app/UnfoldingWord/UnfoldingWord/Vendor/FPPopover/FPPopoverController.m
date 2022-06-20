@@ -307,6 +307,9 @@
     {
         p.x = fromView.frame.origin.x;
         p.y = fromView.frame.origin.y + fromView.frame.size.height/2.0;
+    } else {
+        p.x = 0;
+        p.y = 0;
     }
 
     return p;

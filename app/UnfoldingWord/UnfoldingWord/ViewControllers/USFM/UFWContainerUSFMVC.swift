@@ -72,7 +72,7 @@ final class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelBut
         
         updateNavChapterButton()
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: Constants.Image_Diglot), style: .plain, target: self, action: Selector("toggleSideBySideView"))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: Constants.Image_Diglot), style: .plain, target: self, action: #selector(toggleSideBySideView))
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -92,7 +92,7 @@ final class UFWContainerUSFMVC: UIViewController, USFMPanelDelegate, ACTLabelBut
     
     // User Interaction - Open and Close 
     
-    func toggleSideBySideView() {
+    @objc func toggleSideBySideView() {
         self.vcSide.isActive = !self.vcSide.isActive
         arrangeViews(startDark: false)
     }
