@@ -51,8 +51,10 @@
 	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>
+	<key>UILaunchImageFile</key>
+	<string>launchImage</string>
 	<key>UILaunchStoryboardName</key>
-	<string>Launch Screen</string>
+	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Base</string>
 	<key>UIRequiredDeviceCapabilities</key>

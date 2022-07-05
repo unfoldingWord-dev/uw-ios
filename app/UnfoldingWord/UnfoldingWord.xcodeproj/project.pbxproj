@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		5A2B79AE1B5EA22D00AD9993 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2B79AD1B5EA22D00AD9993 /* UIViewControllerExtension.swift */; };
+		5A2F806228733DF5001C0A69 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F806128733DF5001C0A69 /* LaunchScreen.xib */; };
 		5A323B1D1A3381FB00099C94 /* NSDictionary+DWSNull.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A323B1C1A3381FB00099C94 /* NSDictionary+DWSNull.m */; };
 		5A36D3B51B223F23001D6E04 /* UFWAppInformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A36D3B31B223F23001D6E04 /* UFWAppInformationView.m */; };
 		5A36D3B61B223F23001D6E04 /* UFWAppInformationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A36D3B41B223F23001D6E04 /* UFWAppInformationView.xib */; };
@@ -940,6 +941,7 @@
 
 /* Begin PBXFileReference section */
 		5A2B79AD1B5EA22D00AD9993 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
+		5A2F806128733DF5001C0A69 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		5A323B1B1A3381FB00099C94 /* NSDictionary+DWSNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+DWSNull.h"; sourceTree = "<group>"; };
 		5A323B1C1A3381FB00099C94 /* NSDictionary+DWSNull.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+DWSNull.m"; sourceTree = "<group>"; };
 		5A36D3B21B223F23001D6E04 /* UFWAppInformationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFWAppInformationView.h; sourceTree = "<group>"; };
@@ -3615,6 +3617,7 @@
 				5A9ABAF11B0A35F600753AAB /* Images */,
 				5AAC5C551A97B46C001AFA3D /* Vendor */,
 				6392586C1A24506500B5B8D2 /* Images.xcassets */,
+				5A2F806128733DF5001C0A69 /* LaunchScreen.xib */,
 				5AE689372860F85700A0D71B /* Launch Screen.storyboard */,
 				6392585C1A24506500B5B8D2 /* Supporting Files */,
 			);
@@ -3778,6 +3781,7 @@
 				5A9ABE6C1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-19-07jpg in Resources */,
 				5A9ABD8C1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-01-15jpg in Resources */,
 				5A9ABFA61B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-48-04jpg in Resources */,
+				5A2F806228733DF5001C0A69 /* LaunchScreen.xib in Resources */,
 				5A43EADC1B20F35E000EC306 /* 2ki-avd-ar-CB46DF32-4A69-4EA9-A7D0-062AE748533B.usfm in Resources */,
 				5A43EB331B20F35E000EC306 /* nam-avd-ar-D89EB12C-FA9F-4911-946F-9A9CC17208F1.usfm in Resources */,
 				5A43EAF41B20F35E000EC306 /* eph-avd-ar-19C378E9-296E-4F86-9FC6-F5629AE131BA.usfm in Resources */,

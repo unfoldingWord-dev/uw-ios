@@ -26,21 +26,21 @@ class UFWActivity : UIActivity {
         super.init()
     }
     
-    func activityType() -> String? {
+    override var activityType: UIActivity.ActivityType? {
         
         switch self.type {
         case .SendBluetooth:
-            return Constants.Activity.BluetoothSend
+            return UIActivity.ActivityType(Constants.Activity.BluetoothSend)
         case .SendiTunes:
-            return Constants.Activity.iTunesSend
+            return UIActivity.ActivityType(Constants.Activity.iTunesSend)
         case .SendMultiConnect:
-            return Constants.Activity.MultiConnectSend
+            return UIActivity.ActivityType(Constants.Activity.MultiConnectSend)
         case .GetBluetooth:
-            return Constants.Activity.BluetoothReceive
+            return UIActivity.ActivityType(Constants.Activity.BluetoothReceive)
         case .GetiTunes:
-            return Constants.Activity.iTunesReceive
+            return UIActivity.ActivityType(Constants.Activity.iTunesReceive)
         case .GetMultiConnect:
-            return Constants.Activity.MultiConnectReceive
+            return UIActivity.ActivityType(Constants.Activity.MultiConnectReceive)
         }
     }
     

@@ -43,6 +43,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.view.backgroundColor = BACKGROUND_GRAY;
     
     UIImageView *titleImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 160, 32)];
     titleImageView.image = [UIImage imageNamed:@"unfoldingWordLogoWithWords.png"];

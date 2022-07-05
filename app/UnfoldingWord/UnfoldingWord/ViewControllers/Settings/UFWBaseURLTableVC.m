@@ -29,6 +29,7 @@ static NSInteger const kVersion = 2;
     [super viewDidLoad];
     
     self.navigationItem.title = NSLocalizedString(@"Settings", nil);
+    [self.navigationController.navigationBar setBackgroundColor: BACKGROUND_GRAY];
 
     self.cellIdUrlEntry = NSStringFromClass([UFWBaseUrlCell class]);
     UINib *urlEntryNib = [UINib nibWithNibName:self.cellIdUrlEntry bundle:nil];

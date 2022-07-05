@@ -9,6 +9,7 @@
 #import "UFWFirstLaunchInfoVC.h"
 #import "UFWAppInformationView.h"
 #import "NSLayoutConstraint+DWSExtensions.h"
+#import "Constants.h"
 
 @interface UFWFirstLaunchInfoVC ()
 
@@ -18,6 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = BACKGROUND_GRAY;
     [self addInfoView];
     [self addGestureRecognizer];
 }

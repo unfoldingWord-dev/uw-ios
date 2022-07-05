@@ -1,7 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -26,27 +29,27 @@
                         </variation>
                     </imageView>
                     <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="qUF-cV-2fA" userLabel="Side Toolbar">
-                        <rect key="frame" x="432" y="681" width="429" height="44"/>
+                        <rect key="frame" x="431.5" y="681" width="429.5" height="44"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="44" id="y4C-Ja-XMF"/>
                         </constraints>
                         <items>
                             <barButtonItem id="aDi-bt-gq8"/>
                         </items>
-                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </toolbar>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zEV-5T-Fdi" userLabel="Side Text Background View">
-                        <rect key="frame" x="432" y="630" width="429" height="51"/>
+                        <rect key="frame" x="431.5" y="630.5" width="429.5" height="50.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label dsf dsf dsfds fdsf ds" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000027" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="32o-jQ-W0v">
-                                <rect key="frame" x="15" y="15" width="399" height="21"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="15" y="15" width="399.5" height="20.5"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.66666668653488159" green="0.66666668653488159" blue="0.66666668653488159" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="32o-jQ-W0v" firstAttribute="leading" secondItem="zEV-5T-Fdi" secondAttribute="leading" constant="15" id="AnF-eK-K6x"/>
                             <constraint firstAttribute="bottom" secondItem="32o-jQ-W0v" secondAttribute="bottom" constant="15" id="Yrl-0c-7bf"/>
@@ -55,27 +58,27 @@
                         </constraints>
                     </view>
                     <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="xel-TC-Cl9" userLabel="Main Toolbar">
-                        <rect key="frame" x="0.0" y="681" width="430" height="44"/>
+                        <rect key="frame" x="0.0" y="681" width="429.5" height="44"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="44" id="NBq-M5-oHt"/>
                         </constraints>
                         <items>
                             <barButtonItem id="e7Y-by-avB"/>
                         </items>
-                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </toolbar>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H5j-qN-ufX" userLabel="Main Text Background View">
-                        <rect key="frame" x="0.0" y="630" width="430" height="51"/>
+                        <rect key="frame" x="0.0" y="630.5" width="429.5" height="50.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label dsf dsf dsfds fdsf ds" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000027" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z1F-9Q-UTm">
-                                <rect key="frame" x="15" y="15" width="400" height="21"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="15" y="15" width="399.5" height="20.5"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.66666668653488159" green="0.66666668653488159" blue="0.66666668653488159" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="z1F-9Q-UTm" secondAttribute="trailing" constant="15" id="2SV-E7-EN2"/>
                             <constraint firstItem="z1F-9Q-UTm" firstAttribute="top" secondItem="H5j-qN-ufX" secondAttribute="top" constant="15" id="GuN-lQ-cc5"/>
@@ -84,7 +87,6 @@
                         </constraints>
                     </view>
                 </subviews>
-                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="qUF-cV-2fA" secondAttribute="trailing" id="0og-j9-gi5"/>
