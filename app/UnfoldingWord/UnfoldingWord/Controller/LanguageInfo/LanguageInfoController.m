@@ -38,6 +38,7 @@
             return langInfo;
         }
     }
+    NSLog(@"Missing = %@", lc);
     return nil;
 }
 

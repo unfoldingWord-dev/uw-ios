@@ -23,6 +23,7 @@
 /* Begin PBXBuildFile section */
 		5A2B79AE1B5EA22D00AD9993 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2B79AD1B5EA22D00AD9993 /* UIViewControllerExtension.swift */; };
 		5A2F806228733DF5001C0A69 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F806128733DF5001C0A69 /* LaunchScreen.xib */; };
+		5A2FFB7A2878881100F33875 /* unfoldingWordLogoWithWordsWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A2FFB792878881100F33875 /* unfoldingWordLogoWithWordsWhite.png */; };
 		5A323B1D1A3381FB00099C94 /* NSDictionary+DWSNull.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A323B1C1A3381FB00099C94 /* NSDictionary+DWSNull.m */; };
 		5A36D3B51B223F23001D6E04 /* UFWAppInformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A36D3B31B223F23001D6E04 /* UFWAppInformationView.m */; };
 		5A36D3B61B223F23001D6E04 /* UFWAppInformationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A36D3B41B223F23001D6E04 /* UFWAppInformationView.xib */; };
@@ -942,6 +943,7 @@
 /* Begin PBXFileReference section */
 		5A2B79AD1B5EA22D00AD9993 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		5A2F806128733DF5001C0A69 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
+		5A2FFB792878881100F33875 /* unfoldingWordLogoWithWordsWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unfoldingWordLogoWithWordsWhite.png; sourceTree = "<group>"; };
 		5A323B1B1A3381FB00099C94 /* NSDictionary+DWSNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+DWSNull.h"; sourceTree = "<group>"; };
 		5A323B1C1A3381FB00099C94 /* NSDictionary+DWSNull.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+DWSNull.m"; sourceTree = "<group>"; };
 		5A36D3B21B223F23001D6E04 /* UFWAppInformationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UFWAppInformationView.h; sourceTree = "<group>"; };
@@ -2466,6 +2468,7 @@
 				5A9ABB071B0A35F600753AAB /* PayloadImages */,
 				5A9ABD5E1B0A35FA00753AAB /* splash */,
 				5A9ABD661B0A35FA00753AAB /* unfoldingWordLogoWithWords.png */,
+				5A2FFB792878881100F33875 /* unfoldingWordLogoWithWordsWhite.png */,
 				5A9ABD671B0A35FA00753AAB /* verifyExpired.png */,
 				5A9ABD681B0A35FA00753AAB /* verifyFail.png */,
 				5A9ABD691B0A35FA00753AAB /* verifyGood.png */,
@@ -3795,6 +3798,7 @@
 				5A43EB021B20F35E000EC306 /* gen-ulb-en-EBF0ACA1-0BFD-44FF-B0D0-89813D04811F.usfm in Resources */,
 				5A9ABF9C1B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-47-08jpg in Resources */,
 				5A9ABEB01B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-25-03jpg in Resources */,
+				5A2FFB7A2878881100F33875 /* unfoldingWordLogoWithWordsWhite.png in Resources */,
 				5A9ABDC61B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-07-03jpg in Resources */,
 				5A9ABD771B0A35FA00753AAB /* icon-76.png in Resources */,
 				5A9ABEC51B0A35FA00753AAB /* httpsapiunfoldingwordorgobsjpg1en360pxobs-en-27-06jpg in Resources */,

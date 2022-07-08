@@ -45,8 +45,8 @@
     [super viewDidLoad];
     self.view.backgroundColor = BACKGROUND_GRAY;
     
-    UIImageView *titleImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 160, 32)];
-    titleImageView.image = [UIImage imageNamed:@"unfoldingWordLogoWithWords.png"];
+    UIImageView *titleImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 150, 30)];
+    titleImageView.image = [UIImage imageNamed:@"unfoldingWordLogoWithWordsWhite.png"];
     titleImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.navigationItem.titleView = titleImageView;
     self.navigationItem.title = @"";
